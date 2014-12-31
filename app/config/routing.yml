@@ -1,0 +1,4 @@
+ordis_main:
+    resource: "@OrdisMainBundle/Resources/config/routing.yml"
+    prefix:   /
+
