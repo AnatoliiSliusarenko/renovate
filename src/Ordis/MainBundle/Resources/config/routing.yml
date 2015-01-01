@@ -1,3 +1,17 @@
 ordis_main_homepage:
-    path:     /
+    path: /
     defaults: { _controller: OrdisMainBundle:Index:index }
+    
+ordis_login:
+    path: /login
+    defaults: { _controller: OrdisMainBundle:Security:login}
+    
+ordis_login_check:
+    path: /login_check
+    
+ordis_logout:
+    path: /logout
+    
+ordis_contacts:
+    path: /contacts
+    defaults: { _controller: OrdisMainBundle:Contacts:index}
