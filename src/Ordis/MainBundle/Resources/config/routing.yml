@@ -2,10 +2,6 @@ ordis_main_homepage:
     path: /
     defaults: { _controller: OrdisMainBundle:Index:index }
     
-ordis_login:
-    path: /login
-    defaults: { _controller: OrdisMainBundle:Security:login}
-    
 ordis_login_check:
     path: /login_check
     

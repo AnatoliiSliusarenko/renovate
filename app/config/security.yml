@@ -18,7 +18,7 @@ security:
             pattern:    ^/*
             anonymous: ~
             form_login:
-                login_path: ordis_login
+                login_path: ordis_main_homepage
                 check_path: ordis_login_check
                 require_previous_session: false
                 

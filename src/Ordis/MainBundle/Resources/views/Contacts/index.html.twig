@@ -2,9 +2,59 @@
 
 {% block title %}Контакти{% endblock %}
 
+{% block head %}
+<link href="{{ asset('bundles/ordis/css/contacts.css') }}" rel="stylesheet">
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+{% endblock %}
+
 {% block content %}
-	<div class="starter-template">
-	  <h1>Тут буддуть наші контакти</h1>
-	  <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+<div class="row">
+	<div class="col-md-6">
+		<address>
+		  <strong>ТОВ "ОРДІС"</strong><br>
+		  вул. Швабська, буд. 65<br>
+		  Ужгород, 88000<br>
+		  Офіс: (0312) 65-43-12
+		</address>
+		
+		<address>
+		  <strong>Відділ кадрів</strong><br>
+		  +38 099 944 4061
+		</address>
 	</div>
+  	<div class="col-md-6">
+		<form method="post">
+			<h3>Зв’яжіться з нами</h3>
+			<div class="form-group">
+			    <input type="text" class="form-control" name="pip" placeholder="П.І.П." required>
+			</div>
+			<div class="form-group">
+			    <input type="email" class="form-control" name="email" placeholder="Ваш e-mail..." required>
+			</div>
+			<div class="form-group">
+			    <select class="form-control" name="topic">
+				  <option value="Заявка на реєстрацію">Заявка на реєстрацію</option>
+				  <option value="Подяка">Подяка</option>
+				  <option value="Пропозиція">Пропозиція</option>
+				  <option value="Скарга">Скарга</option>
+				  <option value="Інше">Інше</option>
+				</select>
+			</div>
+			<div class="form-group">
+			    <textarea class="form-control" rows="3" name="message" placeholder="Текст повідомлення..."></textarea>
+			</div>
+			<button type="submit" class="btn btn-info">Написати</button>
+			
+			{% if message_result is defined and message_result %}<div style="margin-top: 10px;" class="alert alert-success alert-dismissible" role="alert">{{message_result}}</div>{% endif %}
+			
+		</form>
+	</div>
+</div>
+
+<div id="map-canvas"></div>
+	
 {% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('bundles/ordis/js/googleMapInitialize.js') }}"></script>
+{% endblock %}

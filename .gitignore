@@ -1,2 +1,3 @@
 /app/cache/*
 /.project
+/app/config/parameters.yml
