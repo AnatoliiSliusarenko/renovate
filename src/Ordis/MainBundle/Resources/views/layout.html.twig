@@ -116,32 +116,7 @@
     <script src="{{ asset('bundles/ordis/js/bootstrap.min.js') }}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('bundles/ordis/js/ie10-viewport-bug-workaround.js') }}"></script>
-  	<script>
-  	$(document).ready(function(){
-  		//should take image height!!!
-  		var $navbar = $("#main-navbar");
-  		$(window).scroll(function(){
-  			if ( $(this).scrollTop() > 250 ){
-  		    	$navbar.removeClass("default").addClass("navbar-fixed-top");
-  			} else if($(this).scrollTop() <= 250 && $navbar.hasClass("navbar-fixed-top")) {
-  		        $navbar.removeClass("navbar-fixed-top");
-  			}
-  		});
-  		
-  		var monthes = ["січня","лютого","березеня","квітня","травня","червня","липня","серпня","вересня","жовтеня","листопада","грудня"];
-  		var days = ["Понеділок","Вівторок","Середа","Четвер","П’ятниця","Субота","Неділя"];
-  		
-  		var date = new Date();
-  		var year = date.getFullYear();
-  		var month = monthes[date.getMonth()];
-  		var day = date.getDate();
-  		var dayOfWeek = days[date.getDay()-1];
-  			
-  		var output = dayOfWeek + ", " + day + " " + month + " " + year + " року";
-  		
-  		$("#date").text(output);
-  	});
-  	</script>
+  	<script type="text/javascript" src="{{ asset('bundles/ordis/js/layout.js') }}"></script>
   	{% block javascripts %}{% endblock %}
   </body>
 </html>
