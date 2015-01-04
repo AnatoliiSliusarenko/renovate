@@ -11,3 +11,11 @@ ordis_logout:
 ordis_contacts:
     path: /contacts
     defaults: { _controller: OrdisMainBundle:Contacts:index}
+    
+ordis_jobs:
+    path: /jobs
+    defaults: { _controller: OrdisMainBundle:Jobs:index}
+    
+ordis_ng_jobs:
+    path: /ng/jobs
+    defaults: { _controller: OrdisMainBundle:Jobs:getNgJobs}

@@ -88,7 +88,7 @@
           <ul class="nav navbar-nav">
             <li {% if app.request.attributes.get('_route') == 'ordis_main_homepage' %}class="active"{% endif %}><a href="{{ path('ordis_main_homepage') }}">Головна</a></li>
             <li><a href="#tariffs">Тарифи</a></li>
-            <li><a href="#typesofwork">Види робіт</a></li>
+            <li {% if app.request.attributes.get('_route') == 'ordis_jobs' %}class="active"{% endif %}><a href="{{ path('ordis_jobs') }}">Види робіт</a></li>
             <li><a href="#results">Результати роботи</a></li>
             <li><a href="#news">Новини</a></li>
             <li><a href="#about">Про нас</a></li>
