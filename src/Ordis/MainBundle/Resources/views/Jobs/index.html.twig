@@ -6,18 +6,87 @@
 {% endblock %}
 
 {% block content %}
-<div class="row" ng-app="Ordis" ng-controller="JobsController">
-	<div class="col-md-10" ng-repeat="job in jobs">
-		<div class="media">
-		  <a class="media-left">
-		    <img width="128" height="128" src="http://2.bp.blogspot.com/-I3Znk89o1OU/T41j9yJxtsI/AAAAAAAAAG8/soUljkR-aL8/s1600/d0bcd0b0d0bbd18fd180d0bdd18bd0b5_d180d0b0d0b1d0bed182d18b.jpg" alt="Image">
-		  </a>
-		  <div class="media-body">
-		    <h4 class="media-heading"><b>[[job.name]]</b><button type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></h4>
-		    <p class="text-justify">[[job.description]]</p>
-		  </div>
+<div ng-app="Ordis" ng-controller="JobsController">
+	<div class="row">
+		<div class="col-md-4">
+			<form class="form-horizontal">
+			  <div class="form-group">
+			    <label for="countForPage" class="col-sm-8 control-label">Показувати на сторінці</label>
+			    <div class="col-sm-3">
+			      	<select id="countForPage" class="form-control">
+					  <option>5</option>
+					  <option>10</option>
+					  <option>15</option>
+					  <option>20</option>
+					  <option>25</option>
+					</select>
+			    </div>
+			  </div>
+			</form>
 		</div>
-		<hr>
+		<div class="col-md-4">
+			<button type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<nav class="text-center">
+				<ul class="pagination">
+					<li>
+				      <a href="#" aria-label="Previous">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+				    </li>
+				    <li class="active"><a href="#">1</a></li>
+				    <li><a href="#">2</a></li>
+				    <li><a href="#">3</a></li>
+				    <li><a href="#">4</a></li>
+				    <li><a href="#">5</a></li>
+				    <li>
+				      <a href="#" aria-label="Next">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" ng-repeat="job in jobs">
+			<div class="media">
+			  <a class="media-left">
+			    <img width="128" height="128" src="http://2.bp.blogspot.com/-I3Znk89o1OU/T41j9yJxtsI/AAAAAAAAAG8/soUljkR-aL8/s1600/d0bcd0b0d0bbd18fd180d0bdd18bd0b5_d180d0b0d0b1d0bed182d18b.jpg" alt="Image">
+			  </a>
+			  <div class="media-body">
+			    <h4 class="media-heading"><b>[[job.name]]</b><button type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></h4>
+			    <p class="text-justify">[[job.description]]</p>
+			  </div>
+			</div>
+			<hr>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<nav class="text-center">
+				<ul class="pagination">
+					<li>
+				      <a href="#" aria-label="Previous">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+				    </li>
+				    <li class="active"><a href="#">1</a></li>
+				    <li><a href="#">2</a></li>
+				    <li><a href="#">3</a></li>
+				    <li><a href="#">4</a></li>
+				    <li><a href="#">5</a></li>
+				    <li>
+				      <a href="#" aria-label="Next">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+				</ul>
+			</nav>
+		</div>
 	</div>
 </div>
 {% endblock %} 
@@ -26,9 +95,4 @@
 <script type="text/javascript" src="{{ asset('bundles/ordis/js/angular.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/ordis/js/angularInitialization.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/ordis/js/angularJobsController.js') }}"></script>
-<script>
-var URLS = {
-		ngJobsGet: "{{ path('ordis_ng_jobs') }}"
-}
-</script>
 {% endblock %}

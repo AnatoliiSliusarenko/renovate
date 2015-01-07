@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="{{ asset('bundles/ordis/images/logo_renovate.png') }}">
 
-    <title>ORDIS | {% block title %}Layout{% endblock %}</title>
+    <title>RENOVATE | {% block title %}Layout{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('bundles/ordis/css/bootstrap.css') }}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{ asset('bundles/ordis/css/starter-template.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/ordis/css/styles.css') }}" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -30,7 +30,7 @@
   </head>
 
   <body>
-  	<nav id="user-navbar" class="navbar navbar-inverse" style="margin-bottom: -52px; opacity: 0.8;">
+  	<nav id="user-navbar" class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -58,7 +58,7 @@
         </div>
         {% else %}
         <div id="navbar" class="collapse navbar-collapse">
-          <p id="date" class="navbar-text">{{ "now"|date("l d F Y") }}</p>
+          <p id="date" class="navbar-text"></p>
           <form class="navbar-form navbar-right" action="{{ path('ordis_login_check') }}" method="post">
           	<div class="form-group">
               <input type="text" placeholder="Логін" class="form-control {% if error is defined and error %}btn-danger{% endif %}" name="_username" {% if last_username is defined %}value="{{ last_username }}"{% endif %}>
@@ -73,7 +73,7 @@
         {% endif %}
       </div>
     </nav>
-	<div class="header-background"><img src="{{ asset('bundles/ordis/images/fotouroki_header.jpg') }}"/></div>
+	<div class="header-background"><img src="{{ asset('bundles/ordis/images/header_renovate.jpg') }}"/><a href="{{ path('ordis_main_homepage') }}"><img src="{{ asset('bundles/ordis/images/logo_renovate.png') }}"/></a></div>
     <nav id="main-navbar" class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -107,7 +107,7 @@
     <div class="container">
 	  {% block content %}{% endblock %}
     </div><!-- /.container -->
-
+	<div class="footer-background"><img src="{{ asset('bundles/ordis/images/footer_renovate.png') }}"/></div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -117,6 +117,12 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('bundles/ordis/js/ie10-viewport-bug-workaround.js') }}"></script>
   	<script type="text/javascript" src="{{ asset('bundles/ordis/js/layout.js') }}"></script>
+  	<script>
+  	var URLS = {
+  			jobsGetNg: "{{ path('ordis_ng_jobs') }}",
+  			contactUsNg: "{{ path('ordis_ng_contacts_contactus') }}"
+  	}
+  	</script>
   	{% block javascripts %}{% endblock %}
   </body>
 </html>

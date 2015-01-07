@@ -14,7 +14,7 @@ class JobsController extends Controller
     	return $this->render('OrdisMainBundle:Jobs:index.html.twig');
     }
     
-    public function getNgJobsAction(Request $request)
+    public function getJobsNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
     	

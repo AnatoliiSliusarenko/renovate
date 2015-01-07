@@ -2,13 +2,13 @@ Ordis.controller('JobsController', ['$scope','$http', function($scope,$http){
 	console.log('JobsController loaded!');
 	
 	$scope.jobs = [];
-	$scope.urlsNgJobsGet = URLS.ngJobsGet;
+	$scope.urlsJobsGetNg = URLS.jobsGetNg;
 	
 	function getJobs()
 	{
 		$http({
-			method: "POST", 
-			url: $scope.urlsNgJobsGet
+			method: "GET", 
+			url: $scope.urlsJobsGetNg
 			  })
 		.success(function(response){
 			console.log(response);

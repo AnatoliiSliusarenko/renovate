@@ -1,10 +1,10 @@
 $(document).ready(function(){
-  		//should take image height!!!
   		var $navbar = $("#main-navbar");
   		$(window).scroll(function(){
-  			if ( $(this).scrollTop() > 250 ){
+  			var headerHeight = $("div.header-background > img").height();
+  			if ( $(this).scrollTop() > headerHeight ){
   		    	$navbar.removeClass("default").addClass("navbar-fixed-top");
-  			} else if($(this).scrollTop() <= 250 && $navbar.hasClass("navbar-fixed-top")) {
+  			} else if($(this).scrollTop() <= headerHeight && $navbar.hasClass("navbar-fixed-top")) {
   		        $navbar.removeClass("navbar-fixed-top");
   			}
   		});
