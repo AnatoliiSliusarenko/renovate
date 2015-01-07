@@ -1,5 +1,5 @@
 /app/cache/*
 /app/logs/*
 /.project
-/app/config/parameters.yml
+app/config/parameters.yml
 /bin/*
