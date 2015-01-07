@@ -1,0 +1,25 @@
+renovate_main_homepage:
+    path: /
+    defaults: { _controller: RenovateMainBundle:Index:index }
+    
+renovate_login_check:
+    path: /login_check
+    
+renovate_logout:
+    path: /logout
+    
+renovate_contacts:
+    path: /contacts
+    defaults: { _controller: RenovateMainBundle:Contacts:index}
+    
+renovate_ng_contacts_contactus:
+    path: /ng/contacts/contact-us
+    defaults: { _controller: RenovateMainBundle:Contacts:contactUsNg}
+    
+renovate_jobs:
+    path: /jobs
+    defaults: { _controller: RenovateMainBundle:Jobs:index}
+    
+renovate_ng_jobs:
+    path: /ng/jobs
+    defaults: { _controller: RenovateMainBundle:Jobs:getJobsNg}

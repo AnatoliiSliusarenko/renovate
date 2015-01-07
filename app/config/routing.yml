@@ -1,4 +1,4 @@
-ordis_main:
-    resource: "@OrdisMainBundle/Resources/config/routing.yml"
+renovate_main:
+    resource: "@RenovateMainBundle/Resources/config/routing.yml"
     prefix:   /
 
