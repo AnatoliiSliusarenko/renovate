@@ -1,25 +1,17 @@
-Renovate.controller('ContactsController', ['$scope','$http', function($scope,$http){
+Renovate.controller('ContactsController', function($scope,$http){
 	console.log('ContactsController loaded!');
 	
 	$scope.urlsContactUsNg = URLS.contactUsNg;
-	
+	$scope.alerts =[];
 	$scope.message = {
 			topic: "Подяка"
 	}
-	
-	messageSentBox = $("#messageSent");
 	
 	$scope.sendButtonDisabled = false;
 	
 	function showAlert()
 	{
-		messageSentBox.show('slow', function(){
-			setTimeout(function(){
-					messageSentBox.hide('slow');
-					$scope.sendButtonDisabled = false;
-					$scope.$apply();
-				}, 2000);
-		});
+		$scope.alerts.push({msg: 'Ваш лист успішно надіслано!', type: 'success'});
 	}
 	
 	$scope.contactUs = function()
@@ -39,4 +31,9 @@ Renovate.controller('ContactsController', ['$scope','$http', function($scope,$ht
 		})
 	}
 	
-}]);
+	$scope.closeAlert = function(index) {
+	    $scope.alerts.splice(index, 1);
+	    $scope.sendButtonDisabled = false;
+	};
+	
+});

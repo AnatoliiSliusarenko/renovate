@@ -1,4 +1,4 @@
-var Renovate = angular.module('Renovate',[])
+var Renovate = angular.module('Renovate',['ui.bootstrap'])
 .config(['$interpolateProvider', '$httpProvider', function ($interpolateProvider, $httpProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');

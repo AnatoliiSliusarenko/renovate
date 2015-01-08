@@ -117,4 +117,35 @@ class Job
     		}, $result);
     	}else return $result;
     }
+    
+    public static function getJobs($em, $offset, $limit, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Job")
+    	->createQueryBuilder('j');
+    	 
+    	$qb->select('j')
+    		->setFirstResult($offset)
+			->setMaxResults($limit);
+    	 
+    	$result = $qb->getQuery()->getResult();
+    	 
+    	if ($inArray)
+    	{
+    		return array_map(function($job){
+    			return $job->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
+    
+    public static function getJobsCount($em)
+    {
+    	$query = $em->getRepository("RenovateMainBundle:Job")
+    				->createQueryBuilder('j')
+    				->select('COUNT(j.id)') 
+    				->getQuery();
+    	
+    	$total = $query->getSingleScalarResult();
+    	
+    	return $total;
+    }
 }

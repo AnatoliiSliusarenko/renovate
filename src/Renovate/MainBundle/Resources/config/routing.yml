@@ -23,3 +23,7 @@ renovate_jobs:
 renovate_ng_jobs:
     path: /ng/jobs
     defaults: { _controller: RenovateMainBundle:Jobs:getJobsNg}
+    
+renovate_ng_jobs_count:
+    path: /ng/jobs/count
+    defaults: { _controller: RenovateMainBundle:Jobs:getJobsCountNg}

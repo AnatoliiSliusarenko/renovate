@@ -48,10 +48,8 @@
 			<div class="form-group">
 			    <textarea class="form-control" rows="3" ng-model="message.text" placeholder="Текст повідомлення..."></textarea>
 			</div>
-			<button type="submit" class="btn btn-info" ng-class="{disabled: sendButtonDisabled}">Написати</button>
-			
-			<div id="messageSent" style="margin-top: 10px; display:none;" class="alert alert-success alert-dismissible" role="alert">Ваш лист успішно надіслано!</div>
-			
+			<button style="margin-bottom:10px;" type="submit" class="btn btn-info" ng-class="{disabled: sendButtonDisabled}">Написати</button>
+			<alert ng-repeat="alert in alerts" type="[[alert.type]]" close="closeAlert($index)">[[alert.msg]]</alert>
 		</form>
 	</div>
 </div>
@@ -63,6 +61,7 @@
 {% block javascripts %}
 <script src="{{ asset('bundles/renovate/js/googleMapInitialization.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/renovate/js/angular.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/renovate/js/angularInitialization.js') }}"></script>
 <script src="{{ asset('bundles/renovate/js/angularContactsController.js') }}"></script>
 {% endblock %}

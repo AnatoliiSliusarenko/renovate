@@ -1,3 +1,4 @@
+/* header, footer, user panel */
 .header-background {
 	top: 0px;
 	width: 100%;
@@ -33,6 +34,10 @@
 	height: auto;
 }
 
+#user-navbar, #main-navbar {
+	border-radius: 0px;
+}
+
 
 
 
@@ -57,9 +62,55 @@
 }
 }
 
-
+/* HomePage sliders */
 
 .partners img {
 	width: 128px;
 	height: 128px;
+}
+
+.results-for img{
+	width: 100%;
+	height: auto;
+}
+
+.results-for div.description{
+	position:absolute;
+	right: 0px;
+	top: 0px;
+	background-color: black;
+	color:white;
+	opacity: 0.5;
+	height: 100%;
+	width: 40%;
+}
+
+div.description p{
+	padding: 10px;
+}
+
+.results-nav, .results-for {
+	width: 100%;
+}
+
+.results-nav img {
+	width: 128px;
+	height: 90px;
+}
+
+.results-for img:hover, .results-nav img:hover {
+	cursor:pointer;
+}
+.slick-dots {
+	bottom: 85px !important;
+}
+ul.slick-dots li button:before {
+	font-size: 20px;	
+}
+
+.modal-backdrop {
+	height: 100%;
+	position: absolute;
+	margin: 0px;
+	top: 0;
 }

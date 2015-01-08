@@ -42,7 +42,7 @@
         </div>
         {% if app.user %}
         <div id="navbar" class="collapse navbar-collapse">
-        	<p id="date" class="navbar-text navbar-left">{{ "now"|date("l d F Y") }}</p>
+        	<p id="date" class="navbar-text navbar-left"></p>
         	<ul class="nav navbar-nav navbar-right">
         		<li class="dropdown">
 	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.name ~ ' ' ~ app.user.surname }} <span class="caret"></span></a>
@@ -114,13 +114,15 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{{ asset('bundles/renovate/js/jquery.min.js') }}"></script>
     <script src="{{ asset('bundles/renovate/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/underscore-min.js') }}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
   	<script type="text/javascript" src="{{ asset('bundles/renovate/js/layout.js') }}"></script>
   	<script>
   	var URLS = {
   			jobsGetNg: "{{ path('renovate_ng_jobs') }}",
-  			contactUsNg: "{{ path('renovate_ng_contacts_contactus') }}"
+  			contactUsNg: "{{ path('renovate_ng_contacts_contactus') }}",
+  			jobsCountNg: "{{ path('renovate_ng_jobs_count') }}"
   	}
   	</script>
   	{% block javascripts %}{% endblock %}
