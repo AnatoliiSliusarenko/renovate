@@ -1,0 +1,248 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}Менеджмент користувачів{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div ng-app="Renovate" ng-controller="UsersController">
+	<div class="row">
+		<div class="col-md-4">
+				<form class="form-horizontal">
+				  <div class="form-group">
+				    <label for="itemsPerPage" class="col-sm-8 control-label">Показувати на сторінці</label>
+				    <div class="col-sm-3">
+				      	<select id="itemsPerPage" class="form-control" ng-model="itemsPerPage">
+						  <option>1</option>
+						  <option>2</option>
+						  <option>3</option>
+						  <option>4</option>
+						  <option>5</option>
+						  <option>10</option>
+						  <option>25</option>
+						  <option>50</option>
+						  <option>100</option>
+						</select>
+				    </div>
+				  </div>
+				</form>
+		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+		<div class="col-md-4">
+			<button ng-click="addUser()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+		</div>
+		{% endif %}
+	</div>
+	<div class="row">
+			<div class="col-md-12 text-center">
+				<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+			</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-hover">
+      			<thead>
+			        <tr>
+			          <th>#</th>
+			          <th>Логін</th>
+			          <th>Ім’я</th>
+			          <th>Прізвище</th>
+			          <th>По батькові</th>
+			          <th>Email</th>
+			          <th>Моб.тел.</th>
+			          {% if is_granted('ROLE_ADMIN') %}
+			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+			          {% endif %}
+			        </tr>
+      			</thead>
+      			<tbody>
+			        <tr ng-repeat="user in users">
+			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
+			          <td>[[user.username]]</td>
+			          <td>[[user.name]]</td>
+			          <td>[[user.surname]]</td>
+			          <td>[[user.patronymic]]</td>
+			          <td>[[user.email]]</td>
+			          <td>[[user.mobilephone]]</td>
+			          {% if is_granted('ROLE_ADMIN') %}
+			          <td><button ng-click="removeUser(user)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editUser(user)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			          {% endif %}
+			        </tr>
+      			</tbody>
+    		</table>
+		</div>
+	</div>
+	<div class="row">
+			<div class="col-md-12 text-center">
+				<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+			</div>
+	</div>
+	<script type="text/ng-template" id="addUser.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Додати користувача...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="userForm">
+  				<div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+    				<label for="username" class="col-sm-2 control-label">Логін</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.username" type="text" class="form-control has-error" id="username" name="username" required>
+    					<p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">Введіть логін.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+    				<label for="password" class="col-sm-2 control-label">Пароль</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.password" type="password" class="form-control" id="password" name="password" required ng-change="checkPassword()">
+    					<p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Введіть пароль.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : (userForm.password2.$invalid && !userForm.password2.$pristine) || userForm.password2.$error.dontMatch }">
+    				<label for="password2" class="col-sm-2 control-label">Повторіть пароль</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.password2" type="password" class="form-control" id="password2" name="password2" required ng-change="checkPassword()">
+						<p ng-show="userForm.password2.$invalid && !userForm.password2.$pristine" class="help-block">Пароль ще раз.</p>
+    					<p ng-show="userForm.password2.$error.dontMatch" class="help-block">Неправильний пароль.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
+    				<label for="name" class="col-sm-2 control-label">Ім’я</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.name" type="text" class="form-control" id="name" name="name" required>
+						<p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">Введіть ім’я.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.surname.$invalid && !userForm.surname.$pristine }">
+    				<label for="surname" class="col-sm-2 control-label">Прізвище</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.surname" type="text" class="form-control" id="surname" name="surname" required>
+						<p ng-show="userForm.surname.$invalid && !userForm.surname.$pristine" class="help-block">Введіть прізвище.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.patronymic.$invalid && !userForm.patronymic.$pristine }">
+    				<label for="patronymic" class="col-sm-2 control-label">По батькові</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.patronymic" type="text" class="form-control" id="patronymic" name="patronymic" required>
+						<p ng-show="userForm.patronymic.$invalid && !userForm.patronymic.$pristine" class="help-block">Введіть по батькові.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+    				<label for="email" class="col-sm-2 control-label">Email</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.email" type="email" class="form-control" id="email" name="email" required>
+						<p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Введіть правильний email.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.mobilephone.$invalid && !userForm.mobilephone.$pristine }">
+    				<label for="mobilephone" class="col-sm-2 control-label">Моб.тел.</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.mobilephone" type="tel" class="form-control" id="mobilephone" name="mobilephone" required>
+						<p ng-show="userForm.mobilephone.$invalid && !userForm.mobilephone.$pristine" class="help-block">Введіть мобільний телефон.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
+    				<label for="roles" class="col-sm-2 control-label">Ролі</label>
+    				<div class="col-sm-10">
+      					<select class="form-control" id="roles" ng-model="user.roles" name="roles" multiple required>
+  							<option ng-repeat="role in roles" value="[[role.id]]">[[role.name]]</option>				
+						</select>
+						<p ng-show="userForm.roles.$invalid && !userForm.roles.$pristine" class="help-block">Виберіть хоч одну роль.</p>
+    				</div>
+  				</div>
+			</form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="userForm.$invalid || userForm.password2.$error.dontMatch">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="editUser.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Редагування користувача...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="userForm">
+  				<div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+    				<label for="username" class="col-sm-2 control-label">Логін</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.username" type="text" class="form-control has-error" id="username" name="username" required>
+    					<p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">Введіть логін.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+    				<label for="password" class="col-sm-2 control-label">Пароль</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.password" type="password" class="form-control" id="password" name="password" ng-change="checkPassword()">
+    					<p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Введіть пароль.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : (userForm.password2.$invalid && !userForm.password2.$pristine) || userForm.password2.$error.dontMatch }">
+    				<label for="password2" class="col-sm-2 control-label">Повторіть пароль</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.password2" type="password" class="form-control" id="password2" name="password2" ng-change="checkPassword()">
+						<p ng-show="userForm.password2.$invalid && !userForm.password2.$pristine" class="help-block">Пароль ще раз.</p>
+						<p ng-show="userForm.password2.$error.dontMatch" class="help-block">Неправильний пароль.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
+    				<label for="name" class="col-sm-2 control-label">Ім’я</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.name" type="text" class="form-control" id="name" name="name" required>
+						<p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">Введіть ім’я.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.surname.$invalid && !userForm.surname.$pristine }">
+    				<label for="surname" class="col-sm-2 control-label">Прізвище</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.surname" type="text" class="form-control" id="surname" name="surname" required>
+						<p ng-show="userForm.surname.$invalid && !userForm.surname.$pristine" class="help-block">Введіть прізвище.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.patronymic.$invalid && !userForm.patronymic.$pristine }">
+    				<label for="patronymic" class="col-sm-2 control-label">По батькові</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.patronymic" type="text" class="form-control" id="patronymic" name="patronymic" required>
+						<p ng-show="userForm.patronymic.$invalid && !userForm.patronymic.$pristine" class="help-block">Введіть по батькові.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+    				<label for="email" class="col-sm-2 control-label">Email</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.email" type="email" class="form-control" id="email" name="email" required>
+						<p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Введіть правильний email.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.mobilephone.$invalid && !userForm.mobilephone.$pristine }">
+    				<label for="mobilephone" class="col-sm-2 control-label">Моб.тел.</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.mobilephone" type="tel" class="form-control" id="mobilephone" name="mobilephone" required>
+						<p ng-show="userForm.mobilephone.$invalid && !userForm.mobilephone.$pristine" class="help-block">Введіть мобільний телефон.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
+    				<label for="roles" class="col-sm-2 control-label">Ролі</label>
+    				<div class="col-sm-10">
+      					<select class="form-control" id="roles" ng-model="user.roles" name="roles" multiple required>
+  							<option ng-repeat="role in roles" value="[[role.id]]" ng-selected="hasRole(role.id)">[[role.name]]</option>				
+						</select>
+						<p ng-show="userForm.roles.$invalid && !userForm.roles.$pristine" class="help-block">Виберіть хоч одну роль.</p>
+    				</div>
+  				</div>
+			</form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="userForm.$invalid || userForm.password2.$error.dontMatch">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+</div>
+{% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('bundles/renovate/js/underscore-min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/angular.min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/angularInitialization.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/angularUsersController.js') }}"></script>
+{% endblock %}

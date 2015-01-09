@@ -8,6 +8,7 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	
 	$scope.urlsJobsGetNg = URLS.jobsGetNg;
 	$scope.urlsJobsCountNg = URLS.jobsCountNg;
+	$scope.urlsJobsRemoveNg = URLS.jobsRemoveNg;
 	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
@@ -56,31 +57,107 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	
 	$scope.addJob = function(){
 		var modalInstance = $modal.open({
-		      templateUrl: 'myModalContent.html',
+		      templateUrl: 'addJob.html',
 		      controller: 'AddJobController',
 		      backdrop: "static"
 		});
 		
-		modalInstance.result.then(function () {
-		      //ok
+		modalInstance.result.then(function (added) {
+		      if (added) getJobsCount();
 		    }, function () {
 		      //bad
 		});
 	}
 	
-	$scope.editJob = function(id){
-		console.log('will edit: ', id);
+	$scope.editJob = function(job){
+		var modalInstance = $modal.open({
+		      templateUrl: 'editJob.html',
+		      controller: 'EditJobController',
+		      backdrop: "static",
+		      resolve: {
+		    	  job: function(){return job;}
+		      }
+		});
+		
+		modalInstance.result.then(function (edited) {
+		      if (edited) getJobsCount();
+		    }, function () {
+		      //bad
+		});
 	}
 	
-	$scope.removeJob = function(id){
-		console.log('will remove: ', id);
+	$scope.removeJob = function(job){
+		var remove = confirm("Дійсно бажаєте видалити: " + job.name + " ?");
+		if (!remove) return;
+		
+		var url = $scope.urlsJobsRemoveNg.replace('0', job.id);
+		
+		$http({
+			method: "GET", 
+			url: url
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				getJobsCount();
+			}
+		});
 	}
 })
 .controller('AddJobController', function($scope,$http,$modalInstance){
-	$scope.name="ку ку";
+	
+	$scope.urlsJobsAddNg = URLS.jobsAddNg;
+	
+	function addJob(){
+		$http({
+			method: "POST", 
+			url: $scope.urlsJobsAddNg,
+			data: $scope.job
+			  })
+		.success(function(response){
+			console.log("added job => ", response);
+			if (response.result)
+			{
+				$modalInstance.close(response.result);
+			}
+		})
+	}
 	
 	$scope.ok = function () {
-	    $modalInstance.close();
+		if (!$scope.jobForm.$valid) return;
+		addJob();
+	};
+
+	$scope.cancel = function () {
+	    $modalInstance.dismiss('cancel');
+	};
+})
+.controller('EditJobController', function($scope,$http,$modalInstance, job){
+	$scope.urlsJobsEditNg = URLS.jobsEditNg;
+	
+	$scope.job = job;
+	
+	function editJob(){
+		var url = $scope.urlsJobsEditNg.replace('0', $scope.job.id);
+		
+		$http({
+			method: "POST", 
+			url: url,
+			data: $scope.job
+			  })
+		.success(function(response){
+			console.log("edited job => ", response);
+			if (response.result)
+			{
+				$modalInstance.close(response.result);
+			}
+		})
+	}
+	
+	$scope.ok = function () {
+		if (!$scope.jobForm.$valid) return;
+		editJob();
 	};
 
 	$scope.cancel = function () {

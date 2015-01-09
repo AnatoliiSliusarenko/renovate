@@ -2,12 +2,12 @@
 .header-background {
 	top: 0px;
 	width: 100%;
-	height: auto;
+	height: 100%;
 }
 
 .header-background img {
 	width: 100%;
-	height: auto;
+	height: 100%;
 }
 .header-background a {
 	dosplay: block;
@@ -38,9 +38,6 @@
 	border-radius: 0px;
 }
 
-
-
-
 #user-navbar {
 	z-index: 1;
 	margin-bottom: -51px;
@@ -65,7 +62,7 @@
 /* HomePage sliders */
 
 .partners img {
-	width: 128px;
+	width: auto;
 	height: 128px;
 }
 
@@ -108,9 +105,11 @@ ul.slick-dots li button:before {
 	font-size: 20px;	
 }
 
+/* modal */
+
+.modal-dialog{
+	height: 100%;
+}
 .modal-backdrop {
 	height: 100%;
-	position: absolute;
-	margin: 0px;
-	top: 0;
 }

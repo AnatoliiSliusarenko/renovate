@@ -47,9 +47,9 @@
         		<li class="dropdown">
 	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.name ~ ' ' ~ app.user.surname }} <span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
-	                <li><a href="#">Action</a></li>
-	                <li><a href="#">Another action</a></li>
-	                <li><a href="#">Something else here</a></li>
+	                {% if is_granted('ROLE_ADMIN') %}
+	                <li><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
+	                {% endif %}
 	                <li class="divider"></li>
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
 	              </ul>
@@ -91,7 +91,7 @@
             <li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
             <li><a href="#results">Результати роботи</a></li>
             <li><a href="#news">Новини</a></li>
-            <li><a href="#about">Про нас</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}">Про нас</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}">Контакти</a></li>
           </ul>
           <form class="navbar-form navbar-right">
@@ -112,17 +112,27 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ asset('bundles/renovate/js/jquery.min.js') }}"></script>
+    <!-- Custom scripts for this template -->
+	<script src="{{ asset('bundles/renovate/js/jquery.min.js') }}"></script>
     <script src="{{ asset('bundles/renovate/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('bundles/renovate/js/underscore-min.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/layout.js') }}"></script>
+    
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
-  	<script type="text/javascript" src="{{ asset('bundles/renovate/js/layout.js') }}"></script>
   	<script>
   	var URLS = {
   			jobsGetNg: "{{ path('renovate_ng_jobs') }}",
   			contactUsNg: "{{ path('renovate_ng_contacts_contactus') }}",
-  			jobsCountNg: "{{ path('renovate_ng_jobs_count') }}"
+  			jobsCountNg: "{{ path('renovate_ng_jobs_count') }}",
+  			jobsAddNg: "{{ path('renovate_ng_jobs_add') }}",
+  			jobsRemoveNg: "{{ path('renovate_ng_jobs_remove', {job_id: 0}) }}",
+  			jobsEditNg: "{{ path('renovate_ng_jobs_edit', {job_id: 0}) }}",
+  			usersGetNg: "{{ path('renovate_ng_users') }}",
+  			usersCountNg: "{{ path('renovate_ng_users_count') }}",
+  			usersAddNg: "{{ path('renovate_ng_users_add') }}",
+  			usersRemoveNg: "{{ path('renovate_ng_users_remove', {user_id: 0}) }}",
+  			usersEditNg: "{{ path('renovate_ng_users_edit', {user_id: 0}) }}",
+  			rolesGetNg: "{{ path('renovate_ng_roles') }}",
   	}
   	</script>
   	{% block javascripts %}{% endblock %}

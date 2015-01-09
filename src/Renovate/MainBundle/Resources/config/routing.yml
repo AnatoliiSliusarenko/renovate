@@ -12,6 +12,10 @@ renovate_contacts:
     path: /contacts
     defaults: { _controller: RenovateMainBundle:Contacts:index}
     
+renovate_aboutus:
+    path: /aboutus
+    defaults: { _controller: RenovateMainBundle:AboutUs:index}
+    
 renovate_ng_contacts_contactus:
     path: /ng/contacts/contact-us
     defaults: { _controller: RenovateMainBundle:Contacts:contactUsNg}
@@ -27,3 +31,43 @@ renovate_ng_jobs:
 renovate_ng_jobs_count:
     path: /ng/jobs/count
     defaults: { _controller: RenovateMainBundle:Jobs:getJobsCountNg}
+    
+renovate_ng_jobs_add:
+    path: /ng/jobs/add
+    defaults: { _controller: RenovateMainBundle:Jobs:addJobNg}
+    
+renovate_ng_jobs_remove:
+    path: /ng/jobs/remove/{job_id}
+    defaults: { _controller: RenovateMainBundle:Jobs:removeJobNg}
+    
+renovate_ng_jobs_edit:
+    path: /ng/jobs/edit/{job_id}
+    defaults: { _controller: RenovateMainBundle:Jobs:editJobNg}
+    
+renovate_users:
+    path: /users
+    defaults: { _controller: RenovateMainBundle:Users:index}
+    
+renovate_ng_users:
+    path: /ng/users
+    defaults: { _controller: RenovateMainBundle:Users:getUsersNg}
+    
+renovate_ng_users_count:
+    path: /ng/users/count
+    defaults: { _controller: RenovateMainBundle:Users:getUsersCountNg}
+    
+renovate_ng_users_add:
+    path: /ng/users/add
+    defaults: { _controller: RenovateMainBundle:Users:addUserNg}
+    
+renovate_ng_users_remove:
+    path: /ng/users/remove/{user_id}
+    defaults: { _controller: RenovateMainBundle:Users:removeUserNg}
+    
+renovate_ng_users_edit:
+    path: /ng/users/edit/{user_id}
+    defaults: { _controller: RenovateMainBundle:Users:editUserNg}
+    
+renovate_ng_roles:
+    path: /ng/roles
+    defaults: { _controller: RenovateMainBundle:Roles:getRolesNg}
