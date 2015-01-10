@@ -71,3 +71,7 @@ renovate_ng_users_edit:
 renovate_ng_roles:
     path: /ng/roles
     defaults: { _controller: RenovateMainBundle:Roles:getRolesNg}
+    
+renovate_tariffs:
+    path: /tariffs
+    defaults: { _controller: RenovateMainBundle:Tariffs:index}
