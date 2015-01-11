@@ -113,3 +113,112 @@ ul.slick-dots li button:before {
 .modal-backdrop {
 	height: 100%;
 }
+
+/* data-holder */
+
+.data-holder{
+	margin-bottom: 20px;
+}
+
+.data-header {
+	height: 40px;
+	-webkit-box-shadow: 5px 6px 5px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 5px 6px 5px 0px rgba(0,0,0,0.75);
+	box-shadow: 5px 6px 5px 0px rgba(0,0,0,0.75);
+	font-family: Georgia, serif;
+}
+
+.data-header .date{
+	z-index:1;
+	display:block;
+	position:relative;
+	float:left;
+	width:20%;
+	height:100%;
+	background-color: white;
+	text-align: center;
+	text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
+	font-size: 16px;
+	color:black;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.data-header .date:before {
+	z-index:-1;
+	content: "";
+   	position: absolute;
+   	width: 55px;
+   	height: 5px;
+   	background: white;
+   	transform: rotate(45deg);
+   	top: 16px;
+   	left: -38px;
+   	-webkit-box-shadow: 0 6px 6px 1px black;
+       -moz-box-shadow: 0 6px 6px 1px black;
+            box-shadow: 0 6px 6px 1px black;
+}
+
+.data-header .title{
+	z-index:1;
+	display:block;
+	position:relative;
+	float:right;
+	width:80%;
+	height:100%;
+	background-color: #0D0151;
+	color:white;
+	font-size: 21px;
+	text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	padding-left: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.data-social {
+	display:inline-flex;
+	height: 30px;
+	float:right;
+	width: 380px;
+}
+
+.data-social .social-content {
+	position:relative;
+	width:100%;
+	height: 100%;
+	background-color: #0D0151;
+	-webkit-box-shadow: 5px 4px 5px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 5px 4px 5px 0px rgba(0,0,0,0.75);
+	box-shadow: 5px 4px 5px 0px rgba(0,0,0,0.75);
+}
+
+.data-social .social-content:before {
+	content: "";
+   	position: absolute;
+   	width: 42px;
+   	height: 42px;
+   	background: #0D0151;
+   	transform: rotate(45deg);
+   	top: -21px;
+   	left: -21px;
+}
+
+.data-social .social-content button {
+	color: white;
+	margin-right: 5px;
+}
+
+.data-content {
+	display: inline-block;
+	padding: 10px;
+}
+
+.data-footer {
+	text-align:right;
+	margin-top: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #CCCCFF;
+}

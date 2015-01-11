@@ -357,7 +357,7 @@ class User implements UserInterface,\Serializable
     			'patronymic' => $this->getPatronymic(),
     			'email' => $this->getEmail(),
     			'mobilephone' => $this->getMobilephone(),
-    			'registered' => $this->getRegistered(),
+    			'registered' => $this->getRegistered()->getTimestamp()*1000,
     			'roles' => array_map(function($role){return $role->getInArray();}, $this->getRoles())
     	);
     }

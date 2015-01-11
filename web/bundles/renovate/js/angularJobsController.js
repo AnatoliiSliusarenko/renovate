@@ -7,6 +7,7 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	$scope.itemsPerPage = 5;
 	
 	$scope.urlsJobsGetNg = URLS.jobsGetNg;
+	$scope.urlsJobsShowJob = URLS.jobsShowJob;
 	$scope.urlsJobsCountNg = URLS.jobsCountNg;
 	$scope.urlsJobsRemoveNg = URLS.jobsRemoveNg;
 	
@@ -103,6 +104,11 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 				getJobsCount();
 			}
 		});
+	}
+	
+	$scope.setItemDirectHref = function(job){
+		var href = $scope.urlsJobsShowJob.replace('0', job.id);
+		job.href = href;
 	}
 })
 .controller('AddJobController', function($scope,$http,$modalInstance){

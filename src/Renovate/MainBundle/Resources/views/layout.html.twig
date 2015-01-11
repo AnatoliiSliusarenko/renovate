@@ -101,7 +101,7 @@
             <div class="form-group">
               <input type="text" placeholder="Введіть запит..." class="form-control">
             </div>
-            <button type="submit" class="btn btn-success">ПОШУК!</button>
+            <button type="submit" class="btn btn-success disabled">ПОШУК!</button>
           </form>
         </div><!--/.nav-collapse -->
       </div>
@@ -140,6 +140,7 @@
     <script src="{{ asset('bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
   	<script>
   	var URLS = {
+  			jobsShowJob: "{{ path('renovate_jobs_show_job', {job_id: 0}) }}",
   			jobsGetNg: "{{ path('renovate_ng_jobs') }}",
   			contactUsNg: "{{ path('renovate_ng_contacts_contactus') }}",
   			jobsCountNg: "{{ path('renovate_ng_jobs_count') }}",

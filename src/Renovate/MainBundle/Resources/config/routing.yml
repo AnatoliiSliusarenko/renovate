@@ -24,6 +24,10 @@ renovate_jobs:
     path: /jobs
     defaults: { _controller: RenovateMainBundle:Jobs:index}
     
+renovate_jobs_show_job:
+    path: /jobs/{job_id}
+    defaults: { _controller: RenovateMainBundle:Jobs:showJob}
+    
 renovate_ng_jobs:
     path: /ng/jobs
     defaults: { _controller: RenovateMainBundle:Jobs:getJobsNg}

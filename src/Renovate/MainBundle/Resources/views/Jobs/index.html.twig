@@ -40,19 +40,26 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12" ng-repeat="job in jobs">
-			<div class="media">
-			  <a class="media-left">
-			    <img width="128" height="128" src="http://2.bp.blogspot.com/-I3Znk89o1OU/T41j9yJxtsI/AAAAAAAAAG8/soUljkR-aL8/s1600/d0bcd0b0d0bbd18fd180d0bdd18bd0b5_d180d0b0d0b1d0bed182d18b.jpg" alt="Image">
-			  </a>
-			  <div class="media-body">
-			    <h4 class="media-heading"><b>[[job.name]]</b>{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeJob(job)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editJob(job)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</h4>
-			    <p class="text-justify">[[job.description]]</p>
-			  </div>
+		<div class="col-md-12">
+			<div class="data-holder" ng-repeat="job in jobs">
+				<div class="data-header">
+					<div class="date">[[ job.created | date:"yyyy-MM-dd"]]</div>
+					<div class="title">[[job.name]]</div>
+				</div>
+				<div class="data-social">
+					<div class="social-content">{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeJob(job)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editJob(job)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
+				</div>
+				<div class="data-content">
+					<div class="col-md-3">
+						<img class="img-thumbnail" src="http://2.bp.blogspot.com/-I3Znk89o1OU/T41j9yJxtsI/AAAAAAAAAG8/soUljkR-aL8/s1600/d0bcd0b0d0bbd18fd180d0bdd18bd0b5_d180d0b0d0b1d0bed182d18b.jpg" alt="Image">
+					</div>
+					<p class="text-justify">[[job.description | limitTo:1100]][[(job.description.length > 1100) ? "..." : ""]]</p></div>
+				<div class="data-footer">
+					<a class="btn btn-primary btn-xs" href="[[job.href]]" ng-init="setItemDirectHref(job)">Читати детальніше...</a>
+				</div>
 			</div>
-			<hr>
 		</div>
-	</div>
+	</div>	
 	<div class="row">
 		<div class="col-md-12 text-center">
 			<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>

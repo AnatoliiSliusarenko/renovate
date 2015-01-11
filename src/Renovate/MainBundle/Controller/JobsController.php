@@ -14,6 +14,13 @@ class JobsController extends Controller
     	return $this->render('RenovateMainBundle:Jobs:index.html.twig');
     }
     
+    public function showJobAction($job_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$job = $em->getRepository("RenovateMainBundle:Job")->find($job_id);
+    	return $this->render('RenovateMainBundle:Jobs:showJob.html.twig', array("job" => $job));
+    }
+    
     public function getJobsNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();

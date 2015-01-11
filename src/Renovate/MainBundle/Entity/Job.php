@@ -128,7 +128,7 @@ class Job
     			'id' => $this->getId(),
     			'name' => $this->getName(),
     			'description' => $this->getDescription(),
-    			'created' => $this->getCreated()
+    			'created' => $this->getCreated()->getTimestamp()*1000
     	);
     }
     
