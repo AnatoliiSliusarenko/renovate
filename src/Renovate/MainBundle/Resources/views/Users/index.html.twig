@@ -5,6 +5,13 @@
 {% block head %}
 {% endblock %}
 
+{% block breadcrumb %}
+ <ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li class="active">Менеджмент користувачів</li>
+ </ol>
+{% endblock %}
+
 {% block content %}
 <div ng-app="Renovate" ng-controller="UsersController">
 	<div class="row">

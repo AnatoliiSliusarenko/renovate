@@ -5,6 +5,14 @@
 {% block head %}
 {% endblock %}
 
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li><a href="{{path('renovate_jobs')}}">Види робіт</a></li>
+ 	<li class="active">{{job.name}}</li>
+</ol>
+{% endblock %}
+
 {% block content %}
 	<div class="row">
 		<div class="col-md-12">
