@@ -512,7 +512,7 @@ ul.slick-dots li button:before {
 	font-size: 18px;
 	text-align: center;
 	width: 100%;
-	height: 65px;
+	height: 70px;
 	display: inline-flex;
 	background-color: transparent;
 	padding-right: 20px;
@@ -557,7 +557,7 @@ ul.slick-dots li button:before {
 	font-size: 18px;
 	text-align: center;
 	width: 100%;
-	height: 65px;
+	height: 70px;
 	display: inline-flex;
 	background-color: transparent;
 	padding-right: 20px;
@@ -600,7 +600,7 @@ ul.slick-dots li button:before {
 	font-size: 18px;
 	text-align: center;
 	width: 100%;
-	height: 65px;
+	height: 70px;
 	display: inline-flex;
 	background-color: transparent;
 	padding-right: 20px;
@@ -718,6 +718,8 @@ ul.slick-dots li button:before {
 }
 
 .tariffs input {
+	width:70%;
+	min-width:20px;
 	color: black;
 	text-align: right;
 	font-weight: bold;
@@ -725,6 +727,7 @@ ul.slick-dots li button:before {
 }
 
 .tariffs button {
+	width: 70%;
 	outline: none;
 	padding: 13px;
 	color:#0A2957;
@@ -749,6 +752,67 @@ ul.slick-dots li button:before {
 	-webkit-box-shadow: inset 0px 0px 20px 5px rgba(0,0,0,0.75);
 	-moz-box-shadow: inset 0px 0px 20px 5px rgba(0,0,0,0.75);
 	box-shadow: inset 0px 0px 20px 5px rgba(0,0,0,0.75);
+}
+
+/* Tariffs Mobile s*/
+@media (max-width: 768px) {
+	.tariffs button {
+		font-size: 8px;	
+	}
+	.tariffs .header {
+		font-size: 11px;
+	}
+	.tariffs .header .gen {
+		font-size: 18px;
+	}
+	
+	.tariffs .row-1 {
+		font-size: 16px;
+	}
+	
+	.row-1 .col-2 p {
+		font-size: 20px;
+	} 
+	
+	.row-1 .col-3 p {
+		font-size: 20px;
+	}
+	
+	.row-1 .col-4 p {
+		font-size: 20px;
+	}
+	
+	.tariffs a {
+		font-size: 12px;
+	}
+	
+	.col-11, .col-12 {
+		padding: 0 !important;
+	}
+	
+	.row-3 .col-2,.row-3 .col-3,.row-3 .col-4 {
+		font-size: 16px;
+	}
+	
+	.row-4 .col-1 {
+		padding: 0;
+	}
+	
+	.row-4 .col-2,.row-4 .col-3,.row-4 .col-4 {
+		font-size: 14px;
+	}
+	
+	.row-2 .col-1 .col-11 {
+		padding-top: 15px !important;
+	}
+	
+	.row-2 .col-1 .col-12 {
+		font-size: 9px !important;
+	}
+	
+	.row-6 .col-2,.row-6 .col-3,.row-6 .col-4 {
+		padding: 0 !important;
+	}
 }
 
 
