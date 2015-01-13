@@ -3,4 +3,4 @@
 /.project
 app/config/parameters.yml
 /bin/*
-/web/bundles/renovate/documents/*
+/web/bundles/renovate/documents/
