@@ -1,8 +1,9 @@
 $(document).ready(function(){
 	$('.partners').slick({
-		slidesToShow: 4,
-		slidesToScroll: 4,
+		slidesToShow: 1,
+		slidesToScroll: 1,
 		autoplay: true,
-		variableWidth: true
+		variableWidth: true,
+		centerMode: true,
 	});
 });

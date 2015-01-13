@@ -84,6 +84,12 @@ class User implements UserInterface,\Serializable
      * @var array
      */
 	private $roles;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Document", mappedBy="user")
+	 * @var array
+	 */
+	private $documents;
     
 	public function __construct()
 	{
@@ -492,5 +498,38 @@ class User implements UserInterface,\Serializable
     	$em->flush();
     	
     	return $user;
+    }
+
+    /**
+     * Add documents
+     *
+     * @param \Renovate\MainBundle\Entity\Document $documents
+     * @return User
+     */
+    public function addDocument(\Renovate\MainBundle\Entity\Document $documents)
+    {
+        $this->documents[] = $documents;
+
+        return $this;
+    }
+
+    /**
+     * Remove documents
+     *
+     * @param \Renovate\MainBundle\Entity\Document $documents
+     */
+    public function removeDocument(\Renovate\MainBundle\Entity\Document $documents)
+    {
+        $this->documents->removeElement($documents);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
     }
 }

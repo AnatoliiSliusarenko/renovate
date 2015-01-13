@@ -125,7 +125,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	}
 })
 .controller('AddUserController', function($scope,$http,$modalInstance, roles){
-	
+	console.log('AddUserController loaded!');
 	$scope.urlsUsersAddNg = URLS.usersAddNg;
 	$scope.roles = roles;
 	
@@ -160,6 +160,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	};
 })
 .controller('EditUserController', function($scope,$http,$modalInstance, user, roles){
+	console.log('EditUserController loaded!');
 	$scope.urlsUsersEditNg = URLS.usersEditNg;
 	
 	$scope.user = user;

@@ -6,12 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Renovate\MainBundle\Entity\Job;
+use Renovate\MainBundle\Entity\Document;
 
 class JobsController extends Controller
 {
     public function indexAction()
     {
-    	return $this->render('RenovateMainBundle:Jobs:index.html.twig');
+    	$timestamp = time();
+    	$token = Document::getToken($timestamp);
+    	return $this->render('RenovateMainBundle:Jobs:index.html.twig', array(
+    			'timestamp' => $timestamp,
+    			'token' => $token
+    	));
     }
     
     public function showJobAction($job_id)

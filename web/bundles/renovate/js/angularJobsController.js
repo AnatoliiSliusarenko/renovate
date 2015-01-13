@@ -112,8 +112,43 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	}
 })
 .controller('AddJobController', function($scope,$http,$modalInstance){
-	
+	console.log('AddJobController loaded!');
+	$scope.urlsDocumentsGetNg = URLS.documentsGetNg;
 	$scope.urlsJobsAddNg = URLS.jobsAddNg;
+	$scope.documents = [];
+	
+	function getDocuments(){
+		$http({
+			method: "GET", 
+			url: $scope.urlsDocumentsGetNg
+			  })
+		.success(function(response){
+			console.log("documents => ",response);
+			if (response.result)
+			{
+				$scope.documents = response.result;
+			}
+		})
+	}
+	getDocuments();
+	
+	setTimeout(function() {
+	    $('#file_upload').uploadify({
+	    	'fileSizeLimit': 0,
+	    	'progressData' : 'speed',
+	    	'formData'     : {
+				'timestamp' : TIMESTAMP,
+				'token'     : TOKEN
+			},
+	    	'buttonText' : 'Завантажити...',
+	        'swf'      : URLS.uploadifySWF,
+	        'uploader' : URLS.documentsUpload,
+	        'onUploadSuccess' : function(file, data, response) {
+	            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
+	            getDocuments();
+	        }
+	    });
+	}, 1000);
 	
 	function addJob(){
 		$http({
@@ -139,10 +174,45 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditJobController', function($scope,$http,$modalInstance, job){
+.controller('EditJobController', function($scope,$http,$modalInstance,job){
+	console.log('EditJobController loaded!');
+	$scope.urlsDocumentsGetNg = URLS.documentsGetNg;
 	$scope.urlsJobsEditNg = URLS.jobsEditNg;
-	
+	$scope.documents = [];
 	$scope.job = job;
+	
+	function getDocuments(){
+		$http({
+			method: "GET", 
+			url: $scope.urlsDocumentsGetNg
+			  })
+		.success(function(response){
+			console.log("documents => ",response);
+			if (response.result)
+			{
+				$scope.documents = response.result;
+			}
+		})
+	}
+	getDocuments();
+	
+	setTimeout(function() {
+	    $('#file_upload').uploadify({
+	    	'fileSizeLimit': 0,
+	    	'progressData' : 'speed',
+	    	'formData'     : {
+				'timestamp' : TIMESTAMP,
+				'token'     : TOKEN
+			},
+	    	'buttonText' : 'Завантажити...',
+	        'swf'      : URLS.uploadifySWF,
+	        'uploader' : URLS.documentsUpload,
+	        'onUploadSuccess' : function(file, data, response) {
+	            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
+	            getDocuments();
+	        }
+	    });
+	}, 1000);
 	
 	function editJob(){
 		var url = $scope.urlsJobsEditNg.replace('0', $scope.job.id);
@@ -160,6 +230,8 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 			}
 		})
 	}
+	
+	setTimeout(function(){$scope.$apply();}, 2000);
 	
 	$scope.ok = function () {
 		if (!$scope.jobForm.$valid) return;

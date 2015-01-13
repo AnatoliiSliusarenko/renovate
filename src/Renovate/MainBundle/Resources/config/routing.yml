@@ -79,3 +79,15 @@ renovate_ng_roles:
 renovate_tariffs:
     path: /tariffs
     defaults: { _controller: RenovateMainBundle:Tariffs:index}
+    
+renovate_documents:
+    path: /documents
+    defaults: { _controller: RenovateMainBundle:Documents:index}
+    
+renovate_ng_documents:
+    path: /ng/documents
+    defaults: { _controller: RenovateMainBundle:Documents:getDocumentsNg}
+    
+renovate_documents_upload:
+    path: /documents/upload
+    defaults: { _controller: RenovateMainBundle:Documents:upload}

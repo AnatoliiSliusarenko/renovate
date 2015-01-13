@@ -1,0 +1,49 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}Менеджмент файлів{% endblock %}
+
+{% block head %}
+<link href="{{ asset('bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li class="active">Менеджмент файлів</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div ng-app="Renovate" ng-controller="DocumentsController">
+	<div class="row">
+		<div class="col-md-12">
+			<h4>Дозволені розширення: <b>{{ availableTypes }}</b></h4>
+			<input type="file" name="file_upload" id="file_upload" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4" ng-repeat="document in documents">
+			<div class="thumbnail">
+      			<a href="{{ app.request.getBaseURL() }}/..[[document.url]]" download><img src="{{ app.request.getBaseURL() }}/..[[document.url]]" alt="[[document.name]]"></a>
+      			<div class="caption">
+        			<p><strong>[[document.name]]</strong></p>
+        			<p>[[document.uploaded | date:"dd.MM.yyyy HH:mm:ss"]] ([[document.user.username]])</p>
+        		</div>
+    		</div>
+		</div>
+	</div>
+</div>
+{% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/underscore-min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/angular.min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/angularInitialization.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/angularDocumentsController.js') }}"></script>
+<script>
+var TIMESTAMP = '{{ timestamp }}';
+var TOKEN = '{{ token }}';
+</script>
+{% endblock %}

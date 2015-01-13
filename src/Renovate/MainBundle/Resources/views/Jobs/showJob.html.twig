@@ -26,7 +26,7 @@
 		<div class="col-md-12">
 			<div class="data-content">
 				<div class="col-md-4">
-					<img src="http://2.bp.blogspot.com/-I3Znk89o1OU/T41j9yJxtsI/AAAAAAAAAG8/soUljkR-aL8/s1600/d0bcd0b0d0bbd18fd180d0bdd18bd0b5_d180d0b0d0b1d0bed182d18b.jpg" alt="Image" class="img-thumbnail">
+					<img src="{{ app.request.getBaseURL() }}/..{{job.document.path}}" alt="Image" class="img-thumbnail">
 				</div>
 				<div class="text-justify">{{job.description | raw}}</div>
 			</div>

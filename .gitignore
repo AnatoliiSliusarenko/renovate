@@ -3,3 +3,4 @@
 /.project
 app/config/parameters.yml
 /bin/*
+/web/documents/*

@@ -52,6 +52,7 @@
 	              <ul class="dropdown-menu" role="menu">
 	                {% if is_granted('ROLE_ADMIN') %}
 	                <li><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
+	                <li><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
 	                {% endif %}
 	                <li class="divider"></li>
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
@@ -113,13 +114,7 @@
 	  	{% block content %}{% endblock %}
 	  	<div class="row" style="margin-top:10px;">
 			<div class="col-md-12">
-				<div class="partners">
-				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
-				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
-				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
-				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
-				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
-				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
+				<div class="partners center-block">
 				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
 				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
 				</div>
@@ -155,6 +150,9 @@
   			usersRemoveNg: "{{ path('renovate_ng_users_remove', {user_id: 0}) }}",
   			usersEditNg: "{{ path('renovate_ng_users_edit', {user_id: 0}) }}",
   			rolesGetNg: "{{ path('renovate_ng_roles') }}",
+  			documentsGetNg: "{{ path('renovate_ng_documents') }}",
+  			documentsUpload: "{{ path('renovate_documents_upload') }}",
+  			uploadifySWF: "{{ asset('bundles/renovate/swf/uploadify.swf') }}"
   	}
   	</script>
   	{% block javascripts %}{% endblock %}
