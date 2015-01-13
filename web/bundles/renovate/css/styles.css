@@ -143,6 +143,16 @@ div.description h3{
 .results-for img:hover, .results-nav img:hover {
 	cursor:pointer;
 }
+
+@media (max-width: 768px) {
+	div.description p{
+		font-size: 11px;
+	}
+	div.description h3{
+		font-size: 18px;
+	}
+}
+
 .slick-dots {
 	bottom: 85px !important;
 }
