@@ -3,7 +3,7 @@
 {% block title %}Менеджмент файлів{% endblock %}
 
 {% block head %}
-<link href="{{ asset('bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
+<link href="{{ asset('web/bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -24,7 +24,7 @@
 	<div class="row">
 		<div class="col-md-4" ng-repeat="document in documents">
 			<div class="thumbnail">
-      			<a href="{{ app.request.getBaseURL() }}/..[[document.url]]" download><img src="{{ app.request.getBaseURL() }}/..[[document.url]]" alt="[[document.name]]"></a>
+      			<a href="{{ asset('[[document.url]]') }}" download><img src="{{ asset('[[document.url]]') }}" alt="[[document.name]]"></a>
       			<div class="caption">
         			<p><strong>[[document.name]]</strong></p>
         			<p>[[document.uploaded | date:"dd.MM.yyyy HH:mm:ss"]] ([[document.user.username]])</p>
@@ -36,12 +36,12 @@
 {% endblock %} 
 
 {% block javascripts %}
-<script src="{{ asset('bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
-<script src="{{ asset('bundles/renovate/js/underscore-min.js') }}"></script>
-<script src="{{ asset('bundles/renovate/js/angular.min.js') }}"></script>
-<script src="{{ asset('bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
-<script src="{{ asset('bundles/renovate/js/angularInitialization.js') }}"></script>
-<script src="{{ asset('bundles/renovate/js/angularDocumentsController.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularDocumentsController.js') }}"></script>
 <script>
 var TIMESTAMP = '{{ timestamp }}';
 var TOKEN = '{{ token }}';

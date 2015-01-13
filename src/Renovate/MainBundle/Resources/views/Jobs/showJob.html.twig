@@ -26,7 +26,7 @@
 		<div class="col-md-12">
 			<div class="data-content">
 				<div class="col-md-4">
-					<img src="{{ app.request.getBaseURL() }}/..{{job.document.path}}" alt="Image" class="img-thumbnail">
+					<img src="{{asset(job.document.path)}}" alt="{{job.name}}" class="img-thumbnail">
 				</div>
 				<div class="text-justify">{{job.description | raw}}</div>
 			</div>

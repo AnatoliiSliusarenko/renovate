@@ -264,12 +264,12 @@ class Document
     
     protected function getUploadRootDir()
     {
-    	return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    	return __DIR__.'/../../../../'.$this->getUploadDir();
     }
     
     protected function getUploadDir()
     {
-    	return '/bundles/renovate/documents';
+    	return 'web/bundles/renovate/documents';
     }
     
     public function getAbsolutePath()

@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="{{ asset('bundles/renovate/images/logo_renovate.png') }}">
+    <link rel="icon" href="{{ asset('web/bundles/renovate/images/logo_renovate.png') }}">
 
     <title>RENOVATE | {% block title %}Layout{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ asset('bundles/renovate/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('web/bundles/renovate/css/bootstrap.css') }}" rel="stylesheet">
 
 	<!-- Slick library -->
-	<link type="text/css" href="{{ asset('bundles/renovate/css/slick.css') }}" rel="stylesheet" />
+	<link type="text/css" href="{{ asset('web/bundles/renovate/css/slick.css') }}" rel="stylesheet" />
 	
     <!-- Custom styles for this template -->
-    <link href="{{ asset('bundles/renovate/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('web/bundles/renovate/css/styles.css') }}" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="{{ asset('bundles/renovate/js/ie-emulation-modes-warning.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/ie-emulation-modes-warning.js') }}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -77,7 +77,7 @@
         {% endif %}
       </div>
     </nav>
-	<div class="header-background"><img src="{{ asset('bundles/renovate/images/header_renovate.jpg') }}"/><a href="{{ path('renovate_main_homepage') }}"><img src="{{ asset('bundles/renovate/images/logo_renovate.png') }}"/></a></div>
+	<div class="header-background"><img src="{{ asset('web/bundles/renovate/images/header_renovate.jpg') }}"/><a href="{{ path('renovate_main_homepage') }}"><img src="{{ asset('web/bundles/renovate/images/logo_renovate.png') }}"/></a></div>
     <nav id="main-navbar" class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -115,26 +115,26 @@
 	  	<div class="row" style="margin-top:10px;">
 			<div class="col-md-12">
 				<div class="partners center-block">
-				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
-				  <div><img src="{{ asset('bundles/renovate/images/epicentr.gif') }}"/></div>
+				  <div><img src="{{ asset('web/bundles/renovate/images/epicentr.gif') }}"/></div>
+				  <div><img src="{{ asset('web/bundles/renovate/images/epicentr.gif') }}"/></div>
 				</div>
 			</div>
 		</div>
     </div><!-- /.container -->
-	<div class="footer-background"><img src="{{ asset('bundles/renovate/images/footer_renovate.png') }}"/></div>
+	<div class="footer-background"><img src="{{ asset('web/bundles/renovate/images/footer_renovate.png') }}"/></div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- Custom scripts for this template -->
-	<script src="{{ asset('bundles/renovate/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('bundles/renovate/js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/renovate/js/slick.js') }}"></script>
-    <script src="{{ asset('bundles/renovate/js/layout.js') }}"></script>
-    <script src="{{ asset('bundles/renovate/js/sliderPartnersInitialization.js') }}"></script>
+	<script src="{{ asset('web/bundles/renovate/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/slick.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/layout.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/sliderPartnersInitialization.js') }}"></script>
     
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="{{ asset('bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
   	<script>
   	var URLS = {
   			jobsShowJob: "{{ path('renovate_jobs_show_job', {job_id: 0}) }}",
@@ -152,7 +152,7 @@
   			rolesGetNg: "{{ path('renovate_ng_roles') }}",
   			documentsGetNg: "{{ path('renovate_ng_documents') }}",
   			documentsUpload: "{{ path('renovate_documents_upload') }}",
-  			uploadifySWF: "{{ asset('bundles/renovate/swf/uploadify.swf') }}"
+  			uploadifySWF: "{{ asset('web/bundles/renovate/swf/uploadify.swf') }}"
   	}
   	</script>
   	{% block javascripts %}{% endblock %}
