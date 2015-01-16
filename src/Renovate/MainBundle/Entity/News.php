@@ -5,12 +5,12 @@ namespace Renovate\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Job
+ * News
  *
- * @ORM\Table(name="jobs")
+ * @ORM\Table(name="news")
  * @ORM\Entity
  */
-class Job
+class News
 {
     /**
      * @var integer
@@ -57,14 +57,14 @@ class Job
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="news")
      * @ORM\JoinColumn(name="userid")
      * @var User
      */
     private $user;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Document", inversedBy="jobs")
+     * @ORM\ManyToOne(targetEntity="Document", inversedBy="news")
      * @ORM\JoinColumn(name="documentid")
      * @var Document
      */
@@ -84,7 +84,7 @@ class Job
      * Set userid
      *
      * @param integer $userid
-     * @return Job
+     * @return News
      */
     public function setUserid($userid)
     {
@@ -107,7 +107,7 @@ class Job
      * Set documentid
      *
      * @param integer $documentid
-     * @return Job
+     * @return News
      */
     public function setDocumentid($documentid)
     {
@@ -130,7 +130,7 @@ class Job
      * Set name
      *
      * @param string $name
-     * @return Job
+     * @return News
      */
     public function setName($name)
     {
@@ -153,7 +153,7 @@ class Job
      * Set description
      *
      * @param string $description
-     * @return Job
+     * @return News
      */
     public function setDescription($description)
     {
@@ -176,7 +176,7 @@ class Job
      * Set created
      *
      * @param \DateTime $created
-     * @return Job
+     * @return News
      */
     public function setCreated($created)
     {
@@ -199,7 +199,7 @@ class Job
      * Set user
      *
      * @param \Renovate\MainBundle\Entity\User $user
-     * @return Job
+     * @return News
      */
     public function setUser(\Renovate\MainBundle\Entity\User $user = null)
     {
@@ -222,7 +222,7 @@ class Job
      * Set document
      *
      * @param \Renovate\MainBundle\Entity\Document $document
-     * @return Job
+     * @return News
      */
     public function setDocument(\Renovate\MainBundle\Entity\Document $document = null)
     {
@@ -255,31 +255,31 @@ class Job
     	);
     }
     
-    public static function getAllJobs($em, $inArray = false)
+    public static function getAllNews($em, $inArray = false)
     {
-    	$qb = $em->getRepository("RenovateMainBundle:Job")
-    			 ->createQueryBuilder('j');
+    	$qb = $em->getRepository("RenovateMainBundle:News")
+    			 ->createQueryBuilder('n');
     	
-    	$qb->select('j')
-    	   ->orderBy('j.created', 'DESC');
+    	$qb->select('n')
+    	   ->orderBy('n.created', 'DESC');
     	
     	$result = $qb->getQuery()->getResult();
     	
     	if ($inArray)
     	{
-    		return array_map(function($job){
-    			return $job->getInArray();
+    		return array_map(function($news){
+    			return $news->getInArray();
     		}, $result);
     	}else return $result;
     }
     
-    public static function getJobs($em, $offset, $limit, $inArray = false)
+    public static function getNews($em, $offset, $limit, $inArray = false)
     {
-    	$qb = $em->getRepository("RenovateMainBundle:Job")
-    	->createQueryBuilder('j');
+    	$qb = $em->getRepository("RenovateMainBundle:News")
+    	->createQueryBuilder('n');
     	 
-    	$qb->select('j')
-    	   ->orderBy('j.created', 'DESC')
+    	$qb->select('n')
+    	   ->orderBy('n.created', 'DESC')
     	   ->setFirstResult($offset)
 		   ->setMaxResults($limit);
     	 
@@ -287,17 +287,17 @@ class Job
     	 
     	if ($inArray)
     	{
-    		return array_map(function($job){
-    			return $job->getInArray();
+    		return array_map(function($news){
+    			return $news->getInArray();
     		}, $result);
     	}else return $result;
     }
     
-    public static function getJobsCount($em)
+    public static function getNewsCount($em)
     {
-    	$query = $em->getRepository("RenovateMainBundle:Job")
-    				->createQueryBuilder('j')
-    				->select('COUNT(j.id)') 
+    	$query = $em->getRepository("RenovateMainBundle:News")
+    				->createQueryBuilder('n')
+    				->select('COUNT(n.id)') 
     				->getQuery();
     	
     	$total = $query->getSingleScalarResult();
@@ -305,49 +305,49 @@ class Job
     	return $total;
     }
     
-    public static function addJob($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addNews($em, \Renovate\MainBundle\Entity\User $user, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
-    	$job = new Job();
-    	$job->setName($parameters->name);
-    	$job->setUserid($user->getId());
-    	$job->setUser($user);
-    	$job->setDocumentid($parameters->documentid);
-    	$job->setDocument($document);
-    	$job->setDescription($parameters->description);
-    	$job->setCreated(new \DateTime());
+    	$news = new News();
+    	$news->setName($parameters->name);
+    	$news->setUserid($user->getId());
+    	$news->setUser($user);
+    	$news->setDocumentid($parameters->documentid);
+    	$news->setDocument($document);
+    	$news->setDescription($parameters->description);
+    	$news->setCreated(new \DateTime());
     	
-    	$em->persist($job);
+    	$em->persist($news);
     	$em->flush();
     	
-    	return $job;
+    	return $news;
     }
     
-    public static function removeJobById($em, $id)
+    public static function removeNewsById($em, $id)
     {
     	$qb = $em->createQueryBuilder();
     	 
-    	$qb->delete('RenovateMainBundle:Job', 'j')
-    	->where('j.id = :id')
+    	$qb->delete('RenovateMainBundle:News', 'n')
+    	->where('n.id = :id')
     	->setParameter('id', $id);
     	 
     	return $qb->getQuery()->getResult();
     }
     
-    public static function editJobById($em, $id, $parameters)
+    public static function editNewsById($em, $id, $parameters)
     {
-    	$job = $em->getRepository("RenovateMainBundle:Job")->find($id);
+    	$news = $em->getRepository("RenovateMainBundle:News")->find($id);
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
-    	$job->setDocumentid($parameters->documentid);
-    	$job->setDocument($document);
-    	$job->setName($parameters->name);
-    	$job->setDescription($parameters->description);
+    	$news->setDocumentid($parameters->documentid);
+    	$news->setDocument($document);
+    	$news->setName($parameters->name);
+    	$news->setDescription($parameters->description);
     	
-    	$em->persist($job);
+    	$em->persist($news);
     	$em->flush();
     	
-    	return $job;
+    	return $news;
     }
 }

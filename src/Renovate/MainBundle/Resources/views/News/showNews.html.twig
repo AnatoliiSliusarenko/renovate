@@ -1,6 +1,6 @@
 {% extends "RenovateMainBundle::layout.html.twig" %}
 
-{% block title %}{{job.name}}{% endblock %}
+{% block title %}{{news.name}}{% endblock %}
 
 {% block head %}
 {% endblock %}
@@ -8,8 +8,8 @@
 {% block breadcrumb %}
 <ol class="breadcrumb">
  	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
- 	<li><a href="{{path('renovate_jobs')}}">Види робіт</a></li>
- 	<li class="active">{{job.name}}</li>
+ 	<li><a href="{{path('renovate_news')}}">Новини</a></li>
+ 	<li class="active">{{news.name}}</li>
 </ol>
 {% endblock %}
 
@@ -17,8 +17,8 @@
 	<div class="row">
 		<div class="col-md-12">
 			<blockquote>
-  				<h2>{{job.name}}</h2>
-  				<footer>{{job.created|date("d.m.Y")}} від <cite title="{{ job.user.name ~ ' ' ~ job.user.surname }}">{{ job.user.username }}</cite></footer>
+  				<h2>{{news.name}}</h2>
+  				<footer>{{news.created|date("d.m.Y H:i:s")}} від <cite title="{{ news.user.name ~ ' ' ~ news.user.surname }}">{{ news.user.username }}</cite></footer>
 			</blockquote><hr>
 		</div>
 	</div>
@@ -26,9 +26,9 @@
 		<div class="col-md-12">
 			<div class="data-content">
 				<div class="col-md-4">
-					<img src="{{asset(job.document.path)}}" alt="{{job.name}}" class="img-thumbnail">
+					<img src="{{asset(news.document.path)}}" alt="{{news.name}}" class="img-thumbnail">
 				</div>
-				<div class="text-justify">{{job.description | raw}}</div>
+				<div class="text-justify">{{news.description | raw}}</div>
 			</div>
 		</div>
 	</div>

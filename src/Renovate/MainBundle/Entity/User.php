@@ -90,6 +90,18 @@ class User implements UserInterface,\Serializable
 	 * @var array
 	 */
 	private $documents;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Job", mappedBy="user")
+	 * @var array
+	 */
+	private $jobs;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="News", mappedBy="user")
+	 * @var array
+	 */
+	private $news;
     
 	public function __construct()
 	{
@@ -531,5 +543,71 @@ class User implements UserInterface,\Serializable
     public function getDocuments()
     {
         return $this->documents;
+    }
+
+    /**
+     * Add jobs
+     *
+     * @param \Renovate\MainBundle\Entity\Job $jobs
+     * @return User
+     */
+    public function addJob(\Renovate\MainBundle\Entity\Job $jobs)
+    {
+        $this->jobs[] = $jobs;
+
+        return $this;
+    }
+
+    /**
+     * Remove jobs
+     *
+     * @param \Renovate\MainBundle\Entity\Job $jobs
+     */
+    public function removeJob(\Renovate\MainBundle\Entity\Job $jobs)
+    {
+        $this->jobs->removeElement($jobs);
+    }
+
+    /**
+     * Get jobs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getJobs()
+    {
+        return $this->jobs;
+    }
+
+    /**
+     * Add news
+     *
+     * @param \Renovate\MainBundle\Entity\News $news
+     * @return User
+     */
+    public function addNews(\Renovate\MainBundle\Entity\News $news)
+    {
+        $this->news[] = $news;
+
+        return $this;
+    }
+
+    /**
+     * Remove news
+     *
+     * @param \Renovate\MainBundle\Entity\News $news
+     */
+    public function removeNews(\Renovate\MainBundle\Entity\News $news)
+    {
+        $this->news->removeElement($news);
+    }
+
+    /**
+     * Get news
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNews()
+    {
+        return $this->news;
     }
 }

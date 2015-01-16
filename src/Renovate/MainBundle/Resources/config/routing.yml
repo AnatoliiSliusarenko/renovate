@@ -91,3 +91,31 @@ renovate_ng_documents:
 renovate_documents_upload:
     path: /documents/upload
     defaults: { _controller: RenovateMainBundle:Documents:upload}
+    
+renovate_news:
+    path: /news
+    defaults: { _controller: RenovateMainBundle:News:index}
+    
+renovate_news_show_news:
+    path: /news/{news_id}
+    defaults: { _controller: RenovateMainBundle:News:showNews}
+    
+renovate_ng_news:
+    path: /ng/news
+    defaults: { _controller: RenovateMainBundle:News:getNewsNg}
+    
+renovate_ng_news_count:
+    path: /ng/news/count
+    defaults: { _controller: RenovateMainBundle:News:getNewsCountNg}
+    
+renovate_ng_news_add:
+    path: /ng/news/add
+    defaults: { _controller: RenovateMainBundle:News:addNewsNg}
+    
+renovate_ng_news_remove:
+    path: /ng/news/remove/{news_id}
+    defaults: { _controller: RenovateMainBundle:News:removeNewsNg}
+    
+renovate_ng_news_edit:
+    path: /ng/news/edit/{news_id}
+    defaults: { _controller: RenovateMainBundle:News:editNewsNg}

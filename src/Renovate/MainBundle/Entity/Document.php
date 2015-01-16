@@ -70,6 +70,12 @@ class Document
      */
     private $jobs;
     
+    /**
+     * @ORM\OneToMany(targetEntity="News", mappedBy="document")
+     * @var array
+     */
+    private $news;
+    
     private static $fileTypes = array('doc','docx','xls','xlsx','jpg','jpeg','gif','png','avi','pdf','mp3', 'zip','txt','xml','xps','rtf','odt','htm','html','ods');
     
     private static $SALT = '767usghbe7h8#@4b32n32)_$)&N_*$)*$^@$JHN_$_$*N$@($)@*NH';
@@ -260,6 +266,39 @@ class Document
     public function getJobs()
     {
     	return $this->jobs;
+    }
+    
+    /**
+     * Add news
+     *
+     * @param \Renovate\MainBundle\Entity\News $news
+     * @return Document
+     */
+    public function addNews(\Renovate\MainBundle\Entity\News $news)
+    {
+    	$this->news[] = $news;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove news
+     *
+     * @param \Renovate\MainBundle\Entity\News $news
+     */
+    public function removeNews(\Renovate\MainBundle\Entity\News $news)
+    {
+    	$this->news->removeElement($news);
+    }
+    
+    /**
+     * Get news
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNews()
+    {
+    	return $this->news;
     }
     
     protected function getUploadRootDir()

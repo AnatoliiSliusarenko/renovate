@@ -1,97 +1,97 @@
-Renovate.controller('JobsController', function($scope,$http,$modal){
-	console.log('JobsController loaded!');
+Renovate.controller('NewsController', function($scope,$http,$modal){
+	console.log('NewsController loaded!');
 	
-	$scope.jobs = [];
+	$scope.news = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
 	$scope.itemsPerPage = 5;
 	
-	$scope.urlsJobsGetNg = URLS.jobsGetNg;
-	$scope.urlsJobsShowJob = URLS.jobsShowJob;
-	$scope.urlsJobsCountNg = URLS.jobsCountNg;
-	$scope.urlsJobsRemoveNg = URLS.jobsRemoveNg;
+	$scope.urlsNewsGetNg = URLS.newsGetNg;
+	$scope.urlsNewsShowNews = URLS.newsShowNews;
+	$scope.urlsNewsCountNg = URLS.newsCountNg;
+	$scope.urlsNewsRemoveNg = URLS.newsRemoveNg;
 	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
-		getJobsCount();
+		getNewsCount();
 	});
 	
 	$scope.$watch('currentPage', function(){
 		console.log("currentPage => ", $scope.currentPage);
-		getJobs();
+		getNews();
 	});
 	
-	function getJobs()
+	function getNews()
 	{
 		var offset = $scope.itemsPerPage*($scope.currentPage - 1);
 		var limit = $scope.itemsPerPage;
 		$http({
 			method: "GET", 
-			url: $scope.urlsJobsGetNg,
+			url: $scope.urlsNewsGetNg,
 			params: {offset: offset, limit: limit}
 			  })
 		.success(function(response){
-			console.log("jobs => ",response);
+			console.log("news => ",response);
 			if (response.result)
 			{
-				$scope.jobs = response.result;
+				$scope.news = response.result;
 			}
 		})
 	}
 	
-	function getJobsCount()
+	function getNewsCount()
 	{
 		$http({
 			method: "GET", 
-			url: $scope.urlsJobsCountNg
+			url: $scope.urlsNewsCountNg
 			  })
 		.success(function(response){
 			console.log(response);
 			if (response.result)
 			{
 				$scope.totalItems = parseInt(response.result);
-				getJobs();
+				getNews();
 			}
 		})
 	}
-	getJobsCount();
+	getNewsCount();
 	
-	$scope.addJob = function(){
+	$scope.addNews = function(){
 		var modalInstance = $modal.open({
-		      templateUrl: 'addJob.html',
-		      controller: 'AddJobController',
+		      templateUrl: 'addNews.html',
+		      controller: 'AddNewsController',
 		      backdrop: "static"
 		});
 		
 		modalInstance.result.then(function (added) {
-		      if (added) getJobsCount();
+		      if (added) getNewsCount();
 		    }, function () {
 		      //bad
 		});
 	}
 	
-	$scope.editJob = function(job){
+	$scope.editNews = function(newsp){
 		var modalInstance = $modal.open({
-		      templateUrl: 'editJob.html',
-		      controller: 'EditJobController',
+		      templateUrl: 'editNews.html',
+		      controller: 'EditNewsController',
 		      backdrop: "static",
 		      resolve: {
-		    	  job: function(){return job;}
+		    	  newsp: function(){return newsp;}
 		      }
 		});
 		
 		modalInstance.result.then(function (edited) {
-		      if (edited) getJobsCount();
+		      if (edited) getNewsCount();
 		    }, function () {
 		      //bad
 		});
 	}
 	
-	$scope.removeJob = function(job){
-		var remove = confirm("Дійсно бажаєте видалити: " + job.name + " ?");
+	$scope.removeNews = function(newsp){
+		var remove = confirm("Дійсно бажаєте видалити: " + newsp.name + " ?");
 		if (!remove) return;
 		
-		var url = $scope.urlsJobsRemoveNg.replace('0', job.id);
+		var url = $scope.urlsNewsRemoveNg.replace('0', newsp.id);
 		
 		$http({
 			method: "GET", 
@@ -101,20 +101,20 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 			console.log(response);
 			if (response.result)
 			{
-				getJobsCount();
+				getNewsCount();
 			}
 		});
 	}
 	
-	$scope.setItemDirectHref = function(job){
-		var href = $scope.urlsJobsShowJob.replace('0', job.id);
-		job.href = href;
+	$scope.setItemDirectHref = function(newsp){
+		var href = $scope.urlsNewsShowNews.replace('0', newsp.id);
+		newsp.href = href;
 	}
 })
-.controller('AddJobController', function($scope,$http,$modalInstance){
-	console.log('AddJobController loaded!');
+.controller('AddNewsController', function($scope,$http,$modalInstance){
+	console.log('AddNewsController loaded!');
 	$scope.urlsDocumentsGetNg = URLS.documentsGetNg;
-	$scope.urlsJobsAddNg = URLS.jobsAddNg;
+	$scope.urlsNewsAddNg = URLS.newsAddNg;
 	$scope.documents = [];
 	
 	function getDocuments(){
@@ -150,14 +150,14 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	    });
 	}, 1000);
 	
-	function addJob(){
+	function addNews(){
 		$http({
 			method: "POST", 
-			url: $scope.urlsJobsAddNg,
-			data: $scope.job
+			url: $scope.urlsNewsAddNg,
+			data: $scope.news
 			  })
 		.success(function(response){
-			console.log("added job => ", response);
+			console.log("added news => ", response);
 			if (response.result)
 			{
 				$modalInstance.close(response.result);
@@ -166,20 +166,20 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	}
 	
 	$scope.ok = function () {
-		if (!$scope.jobForm.$valid) return;
-		addJob();
+		if (!$scope.newsForm.$valid) return;
+		addNews();
 	};
 
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditJobController', function($scope,$http,$modalInstance,job){
-	console.log('EditJobController loaded!');
+.controller('EditNewsController', function($scope,$http,$modalInstance,newsp){
+	console.log('EditNewsController loaded!');
 	$scope.urlsDocumentsGetNg = URLS.documentsGetNg;
-	$scope.urlsJobsEditNg = URLS.jobsEditNg;
+	$scope.urlsNewsEditNg = URLS.newsEditNg;
 	$scope.documents = [];
-	$scope.job = job;
+	$scope.news = newsp;
 	
 	function getDocuments(){
 		$http({
@@ -214,16 +214,16 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	    });
 	}, 1000);
 	
-	function editJob(){
-		var url = $scope.urlsJobsEditNg.replace('0', $scope.job.id);
+	function editNews(){
+		var url = $scope.urlsNewsEditNg.replace('0', $scope.news.id);
 		
 		$http({
 			method: "POST", 
 			url: url,
-			data: $scope.job
+			data: $scope.news
 			  })
 		.success(function(response){
-			console.log("edited job => ", response);
+			console.log("edited news => ", response);
 			if (response.result)
 			{
 				$modalInstance.close(response.result);
@@ -232,8 +232,8 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	}
 	
 	$scope.ok = function () {
-		if (!$scope.jobForm.$valid) return;
-		editJob();
+		if (!$scope.newsForm.$valid) return;
+		editNews();
 	};
 
 	$scope.cancel = function () {

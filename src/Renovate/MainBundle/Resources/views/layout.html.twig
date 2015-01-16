@@ -94,7 +94,7 @@
             <li {% if app.request.attributes.get('_route') == 'renovate_tariffs' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs') }}">Тарифи</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
             <li><a href="#results">Результати роботи</a></li>
-            <li><a href="#news">Новини</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}">Новини</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}">Про нас</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}">Контакти</a></li>
           </ul>
@@ -137,9 +137,9 @@
     <script src="{{ asset('web/bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
   	<script>
   	var URLS = {
+  			contactUsNg: "{{ path('renovate_ng_contacts_contactus') }}",
   			jobsShowJob: "{{ path('renovate_jobs_show_job', {job_id: 0}) }}",
   			jobsGetNg: "{{ path('renovate_ng_jobs') }}",
-  			contactUsNg: "{{ path('renovate_ng_contacts_contactus') }}",
   			jobsCountNg: "{{ path('renovate_ng_jobs_count') }}",
   			jobsAddNg: "{{ path('renovate_ng_jobs_add') }}",
   			jobsRemoveNg: "{{ path('renovate_ng_jobs_remove', {job_id: 0}) }}",
@@ -152,7 +152,13 @@
   			rolesGetNg: "{{ path('renovate_ng_roles') }}",
   			documentsGetNg: "{{ path('renovate_ng_documents') }}",
   			documentsUpload: "{{ path('renovate_documents_upload') }}",
-  			uploadifySWF: "{{ asset('web/bundles/renovate/swf/uploadify.swf') }}"
+  			uploadifySWF: "{{ asset('web/bundles/renovate/swf/uploadify.swf') }}",
+  			newsShowNews: "{{ path('renovate_news_show_news', {news_id: 0}) }}",
+  			newsGetNg: "{{ path('renovate_ng_news') }}",
+  			newsCountNg: "{{ path('renovate_ng_news_count') }}",
+  			newsAddNg: "{{ path('renovate_ng_news_add') }}",
+  			newsRemoveNg: "{{ path('renovate_ng_news_remove', {news_id: 0}) }}",
+  			newsEditNg: "{{ path('renovate_ng_news_edit', {news_id: 0}) }}"
   	}
   	</script>
   	{% block javascripts %}{% endblock %}

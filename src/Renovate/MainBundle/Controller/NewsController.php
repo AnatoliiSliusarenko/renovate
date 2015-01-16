@@ -5,52 +5,52 @@ namespace Renovate\MainBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Renovate\MainBundle\Entity\Job;
+use Renovate\MainBundle\Entity\News;
 use Renovate\MainBundle\Entity\Document;
 
-class JobsController extends Controller
+class NewsController extends Controller
 {
     public function indexAction()
     {
     	$timestamp = time();
     	$token = Document::getToken($timestamp);
-    	return $this->render('RenovateMainBundle:Jobs:index.html.twig', array(
+    	return $this->render('RenovateMainBundle:News:index.html.twig', array(
     			'timestamp' => $timestamp,
     			'token' => $token
     	));
     }
     
-    public function showJobAction($job_id)
+    public function showNewsAction($news_id)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$job = $em->getRepository("RenovateMainBundle:Job")->find($job_id);
-    	return $this->render('RenovateMainBundle:Jobs:showJob.html.twig', array("job" => $job));
+    	$news = $em->getRepository("RenovateMainBundle:News")->find($news_id);
+    	return $this->render('RenovateMainBundle:News:showNews.html.twig', array("news" => $news));
     }
     
-    public function getJobsNgAction(Request $request)
+    public function getNewsNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
     	$offset = ($request->query->get('offset')) ? $request->query->get('offset') : 0 ;
     	$limit = ($request->query->get('limit')) ? $request->query->get('limit') : 20 ;
     	
-    	$response = new Response(json_encode(array("result" => Job::getJobs($em, $offset, $limit, true))));
+    	$response = new Response(json_encode(array("result" => News::getNews($em, $offset, $limit, true))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
     }
     
-    public function getJobsCountNgAction()
+    public function getNewsCountNgAction()
     {
     	$em = $this->getDoctrine()->getManager();
     	 
-    	$response = new Response(json_encode(array("result" => Job::getJobsCount($em))));
+    	$response = new Response(json_encode(array("result" => News::getNewsCount($em))));
     	$response->headers->set('Content-Type', 'application/json');
     	
     	return $response;
     }
     
     
-    public function addJobNgAction()
+    public function addNewsNgAction()
     {
     	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
     		throw $this->createAccessDeniedException();
@@ -60,16 +60,16 @@ class JobsController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$job = Job::addJob($em, $this->getUser(), $parameters);
+    	$news = News::addNews($em, $this->getUser(), $parameters);
     	
-    	$response = new Response(json_encode(array("result" => $job->getInArray())));
+    	$response = new Response(json_encode(array("result" => $news->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
     }
     
     
-    public function removeJobNgAction($job_id)
+    public function removeNewsNgAction($news_id)
     {
     	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
     		throw $this->createAccessDeniedException();
@@ -77,14 +77,14 @@ class JobsController extends Controller
     	
     	$em = $this->getDoctrine()->getManager();
     	
-    	$response = new Response(json_encode(array("result" => Job::removeJobById($em, $job_id))));
+    	$response = new Response(json_encode(array("result" => News::removeNewsById($em, $news_id))));
     	$response->headers->set('Content-Type', 'application/json');
     	
     	return $response;
     }
     
     
-    public function editJobNgAction($job_id)
+    public function editNewsNgAction($news_id)
     {
     	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
     		throw $this->createAccessDeniedException();
@@ -94,9 +94,9 @@ class JobsController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$job = Job::editJobById($em, $job_id, $parameters);
+    	$news = News::editNewsById($em, $news_id, $parameters);
     	
-    	$response = new Response(json_encode(array("result" => $job->getInArray())));
+    	$response = new Response(json_encode(array("result" => $news->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
