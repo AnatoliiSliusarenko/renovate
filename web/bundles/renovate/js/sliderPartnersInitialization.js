@@ -5,5 +5,6 @@ $(document).ready(function(){
 		autoplay: true,
 		variableWidth: true,
 		centerMode: true,
+		centerPadding: '0px'
 	});
 });
