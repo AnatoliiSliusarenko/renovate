@@ -25,6 +25,19 @@
 		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide6.jpg') }}"/></div>
 		</div>
 	</div>
+	<div class="col-md-5">
+		<div id="block-last-news" ng-app="Renovate" ng-controller="BlockLastNewsController">
+			<div class="media" ng-repeat="newsp in news">
+			  <a class="media-left" href="[[newsp.href]]" ng-init="setItemDirectHref(newsp)">
+			    <img src="{{ asset('[[newsp.document.url]]') }}" alt="image">
+			  </a>
+			  <div class="media-body">
+			    <h4 class="media-heading">[[newsp.name  | limitTo:30]][[(newsp.name.length > 30) ? "..." : ""]]</h4>
+			    <p>[[newsp.description  | limitTo:150]][[(newsp.description.length > 150) ? "..." : ""]]</p>
+			  </div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="row">
 	<div class="col-md-7">
@@ -34,5 +47,10 @@
 {% endblock %} 
 
 {% block javascripts %}
-<script type="text/javascript" src="{{ asset('web/bundles/renovate/js/slidersInitialization.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/slidersInitialization.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularNewsController.js') }}"></script>
 {% endblock %}
