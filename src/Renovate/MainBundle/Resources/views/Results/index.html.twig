@@ -1,0 +1,162 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}Результати роботи{% endblock %}
+
+{% block head %}
+<link href="{{ asset('web/bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li class="active">Результати роботи</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div ng-app="Renovate" ng-controller="ResultsController">
+	<div class="row">
+		<div class="col-md-4">
+			<form class="form-horizontal">
+			  <div class="form-group">
+			    <label for="itemsPerPage" class="col-sm-8 control-label">Показувати на сторінці</label>
+			    <div class="col-sm-3">
+			      	<select id="itemsPerPage" class="form-control" ng-model="itemsPerPage">
+					  <option>1</option>
+					  <option>2</option>
+					  <option>3</option>
+					  <option>4</option>
+					  <option>5</option>
+					  <option>10</option>
+					  <option>25</option>
+					  <option>50</option>
+					  <option>100</option>
+					</select>
+			    </div>
+			  </div>
+			</form>
+		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+		<div class="col-md-4">
+			<button ng-click="addResult()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+		</div>
+		{% endif %}
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="data-holder" ng-repeat="result in results">
+				<div class="data-header">
+					<div class="date">[[ result.created | date:"dd.MM.yyyy HH:mm:ss"]]</div>
+					<div class="title">[[result.name]]</div>
+				</div>
+				<div class="data-social">
+					<div class="social-content">{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeResult(result)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editResult(result)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
+				</div>
+				<div class="data-content">
+					<div class="col-md-3">
+						<img class="img-thumbnail" src="{{ asset('[[result.document.url]]') }}" alt="[[result.document.name]]">
+					</div>
+					<p class="text-justify">[[result.description | limitTo:1100]][[(result.description.length > 1100) ? "..." : ""]]</p></div>
+				<div class="data-footer">
+					<a class="btn btn-primary btn-xs" href="[[result.href]]" ng-init="setItemDirectHref(result)">Читати детальніше...</a>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+		</div>
+	</div>
+	<script type="text/ng-template" id="addResult.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Додати результат роботи...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="resultForm">
+  				<div class="form-group" ng-class="{'has-error': resultForm.resultName.$invalid && !resultForm.resultName.$pristine}">
+    				<label for="resultName" class="col-sm-2 control-label">Назва</label>
+    				<div class="col-sm-10">
+      					<input ng-model="result.name" type="text" class="form-control" id="resultName" name="resultName" required>
+    					<p ng-show="resultForm.resultName.$invalid && !resultForm.resultName.$pristine" class="help-block">Введіть назву.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{'has-error': resultForm.resultDocument.$invalid && !resultForm.resultDocument.$pristine}">
+    				<label for="resultDocument" class="col-sm-2 control-label">Обкладинка</label>
+    				<div class="col-sm-10">
+      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="resultDocument" ng-model="result.documentid" name="resultDocument" required>
+  						</select>
+						<p ng-show="resultForm.resultDocument.$invalid && !resultForm.resultDocument.$pristine" class="help-block">Оберіть обкладинку.</p>
+						<input type="file" name="file_upload" id="file_upload" />
+					</div>
+  				</div>
+  				<div class="form-group" ng-class="{'has-error': resultForm.resultDescription.$invalid && !resultForm.resultDescription.$pristine}">
+    				<label for="resultDescription" class="col-sm-2 control-label">Опис</label>
+    				<div class="col-sm-10">
+						<textarea ng-model="result.description" id="resultDescription" class="form-control" rows="5" name="resultDescription" required></textarea>
+    					<p ng-show="resultForm.resultDescription.$invalid && !resultForm.resultDescription.$pristine" class="help-block">Введіть опис.</p>
+					</div>
+  				</div>
+			</form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="resultForm.$invalid">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="editResult.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Редагування результату роботи...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="resultForm">
+  				<div class="form-group" ng-class="{'has-error': resultForm.resultName.$invalid && !resultForm.resultName.$pristine}">
+    				<label for="resultName" class="col-sm-2 control-label">Назва</label>
+    				<div class="col-sm-10">
+      					<input ng-model="result.name" type="text" class="form-control" id="resultName" name="resultName" required>
+    					<p ng-show="resultForm.resultName.$invalid && !resultForm.resultName.$pristine" class="help-block">Введіть назву.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{'has-error': resultForm.resultDocument.$invalid && !resultForm.resultDocument.$pristine}">
+    				<label for="resultDocument" class="col-sm-2 control-label">Обкладинка</label>
+    				<div class="col-sm-10">
+      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="resultDocument" ng-model="result.documentid" name="resultDocument" required>
+  						</select>
+						<p ng-show="resultForm.resultDocument.$invalid && !resultForm.resultDocument.$pristine" class="help-block">Оберіть обкладинку.</p>
+						<input type="file" name="file_upload" id="file_upload" />
+					</div>
+  				</div>
+  				<div class="form-group" ng-class="{'has-error': resultForm.resultDescription.$invalid && !resultForm.resultDescription.$pristine}">
+    				<label for="resultDescription" class="col-sm-2 control-label">Опис</label>
+    				<div class="col-sm-10">
+						<textarea ng-model="result.description" id="resultDescription" class="form-control" rows="5" name="resultDescription" required></textarea>
+    					<p ng-show="resultForm.resultDescription.$invalid && !resultForm.resultDescription.$pristine" class="help-block">Введіть опис.</p>
+					</div>
+  				</div>
+			</form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="resultForm.$invalid">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+</div>
+{% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularResultsController.js') }}"></script>
+<script>
+var TIMESTAMP = '{{ timestamp }}';
+var TOKEN = '{{ token }}';
+</script>
+{% endblock %}

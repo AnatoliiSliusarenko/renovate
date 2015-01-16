@@ -102,6 +102,12 @@ class User implements UserInterface,\Serializable
 	 * @var array
 	 */
 	private $news;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Result", mappedBy="user")
+	 * @var array
+	 */
+	private $results;
     
 	public function __construct()
 	{
@@ -609,5 +615,38 @@ class User implements UserInterface,\Serializable
     public function getNews()
     {
         return $this->news;
+    }
+
+    /**
+     * Add results
+     *
+     * @param \Renovate\MainBundle\Entity\Result $results
+     * @return User
+     */
+    public function addResult(\Renovate\MainBundle\Entity\Result $results)
+    {
+        $this->results[] = $results;
+
+        return $this;
+    }
+
+    /**
+     * Remove results
+     *
+     * @param \Renovate\MainBundle\Entity\Result $results
+     */
+    public function removeResult(\Renovate\MainBundle\Entity\Result $results)
+    {
+        $this->results->removeElement($results);
+    }
+
+    /**
+     * Get results
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResults()
+    {
+        return $this->results;
     }
 }

@@ -119,3 +119,31 @@ renovate_ng_news_remove:
 renovate_ng_news_edit:
     path: /ng/news/edit/{news_id}
     defaults: { _controller: RenovateMainBundle:News:editNewsNg}
+    
+renovate_results:
+    path: /results
+    defaults: { _controller: RenovateMainBundle:Results:index}
+    
+renovate_results_show_result:
+    path: /results/{result_id}
+    defaults: { _controller: RenovateMainBundle:Results:showResult}
+    
+renovate_ng_results:
+    path: /ng/results
+    defaults: { _controller: RenovateMainBundle:Results:getResultsNg}
+    
+renovate_ng_results_count:
+    path: /ng/results/count
+    defaults: { _controller: RenovateMainBundle:Results:getResultsCountNg}
+    
+renovate_ng_results_add:
+    path: /ng/results/add
+    defaults: { _controller: RenovateMainBundle:Results:addResultNg}
+    
+renovate_ng_results_remove:
+    path: /ng/results/remove/{result_id}
+    defaults: { _controller: RenovateMainBundle:Results:removeResultNg}
+    
+renovate_ng_results_edit:
+    path: /ng/results/edit/{result_id}
+    defaults: { _controller: RenovateMainBundle:Results:editResultNg}

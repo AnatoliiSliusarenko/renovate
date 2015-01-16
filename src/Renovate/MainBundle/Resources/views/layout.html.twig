@@ -93,7 +93,7 @@
             <li {% if app.request.attributes.get('_route') == 'renovate_main_homepage' %}class="active"{% endif %}><a href="{{ path('renovate_main_homepage') }}">Головна</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_tariffs' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs') }}">Тарифи</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
-            <li><a href="#results">Результати роботи</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}">Новини</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}">Про нас</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}">Контакти</a></li>
@@ -158,7 +158,13 @@
   			newsCountNg: "{{ path('renovate_ng_news_count') }}",
   			newsAddNg: "{{ path('renovate_ng_news_add') }}",
   			newsRemoveNg: "{{ path('renovate_ng_news_remove', {news_id: 0}) }}",
-  			newsEditNg: "{{ path('renovate_ng_news_edit', {news_id: 0}) }}"
+  			newsEditNg: "{{ path('renovate_ng_news_edit', {news_id: 0}) }}",
+  			resultsShowResult: "{{ path('renovate_results_show_result', {result_id: 0}) }}",
+  			resultsGetNg: "{{ path('renovate_ng_results') }}",
+  			resultsCountNg: "{{ path('renovate_ng_results_count') }}",
+  			resultsAddNg: "{{ path('renovate_ng_results_add') }}",
+  			resultsRemoveNg: "{{ path('renovate_ng_results_remove', {result_id: 0}) }}",
+  			resultsEditNg: "{{ path('renovate_ng_results_edit', {result_id: 0}) }}"
   	}
   	</script>
   	{% block javascripts %}{% endblock %}

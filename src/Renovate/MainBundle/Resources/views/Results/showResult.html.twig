@@ -1,0 +1,38 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}{{result.name}}{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li><a href="{{path('renovate_results')}}">Результати роботи</a></li>
+ 	<li class="active">{{result.name}}</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+			<blockquote>
+  				<h2>{{result.name}}</h2>
+  				<footer>{{result.created|date("d.m.Y H:i:s")}} від <cite title="{{ result.user.name ~ ' ' ~ result.user.surname }}">{{ result.user.username }}</cite></footer>
+			</blockquote><hr>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="data-content">
+				<div class="col-md-4">
+					<img src="{{asset(result.document.path)}}" alt="{{result.name}}" class="img-thumbnail">
+				</div>
+				<div class="text-justify">{{result.description | raw}}</div>
+			</div>
+		</div>
+	</div>
+{% endblock %} 
+
+{% block javascripts %}
+{% endblock %}
