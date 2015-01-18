@@ -29,7 +29,7 @@
 		<div id="block-last-news" ng-app="Renovate" ng-controller="BlockLastNewsController">
 			<div class="media" ng-repeat="newsp in news">
 			  <a class="media-left" href="[[newsp.href]]" ng-init="setItemDirectHref(newsp)">
-			    <img src="{{ asset('[[newsp.document.url]]') }}" alt="image">
+			    <img src="{{ asset('[[newsp.label.url || newsp.document.url]]') }}" alt="[[newsp.name]]">
 			  </a>
 			  <div class="media-body">
 			    <p class="title">[[newsp.name | ellipsis:30]]</p>

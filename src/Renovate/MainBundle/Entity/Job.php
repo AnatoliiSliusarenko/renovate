@@ -34,6 +34,13 @@ class Job
      * @ORM\Column(name="documentid", type="integer")
      */
     private $documentid;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="labelid", type="integer")
+     */
+    private $labelid;
 
     /**
      * @var string
@@ -69,6 +76,13 @@ class Job
      * @var Document
      */
     private $document;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Document", inversedBy="jobsLabels")
+     * @ORM\JoinColumn(name="labelid")
+     * @var Document
+     */
+    private $label;
 
     /**
      * Get id
@@ -126,6 +140,29 @@ class Job
     	return $this->documentid;
     }
 
+    /**
+     * Set labelid
+     *
+     * @param integer $labelid
+     * @return Job
+     */
+    public function setLabelid($labelid)
+    {
+    	$this->labelid = $labelid;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get labelid
+     *
+     * @return integer
+     */
+    public function getLabelid()
+    {
+    	return $this->labelid;
+    }
+    
     /**
      * Set name
      *
@@ -241,16 +278,41 @@ class Job
     	return $this->document;
     }
     
+    /**
+     * Set label
+     *
+     * @param \Renovate\MainBundle\Entity\Document $label
+     * @return Job
+     */
+    public function setLabel(\Renovate\MainBundle\Entity\Document $label = null)
+    {
+    	$this->label = $label;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get label
+     *
+     * @return \Renovate\MainBundle\Entity\Document
+     */
+    public function getLabel()
+    {
+    	return $this->label;
+    }
+    
     public function getInArray()
     {
     	return array(
     			'id' => $this->getId(),
     			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
+    			'labelid' => $this->getLabelid(),
     			'name' => $this->getName(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'document' => $this->getDocument()->getInArray(),
+    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null,
     			'user' => $this->getUser()->getInArray()
     	);
     }
@@ -315,6 +377,13 @@ class Job
     	$job->setUser($user);
     	$job->setDocumentid($parameters->documentid);
     	$job->setDocument($document);
+    	if (isset($parameters->labelid) && $parameters->labelid != NULL)
+    	{
+    		$label = $em->getRepository("RenovateMainBundle:Document")->find($parameters->labelid);
+    		 
+    		$job->setLabelid($parameters->labelid);
+    		$job->setLabel($label);
+    	}
     	$job->setDescription($parameters->description);
     	$job->setCreated(new \DateTime());
     	
@@ -342,6 +411,22 @@ class Job
     	
     	$job->setDocumentid($parameters->documentid);
     	$job->setDocument($document);
+    	if (isset($parameters->labelid) && $parameters->labelid != NULL)
+    	{
+    		$label = $em->getRepository("RenovateMainBundle:Document")->find($parameters->labelid);
+    		 
+    		$job->setLabelid($parameters->labelid);
+    		$job->setLabel($label);
+    	}
+    	elseif ($job->getLabelid() != NULL && (!isset($parameters->labelid) || (isset($parameters->labelid) && $parameters->labelid == NULL)))
+    	{
+    		$oldLabel = $em->getRepository("RenovateMainBundle:Document")->find($job->getLabelid());
+    		
+    		$oldLabel->removeJobsLabel($job);
+    		$job->setLabelid(NULL);
+    		$job->setLabel(NULL);
+    		$em->persist($oldLabel);
+    	}
     	$job->setName($parameters->name);
     	$job->setDescription($parameters->description);
     	

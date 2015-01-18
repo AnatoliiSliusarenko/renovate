@@ -95,6 +95,14 @@
 						<input type="file" name="file_upload" id="file_upload" />
 					</div>
   				</div>
+				<div class="form-group" ng-class="{'has-error': newsForm.newsLabel.$invalid && !newsForm.newsLabel.$pristine}">
+    				<label for="newsLabel" class="col-sm-2 control-label">Ярлик</label>
+    				<div class="col-sm-10">
+      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="newsLabel" ng-model="news.labelid" name="newsLabel">
+						</select>
+						<p ng-show="newsForm.newsLabel.$invalid && !newsForm.newsLabel.$pristine" class="help-block">Оберіть ярлик.</p>
+					</div>
+  				</div>
   				<div class="form-group" ng-class="{'has-error': newsForm.newsDescription.$invalid && !newsForm.newsDescription.$pristine}">
     				<label for="newsDescription" class="col-sm-2 control-label">Опис</label>
     				<div class="col-sm-10">
@@ -126,9 +134,17 @@
     				<label for="newsDocument" class="col-sm-2 control-label">Обкладинка</label>
     				<div class="col-sm-10">
       					<select ng-options="document.id as document.name for document in documents" class="form-control" id="newsDocument" ng-model="news.documentid" name="newsDocument" required>
-  						</select>
+						</select>
 						<p ng-show="newsForm.newsDocument.$invalid && !newsForm.newsDocument.$pristine" class="help-block">Оберіть обкладинку.</p>
 						<input type="file" name="file_upload" id="file_upload" />
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{'has-error': newsForm.newsLabel.$invalid && !newsForm.newsLabel.$pristine}">
+    				<label for="newsLabel" class="col-sm-2 control-label">Ярлик</label>
+    				<div class="col-sm-10">
+      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="newsLabel" ng-model="news.labelid" name="newsLabel">
+						</select>
+						<p ng-show="newsForm.newsLabel.$invalid && !newsForm.newsLabel.$pristine" class="help-block">Оберіть ярлик.</p>
 					</div>
   				</div>
   				<div class="form-group" ng-class="{'has-error': newsForm.newsDescription.$invalid && !newsForm.newsDescription.$pristine}">

@@ -127,6 +127,10 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.documents = response.result;
+				$scope.documents.splice(0,0,{
+					id: null,
+					name: "--> не обрано <--"
+				});
 			}
 		})
 	}
@@ -191,6 +195,10 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.documents = response.result;
+				$scope.documents.splice(0,0,{
+					id: null,
+					name: "--> не обрано <--"
+				});
 			}
 		})
 	}

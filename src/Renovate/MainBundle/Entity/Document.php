@@ -71,10 +71,22 @@ class Document
     private $jobs;
     
     /**
+     * @ORM\OneToMany(targetEntity="Job", mappedBy="label")
+     * @var array
+     */
+    private $jobsLabels;
+    
+    /**
      * @ORM\OneToMany(targetEntity="News", mappedBy="document")
      * @var array
      */
     private $news;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="News", mappedBy="label")
+     * @var array
+     */
+    private $newsLabels;
     
     /**
      * @ORM\OneToMany(targetEntity="Result", mappedBy="document")
@@ -281,6 +293,39 @@ class Document
     }
     
     /**
+     * Add jobsLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Job $jobsLabels
+     * @return Document
+     */
+    public function addJobsLabel(\Renovate\MainBundle\Entity\Job $jobsLabels)
+    {
+    	$this->jobsLabels[] = $jobsLabels;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove jobsLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Job $jobsLabels
+     */
+    public function removeJobsLabel(\Renovate\MainBundle\Entity\Job $jobsLabels)
+    {
+    	$this->jobsLabels->removeElement($jobsLabels);
+    }
+    
+    /**
+     * Get jobsLabels
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getJobsLabels()
+    {
+    	return $this->jobsLabels;
+    }
+    
+    /**
      * Add news
      *
      * @param \Renovate\MainBundle\Entity\News $news
@@ -311,6 +356,39 @@ class Document
     public function getNews()
     {
     	return $this->news;
+    }
+    
+    /**
+     * Add newsLabels
+     *
+     * @param \Renovate\MainBundle\Entity\News $newsLabels
+     * @return Document
+     */
+    public function addNewsLabel(\Renovate\MainBundle\Entity\News $newsLabels)
+    {
+    	$this->newsLabels[] = $newsLabels;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove newsLabels
+     *
+     * @param \Renovate\MainBundle\Entity\News $newsLabels
+     */
+    public function removeNewsLabel(\Renovate\MainBundle\Entity\News $newsLabels)
+    {
+    	$this->newsLabels->removeElement($newsLabels);
+    }
+    
+    /**
+     * Get newsLabels
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNewsLabels()
+    {
+    	return $this->newsLabels;
     }
     
     /**
