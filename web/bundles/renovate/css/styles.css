@@ -15,7 +15,7 @@
 }
 
 #block-last-news .media img {
-	width: 120px;
+	width: 100px;
 	height: auto;
 }
 
@@ -25,14 +25,16 @@
 	box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
 }
 
-#block-last-news .media h4 {
+#block-last-news .media p.title {
 	font-weight: bold;
+	margin-bottom: 2px;
+	font-size: 14px;
+	line-height: 14px;
 }
 
-#block-last-news .media p {
+#block-last-news .media p.description {
 	font-size: 12px;
 	line-height: 12px;
-	text-align: justify;
 }
 
 /* Image Thumbnail*/
@@ -98,36 +100,58 @@
 	z-index: 1;
 	margin-bottom: -51px;
 	opacity: 0.95;
-	min-height: 43px !important;
+	min-height: 32px !important;
+}
+
+#main-navbar {
+	min-height: 38px !important;
+}
+
+#main-navbar .navbar-nav li > a {
+	padding-top: 8px;
+	padding-bottom: 8px;
 }
 
 #user-navbar .form-control {
-	height: 25px;
+	height: 24px;
+}
+
+#main-navbar .form-control {
+	height: 30px;
+}
+
+#main-navbar .btn {
+	padding: 4px 12px;
 }
 
 #user-navbar .btn {
-	height: 25px;
+	height: 24px;
 	padding: 0 12px;
 }
 
 #user-navbar .navbar-toggle {
-	margin-top: 5px;
+	margin-top: 3px;
 	margin-bottom: 3px;
 	padding: 7px 10px;
 }
 
+#user-navbar .navbar-form, #main-navbar .navbar-form {
+	margin-bottom: 3px;
+	margin-top: 3px;
+}
+
 #user-navbar a.dropdown-toggle {
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 #user-navbar .dropdown-menu {
-	top: 41px;
+	top: 30px;
 } 
 
 #user-navbar .navbar-text {
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 #navbar2 {
@@ -164,6 +188,10 @@
 	width: 280px;
 }
 
+.partners .slick-slide {
+	padding: 0 !important;
+}
+
 .slick-next:before, .slick-prev:before {
 	color: black;
 }
@@ -181,6 +209,9 @@
 	height: 80px;
 }
 
+.results-for.slick-slider {
+	margin-bottom: 10px;
+}
 .results-for img{
 	width: 100%;
 	height: auto;
@@ -198,9 +229,29 @@
 	width: 30%;
 }
 
+.results-for div.description a {
+	color: black;
+	float: right;
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	border-radius: 100px;
+	position: inherit;
+	right: 5px;
+	bottom: 5px; 
+}
+
+.results-for div.description a:hover {
+	text-decoration: underline;
+}
+
+.results-for div.description a.btn-gray {
+	background-color:#B5B7B6;
+}
+
 div.description p{
 	font-size: 11px;
 	padding: 5px;
+	margin: 0;
 }
 
 div.description h3{
@@ -221,6 +272,7 @@ div.description h3{
 	width: 128px;
 	height: auto;
 	max-height: 80px;
+	margin: 1px;
 }
 
 .results-for img:hover, .results-nav img:hover {
@@ -231,18 +283,49 @@ div.description h3{
 	div.description p{
 		font-size: 7px;
 		line-height: 8px;
+		padding: 3px;
 	}
+	
 	div.description h3{
+		padding: 3px;
 		font-size: 9px;
 	}
 	
 	.partners {
 		width: 100%;
 	}
+	
+	.results-for div.description a {
+		font-size: 5px;
+		padding: 0 5px;
+	}
 }
 
 .slick-dots {
-	bottom: 75px !important;
+	bottom: 90px !important;
+	text-align: left;
+	width: 70%;
+}
+
+.slick-dots li button:before {
+	color:black;
+	opacity: 1;
+	font-size: 16px;
+}
+
+.slick-dots li.slick-active button:before {
+	color:black;
+	opacity: 1;
+}
+.slick-dots li button:after { position: absolute; top: 0; left: 0; content: "•"; width: 20px; height: 20px; font-family: "slick"; font-size: 11px; line-height: 20px; text-align: center; color: #B5B7B6; opacity: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+.slick-dots li.slick-active button:after {
+	color:black;
+	opacity: 1;
+}
+
+.slick-dots li button:hover:after{
+	color: black;
 }
 
 /* modal issues*/

@@ -61,7 +61,7 @@
 					<div class="col-md-3">
 						<img class="img-thumbnail" src="{{ asset('[[newsp.document.url]]') }}" alt="[[newsp.document.name]]">
 					</div>
-					<p class="text-justify">[[newsp.description | limitTo:1100]][[(newsp.description.length > 1100) ? "..." : ""]]</p></div>
+					<p class="text-justify" ng-bind-html="newsp.description | ellipsis:1100"></p></div>
 				<div class="data-footer">
 					<a class="btn btn-primary btn-xs" href="[[newsp.href]]" ng-init="setItemDirectHref(newsp)">Читати детальніше...</a>
 				</div>
@@ -153,6 +153,7 @@
 <script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularNewsController.js') }}"></script>
 <script>

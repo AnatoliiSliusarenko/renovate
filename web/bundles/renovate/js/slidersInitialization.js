@@ -14,6 +14,7 @@ $(document).ready(function(){
 		dots: true,
 		centerMode: true,
 		focusOnSelect: true,
+		variableWidth: true,
 		autoplay: true,
 		autoPlaySpeed: 3000
 	});
