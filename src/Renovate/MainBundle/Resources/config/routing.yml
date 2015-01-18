@@ -147,3 +147,31 @@ renovate_ng_results_remove:
 renovate_ng_results_edit:
     path: /ng/results/edit/{result_id}
     defaults: { _controller: RenovateMainBundle:Results:editResultNg}
+    
+renovate_articles:
+    path: /articles
+    defaults: { _controller: RenovateMainBundle:Articles:index}
+    
+renovate_articles_show_article:
+    path: /articles/{article_id}
+    defaults: { _controller: RenovateMainBundle:Articles:showArticle}
+    
+renovate_ng_articles:
+    path: /ng/articles
+    defaults: { _controller: RenovateMainBundle:Articles:getArticlesNg}
+    
+renovate_ng_articles_count:
+    path: /ng/articles/count
+    defaults: { _controller: RenovateMainBundle:Articles:getArticlesCountNg}
+    
+renovate_ng_articles_add:
+    path: /ng/articles/add
+    defaults: { _controller: RenovateMainBundle:Articles:addArticleNg}
+    
+renovate_ng_articles_remove:
+    path: /ng/articles/remove/{article_id}
+    defaults: { _controller: RenovateMainBundle:Articles:removeArticleNg}
+    
+renovate_ng_articles_edit:
+    path: /ng/articles/edit/{article_id}
+    defaults: { _controller: RenovateMainBundle:Articles:editArticleNg}

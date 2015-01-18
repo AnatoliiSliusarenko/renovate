@@ -82,6 +82,12 @@ class Document
      */
     private $results;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="document")
+     * @var array
+     */
+    private $articles;
+    
     private static $fileTypes = array('doc','docx','xls','xlsx','jpg','jpeg','gif','png','avi','pdf','mp3', 'zip','txt','xml','xps','rtf','odt','htm','html','ods');
     
     private static $SALT = '767usghbe7h8#@4b32n32)_$)&N_*$)*$^@$JHN_$_$*N$@($)@*NH';
@@ -338,6 +344,39 @@ class Document
     public function getResults()
     {
     	return $this->results;
+    }
+    
+    /**
+     * Add articles
+     *
+     * @param \Renovate\MainBundle\Entity\Article $articles
+     * @return Document
+     */
+    public function addArticle(\Renovate\MainBundle\Entity\Article $articles)
+    {
+    	$this->articles[] = $articles;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove articles
+     *
+     * @param \Renovate\MainBundle\Entity\Article $articles
+     */
+    public function removeArticle(\Renovate\MainBundle\Entity\Article $articles)
+    {
+    	$this->articles->removeElement($articles);
+    }
+    
+    /**
+     * Get articles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticles()
+    {
+    	return $this->articles;
     }
     
     protected function getUploadRootDir()

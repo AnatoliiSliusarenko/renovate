@@ -95,6 +95,7 @@
             <li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}">Новини</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_articles' %}class="active"{% endif %}><a href="{{ path('renovate_articles') }}">Статті</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}">Про нас</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}">Контакти</a></li>
           </ul>
@@ -164,7 +165,14 @@
   			resultsCountNg: "{{ path('renovate_ng_results_count') }}",
   			resultsAddNg: "{{ path('renovate_ng_results_add') }}",
   			resultsRemoveNg: "{{ path('renovate_ng_results_remove', {result_id: 0}) }}",
-  			resultsEditNg: "{{ path('renovate_ng_results_edit', {result_id: 0}) }}"
+  			resultsEditNg: "{{ path('renovate_ng_results_edit', {result_id: 0}) }}",
+  			articlesShowArticle: "{{ path('renovate_articles_show_article', {article_id: 0}) }}",
+  			articlesGetNg: "{{ path('renovate_ng_articles') }}",
+  			articlesCountNg: "{{ path('renovate_ng_articles_count') }}",
+  			articlesAddNg: "{{ path('renovate_ng_articles_add') }}",
+  			articlesRemoveNg: "{{ path('renovate_ng_articles_remove', {article_id: 0}) }}",
+  			articlesEditNg: "{{ path('renovate_ng_articles_edit', {article_id: 0}) }}"
+  			
   	}
   	</script>
   	{% block javascripts %}{% endblock %}
