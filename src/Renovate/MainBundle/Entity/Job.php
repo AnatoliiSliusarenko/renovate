@@ -48,6 +48,13 @@ class Job
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name_translit", type="string", length=255)
+     */
+    private $nameTranslit;
 
     /**
      * @var string
@@ -187,6 +194,29 @@ class Job
     }
 
     /**
+     * Set nameTranslit
+     *
+     * @param string $nameTranslit
+     * @return Job
+     */
+    public function setNameTranslit($nameTranslit)
+    {
+    	$this->nameTranslit = $nameTranslit;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get nameTranslit
+     *
+     * @return string
+     */
+    public function getNameTranslit()
+    {
+    	return $this->nameTranslit;
+    }
+    
+    /**
      * Set description
      *
      * @param string $description
@@ -309,6 +339,7 @@ class Job
     			'documentid' => $this->getDocumentid(),
     			'labelid' => $this->getLabelid(),
     			'name' => $this->getName(),
+    			'nameTranslit' => $this->getNameTranslit(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'document' => $this->getDocument()->getInArray(),
@@ -367,12 +398,13 @@ class Job
     	return $total;
     }
     
-    public static function addJob($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addJob($em, $transliterater, \Renovate\MainBundle\Entity\User $user, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$job = new Job();
     	$job->setName($parameters->name);
+    	$job->setNameTranslit($transliterater->transliterate($parameters->name));
     	$job->setUserid($user->getId());
     	$job->setUser($user);
     	$job->setDocumentid($parameters->documentid);
@@ -404,7 +436,7 @@ class Job
     	return $qb->getQuery()->getResult();
     }
     
-    public static function editJobById($em, $id, $parameters)
+    public static function editJobById($em, $transliterater, $id, $parameters)
     {
     	$job = $em->getRepository("RenovateMainBundle:Job")->find($id);
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
@@ -428,6 +460,7 @@ class Job
     		$em->persist($oldLabel);
     	}
     	$job->setName($parameters->name);
+    	$job->setNameTranslit($transliterater->transliterate($parameters->name));
     	$job->setDescription($parameters->description);
     	
     	$em->persist($job);

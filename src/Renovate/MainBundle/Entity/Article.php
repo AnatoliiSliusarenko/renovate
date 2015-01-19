@@ -41,6 +41,13 @@ class Article
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name_translit", type="string", length=255)
+     */
+    private $nameTranslit;
 
     /**
      * @var string
@@ -150,6 +157,29 @@ class Article
     }
 
     /**
+     * Set nameTranslit
+     *
+     * @param string $nameTranslit
+     * @return Article
+     */
+    public function setNameTranslit($nameTranslit)
+    {
+    	$this->nameTranslit = $nameTranslit;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get nameTranslit
+     *
+     * @return string
+     */
+    public function getNameTranslit()
+    {
+    	return $this->nameTranslit;
+    }
+    
+    /**
      * Set description
      *
      * @param string $description
@@ -248,6 +278,7 @@ class Article
     			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
     			'name' => $this->getName(),
+    			'nameTranslit' => $this->getNameTranslit(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'document' => $this->getDocument()->getInArray(),
@@ -305,12 +336,13 @@ class Article
     	return $total;
     }
     
-    public static function addArticle($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addArticle($em, $transliterater, \Renovate\MainBundle\Entity\User $user, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$article = new Article();
     	$article->setName($parameters->name);
+    	$article->setNameTranslit($transliterater->transliterate($parameters->name));
     	$article->setUserid($user->getId());
     	$article->setUser($user);
     	$article->setDocumentid($parameters->documentid);
@@ -335,7 +367,7 @@ class Article
     	return $qb->getQuery()->getResult();
     }
     
-    public static function editArticleById($em, $id, $parameters)
+    public static function editArticleById($em, $transliterater, $id, $parameters)
     {
     	$article = $em->getRepository("RenovateMainBundle:Article")->find($id);
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
@@ -343,6 +375,7 @@ class Article
     	$article->setDocumentid($parameters->documentid);
     	$article->setDocument($document);
     	$article->setName($parameters->name);
+    	$article->setNameTranslit($transliterater->transliterate($parameters->name));
     	$article->setDescription($parameters->description);
     	
     	$em->persist($article);

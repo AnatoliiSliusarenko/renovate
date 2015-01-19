@@ -107,7 +107,7 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	}
 	
 	$scope.setItemDirectHref = function(job){
-		var href = $scope.urlsJobsShowJob.replace('0', job.id);
+		var href = $scope.urlsJobsShowJob.replace('0', job.nameTranslit);
 		job.href = href;
 	}
 })

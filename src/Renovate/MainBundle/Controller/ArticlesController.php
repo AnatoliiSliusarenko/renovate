@@ -20,11 +20,11 @@ class ArticlesController extends Controller
     	));
     }
     
-    public function showArticleAction($article_id)
+    public function showArticleAction($article_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$article = $em->getRepository("RenovateMainBundle:Article")->find($article_id);
-    	return $this->render('RenovateMainBundle:Articles:showArticle.html.twig', array("article" => $article));
+    	$article = $em->getRepository("RenovateMainBundle:Article")->findByNameTranslit($article_name_translit);
+    	return $this->render('RenovateMainBundle:Articles:showArticle.html.twig', array("article" => $article[0]));
     }
     
     public function getArticlesNgAction(Request $request)
@@ -60,7 +60,8 @@ class ArticlesController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$article = Article::addArticle($em, $this->getUser(), $parameters);
+    	$transliterater = $this->get('renovate.transliterater');
+    	$article = Article::addArticle($em, $transliterater, $this->getUser(), $parameters);
     	
     	$response = new Response(json_encode(array("result" => $article->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
@@ -94,7 +95,8 @@ class ArticlesController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$article = Article::editArticleById($em, $article_id, $parameters);
+    	$transliterater = $this->get('renovate.transliterater');
+    	$article = Article::editArticleById($em, $transliterater, $article_id, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $article->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

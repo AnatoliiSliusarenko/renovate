@@ -25,7 +25,7 @@ renovate_jobs:
     defaults: { _controller: RenovateMainBundle:Jobs:index}
     
 renovate_jobs_show_job:
-    path: /jobs/{job_id}
+    path: /jobs/{job_name_translit}
     defaults: { _controller: RenovateMainBundle:Jobs:showJob}
     
 renovate_ng_jobs:
@@ -97,7 +97,7 @@ renovate_news:
     defaults: { _controller: RenovateMainBundle:News:index}
     
 renovate_news_show_news:
-    path: /news/{news_id}
+    path: /news/{news_name_translit}
     defaults: { _controller: RenovateMainBundle:News:showNews}
     
 renovate_ng_news:
@@ -125,7 +125,7 @@ renovate_results:
     defaults: { _controller: RenovateMainBundle:Results:index}
     
 renovate_results_show_result:
-    path: /results/{result_id}
+    path: /results/{result_name_translit}
     defaults: { _controller: RenovateMainBundle:Results:showResult}
     
 renovate_ng_results:
@@ -153,7 +153,7 @@ renovate_articles:
     defaults: { _controller: RenovateMainBundle:Articles:index}
     
 renovate_articles_show_article:
-    path: /articles/{article_id}
+    path: /articles/{article_name_translit}
     defaults: { _controller: RenovateMainBundle:Articles:showArticle}
     
 renovate_ng_articles:

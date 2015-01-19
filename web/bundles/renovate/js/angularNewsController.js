@@ -107,7 +107,7 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	}
 	
 	$scope.setItemDirectHref = function(newsp){
-		var href = $scope.urlsNewsShowNews.replace('0', newsp.id);
+		var href = $scope.urlsNewsShowNews.replace('0', newsp.nameTranslit);
 		newsp.href = href;
 	}
 })

@@ -20,11 +20,12 @@ class JobsController extends Controller
     	));
     }
     
-    public function showJobAction($job_id)
+    public function showJobAction($job_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$job = $em->getRepository("RenovateMainBundle:Job")->find($job_id);
-    	return $this->render('RenovateMainBundle:Jobs:showJob.html.twig', array("job" => $job));
+    	$job = $em->getRepository("RenovateMainBundle:Job")->findByNameTranslit($job_name_translit);
+    	
+    	return $this->render('RenovateMainBundle:Jobs:showJob.html.twig', array("job" => $job[0]));
     }
     
     public function getJobsNgAction(Request $request)
@@ -60,7 +61,8 @@ class JobsController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$job = Job::addJob($em, $this->getUser(), $parameters);
+    	$transliterater = $this->get('renovate.transliterater');
+    	$job = Job::addJob($em, $transliterater, $this->getUser(), $parameters);
     	
     	$response = new Response(json_encode(array("result" => $job->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
@@ -94,7 +96,8 @@ class JobsController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$job = Job::editJobById($em, $job_id, $parameters);
+    	$transliterater = $this->get('renovate.transliterater');
+    	$job = Job::editJobById($em, $transliterater, $job_id, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $job->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

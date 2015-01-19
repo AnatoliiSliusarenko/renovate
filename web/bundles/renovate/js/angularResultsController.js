@@ -107,7 +107,7 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 	}
 	
 	$scope.setItemDirectHref = function(result){
-		var href = $scope.urlsResultsShowResult.replace('0', result.id);
+		var href = $scope.urlsResultsShowResult.replace('0', result.nameTranslit);
 		result.href = href;
 	}
 })

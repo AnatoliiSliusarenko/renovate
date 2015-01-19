@@ -41,6 +41,13 @@ class Result
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name_translit", type="string", length=255)
+     */
+    private $nameTranslit;
 
     /**
      * @var string
@@ -148,6 +155,29 @@ class Result
     {
         return $this->name;
     }
+    
+    /**
+     * Set nameTranslit
+     *
+     * @param string $nameTranslit
+     * @return Result
+     */
+    public function setNameTranslit($nameTranslit)
+    {
+    	$this->nameTranslit = $nameTranslit;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get nameTranslit
+     *
+     * @return string
+     */
+    public function getNameTranslit()
+    {
+    	return $this->nameTranslit;
+    }
 
     /**
      * Set description
@@ -248,6 +278,7 @@ class Result
     			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
     			'name' => $this->getName(),
+    			'nameTranslit' => $this->getNameTranslit(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'document' => $this->getDocument()->getInArray(),
@@ -305,12 +336,13 @@ class Result
     	return $total;
     }
     
-    public static function addResult($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addResult($em, $transliterater, \Renovate\MainBundle\Entity\User $user, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$result = new Result();
     	$result->setName($parameters->name);
+    	$result->setNameTranslit($transliterater->transliterate($parameters->name));
     	$result->setUserid($user->getId());
     	$result->setUser($user);
     	$result->setDocumentid($parameters->documentid);
@@ -335,7 +367,7 @@ class Result
     	return $qb->getQuery()->getResult();
     }
     
-    public static function editResultById($em, $id, $parameters)
+    public static function editResultById($em, $transliterater, $id, $parameters)
     {
     	$result = $em->getRepository("RenovateMainBundle:Result")->find($id);
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
@@ -343,6 +375,7 @@ class Result
     	$result->setDocumentid($parameters->documentid);
     	$result->setDocument($document);
     	$result->setName($parameters->name);
+    	$result->setNameTranslit($transliterater->transliterate($parameters->name));
     	$result->setDescription($parameters->description);
     	
     	$em->persist($result);

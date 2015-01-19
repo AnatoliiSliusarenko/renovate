@@ -2,6 +2,5 @@ parameters:
 #    renovate_main.example.class: Renovate\MainBundle\Example
 
 services:
-#    renovate_main.example:
-#        class: %renovate_main.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    renovate.transliterater:
+        class: Renovate\MainBundle\Services\Transliterater

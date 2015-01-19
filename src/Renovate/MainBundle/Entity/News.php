@@ -48,6 +48,13 @@ class News
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name_translit", type="string", length=255)
+     */
+    private $nameTranslit;
 
     /**
      * @var string
@@ -187,6 +194,29 @@ class News
     }
 
     /**
+     * Set nameTranslit
+     *
+     * @param string $nameTranslit
+     * @return News
+     */
+    public function setNameTranslit($nameTranslit)
+    {
+    	$this->nameTranslit = $nameTranslit;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get nameTranslit
+     *
+     * @return string
+     */
+    public function getNameTranslit()
+    {
+    	return $this->nameTranslit;
+    }
+    
+    /**
      * Set description
      *
      * @param string $description
@@ -309,6 +339,7 @@ class News
     			'documentid' => $this->getDocumentid(),
     			'labelid' => $this->getLabelid(),
     			'name' => $this->getName(),
+    			'nameTranslit' => $this->getNameTranslit(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'document' => $this->getDocument()->getInArray(),
@@ -367,12 +398,13 @@ class News
     	return $total;
     }
     
-    public static function addNews($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addNews($em, $transliterater, \Renovate\MainBundle\Entity\User $user, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$news = new News();
     	$news->setName($parameters->name);
+    	$news->setNameTranslit($transliterater->transliterate($parameters->name));
     	$news->setUserid($user->getId());
     	$news->setUser($user);
     	$news->setDocumentid($parameters->documentid);
@@ -404,7 +436,7 @@ class News
     	return $qb->getQuery()->getResult();
     }
     
-    public static function editNewsById($em, $id, $parameters)
+    public static function editNewsById($em, $transliterater, $id, $parameters)
     {
     	$news = $em->getRepository("RenovateMainBundle:News")->find($id);
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
@@ -428,6 +460,7 @@ class News
     		$em->persist($oldLabel);
     	}
     	$news->setName($parameters->name);
+    	$news->setNameTranslit($transliterater->transliterate($parameters->name));
     	$news->setDescription($parameters->description);
     	
     	$em->persist($news);
