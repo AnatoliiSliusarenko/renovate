@@ -52,7 +52,7 @@ class ArticlesController extends Controller
     
     public function addArticleNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	
@@ -72,7 +72,7 @@ class ArticlesController extends Controller
     
     public function removeArticleNgAction($article_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	
@@ -87,7 +87,7 @@ class ArticlesController extends Controller
     
     public function editArticleNgAction($article_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	

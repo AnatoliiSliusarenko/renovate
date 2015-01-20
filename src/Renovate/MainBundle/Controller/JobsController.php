@@ -31,10 +31,8 @@ class JobsController extends Controller
     public function getJobsNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$offset = ($request->query->get('offset')) ? $request->query->get('offset') : 0 ;
-    	$limit = ($request->query->get('limit')) ? $request->query->get('limit') : 20 ;
     	
-    	$response = new Response(json_encode(array("result" => Job::getJobs($em, $offset, $limit, true))));
+    	$response = new Response(json_encode(array("result" => Job::getJobs($em, $request->query->all(), true))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;

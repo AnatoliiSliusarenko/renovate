@@ -52,7 +52,7 @@ class NewsController extends Controller
     
     public function addNewsNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	
@@ -72,7 +72,7 @@ class NewsController extends Controller
     
     public function removeNewsNgAction($news_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	
@@ -87,7 +87,7 @@ class NewsController extends Controller
     
     public function editNewsNgAction($news_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	

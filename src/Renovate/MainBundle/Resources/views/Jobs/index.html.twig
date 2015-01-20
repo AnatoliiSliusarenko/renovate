@@ -59,10 +59,11 @@
 				</div>
 				<div class="data-content">
 					<div class="col-md-3">
-						<img class="img-thumbnail" src="{{ asset('[[job.document.url]]') }}" alt="[[job.document.name]]">
+						<img class="img-thumbnail" src="{{ asset('[[job.document.url]]') }}" alt="[[job.name]]">
 					</div>
 					<p class="text-justify" ng-bind-html="job.description | ellipsis:1100"></p></div>
 				<div class="data-footer">
+					{% if is_granted('ROLE_ADMIN') %}<span ng-show="job.onhomepage" class="label label-success">На головній <span class="glyphicon glyphicon-home"></span></span>{% endif %}
 					<a class="btn btn-primary btn-xs" href="[[job.href]]" ng-init="setItemDirectHref(job)">Читати детальніше...</a>
 				</div>
 			</div>
@@ -110,6 +111,15 @@
     					<p ng-show="jobForm.jobDescription.$invalid && !jobForm.jobDescription.$pristine" class="help-block">Введіть опис.</p>
 					</div>
   				</div>
+				<div class="form-group">
+    				<div class="col-sm-offset-2 col-sm-10">
+      					<div class="checkbox">
+        					<label>
+          						<input type="checkbox" ng-model="job.onhomepage" ng-init="job.onhomepage=false"> Показувати на головній
+        					</label>
+      					</div>
+    				</div>
+  				</div>
 			</form>
         </div>
         <div class="modal-footer">
@@ -153,6 +163,15 @@
 						<textarea ng-model="job.description" id="jobDescription" class="form-control" rows="5" name="jobDescription" required></textarea>
     					<p ng-show="jobForm.jobDescription.$invalid && !jobForm.jobDescription.$pristine" class="help-block">Введіть опис.</p>
 					</div>
+  				</div>
+				<div class="form-group">
+    				<div class="col-sm-offset-2 col-sm-10">
+      					<div class="checkbox">
+        					<label>
+          						<input type="checkbox" ng-model="job.onhomepage"> Показувати на головній
+        					</label>
+      					</div>
+    				</div>
   				</div>
 			</form>
         </div>

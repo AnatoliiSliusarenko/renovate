@@ -95,6 +95,12 @@ class Document
     private $results;
     
     /**
+     * @ORM\OneToMany(targetEntity="Result", mappedBy="label")
+     * @var array
+     */
+    private $resultsLabels;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Article", mappedBy="document")
      * @var array
      */
@@ -422,6 +428,39 @@ class Document
     public function getResults()
     {
     	return $this->results;
+    }
+    
+    /**
+     * Add resultsLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Result $resultsLabels
+     * @return Document
+     */
+    public function addResultsLabel(\Renovate\MainBundle\Entity\Result $resultsLabels)
+    {
+    	$this->resultsLabels[] = $resultsLabels;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove resultsLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Result $resultsLabels
+     */
+    public function removeResultsLabel(\Renovate\MainBundle\Entity\Result $resultsLabels)
+    {
+    	$this->resultsLabels->removeElement($resultsLabels);
+    }
+    
+    /**
+     * Get resultsLabels
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getResultsLabels()
+    {
+    	return $this->resultsLabels;
     }
     
     /**

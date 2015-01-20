@@ -36,7 +36,7 @@
 			  </div>
 			</form>
 		</div>
-		{% if is_granted('ROLE_ADMIN') %}
+		{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 		<div class="col-md-4">
 			<button ng-click="addResult()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
 		</div>
@@ -55,14 +55,15 @@
 					<div class="title">[[result.name]]</div>
 				</div>
 				<div class="data-social">
-					<div class="social-content">{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeResult(result)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editResult(result)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
+					<div class="social-content">{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}<button ng-click="removeResult(result)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editResult(result)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
 				</div>
 				<div class="data-content">
 					<div class="col-md-3">
-						<img class="img-thumbnail" src="{{ asset('[[result.document.url]]') }}" alt="[[result.document.name]]">
+						<img class="img-thumbnail" src="{{ asset('[[result.label.url || result.document.url]]') }}" alt="[[result.name]]">
 					</div>
 					<p class="text-justify" ng-bind-html="result.description | ellipsis:1100"></p></div>
 				<div class="data-footer">
+					{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}<span ng-show="result.onhomepage" class="label label-success">На головній <span class="glyphicon glyphicon-home"></span></span>{% endif %}
 					<a class="btn btn-primary btn-xs" href="[[result.href]]" ng-init="setItemDirectHref(result)">Читати детальніше...</a>
 				</div>
 			</div>
@@ -95,12 +96,29 @@
 						<input type="file" name="file_upload" id="file_upload" />
 					</div>
   				</div>
+				<div class="form-group" ng-class="{'has-error': resultForm.resultLabel.$invalid && !resultForm.resultLabel.$pristine}">
+    				<label for="resultLabel" class="col-sm-2 control-label">Ярлик</label>
+    				<div class="col-sm-10">
+      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="resultLabel" ng-model="result.labelid" name="resultLabel">
+						</select>
+						<p ng-show="resultForm.resultLabel.$invalid && !resultForm.resultLabel.$pristine" class="help-block">Оберіть ярлик.</p>
+					</div>
+  				</div>
   				<div class="form-group" ng-class="{'has-error': resultForm.resultDescription.$invalid && !resultForm.resultDescription.$pristine}">
     				<label for="resultDescription" class="col-sm-2 control-label">Опис</label>
     				<div class="col-sm-10">
 						<textarea ng-model="result.description" id="resultDescription" class="form-control" rows="5" name="resultDescription" required></textarea>
     					<p ng-show="resultForm.resultDescription.$invalid && !resultForm.resultDescription.$pristine" class="help-block">Введіть опис.</p>
 					</div>
+  				</div>
+				<div class="form-group">
+    				<div class="col-sm-offset-2 col-sm-10">
+      					<div class="checkbox">
+        					<label>
+          						<input type="checkbox" ng-model="result.onhomepage" ng-init="result.onhomepage=false"> Показувати на головній
+        					</label>
+      					</div>
+    				</div>
   				</div>
 			</form>
         </div>
@@ -131,12 +149,29 @@
 						<input type="file" name="file_upload" id="file_upload" />
 					</div>
   				</div>
+				<div class="form-group" ng-class="{'has-error': resultForm.resultLabel.$invalid && !resultForm.resultLabel.$pristine}">
+    				<label for="resultLabel" class="col-sm-2 control-label">Ярлик</label>
+    				<div class="col-sm-10">
+      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="resultLabel" ng-model="result.labelid" name="resultLabel">
+						</select>
+						<p ng-show="resultForm.resultLabel.$invalid && !resultForm.resultLabel.$pristine" class="help-block">Оберіть ярлик.</p>
+					</div>
+  				</div>
   				<div class="form-group" ng-class="{'has-error': resultForm.resultDescription.$invalid && !resultForm.resultDescription.$pristine}">
     				<label for="resultDescription" class="col-sm-2 control-label">Опис</label>
     				<div class="col-sm-10">
 						<textarea ng-model="result.description" id="resultDescription" class="form-control" rows="5" name="resultDescription" required></textarea>
     					<p ng-show="resultForm.resultDescription.$invalid && !resultForm.resultDescription.$pristine" class="help-block">Введіть опис.</p>
 					</div>
+  				</div>
+				<div class="form-group">
+    				<div class="col-sm-offset-2 col-sm-10">
+      					<div class="checkbox">
+        					<label>
+          						<input type="checkbox" ng-model="result.onhomepage"> Показувати на головній
+        					</label>
+      					</div>
+    				</div>
   				</div>
 			</form>
         </div>

@@ -29,5 +29,5 @@ security:
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users*, roles: ROLE_ADMIN }
         - { path: ^/ng/users*, roles: ROLE_ADMIN }
-        - { path: ^/documents*, roles: ROLE_ADMIN }
-        - { path: ^/ng/documents*, roles: ROLE_ADMIN }
+        - { path: ^/documents*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/documents*, roles: [ROLE_ADMIN, ROLE_EDITOR] }

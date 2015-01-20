@@ -127,6 +127,10 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.documents = response.result;
+				$scope.documents.splice(0,0,{
+					id: null,
+					name: "--> не обрано <--"
+				});
 			}
 		})
 	}
@@ -191,6 +195,10 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.documents = response.result;
+				$scope.documents.splice(0,0,{
+					id: null,
+					name: "--> не обрано <--"
+				});
 			}
 		})
 	}
@@ -239,4 +247,54 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
+})
+.controller('BlockResultsController', function($scope,$http){
+	console.log('BlockResultsController loaded!');
+	
+	$scope.urlsResultsGetNg = URLS.resultsGetNg;
+	$scope.urlsResultsShowResult = URLS.resultsShowResult;
+	$scope.results = [];
+	
+	function getResults()
+	{
+		$http({
+			method: "GET", 
+			url: $scope.urlsResultsGetNg,
+			params: {onhomepage: 1}
+			  })
+		.success(function(response){
+			console.log("results => ",response);
+			if (response.result)
+			{
+				$scope.results = response.result;
+				setTimeout(function(){
+					$('.results-for').slick({
+						slidesToShow: 1,
+						slidesToScroll: 1,
+						arrows: false,
+						fade:true,
+						asNavFor: '.results-nav'
+					});
+					
+					$('.results-nav').slick({
+						slidesToShow: 1, //3
+						slidesToScroll: 1,
+						asNavFor: '.results-for',
+						dots: true,
+						centerMode: true,
+						focusOnSelect: true,
+						variableWidth: true,
+						autoplay: true,
+						autoPlaySpeed: 3000
+					});
+				},100);
+			}
+		})
+	}
+	getResults();
+	
+	$scope.setItemDirectHref = function(result){
+		var href = $scope.urlsResultsShowResult.replace('0', result.nameTranslit);
+		result.href = href;
+	}	
 });

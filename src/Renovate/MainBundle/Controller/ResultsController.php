@@ -30,10 +30,8 @@ class ResultsController extends Controller
     public function getResultsNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$offset = ($request->query->get('offset')) ? $request->query->get('offset') : 0 ;
-    	$limit = ($request->query->get('limit')) ? $request->query->get('limit') : 20 ;
     	
-    	$response = new Response(json_encode(array("result" => Result::getResults($em, $offset, $limit, true))));
+    	$response = new Response(json_encode(array("result" => Result::getResults($em, $request->query->all(), true))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
@@ -52,7 +50,7 @@ class ResultsController extends Controller
     
     public function addResultNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	
@@ -72,7 +70,7 @@ class ResultsController extends Controller
     
     public function removeResultNgAction($result_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	
@@ -87,7 +85,7 @@ class ResultsController extends Controller
     
     public function editResultNgAction($result_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
     		throw $this->createAccessDeniedException();
     	}
     	

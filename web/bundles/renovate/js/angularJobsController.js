@@ -247,4 +247,45 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
+})
+.controller('BlockJobsController', function($scope,$http){
+	console.log('BlockJobsController loaded!');
+	
+	$scope.urlsJobsGetNg = URLS.jobsGetNg;
+	$scope.urlsJobsShowJob = URLS.jobsShowJob;
+	$scope.jobs = [];
+	
+	function getJobs()
+	{
+		$http({
+			method: "GET", 
+			url: $scope.urlsJobsGetNg,
+			params: {onhomepage: 1}
+			  })
+		.success(function(response){
+			console.log("jobs => ",response);
+			if (response.result)
+			{
+				$scope.jobs = response.result;
+				setTimeout(function(){
+					$('.jobs-slider').slick({
+						slidesToShow: 1,
+						slidesToScroll: 1,
+						centerMode: true,
+						dots: false,
+						focusOnSelect: true,
+						variableWidth: true,
+						autoplay: true,
+						autoPlaySpeed: 2000
+						});
+				},100);
+			}
+		})
+	}
+	getJobs();
+	
+	$scope.setItemDirectHref = function(job){
+		var href = $scope.urlsJobsShowJob.replace('0', job.nameTranslit);
+		job.href = href;
+	}	
 });

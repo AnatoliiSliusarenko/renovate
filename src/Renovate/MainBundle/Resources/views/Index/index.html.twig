@@ -6,52 +6,52 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-	<div class="col-md-8">
-		<div class="results-for">
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide1.jpg') }}"/><div class="description"><h3>Обслуговування багатоквартирних будинків.</h3><p>Один з напрямків Ремонтно-обслуговуючої компанії "RENOVATE" являється обслуговування багатоквартирних будинків та прилеглих до них територій, забезпечення умов проживання, а також покращення зовнішнього вигляду будівлі. Ми надаємо послуги не лише по ремонту будинку, а також прибирання, дератизації, дезинсекції, обслуговування сантехнічних комунікацій, газових та електро-мереж.</p><a class="btn btn-gray btn-xs" href="#">Детальніше</a></div></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide2.jpg') }}"/><div class="description"><h3>Обслуговування приватних будинків.</h3><p>Компанія "RENOVATE" включає в себе також обслуговування приватних будинків, газонів, встановлення парканів та різних ремонтних робіт. Також встановленням кодових замків і вікон. Більше інформації можете дізнатися звернувшись до консультанта онлайн або безпосередньо в офісі за адремою м.Ужгород, вул. Швабська 26.</p><a class="btn btn-gray btn-xs" href="#">Детальніше</a></div></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide3.jpg') }}"/><div class="description"><h3>Сантехніка та водопровід.</h3><p>Ремонтно-обслуговуюча компанія "RENOVATE" займається також встановлення сантехнічого обладнання, проведенням комунікацій та водопроводу або ремонту вже встановленного. Ми маємо спеціалістів котрі також зможуть встановити Вам отоплення в будинку чи квартирі, разом з підігрівом полу.</p><a class="btn btn-gray btn-xs" href="#">Детальніше</a></div></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide4.jpg') }}"/><div class="description"><h3>Електрик. Електротехнічні роботи.</h3><p>В нашій компанії "RENOVATE" Ви можете замовити електрика для усунення будь яких проблем з напругою та струмом, а також для монтажу чи демонтажу електрообладнання. Ми охоплюємо широкий спектр електротехнічних робіт дякуючи професіоналам з досвідом роботи.</p><a class="btn btn-gray btn-xs" href="#">Детальніше</a></div></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide5.jpg') }}"/><div class="description"><h3>Ремонтні роботи. Косметичний ремонт.</h3><p>Дякуючи нашим високо-кваліфікованим спеціалістам, ремонтно-обслуговуюча компанія "RENOVATE" може виконувати ремонтні роботи будь якої складності: фарбування, шпаклювання, штукатурка, мурування та багато інших. Ми можемо виконувати як стандартний ремонт квартири так і ексклюзивні дизайнерські ідеї в приватних апартаментах.</p><a class="btn btn-gray btn-xs" href="#">Детальніше</a></div></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide6.jpg') }}"/><div class="description"><h3>Встановлення елементів благоустрою.</h3><p>Завдяки компанії "RENOVATE" Ви зможете встановити, відремонтувати або замінити різні елементи вашого будинку та двору такі як поштові скринькі, двері, люки та навіть фонтани і багато іншого. Наші спеціалісти завжди готові долучитися до втілення Ваших ідей в життя.</p><a class="btn btn-gray btn-xs" href="#">Детальніше</a></div></div>
+<div ng-app="Renovate">
+	<div class="row">
+		<div class="col-md-8" ng-controller="BlockResultsController">
+			<div class="results-for">
+			  <div ng-repeat="result in results"><img src="{{ asset('[[result.label.url || result.document.url]]') }}"/><div class="description"><h3>[[result.name]]</h3><p>[[result.description | ellipsis:500]]</p><a class="btn btn-gray btn-xs" href="[[result.href]]" ng-init="setItemDirectHref(result)">Детальніше</a></div></div>
+			</div>
+			<div class="results-nav">
+			  <div ng-repeat="result in results"><img src="{{ asset('[[result.label.url || result.document.url]]') }}"/></div>
+			</div>
 		</div>
-		<div class="results-nav">
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide1.jpg') }}"/></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide2.jpg') }}"/></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide3.jpg') }}"/></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide4.jpg') }}"/></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide5.jpg') }}"/></div>
-		  <div><img src="{{ asset('web/bundles/renovate/images/RENOVATE_Slide6.jpg') }}"/></div>
-		</div>
-	</div>
-	<div class="col-md-4">
-		<div id="block-last-news" ng-app="Renovate" ng-controller="BlockLastNewsController">
-			<div class="media" ng-repeat="newsp in news">
-			  <a class="media-left" href="[[newsp.href]]" ng-init="setItemDirectHref(newsp)">
-			    <img src="{{ asset('[[newsp.label.url || newsp.document.url]]') }}" alt="[[newsp.name]]">
-			  </a>
-			  <div class="media-body">
-			    <p class="title">[[newsp.name | ellipsis:30]]</p>
-			    <p class="description" ng-bind-html="newsp.description | ellipsis:100"></p>
-			  </div>
+		<div class="col-md-4">
+			<div id="block-last-news" ng-controller="BlockLastNewsController">
+				<div class="media" ng-repeat="newsp in news">
+				  <a class="media-left" href="[[newsp.href]]" ng-init="setItemDirectHref(newsp)">
+				    <img src="{{ asset('[[newsp.label.url || newsp.document.url]]') }}" alt="[[newsp.name]]">
+				  </a>
+				  <div class="media-body">
+				    <p class="title">[[newsp.name | ellipsis:30]]</p>
+				    <p class="description" ng-bind-html="newsp.description | ellipsis:100"></p>
+				  </div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="col-md-8">
-		<iframe width="100%" height="400" src="//www.youtube-nocookie.com/embed/2RyjBi6JF0Q" frameborder="0" allowfullscreen></iframe>
+	<div class="row">
+		<div class="col-md-8">
+			<iframe width="100%" height="400" src="//www.youtube-nocookie.com/embed/2RyjBi6JF0Q" frameborder="0" allowfullscreen></iframe>
+		</div>
+	</div>
+	<div class="row" style="margin-top:10px;" ng-controller="BlockJobsController">
+		<div class="col-md-12">
+			<div class="jobs-slider">
+				  <div ng-repeat="job in jobs"><div class="thumbnail"><a href="[[job.href]]" ng-init="setItemDirectHref(job)"><img src="{{ asset('[[job.label.url || job.document.url]]') }}" alt="[[job.name]]"></a><div class="caption"><h4>[[job.name]]</h4><p>[[job.description | ellipsis:300]]</p></div></div></div>
+			</div>
+		</div>
 	</div>
 </div>
 {% endblock %} 
 
 {% block javascripts %}
-<script src="{{ asset('web/bundles/renovate/js/slidersInitialization.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularNewsController.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularJobsController.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularResultsController.js') }}"></script>
 {% endblock %}

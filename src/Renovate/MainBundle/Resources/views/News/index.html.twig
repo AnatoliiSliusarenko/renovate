@@ -36,7 +36,7 @@
 			  </div>
 			</form>
 		</div>
-		{% if is_granted('ROLE_ADMIN') %}
+		{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 		<div class="col-md-4">
 			<button ng-click="addNews()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
 		</div>
@@ -55,11 +55,11 @@
 					<div class="title">[[newsp.name]]</div>
 				</div>
 				<div class="data-social">
-					<div class="social-content">{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeNews(newsp)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editNews(newsp)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
+					<div class="social-content">{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}<button ng-click="removeNews(newsp)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editNews(newsp)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
 				</div>
 				<div class="data-content">
 					<div class="col-md-3">
-						<img class="img-thumbnail" src="{{ asset('[[newsp.document.url]]') }}" alt="[[newsp.document.name]]">
+						<img class="img-thumbnail" src="{{ asset('[[newsp.document.url]]') }}" alt="[[newsp.name]]">
 					</div>
 					<p class="text-justify" ng-bind-html="newsp.description | ellipsis:1100"></p></div>
 				<div class="data-footer">

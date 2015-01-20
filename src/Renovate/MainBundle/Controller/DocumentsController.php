@@ -10,7 +10,7 @@ class DocumentsController extends Controller
 {
 	public function indexAction()
 	{
-		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
 			throw $this->createAccessDeniedException();
 		}
 		
@@ -29,7 +29,7 @@ class DocumentsController extends Controller
 
 	public function uploadAction(Request $request)
 	{
-		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
 			throw $this->createAccessDeniedException();
 		}
 		
@@ -58,7 +58,7 @@ class DocumentsController extends Controller
 
 	public function getDocumentsNgAction(Request $request)
 	{
-		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
 			throw $this->createAccessDeniedException();
 		}
 		

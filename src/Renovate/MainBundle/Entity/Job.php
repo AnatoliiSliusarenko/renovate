@@ -69,6 +69,12 @@ class Job
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
+    
+    /**
+     * @var boolean
+     * @ORM\Column(name="onhomepage", type="boolean")
+     */
+    private $onhomepage;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
@@ -263,6 +269,29 @@ class Job
     }
     
     /**
+     * Set onhomepage
+     *
+     * @param boolean $onhomepage
+     * @return Job
+     */
+    public function setOnhomepage($onhomepage)
+    {
+    	$this->onhomepage = $onhomepage;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get onhomepage
+     *
+     * @return boolean
+     */
+    public function getOnhomepage()
+    {
+    	return $this->onhomepage;
+    }
+    
+    /**
      * Set user
      *
      * @param \Renovate\MainBundle\Entity\User $user
@@ -342,6 +371,7 @@ class Job
     			'nameTranslit' => $this->getNameTranslit(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
+    			'onhomepage' => $this->getOnhomepage(),
     			'document' => $this->getDocument()->getInArray(),
     			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null,
     			'user' => $this->getUser()->getInArray()
@@ -366,15 +396,25 @@ class Job
     	}else return $result;
     }
     
-    public static function getJobs($em, $offset, $limit, $inArray = false)
+    public static function getJobs($em, $parameters, $inArray = false)
     {
     	$qb = $em->getRepository("RenovateMainBundle:Job")
     	->createQueryBuilder('j');
     	 
     	$qb->select('j')
-    	   ->orderBy('j.created', 'DESC')
-    	   ->setFirstResult($offset)
-		   ->setMaxResults($limit);
+    	   ->orderBy('j.created', 'DESC');
+    	
+    	if (isset($parameters['offset']) && isset($parameters['limit']))
+    	{
+    		$qb->setFirstResult($parameters['offset'])
+    		   ->setMaxResults($parameters['limit']);
+    	}
+    	   
+    	if (isset($parameters['onhomepage']))
+    	{
+    		$qb->where('j.onhomepage = :onhomepage')
+    		   ->setParameter('onhomepage', $parameters['onhomepage']);
+    	}
     	 
     	$result = $qb->getQuery()->getResult();
     	 
@@ -418,6 +458,7 @@ class Job
     	}
     	$job->setDescription($parameters->description);
     	$job->setCreated(new \DateTime());
+    	$job->setOnhomepage($parameters->onhomepage);
     	
     	$em->persist($job);
     	$em->flush();
@@ -462,6 +503,7 @@ class Job
     	$job->setName($parameters->name);
     	$job->setNameTranslit($transliterater->transliterate($parameters->name));
     	$job->setDescription($parameters->description);
+    	$job->setOnhomepage($parameters->onhomepage);
     	
     	$em->persist($job);
     	$em->flush();
