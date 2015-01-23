@@ -263,13 +263,13 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 			params: {onhomepage: 1}
 			  })
 		.success(function(response){
-			console.log("jobs => ",response);
+			console.log("block jobs => ",response);
 			if (response.result)
 			{
 				$scope.jobs = response.result;
 				setTimeout(function(){
 					$('.jobs-slider').slick({
-						slidesToShow: 1,
+						slidesToShow: 2,
 						slidesToScroll: 1,
 						centerMode: true,
 						dots: false,

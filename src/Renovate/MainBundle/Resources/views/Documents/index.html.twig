@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-<div ng-app="Renovate" ng-controller="DocumentsController">
+<div ng-controller="DocumentsController">
 	<div class="row">
 		<div class="col-md-12">
 			<h4>Дозволені розширення: <b>{{ availableTypes }}</b></h4>
@@ -37,11 +37,6 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularDocumentsController.js') }}"></script>
 <script>
 var TIMESTAMP = '{{ timestamp }}';

@@ -33,7 +33,7 @@
 		  support@renovate.in.ua
 		</address>
 	</div>
-  	<div class="col-md-6" ng-app="Renovate" ng-controller="ContactsController">
+  	<div class="col-md-6" ng-controller="ContactsController">
 		<form ng-submit="contactUs()">
 			<h3>Зв’яжіться з нами</h3>
 			<div class="form-group">
@@ -66,10 +66,5 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/googleMapInitialization.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularContactsController.js') }}"></script>
 {% endblock %}

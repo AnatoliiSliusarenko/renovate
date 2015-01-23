@@ -106,6 +106,24 @@ class Document
      */
     private $articles;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="label")
+     * @var array
+     */
+    private $articlesLabels;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Share", mappedBy="document")
+     * @var array
+     */
+    private $shares;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Share", mappedBy="label")
+     * @var array
+     */
+    private $sharesLabels;
+    
     private static $fileTypes = array('doc','docx','xls','xlsx','jpg','jpeg','gif','png','avi','pdf','mp3', 'zip','txt','xml','xps','rtf','odt','htm','html','ods');
     
     private static $SALT = '767usghbe7h8#@4b32n32)_$)&N_*$)*$^@$JHN_$_$*N$@($)@*NH';
@@ -496,6 +514,105 @@ class Document
     	return $this->articles;
     }
     
+    /**
+     * Add articlesLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Article $articlesLabels
+     * @return Document
+     */
+    public function addArticlesLabel(\Renovate\MainBundle\Entity\Article $articlesLabels)
+    {
+    	$this->articlesLabels[] = $articlesLabels;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove articlesLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Article $articlesLabels
+     */
+    public function removeArticlesLabel(\Renovate\MainBundle\Entity\Article $articlesLabels)
+    {
+    	$this->articlesLabels->removeElement($articlesLabels);
+    }
+    
+    /**
+     * Get articlesLabels
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticlesLabels()
+    {
+    	return $this->articlesLabels;
+    }
+    
+    /**
+     * Add shares
+     *
+     * @param \Renovate\MainBundle\Entity\Share $shares
+     * @return Document
+     */
+    public function addShare(\Renovate\MainBundle\Entity\Share $shares)
+    {
+    	$this->shares[] = $shares;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove shares
+     *
+     * @param \Renovate\MainBundle\Entity\Share $shares
+     */
+    public function removeShare(\Renovate\MainBundle\Entity\Share $shares)
+    {
+    	$this->shares->removeElement($shares);
+    }
+    
+    /**
+     * Get shares
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShares()
+    {
+    	return $this->shares;
+    }
+    
+    /**
+     * Add sharesLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Share $sharesLabels
+     * @return Document
+     */
+    public function addSharesLabel(\Renovate\MainBundle\Entity\Share $sharesLabels)
+    {
+    	$this->sharesLabels[] = $sharesLabels;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove sharesLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Share $sharesLabels
+     */
+    public function removeSharesLabel(\Renovate\MainBundle\Entity\Share $sharesLabels)
+    {
+    	$this->sharesLabels->removeElement($sharesLabels);
+    }
+    
+    /**
+     * Get sharesLabels
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSharesLabels()
+    {
+    	return $this->sharesLabels;
+    }
+    
     protected function getUploadRootDir()
     {
     	return __DIR__.'/../../../../'.$this->getUploadDir();
@@ -578,12 +695,12 @@ class Document
     		->setParameter('userid', $userid);
     	}
     	 
-    	$documents = $qb->getQuery()->getResult();
+    	$result = $qb->getQuery()->getResult();
     	if ($inArray)
     	{
     		return array_map(function($document){
     			return $document->getInArray();
-    		}, $documents);
-    	}else return $documents;
+    		}, $result);
+    	}else return $result;
     }
 }

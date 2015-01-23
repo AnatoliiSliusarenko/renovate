@@ -30,10 +30,8 @@ class ArticlesController extends Controller
     public function getArticlesNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$offset = ($request->query->get('offset')) ? $request->query->get('offset') : 0 ;
-    	$limit = ($request->query->get('limit')) ? $request->query->get('limit') : 20 ;
     	
-    	$response = new Response(json_encode(array("result" => Article::getArticles($em, $offset, $limit, true))));
+    	$response = new Response(json_encode(array("result" => Article::getArticles($em, $request->query->all(), true))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;

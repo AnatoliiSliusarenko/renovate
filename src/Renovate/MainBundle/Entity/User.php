@@ -114,6 +114,12 @@ class User implements UserInterface,\Serializable
 	 * @var array
 	 */
 	private $articles;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Share", mappedBy="user")
+	 * @var array
+	 */
+	private $shares;
     
 	public function __construct()
 	{
@@ -687,5 +693,38 @@ class User implements UserInterface,\Serializable
     public function getArticles()
     {
         return $this->articles;
+    }
+
+    /**
+     * Add shares
+     *
+     * @param \Renovate\MainBundle\Entity\Share $shares
+     * @return User
+     */
+    public function addShare(\Renovate\MainBundle\Entity\Share $shares)
+    {
+        $this->shares[] = $shares;
+
+        return $this;
+    }
+
+    /**
+     * Remove shares
+     *
+     * @param \Renovate\MainBundle\Entity\Share $shares
+     */
+    public function removeShare(\Renovate\MainBundle\Entity\Share $shares)
+    {
+        $this->shares->removeElement($shares);
+    }
+
+    /**
+     * Get shares
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getShares()
+    {
+        return $this->shares;
     }
 }

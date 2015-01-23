@@ -36,6 +36,13 @@ class Article
     private $documentid;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="labelid", type="integer")
+     */
+    private $labelid;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -62,6 +69,12 @@ class Article
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
+    
+    /**
+     * @var boolean
+     * @ORM\Column(name="onhomepage", type="boolean")
+     */
+    private $onhomepage;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
@@ -76,6 +89,13 @@ class Article
      * @var Document
      */
     private $document;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Document", inversedBy="articlesLabels")
+     * @ORM\JoinColumn(name="labelid")
+     * @var Document
+     */
+    private $label;
 
     /**
      * Get id
@@ -133,6 +153,29 @@ class Article
     	return $this->documentid;
     }
 
+    /**
+     * Set labelid
+     *
+     * @param integer $labelid
+     * @return Article
+     */
+    public function setLabelid($labelid)
+    {
+    	$this->labelid = $labelid;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get labelid
+     *
+     * @return integer
+     */
+    public function getLabelid()
+    {
+    	return $this->labelid;
+    }
+    
     /**
      * Set name
      *
@@ -226,6 +269,29 @@ class Article
     }
     
     /**
+     * Set onhomepage
+     *
+     * @param boolean $onhomepage
+     * @return Article
+     */
+    public function setOnhomepage($onhomepage)
+    {
+    	$this->onhomepage = $onhomepage;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get onhomepage
+     *
+     * @return boolean
+     */
+    public function getOnhomepage()
+    {
+    	return $this->onhomepage;
+    }
+    
+    /**
      * Set user
      *
      * @param \Renovate\MainBundle\Entity\User $user
@@ -271,17 +337,43 @@ class Article
     	return $this->document;
     }
     
+    /**
+     * Set label
+     *
+     * @param \Renovate\MainBundle\Entity\Document $label
+     * @return Article
+     */
+    public function setLabel(\Renovate\MainBundle\Entity\Document $label = null)
+    {
+    	$this->label = $label;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get label
+     *
+     * @return \Renovate\MainBundle\Entity\Document
+     */
+    public function getLabel()
+    {
+    	return $this->label;
+    }
+    
     public function getInArray()
     {
     	return array(
     			'id' => $this->getId(),
     			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
+    			'labelid' => $this->getLabelid(),
     			'name' => $this->getName(),
     			'nameTranslit' => $this->getNameTranslit(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
+    			'onhomepage' => $this->getOnhomepage(),
     			'document' => $this->getDocument()->getInArray(),
+    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null,
     			'user' => $this->getUser()->getInArray()
     	);
     }
@@ -304,16 +396,26 @@ class Article
     	}else return $result;
     }
     
-    public static function getArticles($em, $offset, $limit, $inArray = false)
+    public static function getArticles($em, $parameters, $inArray = false)
     {
     	$qb = $em->getRepository("RenovateMainBundle:Article")
     	->createQueryBuilder('a');
     	 
     	$qb->select('a')
-    	   ->orderBy('a.created', 'DESC')
-    	   ->setFirstResult($offset)
-		   ->setMaxResults($limit);
+    	   ->orderBy('a.created', 'DESC');
     	 
+    	if (isset($parameters['offset']) && isset($parameters['limit']))
+    	{
+    		$qb->setFirstResult($parameters['offset'])
+    		->setMaxResults($parameters['limit']);
+    	}
+    	 
+    	if (isset($parameters['onhomepage']))
+    	{
+    		$qb->where('a.onhomepage = :onhomepage')
+    		->setParameter('onhomepage', $parameters['onhomepage']);
+    	}
+    	
     	$result = $qb->getQuery()->getResult();
     	 
     	if ($inArray)
@@ -347,8 +449,16 @@ class Article
     	$article->setUser($user);
     	$article->setDocumentid($parameters->documentid);
     	$article->setDocument($document);
+    	if (isset($parameters->labelid) && $parameters->labelid != NULL)
+    	{
+    		$label = $em->getRepository("RenovateMainBundle:Document")->find($parameters->labelid);
+    		 
+    		$article->setLabelid($parameters->labelid);
+    		$article->setLabel($label);
+    	}
     	$article->setDescription($parameters->description);
     	$article->setCreated(new \DateTime());
+    	$article->setOnhomepage($parameters->onhomepage);
     	
     	$em->persist($article);
     	$em->flush();
@@ -374,9 +484,26 @@ class Article
     	
     	$article->setDocumentid($parameters->documentid);
     	$article->setDocument($document);
+    	if (isset($parameters->labelid) && $parameters->labelid != NULL)
+    	{
+    		$label = $em->getRepository("RenovateMainBundle:Document")->find($parameters->labelid);
+    		 
+    		$article->setLabelid($parameters->labelid);
+    		$article->setLabel($label);
+    	}
+    	elseif ($article->getLabelid() != NULL && (!isset($parameters->labelid) || (isset($parameters->labelid) && $parameters->labelid == NULL)))
+    	{
+    		$oldLabel = $em->getRepository("RenovateMainBundle:Document")->find($article->getLabelid());
+    		 
+    		$oldLabel->removeArticlesLabel($article);
+    		$article->setLabelid(NULL);
+    		$article->setLabel(NULL);
+    		$em->persist($oldLabel);
+    	}
     	$article->setName($parameters->name);
     	$article->setNameTranslit($transliterater->transliterate($parameters->name));
     	$article->setDescription($parameters->description);
+    	$article->setOnhomepage($parameters->onhomepage);
     	
     	$em->persist($article);
     	$em->flush();

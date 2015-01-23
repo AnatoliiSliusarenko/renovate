@@ -16,10 +16,7 @@
 {% block content %}
 	<div class="row">
 		<div class="col-md-12">
-			<blockquote>
-  				<h2>{{news.name}}</h2>
-  				<footer>{{news.created|date("d.m.Y H:i:s")}} від <cite title="{{ news.user.name ~ ' ' ~ news.user.surname }}">{{ news.user.username }}</cite></footer>
-			</blockquote><hr>
+  				<h2>{{news.name}}</h2><hr>
 		</div>
 	</div>
 	<div class="row">

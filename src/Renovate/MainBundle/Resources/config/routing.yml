@@ -175,3 +175,55 @@ renovate_ng_articles_remove:
 renovate_ng_articles_edit:
     path: /ng/articles/edit/{article_id}
     defaults: { _controller: RenovateMainBundle:Articles:editArticleNg}
+    
+renovate_shares:
+    path: /shares
+    defaults: { _controller: RenovateMainBundle:Shares:index}
+    
+renovate_shares_show_share:
+    path: /shares/{share_name_translit}
+    defaults: { _controller: RenovateMainBundle:Shares:showShare}
+    
+renovate_ng_shares:
+    path: /ng/shares
+    defaults: { _controller: RenovateMainBundle:Shares:getSharesNg}
+    
+renovate_ng_shares_count:
+    path: /ng/shares/count
+    defaults: { _controller: RenovateMainBundle:Shares:getSharesCountNg}
+    
+renovate_ng_shares_add:
+    path: /ng/shares/add
+    defaults: { _controller: RenovateMainBundle:Shares:addShareNg}
+    
+renovate_ng_shares_remove:
+    path: /ng/shares/remove/{share_id}
+    defaults: { _controller: RenovateMainBundle:Shares:removeShareNg}
+    
+renovate_ng_shares_edit:
+    path: /ng/shares/edit/{share_id}
+    defaults: { _controller: RenovateMainBundle:Shares:editShareNg}
+    
+renovate_partners:
+    path: /partners
+    defaults: { _controller: RenovateMainBundle:Partners:index}
+    
+renovate_ng_partners:
+    path: /ng/partners
+    defaults: { _controller: RenovateMainBundle:Partners:getPartnersNg}
+    
+renovate_ng_partners_count:
+    path: /ng/partners/count
+    defaults: { _controller: RenovateMainBundle:Partners:getPartnersCountNg}
+    
+renovate_ng_partners_add:
+    path: /ng/partners/add
+    defaults: { _controller: RenovateMainBundle:Partners:addPartnerNg}
+    
+renovate_ng_partners_remove:
+    path: /ng/partners/remove/{partner_id}
+    defaults: { _controller: RenovateMainBundle:Partners:removePartnerNg}
+    
+renovate_ng_partners_edit:
+    path: /ng/partners/edit/{partner_id}
+    defaults: { _controller: RenovateMainBundle:Partners:editPartnerNg}

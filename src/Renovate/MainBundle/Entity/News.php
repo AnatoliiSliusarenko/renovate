@@ -71,6 +71,12 @@ class News
     private $created;
 
     /**
+     * @var boolean
+     * @ORM\Column(name="onhomepage", type="boolean")
+     */
+    private $onhomepage;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="news")
      * @ORM\JoinColumn(name="userid")
      * @var User
@@ -263,6 +269,29 @@ class News
     }
     
     /**
+     * Set onhomepage
+     *
+     * @param boolean $onhomepage
+     * @return News
+     */
+    public function setOnhomepage($onhomepage)
+    {
+    	$this->onhomepage = $onhomepage;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get onhomepage
+     *
+     * @return boolean
+     */
+    public function getOnhomepage()
+    {
+    	return $this->onhomepage;
+    }
+    
+    /**
      * Set user
      *
      * @param \Renovate\MainBundle\Entity\User $user
@@ -342,6 +371,7 @@ class News
     			'nameTranslit' => $this->getNameTranslit(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
+    			'onhomepage' => $this->getOnhomepage(),
     			'document' => $this->getDocument()->getInArray(),
     			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null,
     			'user' => $this->getUser()->getInArray()
@@ -366,16 +396,26 @@ class News
     	}else return $result;
     }
     
-    public static function getNews($em, $offset, $limit, $inArray = false)
+    public static function getNews($em, $parameters, $inArray = false)
     {
     	$qb = $em->getRepository("RenovateMainBundle:News")
     	->createQueryBuilder('n');
     	 
     	$qb->select('n')
-    	   ->orderBy('n.created', 'DESC')
-    	   ->setFirstResult($offset)
-		   ->setMaxResults($limit);
+    	   ->orderBy('n.created', 'DESC');
     	 
+    	if (isset($parameters['offset']) && isset($parameters['limit']))
+    	{
+    		$qb->setFirstResult($parameters['offset'])
+    		->setMaxResults($parameters['limit']);
+    	}
+    	 
+    	if (isset($parameters['onhomepage']))
+    	{
+    		$qb->where('n.onhomepage = :onhomepage')
+    		->setParameter('onhomepage', $parameters['onhomepage']);
+    	}
+    	
     	$result = $qb->getQuery()->getResult();
     	 
     	if ($inArray)
@@ -418,6 +458,7 @@ class News
     	}
     	$news->setDescription($parameters->description);
     	$news->setCreated(new \DateTime());
+    	$news->setOnhomepage($parameters->onhomepage);
     	
     	$em->persist($news);
     	$em->flush();
@@ -462,6 +503,7 @@ class News
     	$news->setName($parameters->name);
     	$news->setNameTranslit($transliterater->transliterate($parameters->name));
     	$news->setDescription($parameters->description);
+    	$news->setOnhomepage($parameters->onhomepage);
     	
     	$em->persist($news);
     	$em->flush();

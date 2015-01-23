@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-<div ng-app="Renovate" ng-controller="ArticlesController">
+<div ng-controller="ArticlesController">
 	<div class="row">
 		<div class="col-md-4">
 			<form class="form-horizontal">
@@ -52,17 +52,18 @@
 			<div class="data-holder" ng-repeat="article in articles">
 				<div class="data-header">
 					<div class="date">[[ article.created | date:"dd.MM.yyyy HH:mm:ss"]]</div>
-					<div class="title">[[article.name]]</div>
+					<div class="title"><a href="[[article.href]]">[[article.name]]</a></div>
 				</div>
 				<div class="data-social">
 					<div class="social-content">{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}<button ng-click="removeArticle(article)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editArticle(article)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
 				</div>
 				<div class="data-content">
 					<div class="col-md-3">
-						<img class="img-thumbnail" src="{{ asset('[[article.document.url]]') }}" alt="[[article.name]]">
+						<a href="[[article.href]]"><img class="img-thumbnail" src="{{ asset('[[article.label.url || article.document.url]]') }}" alt="[[article.name]]"></a>
 					</div>
 					<p class="text-justify" ng-bind-html="article.description | ellipsis:1100"></p></div>
 				<div class="data-footer">
+					{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}<span ng-show="article.onhomepage" class="label label-success">На головній <span class="glyphicon glyphicon-home"></span></span>{% endif %}
 					<a class="btn btn-primary btn-xs" href="[[article.href]]" ng-init="setItemDirectHref(article)">Читати детальніше...</a>
 				</div>
 			</div>
@@ -95,12 +96,29 @@
 						<input type="file" name="file_upload" id="file_upload" />
 					</div>
   				</div>
+				<div class="form-group" ng-class="{'has-error': articleForm.articleLabel.$invalid && !articleForm.articleLabel.$pristine}">
+    				<label for="articleLabel" class="col-sm-2 control-label">Ярлик</label>
+    				<div class="col-sm-10">
+      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="articleLabel" ng-model="article.labelid" name="articleLabel">
+						</select>
+						<p ng-show="articleForm.articleLabel.$invalid && !articleForm.articleLabel.$pristine" class="help-block">Оберіть ярлик.</p>
+					</div>
+  				</div>
   				<div class="form-group" ng-class="{'has-error': articleForm.articleDescription.$invalid && !articleForm.articleDescription.$pristine}">
     				<label for="articleDescription" class="col-sm-2 control-label">Опис</label>
     				<div class="col-sm-10">
 						<textarea ng-model="article.description" id="articleDescription" class="form-control" rows="5" name="articleDescription" required></textarea>
     					<p ng-show="articleForm.articleDescription.$invalid && !articleForm.articleDescription.$pristine" class="help-block">Введіть опис.</p>
 					</div>
+  				</div>
+				<div class="form-group">
+    				<div class="col-sm-offset-2 col-sm-10">
+      					<div class="checkbox">
+        					<label>
+          						<input type="checkbox" ng-model="article.onhomepage" ng-init="article.onhomepage=false"> Показувати на головній
+        					</label>
+      					</div>
+    				</div>
   				</div>
 			</form>
         </div>
@@ -131,12 +149,29 @@
 						<input type="file" name="file_upload" id="file_upload" />
 					</div>
   				</div>
+				<div class="form-group" ng-class="{'has-error': articleForm.articleLabel.$invalid && !articleForm.articleLabel.$pristine}">
+    				<label for="articleLabel" class="col-sm-2 control-label">Ярлик</label>
+    				<div class="col-sm-10">
+      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="articleLabel" ng-model="article.labelid" name="articleLabel">
+						</select>
+						<p ng-show="articleForm.articleLabel.$invalid && !articleForm.articleLabel.$pristine" class="help-block">Оберіть ярлик.</p>
+					</div>
+  				</div>
   				<div class="form-group" ng-class="{'has-error': articleForm.articleDescription.$invalid && !articleForm.articleDescription.$pristine}">
     				<label for="articleDescription" class="col-sm-2 control-label">Опис</label>
     				<div class="col-sm-10">
 						<textarea ng-model="article.description" id="articleDescription" class="form-control" rows="5" name="articleDescription" required></textarea>
     					<p ng-show="articleForm.articleDescription.$invalid && !articleForm.articleDescription.$pristine" class="help-block">Введіть опис.</p>
 					</div>
+  				</div>
+				<div class="form-group">
+    				<div class="col-sm-offset-2 col-sm-10">
+      					<div class="checkbox">
+        					<label>
+          						<input type="checkbox" ng-model="article.onhomepage"> Показувати на головній
+        					</label>
+      					</div>
+    				</div>
   				</div>
 			</form>
         </div>
@@ -150,11 +185,6 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularArticlesController.js') }}"></script>
 <script>
 var TIMESTAMP = '{{ timestamp }}';

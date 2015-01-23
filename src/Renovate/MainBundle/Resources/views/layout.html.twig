@@ -52,6 +52,7 @@
 	              <ul class="dropdown-menu" role="menu">
 	                {% if is_granted('ROLE_ADMIN') %}
 	                <li><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
+	                <li><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
@@ -98,6 +99,7 @@
             <li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}">Новини</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_articles' %}class="active"{% endif %}><a href="{{ path('renovate_articles') }}">Статті</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_shares' %}class="active"{% endif %}><a href="{{ path('renovate_shares') }}">Акції</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}">Про нас</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}">Контакти</a></li>
           </ul>
@@ -111,15 +113,14 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container" ng-app="Renovate" >
 		{% block breadcrumb %}{% endblock %}
 	
 	  	{% block content %}{% endblock %}
-	  	<div class="row" style="margin-top:10px;">
+	  	<div class="row" style="margin-top:10px;" ng-controller="BlockPartnersController">
 			<div class="col-md-12">
 				<div class="partners center-block">
-				  <div><img src="{{ asset('web/bundles/renovate/images/epicentr.gif') }}"/></div>
-				  <div><img src="{{ asset('web/bundles/renovate/images/epicentr.gif') }}"/></div>
+				  <div ng-repeat="partner in partners"><a href="[[partner.url]]"><img src="{{ asset('[[partner.document.url]]') }}"/></a></div>
 				</div>
 			</div>
 		</div>
@@ -134,7 +135,14 @@
     <script src="{{ asset('web/bundles/renovate/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('web/bundles/renovate/js/slick.js') }}"></script>
     <script src="{{ asset('web/bundles/renovate/js/layout.js') }}"></script>
-    <script src="{{ asset('web/bundles/renovate/js/sliderPartnersInitialization.js') }}"></script>
+    
+    <!-- Angular -->
+    <script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
+	<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
+	<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
+	<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
+	<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/angularPartnersController.js') }}"></script>
     
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('web/bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
@@ -173,7 +181,18 @@
   			articlesCountNg: "{{ path('renovate_ng_articles_count') }}",
   			articlesAddNg: "{{ path('renovate_ng_articles_add') }}",
   			articlesRemoveNg: "{{ path('renovate_ng_articles_remove', {article_id: 0}) }}",
-  			articlesEditNg: "{{ path('renovate_ng_articles_edit', {article_id: 0}) }}"
+  			articlesEditNg: "{{ path('renovate_ng_articles_edit', {article_id: 0}) }}",
+  			sharesShowShare: "{{ path('renovate_shares_show_share', {share_name_translit: 0}) }}",
+  			sharesGetNg: "{{ path('renovate_ng_shares') }}",
+  			sharesCountNg: "{{ path('renovate_ng_shares_count') }}",
+  			sharesAddNg: "{{ path('renovate_ng_shares_add') }}",
+  			sharesRemoveNg: "{{ path('renovate_ng_shares_remove', {share_id: 0}) }}",
+  			sharesEditNg: "{{ path('renovate_ng_shares_edit', {share_id: 0}) }}",
+  			partnersGetNg: "{{ path('renovate_ng_partners') }}",
+  			partnersCountNg: "{{ path('renovate_ng_partners_count') }}",
+  			partnersAddNg: "{{ path('renovate_ng_partners_add') }}",
+  			partnersRemoveNg: "{{ path('renovate_ng_partners_remove', {partner_id: 0}) }}",
+  			partnersEditNg: "{{ path('renovate_ng_partners_edit', {partner_id: 0}) }}"
   			
   	}
   	</script>

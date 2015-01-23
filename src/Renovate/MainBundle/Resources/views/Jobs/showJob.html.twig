@@ -16,10 +16,7 @@
 {% block content %}
 	<div class="row">
 		<div class="col-md-12">
-			<blockquote>
-  				<h2>{{job.name}}</h2>
-  				<footer>{{job.created|date("d.m.Y")}} від <cite title="{{ job.user.name ~ ' ' ~ job.user.surname }}">{{ job.user.username }}</cite></footer>
-			</blockquote><hr>
+  				<h2>{{job.name}}</h2><hr>
 		</div>
 	</div>
 	<div class="row">

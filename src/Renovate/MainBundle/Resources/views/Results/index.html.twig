@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-<div ng-app="Renovate" ng-controller="ResultsController">
+<div ng-controller="ResultsController">
 	<div class="row">
 		<div class="col-md-4">
 			<form class="form-horizontal">
@@ -52,14 +52,14 @@
 			<div class="data-holder" ng-repeat="result in results">
 				<div class="data-header">
 					<div class="date">[[ result.created | date:"dd.MM.yyyy HH:mm:ss"]]</div>
-					<div class="title">[[result.name]]</div>
+					<div class="title"><a href="[[result.href]]">[[result.name]]</a></div>
 				</div>
 				<div class="data-social">
 					<div class="social-content">{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}<button ng-click="removeResult(result)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editResult(result)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
 				</div>
 				<div class="data-content">
 					<div class="col-md-3">
-						<img class="img-thumbnail" src="{{ asset('[[result.label.url || result.document.url]]') }}" alt="[[result.name]]">
+						<a href="[[result.href]]"><img class="img-thumbnail" src="{{ asset('[[result.label.url || result.document.url]]') }}" alt="[[result.name]]"></a>
 					</div>
 					<p class="text-justify" ng-bind-html="result.description | ellipsis:1100"></p></div>
 				<div class="data-footer">
@@ -185,11 +185,6 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularResultsController.js') }}"></script>
 <script>
 var TIMESTAMP = '{{ timestamp }}';

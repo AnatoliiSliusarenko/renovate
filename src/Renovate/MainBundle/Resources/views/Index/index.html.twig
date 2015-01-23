@@ -6,14 +6,13 @@
 {% endblock %}
 
 {% block content %}
-<div ng-app="Renovate">
 	<div class="row">
-		<div class="col-md-8" ng-controller="BlockResultsController">
+		<div class="col-md-8" ng-controller="MainSliderController">
 			<div class="results-for">
-			  <div ng-repeat="result in results"><img src="{{ asset('[[result.label.url || result.document.url]]') }}"/><div class="description"><h3>[[result.name]]</h3><p>[[result.description | ellipsis:500]]</p><a class="btn btn-gray btn-xs" href="[[result.href]]" ng-init="setItemDirectHref(result)">Детальніше</a></div></div>
+			  <div ng-repeat="item in items"><a href="[[item.href]]"><img src="{{ asset('[[item.label.url || item.document.url]]') }}"/></a><div class="description"><h3>[[item.name | ellipsis:40]]</h3><p ng-bind-html="item.description | ellipsis:400"></p><a class="btn btn-gray btn-xs" href="[[item.href]]">Детальніше</a></div></div>
 			</div>
 			<div class="results-nav">
-			  <div ng-repeat="result in results"><img src="{{ asset('[[result.label.url || result.document.url]]') }}"/></div>
+			  <div ng-repeat="item in items"><img src="{{ asset('[[item.label.url || item.document.url]]') }}"/></div>
 			</div>
 		</div>
 		<div class="col-md-4">
@@ -23,7 +22,7 @@
 				    <img src="{{ asset('[[newsp.label.url || newsp.document.url]]') }}" alt="[[newsp.name]]">
 				  </a>
 				  <div class="media-body">
-				    <p class="title">[[newsp.name | ellipsis:30]]</p>
+				    <p class="title"><a href="[[newsp.href]]">[[newsp.name | ellipsis:30]]</a></p>
 				    <p class="description" ng-bind-html="newsp.description | ellipsis:100"></p>
 				  </div>
 				</div>
@@ -38,20 +37,14 @@
 	<div class="row" style="margin-top:10px;" ng-controller="BlockJobsController">
 		<div class="col-md-12">
 			<div class="jobs-slider">
-				  <div ng-repeat="job in jobs"><div class="thumbnail"><a href="[[job.href]]" ng-init="setItemDirectHref(job)"><img src="{{ asset('[[job.label.url || job.document.url]]') }}" alt="[[job.name]]"></a><div class="caption"><h4>[[job.name]]</h4><p>[[job.description | ellipsis:300]]</p></div></div></div>
+				  <div ng-repeat="job in jobs"><div class="thumbnail"><a href="[[job.href]]" ng-init="setItemDirectHref(job)"><img src="{{ asset('[[job.label.url || job.document.url]]') }}" alt="[[job.name]]"></a><div class="caption"><h4><a href="[[job.href]]">[[job.name]]</a></h4><p ng-bind-html="job.description | ellipsis:300"></p></div></div></div>
 			</div>
 		</div>
 	</div>
-</div>
 {% endblock %} 
 
 {% block javascripts %}
-<script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularNewsController.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularJobsController.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angularResultsController.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularMainSliderController.js') }}"></script>
 {% endblock %}
