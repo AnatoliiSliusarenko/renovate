@@ -5,6 +5,7 @@ namespace Renovate\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * User
@@ -425,6 +426,26 @@ class User implements UserInterface,\Serializable
     	->orderBy('u.registered', 'DESC')
     	->setFirstResult($offset)
     	->setMaxResults($limit);
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($user){
+    			return $user->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
+    
+    public static function getWorkers($em, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:User")
+    	->createQueryBuilder('u');
+    
+    	$qb->select('u')
+		   ->join("u.roles", "r")
+		   ->where("r.role = 'ROLE_WORKER'")
+    	   ->orderBy('u.registered', 'DESC');
     
     	$result = $qb->getQuery()->getResult();
     

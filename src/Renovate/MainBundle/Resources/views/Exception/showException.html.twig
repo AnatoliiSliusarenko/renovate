@@ -11,6 +11,10 @@
 		  <p><em>Вказаний ресурс не знайдено!</em></p> 
 		  <p><strong>Будь-ласка перевірте введену адресу!</strong></p>
 		</div>
+		{% elseif exception.getStatusCode() == 403 %}
+		<div class="jumbotron bg-danger">
+		  <h1>Доступ заборонений(403)</h1>
+		</div>
 		{% elseif exception.getStatusCode() == 500 %}
 		<div class="jumbotron bg-danger">
 		  <h1>Помилка(500)</h1>

@@ -51,10 +51,6 @@ class SharesController extends Controller
     
     public function addShareNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
@@ -71,10 +67,6 @@ class SharesController extends Controller
     
     public function removeShareNgAction($share_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	
     	$response = new Response(json_encode(array("result" => Share::removeShareById($em, $share_id))));
@@ -86,10 +78,6 @@ class SharesController extends Controller
     
     public function editShareNgAction($share_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;

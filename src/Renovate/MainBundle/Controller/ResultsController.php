@@ -50,10 +50,6 @@ class ResultsController extends Controller
     
     public function addResultNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
@@ -70,10 +66,6 @@ class ResultsController extends Controller
     
     public function removeResultNgAction($result_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	
     	$response = new Response(json_encode(array("result" => Result::removeResultById($em, $result_id))));
@@ -85,10 +77,6 @@ class ResultsController extends Controller
     
     public function editResultNgAction($result_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;

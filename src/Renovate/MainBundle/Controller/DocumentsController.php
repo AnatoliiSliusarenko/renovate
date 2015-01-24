@@ -10,10 +10,6 @@ class DocumentsController extends Controller
 {
 	public function indexAction()
 	{
-		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-			throw $this->createAccessDeniedException();
-		}
-		
 		$em = $this->getDoctrine()->getManager();
 		 
 		$timestamp = time();
@@ -29,10 +25,6 @@ class DocumentsController extends Controller
 
 	public function uploadAction(Request $request)
 	{
-		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-			throw $this->createAccessDeniedException();
-		}
-		
 		if ($request->getMethod() == 'POST') {
 
 			$uploadedFile = $request->files->get('Filedata');
@@ -58,10 +50,6 @@ class DocumentsController extends Controller
 
 	public function getDocumentsNgAction(Request $request)
 	{
-		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-			throw $this->createAccessDeniedException();
-		}
-		
 		$em = $this->getDoctrine()->getManager();
 		 
 		$userid = $request->query->get('userid');

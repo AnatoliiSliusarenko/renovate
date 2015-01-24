@@ -56,6 +56,10 @@ renovate_ng_users:
     path: /ng/users
     defaults: { _controller: RenovateMainBundle:Users:getUsersNg}
     
+renovate_ng_workers:
+    path: /ng/workers
+    defaults: { _controller: RenovateMainBundle:Users:getWorkersNg}
+    
 renovate_ng_users_count:
     path: /ng/users/count
     defaults: { _controller: RenovateMainBundle:Users:getUsersCountNg}
@@ -227,3 +231,27 @@ renovate_ng_partners_remove:
 renovate_ng_partners_edit:
     path: /ng/partners/edit/{partner_id}
     defaults: { _controller: RenovateMainBundle:Partners:editPartnerNg}
+    
+renovate_repairs:
+    path: /repairs
+    defaults: { _controller: RenovateMainBundle:Repairs:index}
+    
+renovate_ng_repairs:
+    path: /ng/repairs
+    defaults: { _controller: RenovateMainBundle:Repairs:getRepairsNg}
+    
+renovate_ng_repairs_count:
+    path: /ng/repairs/count
+    defaults: { _controller: RenovateMainBundle:Repairs:getRepairsCountNg}
+    
+renovate_ng_repairs_add:
+    path: /ng/repairs/add
+    defaults: { _controller: RenovateMainBundle:Repairs:addRepairNg}
+    
+renovate_ng_repairs_remove:
+    path: /ng/repairs/remove/{repair_id}
+    defaults: { _controller: RenovateMainBundle:Repairs:removeRepairNg}
+    
+renovate_ng_repairs_edit:
+    path: /ng/repairs/edit/{repair_id}
+    defaults: { _controller: RenovateMainBundle:Repairs:editRepairNg}

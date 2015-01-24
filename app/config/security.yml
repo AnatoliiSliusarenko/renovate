@@ -28,8 +28,29 @@ security:
     access_control:
         - { path: ^/users*, roles: ROLE_ADMIN }
         - { path: ^/ng/users*, roles: ROLE_ADMIN }
+        - { path: ^/ng/workers*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/documents*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/documents*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/partners*, roles: ROLE_ADMIN }
+        - { path: ^/ng/partners, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/ng/partners*, roles: ROLE_ADMIN }
+        - { path: ^/repairs*, roles: [ROLE_ADMIN, ROLE_EDITOR, ROLE_WORKER] }
+        - { path: ^/ng/repairs, roles: [ROLE_ADMIN, ROLE_EDITOR, ROLE_WORKER] }
+        - { path: ^/ng/repairs/count, roles: [ROLE_ADMIN, ROLE_EDITOR, ROLE_WORKER] }
+        - { path: ^/ng/repairs*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/articles/add, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/articles/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/articles/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/jobs/add, roles: ROLE_ADMIN }
+        - { path: ^/ng/jobs/remove*, roles: ROLE_ADMIN }
+        - { path: ^/ng/jobs/edit*, roles: ROLE_ADMIN }
+        - { path: ^/ng/news/add, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/news/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/news/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/results/add, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/results/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/results/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/shares/add, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/shares/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/shares/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

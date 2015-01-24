@@ -121,10 +121,6 @@ Renovate.controller('PartnersController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.documents = response.result;
-				$scope.documents.splice(0,0,{
-					id: null,
-					name: "--> не обрано <--"
-				});
 			}
 		})
 	}
@@ -189,10 +185,6 @@ Renovate.controller('PartnersController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.documents = response.result;
-				$scope.documents.splice(0,0,{
-					id: null,
-					name: "--> не обрано <--"
-				});
 			}
 		})
 	}
@@ -260,16 +252,23 @@ Renovate.controller('PartnersController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.partners = response.result;
+				
 				setTimeout(function(){
+					var maxWidth = 0;
+					_.each($('.partners > div > a > img'), function(img){
+						maxWidth+=img.clientWidth;
+					});
+					$('.partners').css('max-width',maxWidth+'px');
+					
 					$('.partners').slick({
 						slidesToShow: 1,
 						slidesToScroll: 1,
-						autoplay: true,
 						variableWidth: true,
-						centerMode: false,
-						centerPadding: '0px'
+						centerMode: (response.result.length == 1) ? false : true,
+						autoplay: true,
+						autoPlaySpeed: 2000
 					});
-				},100);
+				},200);
 			}
 		})
 	}

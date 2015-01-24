@@ -11,10 +11,6 @@ class IndexController extends Controller
 {
     public function indexAction(Request $request)
     {
-    	//$user = new User();
-    	//$encoder = $this->get('security.encoder_factory')->getEncoder($user);
-    	//$p = $encoder->encodePassword('12345','jhs%)dif67364b(-=wdfisy@bm3$4$$j&^*&*&%CJH!!@$KJHG');
-		
     	$session = $request->getSession();
     	 
     	//get the login error if there is one

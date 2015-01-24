@@ -57,6 +57,9 @@
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
 	                {% endif %}
+	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') or is_granted('ROLE_WORKER')) %}
+	                <li><a href="{{ path('renovate_repairs') }}">Ремонтні роботи</a></li>
+	                {% endif %}
 	                <li class="divider"></li>
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
 	              </ul>
@@ -156,6 +159,7 @@
   			jobsRemoveNg: "{{ path('renovate_ng_jobs_remove', {job_id: 0}) }}",
   			jobsEditNg: "{{ path('renovate_ng_jobs_edit', {job_id: 0}) }}",
   			usersGetNg: "{{ path('renovate_ng_users') }}",
+  			workersGetNg: "{{ path('renovate_ng_workers') }}",
   			usersCountNg: "{{ path('renovate_ng_users_count') }}",
   			usersAddNg: "{{ path('renovate_ng_users_add') }}",
   			usersRemoveNg: "{{ path('renovate_ng_users_remove', {user_id: 0}) }}",
@@ -192,7 +196,12 @@
   			partnersCountNg: "{{ path('renovate_ng_partners_count') }}",
   			partnersAddNg: "{{ path('renovate_ng_partners_add') }}",
   			partnersRemoveNg: "{{ path('renovate_ng_partners_remove', {partner_id: 0}) }}",
-  			partnersEditNg: "{{ path('renovate_ng_partners_edit', {partner_id: 0}) }}"
+  			partnersEditNg: "{{ path('renovate_ng_partners_edit', {partner_id: 0}) }}",
+  			repairsGetNg: "{{ path('renovate_ng_repairs') }}",
+  			repairsCountNg: "{{ path('renovate_ng_repairs_count') }}",
+  			repairsAddNg: "{{ path('renovate_ng_repairs_add') }}",
+  			repairsRemoveNg: "{{ path('renovate_ng_repairs_remove', {repair_id: 0}) }}",
+  			repairsEditNg: "{{ path('renovate_ng_repairs_edit', {repair_id: 0}) }}"
   			
   	}
   	</script>

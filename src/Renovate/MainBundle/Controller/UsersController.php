@@ -11,19 +11,11 @@ class UsersController extends Controller
 {
     public function indexAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	return $this->render('RenovateMainBundle:Users:index.html.twig');
     }
     
     public function getUsersNgAction(Request $request)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$offset = ($request->query->get('offset')) ? $request->query->get('offset') : 0 ;
     	$limit = ($request->query->get('limit')) ? $request->query->get('limit') : 20 ;
@@ -34,12 +26,18 @@ class UsersController extends Controller
     	return $response;
     }
     
+    public function getWorkersNgAction(Request $request)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$response = new Response(json_encode(array("result" => User::getWorkers($em, true))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
     public function getUsersCountNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	 
     	$response = new Response(json_encode(array("result" => User::getusersCount($em))));
@@ -51,10 +49,6 @@ class UsersController extends Controller
     
     public function addUserNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$ef = $this->get('security.encoder_factory');
     	$data = json_decode(file_get_contents("php://input"));
@@ -71,10 +65,6 @@ class UsersController extends Controller
     
     public function removeUserNgAction($user_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	
     	$response = new Response(json_encode(array("result" => User::removeUserById($em, $user_id))));
@@ -86,10 +76,6 @@ class UsersController extends Controller
     
     public function editUserNgAction($user_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$ef = $this->get('security.encoder_factory');
     	$data = json_decode(file_get_contents("php://input"));

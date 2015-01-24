@@ -1,3 +1,10 @@
+/* Datepicker */
+table {
+	outline: none;
+}
+.datepicker {
+	width: 150px;
+}
 /* Block Jobs */
 .jobs-slider .thumbnail a{
 	display: block;
@@ -211,7 +218,7 @@
 }
 
 .partners {
-	width: 280px;
+	width: auto;
 }
 
 .partners .slick-slide {

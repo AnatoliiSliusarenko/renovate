@@ -51,10 +51,6 @@ class JobsController extends Controller
     
     public function addJobNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
@@ -71,10 +67,6 @@ class JobsController extends Controller
     
     public function removeJobNgAction($job_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	
     	$response = new Response(json_encode(array("result" => Job::removeJobById($em, $job_id))));
@@ -86,10 +78,6 @@ class JobsController extends Controller
     
     public function editJobNgAction($job_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;

@@ -50,10 +50,6 @@ class NewsController extends Controller
     
     public function addNewsNgAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
@@ -70,10 +66,6 @@ class NewsController extends Controller
     
     public function removeNewsNgAction($news_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	
     	$response = new Response(json_encode(array("result" => News::removeNewsById($em, $news_id))));
@@ -85,10 +77,6 @@ class NewsController extends Controller
     
     public function editNewsNgAction($news_id)
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN') && false === $this->get('security.context')->isGranted('ROLE_EDITOR')) {
-    		throw $this->createAccessDeniedException();
-    	}
-    	
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
