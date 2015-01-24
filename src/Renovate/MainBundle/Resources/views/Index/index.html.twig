@@ -37,7 +37,7 @@
 	<div class="row" style="margin-top:10px;" ng-controller="BlockJobsController">
 		<div class="col-md-12">
 			<div class="jobs-slider">
-				  <div ng-repeat="job in jobs"><div class="thumbnail"><a href="[[job.href]]" ng-init="setItemDirectHref(job)"><img src="{{ asset('[[job.label.url || job.document.url]]') }}" alt="[[job.name]]"></a><div class="caption"><h4><a href="[[job.href]]">[[job.name]]</a></h4><p ng-bind-html="job.description | ellipsis:300"></p></div></div></div>
+				  <div ng-repeat="job in jobs"><div class="thumbnail"><a href="[[job.href]]" ng-init="setItemDirectHref(job)"><img src="{{ asset('[[job.label.url || job.document.url]]') }}" alt="[[job.name]]"></a><div class="caption"><h4><a href="[[job.href]]">[[job.name]]</a></h4><p ng-bind-html="job.description | ellipsis:280"></p></div></div></div>
 			</div>
 		</div>
 	</div>
