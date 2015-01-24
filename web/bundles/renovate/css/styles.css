@@ -315,7 +315,7 @@ div.description h3{
 
 @media (max-width: 768px) {
 	div.description p{
-		font-size: 6px;
+		font-size: 7px;
 		line-height: 5px;
 		padding: 3px;
 	}
