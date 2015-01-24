@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  	<title>RENOVATE | {% block title %}Layout{% endblock %}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    {% block description %}<meta name="description" content="Ми створили ремонтно-обслуговуючу компанію європейського зразка, на даний момент йдуть завершальні роботи по облаштуванню центрального офісу та створенню сайту. - Ми будемо приймати на баланс ОСББ та допомагати іншим будинкам відходити від ЖЕКів. - Ми маючи непоганий статуний капітал, зможемо не лише перебирати заборгованість будинку на себе, та виконати реструктуризацію боргу, але подавати на ЖЕК в суд за невиконання його обов`язків.">{% endblock %}
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('web/bundles/renovate/images/logo_renovate.png') }}">
 
-    <title>RENOVATE | {% block title %}Layout{% endblock %}</title>
+    
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('web/bundles/renovate/css/bootstrap.css') }}" rel="stylesheet">
