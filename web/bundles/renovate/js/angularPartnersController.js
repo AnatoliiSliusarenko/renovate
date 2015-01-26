@@ -268,7 +268,7 @@ Renovate.controller('PartnersController', function($scope,$http,$modal){
 						autoplay: true,
 						autoPlaySpeed: 2000
 					});
-				},200);
+				},300);
 			}
 		})
 	}

@@ -49,7 +49,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="data-holder" ng-repeat="article in articles">
+			<div class="data-holder" ng-repeat="article in articles" ng-cloak>
 				<div class="data-header">
 					<div class="date">[[ article.created | date:"dd.MM.yyyy HH:mm:ss"]]</div>
 					<div class="title"><a href="[[article.href]]">[[article.name]]</a></div>

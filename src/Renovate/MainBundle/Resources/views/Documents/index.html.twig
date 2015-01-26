@@ -22,7 +22,7 @@
 		</div>
 	</div>
 	<div id="documents" class="row">
-		<div class="col-sm-6 col-md-4" ng-repeat="document in documents">
+		<div class="col-sm-6 col-md-4" ng-repeat="document in documents" ng-cloak>
 			<div class="thumbnail">
       			<a href="{{ asset('[[document.url]]') }}" download><img src="{{ asset('[[document.url]]') }}" alt="[[document.name]]"></a>
       			<div class="caption">

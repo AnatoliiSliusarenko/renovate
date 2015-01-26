@@ -64,7 +64,7 @@
 			        </tr>
       			</thead>
       			<tbody>
-			        <tr ng-repeat="user in users">
+			        <tr ng-repeat="user in users" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td>[[user.username]]</td>
 			          <td>[[user.name]]</td>

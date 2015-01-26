@@ -63,7 +63,7 @@
 			        </tr>
       			</thead>
       			<tbody>
-			        <tr ng-repeat="partner in partners">
+			        <tr ng-repeat="partner in partners" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td>[[partner.name]]</td>
 			          <td>[[partner.document.name]]</td>

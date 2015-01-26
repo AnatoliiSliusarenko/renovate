@@ -257,7 +257,7 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	function getNews()
 	{
 		var offset = 0;
-		var limit = 5;
+		var limit = 9;
 		$http({
 			method: "GET", 
 			url: $scope.urlsNewsGetNg,

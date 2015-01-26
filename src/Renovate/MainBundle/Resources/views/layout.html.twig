@@ -117,14 +117,14 @@
       </div>
     </nav>
 
-    <div class="container" ng-app="Renovate" >
+    <div class="container" ng-app="Renovate">
 		{% block breadcrumb %}{% endblock %}
 	
 	  	{% block content %}{% endblock %}
 	  	<div class="row" style="margin-top:10px;" ng-controller="BlockPartnersController">
 			<div class="col-md-12">
 				<div class="partners center-block">
-				  <div ng-repeat="partner in partners"><a href="[[partner.url]]"><img src="{{ asset('[[partner.document.url]]') }}"/></a></div>
+				  <div ng-repeat="partner in partners" ng-cloak><a href="[[partner.url]]"><img src="{{ asset('[[partner.document.url]]') }}"/></a></div>
 				</div>
 			</div>
 		</div>

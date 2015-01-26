@@ -87,7 +87,7 @@
 			        </tr>
       			</thead>
       			<tbody>
-			        <tr ng-repeat="repair in repairs">
+			        <tr ng-repeat="repair in repairs" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td>[[repair.description]]</td>
 			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
@@ -106,7 +106,7 @@
       				<tr class="success">
       					<td><strong>#</strong></td>
       					<td colspan="[[isAdmin ? '4' : '2']]"><strong>Загальна сума</strong></td>
-      					<td colspan="2"><strong>[[totalPrice]] грн.</strong></td>
+      					<td colspan="2"><strong ng-cloak>[[totalPrice]] грн.</strong></td>
       				</tr>
       			<tfoot>
       				
