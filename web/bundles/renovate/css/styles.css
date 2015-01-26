@@ -500,13 +500,13 @@ div.description h3{
 
 @media (max-width: 768px) {
 	.data-header .date {
-		font-size: 11px;
+		font-size: 10px;
 	}
 	.data-header .title {
 		font-size: 14px;
 	}
 	.data-social {
-		width:279px;
+		width:265px;
 	}
 }
 
