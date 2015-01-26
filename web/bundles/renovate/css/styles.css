@@ -1,7 +1,16 @@
+/* Tables Mobile View */
+@media (max-width: 768px) {
+	table.table-mobile {
+		overflow-x: auto;
+		display: block;
+	}
+}
+
 /* Datepicker */
 table {
 	outline: none;
 }
+
 .datepicker {
 	width: 150px;
 }
