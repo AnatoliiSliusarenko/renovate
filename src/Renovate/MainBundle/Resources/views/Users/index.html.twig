@@ -64,6 +64,11 @@
 			        </tr>
       			</thead>
       			<tbody>
+      				<tr class="splash" ng-cloak>
+	      				<td colspan="8">
+							<div class="image center-block"></div>
+						</td>
+      				</tr>
 			        <tr ng-repeat="user in users" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td>[[user.username]]</td>

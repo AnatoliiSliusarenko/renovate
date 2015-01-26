@@ -10,6 +10,9 @@
 		<div class="col-md-8">
 			<div class="row">
 				<div class="col-md-12" ng-controller="MainSliderController">
+					<div class="splash" ng-cloak>
+						<div class="image center-block"></div>
+					</div>
 					<div class="results-for">
 					  <div ng-repeat="item in items" ng-cloak><a href="[[item.href]]"><img src="{{ asset('[[item.label.url || item.document.url]]') }}"/></a><div class="description"><h3>[[item.name | ellipsis:40]]</h3><p ng-bind-html="item.description | ellipsis:400"></p><a class="btn btn-gray btn-xs" href="[[item.href]]">Детальніше</a></div></div>
 					</div>
@@ -26,6 +29,9 @@
 		</div>
 		<div class="col-md-4">
 			<div id="block-last-news" ng-controller="BlockLastNewsController">
+				<div class="splash" ng-cloak>
+					<div class="image center-block"></div>
+				</div>
 				<div class="media" ng-repeat="newsp in news" ng-cloak>
 				  <a class="media-left" href="[[newsp.href]]" ng-init="setItemDirectHref(newsp)">
 				    <img src="{{ asset('[[newsp.label.url || newsp.document.url]]') }}" alt="[[newsp.name]]">
@@ -40,6 +46,9 @@
 	</div>
 	<div class="row" ng-controller="BlockJobsController">
 		<div class="col-md-12">
+			<div class="splash" ng-cloak>
+				<div class="image center-block"></div>
+			</div>
 			<div class="jobs-slider center-block">
 				  <div ng-repeat="job in jobs" ng-cloak><div class="thumbnail"><a href="[[job.href]]" ng-init="setItemDirectHref(job)"><img src="{{ asset('[[job.label.url || job.document.url]]') }}" alt="[[job.name]]"></a><div class="caption"><h4><a href="[[job.href]]">[[job.name]]</a></h4><p ng-bind-html="job.description | ellipsis:280"></p></div></div></div>
 			</div>

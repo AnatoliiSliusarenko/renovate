@@ -123,6 +123,9 @@
 	  	{% block content %}{% endblock %}
 	  	<div class="row" style="margin-top:10px;" ng-controller="BlockPartnersController">
 			<div class="col-md-12">
+				<div class="splash" ng-cloak>
+					<div class="image center-block"></div>
+				</div>
 				<div class="partners center-block">
 				  <div ng-repeat="partner in partners" ng-cloak><a href="[[partner.url]]"><img src="{{ asset('[[partner.document.url]]') }}"/></a></div>
 				</div>
