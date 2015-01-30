@@ -31,7 +31,7 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
-		<div class="tariffs">
+		<div class="tariffs center-block" ng-controller="TariffsController">
 			<div class="header">
 				<div class="gen">ТАБЛИЦЯ ТАРИФІВ</div>
 				<div class="min">МІНІМАЛЬНИЙ</div>
@@ -49,9 +49,9 @@
 					<div class="col-11"><a href="">Для ОСББ</a></div>
 					<div class="col-12"><a href="">Для багатоквартирних будинків</a></div>
 				</div>
-				<div class="col-2"><button>АКТИВУВАТИ</button></div>
-				<div class="col-3"><button>АКТИВУВАТИ</button></div>
-				<div class="col-4"><button>АКТИВУВАТИ</button></div>
+				<div class="col-2"><button tooltip="[[tooltipMessage]]"  tooltip-trigger="click" tooltip-placement="top">АКТИВУВАТИ</button></div>
+				<div class="col-3"><button tooltip="[[tooltipMessage]]"  tooltip-trigger="click" tooltip-placement="top">АКТИВУВАТИ</button></div>
+				<div class="col-4"><button tooltip="[[tooltipMessage]]"  tooltip-trigger="click" tooltip-placement="top">АКТИВУВАТИ</button></div>
 			</div>
 			<div class="row-3">
 				<div class="col-1">
@@ -64,9 +64,9 @@
 			</div>
 			<div class="row-4">
 				<div class="col-1"><a href="">Для державних установ</a></div>
-				<div class="col-2">При оплаті на рік економія 0,08 грн</div>
-				<div class="col-3">При оплаті на рік економія 0,12 грн</div>
-				<div class="col-4">При оплаті на рік економія 0,16 грн</div>
+				<div class="col-2">При оплаті на рік економія <p>0,08 грн</p></div>
+				<div class="col-3">При оплаті на рік економія <p>0,12 грн</p></div>
+				<div class="col-4">При оплаті на рік економія <p>0,16 грн</p></div>
 			</div>
 			<div class="row-5">
 				<div class="col-1">&nbsp;</div>
@@ -92,4 +92,8 @@
 {% endblock %} 
 
 {% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/angularTariffsController.js') }}"></script>
+<script>
+var USER = '{{ app.user ? app.user.getInArray() | json_encode() | raw : "undefined" }}';
+</script>
 {% endblock %}

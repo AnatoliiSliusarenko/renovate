@@ -265,8 +265,8 @@ Renovate.controller('PartnersController', function($scope,$http,$modal){
 						slidesToScroll: 1,
 						variableWidth: true,
 						centerMode: (response.result.length == 1) ? false : true,
-						autoplay: true,
-						autoPlaySpeed: 2000
+						//autoplay: true,
+						//autoPlaySpeed: 2000
 					});
 				},300);
 			}

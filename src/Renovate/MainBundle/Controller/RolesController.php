@@ -18,4 +18,14 @@ class RolesController extends Controller
     	 
     	return $response;
     }
+    
+    public function getClientRolesNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	 
+    	$response = new Response(json_encode(array("result" => Role::getClientRoles($em, true))));
+    	$response->headers->set('Content-Type', 'application/json');
+    	
+    	return $response;
+    }
 }

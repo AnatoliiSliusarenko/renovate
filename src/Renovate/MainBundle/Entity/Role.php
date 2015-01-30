@@ -193,4 +193,24 @@ class Role implements RoleInterface
     		}, $result);
     	}else return $result;
     }
+    
+    public static function getClientRoles($em, $inArray = false)
+    {
+    	$clientRoles = array('ROLE_CLIENT_OSBB','ROLE_CLIENT_BUILDING','ROLE_CLIENT_PRIVATE_HOUSE','ROLE_CLIENT_PRIVATE_INSTITUTION','ROLE_CLIENT_STATE_INSTITUTION');
+    	
+    	$qb = $em->getRepository("RenovateMainBundle:Role")
+    	->createQueryBuilder('r');
+    
+    	$qb->select('r')
+    	   ->where($qb->expr()->in('r.role', $clientRoles));
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($role){
+    			return $role->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
 }

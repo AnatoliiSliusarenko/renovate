@@ -80,6 +80,10 @@ renovate_ng_roles:
     path: /ng/roles
     defaults: { _controller: RenovateMainBundle:Roles:getRolesNg}
     
+renovate_ng_roles_client:
+    path: /ng/roles/client
+    defaults: { _controller: RenovateMainBundle:Roles:getClientRolesNg}
+    
 renovate_tariffs:
     path: /tariffs
     defaults: { _controller: RenovateMainBundle:Tariffs:index}
