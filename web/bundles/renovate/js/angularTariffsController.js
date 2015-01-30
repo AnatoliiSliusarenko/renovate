@@ -39,7 +39,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		if (USER == 'undefined')
 		{
 			$scope.user = null;
-			$scope.tooltipMessage = "Нажалт Ви не є зареєстровані в системі компанії RENOVATE. Будь-ласка зв`яжіться з нашим офісом.";
+			$scope.tooltipMessage = "Нажаль Ви не є зареєстровані в системі компанії RENOVATE. Будь-ласка зв`яжіться з нашим офісом.";
 		}else
 		{
 			$scope.user = JSON.parse(USER);
