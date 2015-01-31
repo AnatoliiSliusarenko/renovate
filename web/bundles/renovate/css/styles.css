@@ -99,27 +99,31 @@ table {
 
 /* header, footer, user panel */
 .header-background {
-	top: 0px;
 	width: 100%;
 	height: auto;
+	background-image: url("../images/header_renovate.jpg");
+	background-repeat:no-repeat;
+	background-position:100% 100%;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    vertical-align: middle;
 }
 
-.header-background img {
-	width: 100%;
-	height: auto;
-	display: block;
-}
 .header-background a {
 	display: block;
-	position: absolute;
+	position: relative;
 	width: 250px;
 	height:auto;
-	top: 45px;
-	left: 15%;;
+	left: 15%;
+	padding-top: 17px;
+	padding-bottom: 17px;
 }
 
 .header-background a > img {
 	width: 100%;
+	max-width: 250px;
 	height: auto;
 }
 

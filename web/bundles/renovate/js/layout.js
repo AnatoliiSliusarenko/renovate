@@ -1,7 +1,7 @@
 $(document).ready(function(){
   		var $navbar = $("#main-navbar");
   		$(window).scroll(function(){
-  			var headerHeight = $("div.header-background > img").height();
+  			var headerHeight = $("div.header-background").height();
   			if ( $(this).scrollTop() > headerHeight ){
   		    	$navbar.removeClass("default").addClass("navbar-fixed-top");
   			} else if($(this).scrollTop() <= headerHeight && $navbar.hasClass("navbar-fixed-top")) {
