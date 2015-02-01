@@ -2,6 +2,8 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	console.log('RepairsController loaded!');
 	
 	$scope.repairs = [];
+	$scope.repairsSelectedIds = [];
+	$scope.repairsSelectedAll = false;
 	$scope.workers = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
@@ -10,13 +12,15 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	$scope.filter = {
 			from: null,
 			to:null,
-			worker: null
+			worker: null,
+			calculate: 'all'
 	}
 	$scope.totalPrice = 0;
 	$scope.isAdmin = false;
 	
 	$scope.urlsRepairsGetNg = URLS.repairsGetNg;
 	$scope.urlsRepairsCountNg = URLS.repairsCountNg;
+	$scope.urlsRepairsPaidSetNg = URLS.repairsPaidSetNg;
 	$scope.urlsRepairsRemoveNg = URLS.repairsRemoveNg;
 	$scope.urlsWorkersGetNg = URLS.workersGetNg;
 	
@@ -56,10 +60,30 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	}
 	Initialize();
 	
+	$scope.repairsSelectAll = function(){
+		if (!$scope.repairsSelectedAll){
+			$scope.repairsSelectedIds = _.map($scope.repairs, function(repair){return repair.id;});
+			$scope.repairsSelectedAll = true;
+		}else
+		{
+			$scope.repairsSelectedIds = [];
+			$scope.repairsSelectedAll = false;
+		}
+	}
+	
 	function calculateTotalPrice(){
 		$scope.totalPrice = 0;
 		_.each($scope.repairs, function(repair){
-			$scope.totalPrice += repair.price;
+			if ($scope.filter.calculate == 'all'){
+				$scope.totalPrice += repair.price;
+			}
+			else
+			if (($scope.filter.calculate == 'paid') && (repair.paid == true)){
+				$scope.totalPrice += repair.price;
+			}else
+			if (($scope.filter.calculate == 'notpaid') && (repair.paid == false)){
+				$scope.totalPrice += repair.price;
+			}
 		});
 	}
 	
@@ -76,6 +100,27 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 
 	    $scope.openedTo = true;
 	};
+	
+	$scope.isSelected = function(id){
+		return _.find($scope.repairsSelectedIds, function(repairid){
+			return repairid == id;
+		})
+	}
+	
+	$scope.selectItem = function(id){
+		if (!$scope.isAdmin) return false;
+		var selected = $scope.isSelected(id);
+		if (selected) {
+			var index = _.indexOf($scope.repairsSelectedIds, id);
+			$scope.repairsSelectedIds.splice(index, 1);
+			$scope.repairsSelectedAll = false;
+		}else
+		{
+			$scope.repairsSelectedIds.push(id);
+			if ($scope.repairsSelectedIds.length == $scope.repairs.length)
+				$scope.repairsSelectedAll = true;
+		}
+	}
 	
 	function getWorkers()
 	{
@@ -128,6 +173,22 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 		})
 	}
 	
+	$scope.setPaid = function(paid){
+		if (!$scope.isAdmin) return false;
+		$http({
+			method: "POST", 
+			url: $scope.urlsRepairsPaidSetNg,
+			data: {ids: $scope.repairsSelectedIds, paid: paid}
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				getRepairs();
+			}
+		})
+	}
+	
 	$scope.addRepair = function(){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addRepair.html',
@@ -145,7 +206,8 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 		});
 	}
 	
-	$scope.editRepair = function(repair){
+	$scope.editRepair = function(repair, event){
+		event.stopPropagation();
 		var modalInstance = $modal.open({
 		      templateUrl: 'editRepair.html',
 		      controller: 'EditRepairController',
@@ -163,7 +225,8 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 		});
 	}
 	
-	$scope.removeRepair = function(repair){
+	$scope.removeRepair = function(repair, event){
+		event.stopPropagation();
 		var remove = confirm("Дійсно бажаєте видалити: " + repair.description + " ?");
 		if (!remove) return;
 		

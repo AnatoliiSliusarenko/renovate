@@ -55,6 +55,12 @@ class Repair
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
+    
+    /**
+     * @var boolean
+     * @ORM\Column(name="paid", type="boolean")
+     */
+    private $paid;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="repairsCreated")
@@ -196,6 +202,29 @@ class Repair
     }
     
     /**
+     * Set paid
+     *
+     * @param boolean $paid
+     * @return Repair
+     */
+    public function setPaid($paid)
+    {
+    	$this->paid = $paid;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get paid
+     *
+     * @return boolean
+     */
+    public function getPaid()
+    {
+    	return $this->paid;
+    }
+    
+    /**
      * Set user
      *
      * @param \Renovate\MainBundle\Entity\User $user
@@ -250,6 +279,7 @@ class Repair
     			'description' => $this->getDescription(),
     			'price' => $this->getPrice(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
+    			'paid' => $this->getPaid(),
     			'user' => $this->getUser()->getInArray(),
     			'worker' => $this->getWorker()->getInArray()
     	);
@@ -343,6 +373,19 @@ class Repair
     	$total = $qb->getQuery()->getSingleScalarResult();
     	
     	return $total;
+    }
+    
+    public static function setRepairsPaid($em, $parameters)
+    {
+    	foreach ($parameters->ids as $repairid){
+    		$repair = $em->getRepository("RenovateMainBundle:Repair")->find($repairid);
+    		if ($repair != null){
+    			$repair->setPaid($parameters->paid);
+    			$em->persist($repair);
+    		}
+    	}
+    	$em->flush();
+    	return true;
     }
     
     public static function addRepair($em, \Renovate\MainBundle\Entity\User $user, $parameters)

@@ -69,6 +69,11 @@ table {
 	line-height: 12px;
 }
 
+/* Repairs */
+table.repairs tbody tr:hover {
+	cursor: pointer;
+}
+
 /* Image Thumbnail*/
 #documents .thumbnail:hover {
 	border: 1px solid black;

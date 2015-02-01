@@ -15,7 +15,7 @@
 {% block content %}
 <div ng-controller="RepairsController">
 	<div class="row">
-		<div class="col-md-10">
+		<div class="col-md-12">
 				<form class="form-inline">
 				  <div class="form-group">
 				    <label for="itemsPerPage">На сторінці</label>
@@ -53,11 +53,25 @@
 				  		<div class="input-group-addon" ng-click="openTo($event)"><i class="glyphicon glyphicon-calendar"></i></div>
 				  	</div>
 				  </div>
+				  	<div class="form-group">
+				  		Рахувати
+					  	<label class="radio-inline">
+						  <input ng-model="filter.calculate" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="all"> усі
+						</label>
+						<label class="radio-inline">
+						  <input ng-model="filter.calculate" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="paid"> розраховані
+						</label>
+						<label class="radio-inline">
+						  <input ng-model="filter.calculate" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="notpaid"> не розраховані
+						</label>
+					</div>
 				</form>
 		</div>
 		{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
-		<div class="col-md-2">
+		<div class="col-md-12" style="margin-top: 20px;">
 			<button ng-click="addRepair()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+			<button ng-show="repairsSelectedIds.length > 0" ng-click="setPaid(true)" type="button" class="btn btn-danger">Розраховано&nbsp;<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></button>
+			<button ng-show="repairsSelectedIds.length > 0" ng-click="setPaid(false)" type="button" class="btn btn-success">Не розраховано&nbsp;<span class="glyphicon glyphicon-usd" aria-hidden="true"></span></button>
 		</div>
 		{% endif %}
 	</div>
@@ -68,9 +82,12 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<table class="table table-hover table-mobile">
+			<table class="table table-hover table-mobile" ng-class="{repairs: isAdmin}">
       			<thead>
-			        <tr class="active">
+			        <tr class="info">
+			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+			          <th><input type="checkbox" ng-checked="repairsSelectedAll" ng-click="repairsSelectAll()"> Усі</th>
+			          {% endif %}
 			          <th>#</th>
 			          <th>Опис</th>
 			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
@@ -92,7 +109,10 @@
 							<div class="image center-block"></div>
 						</td>
       				</tr>
-			        <tr ng-repeat="repair in repairs" ng-cloak>
+			        <tr ng-click="selectItem(repair.id)" ng-class="{success: !repair.paid, active: repair.paid}" ng-repeat="repair in repairs" ng-cloak>
+			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+			          <th><input type="checkbox" ng-checked="isSelected(repair.id)"></th>
+			          {% endif %}
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td>[[repair.description]]</td>
 			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
@@ -104,17 +124,17 @@
 			          {% endif %}
 			          <td>[[repair.price]]</td>
 			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
-			          <td><button ng-click="removeRepair(repair)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editRepair(repair)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			          <td><button ng-click="removeRepair(repair, $event)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editRepair(repair, $event)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			          {% endif %}
 			        </tr>
       			</tbody>
-      				<tr class="success">
+      			<tfoot>
+      				<tr class="danger">
+      					<th ng-show="isAdmin"></th>
       					<td><strong>#</strong></td>
       					<td colspan="[[isAdmin ? '4' : '2']]"><strong>Загальна сума</strong></td>
       					<td colspan="2"><strong ng-cloak>[[totalPrice]] грн.</strong></td>
       				</tr>
-      			<tfoot>
-      				
       			</tfoot>
     		</table>
 		</div>

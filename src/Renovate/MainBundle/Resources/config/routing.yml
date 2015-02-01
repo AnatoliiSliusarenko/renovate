@@ -248,6 +248,10 @@ renovate_ng_repairs_count:
     path: /ng/repairs/count
     defaults: { _controller: RenovateMainBundle:Repairs:getRepairsCountNg}
     
+renovate_ng_repairs_paid_set:
+    path: /ng/repairs/paid/set
+    defaults: { _controller: RenovateMainBundle:Repairs:setRepairsPaidNg}
+    
 renovate_ng_repairs_add:
     path: /ng/repairs/add
     defaults: { _controller: RenovateMainBundle:Repairs:addRepairNg}

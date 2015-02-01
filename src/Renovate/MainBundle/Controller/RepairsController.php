@@ -34,6 +34,17 @@ class RepairsController extends Controller
     	return $response;
     }
     
+    public function setRepairsPaidNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = json_decode(file_get_contents("php://input"));
+    	$parameters = (object) $data;
+    	
+    	$response = new Response(json_encode(array("result" => Repair::setRepairsPaid($em, $parameters))));
+    	$response->headers->set('Content-Type', 'application/json');
+    	
+    	return $response;
+    }
     
     public function addRepairNgAction()
     {
