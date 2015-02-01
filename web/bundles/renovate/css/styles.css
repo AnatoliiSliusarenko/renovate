@@ -74,6 +74,14 @@ table.repairs tbody tr:hover {
 	cursor: pointer;
 }
 
+.green, .btn-green {
+	background-color: #7ac701 !important;
+}
+
+.gray, .btn-gray {
+	background-color: #bdbdbd !important;
+}
+
 /* Image Thumbnail*/
 #documents .thumbnail:hover {
 	border: 1px solid black;
