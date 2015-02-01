@@ -1,3 +1,10 @@
+/* Social Groups */
+#vk_groups {
+	width: 100% !important;
+}
+#vk_groups iframe {
+	width: 100%;
+}
 /* Tables Mobile View */
 @media (max-width: 768px) {
 	table.table-mobile {
@@ -269,8 +276,9 @@ tfoot td.price {
   .header-background{
   	display: none;
   }
-  .header-background img {
+  .header-background a {
 	height: 0;
+	padding: 0;
 }
   #user-navbar {
 	margin-bottom: 0px;

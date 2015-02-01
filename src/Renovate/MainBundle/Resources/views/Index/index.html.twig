@@ -3,6 +3,7 @@
 {% block title %}Головна{% endblock %}
 
 {% block head %}
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>
 {% endblock %}
 
 {% block content %}
@@ -28,18 +29,27 @@
 			</div>
 		</div>
 		<div class="col-md-4">
-			<div id="block-last-news" ng-controller="BlockLastNewsController">
-				<div class="splash" ng-cloak>
-					<div class="image center-block"></div>
+			<div class="row">
+				<div class="col-md-12">
+					<div id="block-last-news" ng-controller="BlockLastNewsController">
+						<div class="splash" ng-cloak>
+							<div class="image center-block"></div>
+						</div>
+						<div class="media" ng-repeat="newsp in news" ng-cloak>
+						  <a class="media-left" href="[[newsp.href]]" ng-init="setItemDirectHref(newsp)">
+						    <img src="{{ asset('[[newsp.label.url || newsp.document.url]]') }}" alt="[[newsp.name]]">
+						  </a>
+						  <div class="media-body">
+						    <p class="title"><a href="[[newsp.href]]">[[newsp.name | ellipsis:30]]</a></p>
+						    <p class="description" ng-bind-html="newsp.description | ellipsis:100"></p>
+						  </div>
+						</div>
+					</div>
 				</div>
-				<div class="media" ng-repeat="newsp in news" ng-cloak>
-				  <a class="media-left" href="[[newsp.href]]" ng-init="setItemDirectHref(newsp)">
-				    <img src="{{ asset('[[newsp.label.url || newsp.document.url]]') }}" alt="[[newsp.name]]">
-				  </a>
-				  <div class="media-body">
-				    <p class="title"><a href="[[newsp.href]]">[[newsp.name | ellipsis:30]]</a></p>
-				    <p class="description" ng-bind-html="newsp.description | ellipsis:100"></p>
-				  </div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div id="vk_groups"></div>
 				</div>
 			</div>
 		</div>
@@ -57,6 +67,7 @@
 {% endblock %} 
 
 {% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/vkWidget.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularNewsController.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularJobsController.js') }}"></script>
 <script src="{{ asset('web/bundles/renovate/js/angularMainSliderController.js') }}"></script>
