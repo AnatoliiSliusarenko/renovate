@@ -399,6 +399,7 @@ class Repair
     	$repair->setWorkerid($worker->getId());
     	$repair->setWorker($worker);
     	$repair->setCreated(new \DateTime());
+    	$repair->setPaid(false);
     	$repair->setPrice($parameters->price);
     	
     	$em->persist($repair);
