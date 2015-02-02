@@ -1,10 +1,33 @@
+/* Main Video */
+@media (max-width: 768px) {
+	#main_video {
+		height: 250px !important;
+	}
+}
+
 /* Social Groups */
 #vk_groups {
+	margin-top: 5px;
 	width: 100% !important;
+	height: 224px !important;
+	overflow-y: auto;
 }
 #vk_groups iframe {
 	width: 100%;
 }
+
+.fb-like-box {
+	width: 100% !important;
+}
+
+.fb-like-box span {
+	width: 100% !important;
+}
+
+.fb-like-box span iframe {
+	width: 100% !important;
+}
+
 /* Tables Mobile View */
 @media (max-width: 768px) {
 	table.table-mobile {

@@ -1,97 +1,143 @@
-Renovate.controller('NewsController', function($scope,$http,$modal){
-	console.log('NewsController loaded!');
+Renovate.controller('ServicesController', function($scope,$http,$modal){
+	console.log('ServicesController loaded!');
 	
-	$scope.news = [];
+	$scope.services = [];
+	$scope.clientRoles = [];
+	$scope.serviceCategories = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
 	$scope.itemsPerPage = 5;
 	
-	$scope.urlsNewsGetNg = URLS.newsGetNg;
-	$scope.urlsNewsShowNews = URLS.newsShowNews;
-	$scope.urlsNewsCountNg = URLS.newsCountNg;
-	$scope.urlsNewsRemoveNg = URLS.newsRemoveNg;
+	$scope.filter = {
+			role: null,
+			category: null,
+			type: null
+	}
+	
+	$scope.urlsServicesGetNg = URLS.servicesGetNg;
+	$scope.urlsServicesCountNg = URLS.servicesCountNg;
+	$scope.urlsRolesGetClientRolesNg = URLS.rolesGetClientRolesNg;
+	$scope.urlsServiceCategoriesGetAllNg = URLS.serviceCategoriesGetAllNg;
 	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
-		getNewsCount();
+		getServicesCount();
 	});
 	
 	$scope.$watch('currentPage', function(){
 		console.log("currentPage => ", $scope.currentPage);
-		getNews();
+		getServices();
 	});
 	
-	function getNews()
+	$scope.$watch('filter', function(){
+		console.log("filter => ", $scope.filter);
+		getServicesCount();
+	}, true);
+
+	
+	function getServiceCategories()
 	{
-		var offset = $scope.itemsPerPage*($scope.currentPage - 1);
-		var limit = $scope.itemsPerPage;
 		$http({
 			method: "GET", 
-			url: $scope.urlsNewsGetNg,
-			params: {offset: offset, limit: limit}
+			url: $scope.urlsServiceCategoriesGetAllNg
 			  })
 		.success(function(response){
-			console.log("news => ",response);
+			console.log(" serviceCategories => ",response);
 			if (response.result)
 			{
-				$scope.news = response.result;
+				$scope.serviceCategories = response.result;
+			}
+		})
+	}
+	getServiceCategories();
+	
+	function getClientRoles()
+	{
+		$http({
+			method: "GET", 
+			url: $scope.urlsRolesGetClientRolesNg
+			  })
+		.success(function(response){
+			console.log(" clientRoles => ",response);
+			if (response.result)
+			{
+				$scope.clientRoles = response.result;
+			}
+		})
+	}
+	getClientRoles();
+	
+	function getServices()
+	{
+		$scope.filter.offset = $scope.itemsPerPage*($scope.currentPage - 1);
+		$scope.filter.limit = $scope.itemsPerPage;
+		$http({
+			method: "GET", 
+			url: $scope.urlsServicesGetNg,
+			params: $scope.filter
+			  })
+		.success(function(response){
+			console.log("services => ",response);
+			if (response.result)
+			{
+				$scope.services = response.result;
 			}
 		})
 	}
 	
-	function getNewsCount()
+	function getServicesCount()
 	{
 		$http({
 			method: "GET", 
-			url: $scope.urlsNewsCountNg
+			url: $scope.urlsServicesCountNg
 			  })
 		.success(function(response){
 			console.log(response);
 			if (response.result)
 			{
 				$scope.totalItems = parseInt(response.result);
-				getNews();
+				getServices();
 			}
 		})
 	}
-	getNewsCount();
+	getServicesCount();
 	
-	$scope.addNews = function(){
+	$scope.addService = function(){
 		var modalInstance = $modal.open({
-		      templateUrl: 'addNews.html',
-		      controller: 'AddNewsController',
+		      templateUrl: 'addService.html',
+		      controller: 'AddServiceController',
 		      backdrop: "static"
 		});
 		
 		modalInstance.result.then(function (added) {
-		      if (added) getNewsCount();
+		      if (added) getServicesCount();
 		    }, function () {
 		      //bad
 		});
 	}
 	
-	$scope.editNews = function(newsp){
+	$scope.editJob = function(job){
 		var modalInstance = $modal.open({
-		      templateUrl: 'editNews.html',
-		      controller: 'EditNewsController',
+		      templateUrl: 'editJob.html',
+		      controller: 'EditJobController',
 		      backdrop: "static",
 		      resolve: {
-		    	  newsp: function(){return newsp;}
+		    	  job: function(){return job;}
 		      }
 		});
 		
 		modalInstance.result.then(function (edited) {
-		      if (edited) getNewsCount();
+		      if (edited) getJobsCount();
 		    }, function () {
 		      //bad
 		});
 	}
 	
-	$scope.removeNews = function(newsp){
-		var remove = confirm("Дійсно бажаєте видалити: " + newsp.name + " ?");
+	$scope.removeJob = function(job){
+		var remove = confirm("Дійсно бажаєте видалити: " + job.name + " ?");
 		if (!remove) return;
 		
-		var url = $scope.urlsNewsRemoveNg.replace('0', newsp.id);
+		var url = $scope.urlsJobsRemoveNg.replace('0', job.id);
 		
 		$http({
 			method: "GET", 
@@ -101,20 +147,15 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 			console.log(response);
 			if (response.result)
 			{
-				getNewsCount();
+				getJobsCount();
 			}
 		});
 	}
-	
-	$scope.setItemDirectHref = function(newsp){
-		var href = $scope.urlsNewsShowNews.replace('0', newsp.nameTranslit);
-		newsp.href = href;
-	}
 })
-.controller('AddNewsController', function($scope,$http,$modalInstance){
-	console.log('AddNewsController loaded!');
+.controller('AddServiceController', function($scope,$http,$modalInstance){
+	console.log('AddServiceController loaded!');
 	$scope.urlsDocumentsGetNg = URLS.documentsGetNg;
-	$scope.urlsNewsAddNg = URLS.newsAddNg;
+	$scope.urlsJobsAddNg = URLS.jobsAddNg;
 	$scope.documents = [];
 	
 	function getDocuments(){
@@ -154,14 +195,14 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	    });
 	}, 1000);
 	
-	function addNews(){
+	function addJob(){
 		$http({
 			method: "POST", 
-			url: $scope.urlsNewsAddNg,
-			data: $scope.news
+			url: $scope.urlsJobsAddNg,
+			data: $scope.job
 			  })
 		.success(function(response){
-			console.log("added news => ", response);
+			console.log("added job => ", response);
 			if (response.result)
 			{
 				$modalInstance.close(response.result);
@@ -170,20 +211,20 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	}
 	
 	$scope.ok = function () {
-		if (!$scope.newsForm.$valid) return;
-		addNews();
+		if (!$scope.jobForm.$valid) return;
+		addJob();
 	};
 
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditNewsController', function($scope,$http,$modalInstance,newsp){
-	console.log('EditNewsController loaded!');
+.controller('EditJobController', function($scope,$http,$modalInstance,job){
+	console.log('EditJobController loaded!');
 	$scope.urlsDocumentsGetNg = URLS.documentsGetNg;
-	$scope.urlsNewsEditNg = URLS.newsEditNg;
+	$scope.urlsJobsEditNg = URLS.jobsEditNg;
 	$scope.documents = [];
-	$scope.news = newsp;
+	$scope.job = job;
 	
 	function getDocuments(){
 		$http({
@@ -222,16 +263,16 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	    });
 	}, 1000);
 	
-	function editNews(){
-		var url = $scope.urlsNewsEditNg.replace('0', $scope.news.id);
+	function editJob(){
+		var url = $scope.urlsJobsEditNg.replace('0', $scope.job.id);
 		
 		$http({
 			method: "POST", 
 			url: url,
-			data: $scope.news
+			data: $scope.job
 			  })
 		.success(function(response){
-			console.log("edited news => ", response);
+			console.log("edited job => ", response);
 			if (response.result)
 			{
 				$modalInstance.close(response.result);
@@ -240,41 +281,52 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	}
 	
 	$scope.ok = function () {
-		if (!$scope.newsForm.$valid) return;
-		editNews();
+		if (!$scope.jobForm.$valid) return;
+		editJob();
 	};
 
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('BlockLastNewsController', function($scope,$http){
-	console.log('BlockLastNewsController loaded!');
-	$scope.urlsNewsGetNg = URLS.newsGetNg;
-	$scope.urlsNewsShowNews = URLS.newsShowNews;
-	$scope.news = [];
+.controller('BlockJobsController', function($scope,$http){
+	console.log('BlockJobsController loaded!');
 	
-	function getNews()
+	$scope.urlsJobsGetNg = URLS.jobsGetNg;
+	$scope.urlsJobsShowJob = URLS.jobsShowJob;
+	$scope.jobs = [];
+	
+	function getJobs()
 	{
-		var offset = 0;
-		var limit = 6;
 		$http({
 			method: "GET", 
-			url: $scope.urlsNewsGetNg,
-			params: {offset: offset, limit: limit}
+			url: $scope.urlsJobsGetNg,
+			params: {onhomepage: 1}
 			  })
 		.success(function(response){
-			console.log("last news => ",response);
+			console.log("block jobs => ",response);
 			if (response.result)
 			{
-				$scope.news = response.result;
+				$scope.jobs = response.result;
+				setTimeout(function(){
+					$('.jobs-slider').slick({
+						slidesToShow: 2,
+						slidesToScroll: 1,
+						centerMode: true,
+						dots: false,
+						focusOnSelect: true,
+						variableWidth: true,
+						autoplay: true,
+						autoPlaySpeed: 2000
+						});
+				},100);
 			}
 		})
 	}
-	getNews();
+	getJobs();
 	
-	$scope.setItemDirectHref = function(newsp){
-		var href = $scope.urlsNewsShowNews.replace('0', newsp.nameTranslit);
-		newsp.href = href;
+	$scope.setItemDirectHref = function(job){
+		var href = $scope.urlsJobsShowJob.replace('0', job.nameTranslit);
+		job.href = href;
 	}	
 });

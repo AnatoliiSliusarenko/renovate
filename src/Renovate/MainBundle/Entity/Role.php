@@ -49,6 +49,12 @@ class Role implements RoleInterface
      * @var array
      */
 	private $users;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Service", mappedBy="Role")
+	 * @var array
+	 */
+	private $services;
     
 	public function __construct()
 	{
@@ -165,6 +171,39 @@ class Role implements RoleInterface
     public function getUsers()
     {
         return $this->users;
+    }
+    
+    /**
+     * Add services
+     *
+     * @param \Renovate\MainBundle\Entity\Service $services
+     * @return Role
+     */
+    public function addService(\Renovate\MainBundle\Entity\Service $services)
+    {
+    	$this->services[] = $services;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove services
+     *
+     * @param \Renovate\MainBundle\Entity\Service $services
+     */
+    public function removeService(\Renovate\MainBundle\Entity\Service $services)
+    {
+    	$this->services->removeElement($services);
+    }
+    
+    /**
+     * Get services
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServices()
+    {
+    	return $this->services;
     }
     
     public function getInArray()
