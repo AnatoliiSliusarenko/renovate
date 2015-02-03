@@ -11,6 +11,6 @@ var Renovate = angular.module('Renovate',['ui.bootstrap','ngSanitize'])
         }
         return text;
     }
-});;
+});
 
 console.log('Angular Initialization finished...');

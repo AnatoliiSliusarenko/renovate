@@ -4,6 +4,7 @@
 
 {% block head %}
 <link href="{{ asset('web/bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -58,7 +59,17 @@
 					<div class="title"><a href="[[job.href]]">[[job.name]]</a></div>
 				</div>
 				<div class="data-social">
-					<div class="social-content">{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeJob(job)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editJob(job)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</div>
+					<div class="social-content">
+						<div class="social-vk">
+							<!-- VK -->
+							<div id="vk_like-[[job.id]]" class="vk" href="{{ app.request.getSchemeAndHttpHost() }}[[job.href]]"></div>
+						</div>
+						<div class="social-fb">
+							<!-- FB -->
+							<fb:share-button href="{{ app.request.getSchemeAndHttpHost() }}[[job.href]]" layout="button_count"></fb:share-button>
+						</div>
+						{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeJob(job)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editJob(job)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}
+					</div>
 				</div>
 				<div class="data-content">
 					<div class="col-md-3">
@@ -193,4 +204,6 @@
 var TIMESTAMP = '{{ timestamp }}';
 var TOKEN = '{{ token }}';
 </script>
+<script src="{{ asset('web/bundles/renovate/js/vkButton.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/fbButton.js') }}"></script>
 {% endblock %}

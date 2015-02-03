@@ -35,6 +35,8 @@ Renovate.controller('SharesController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.shares = response.result;
+				initVK();
+				initFB();
 			}
 		})
 	}

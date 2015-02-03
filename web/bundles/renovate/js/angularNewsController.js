@@ -35,6 +35,8 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.news = response.result;
+				initVK();
+				initFB();
 			}
 		})
 	}

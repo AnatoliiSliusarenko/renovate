@@ -3,6 +3,7 @@
 {% block title %}{{job.name}}{% endblock %}
 {% block description %}<meta name="description" content="{{job.description}}">{% endblock %}
 {% block head %}
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -14,6 +15,16 @@
 {% endblock %}
 
 {% block content %}
+	<div class="row">
+		<div class="col-md-2" style="margin-top: 5px;">
+			<!-- VK -->
+			<div id="vk_like" class="vk"></div>
+		</div>
+		<div class="col-md-2" style="margin-top: 5px;">
+			<!-- FB -->
+			<div class="fb-share-button" data-href="{{ app.request.uri }}" data-layout="button_count"></div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12">
   				<h2>{{job.name}}</h2><hr>
@@ -32,4 +43,6 @@
 {% endblock %} 
 
 {% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/vkButton.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/fbButton.js') }}"></script>
 {% endblock %}

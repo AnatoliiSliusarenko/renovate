@@ -35,6 +35,8 @@ Renovate.controller('ArticlesController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.articles = response.result;
+				initVK();
+				initFB();
 			}
 		})
 	}

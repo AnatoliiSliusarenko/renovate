@@ -35,6 +35,8 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.jobs = response.result;
+				initVK();
+				initFB();
 			}
 		})
 	}

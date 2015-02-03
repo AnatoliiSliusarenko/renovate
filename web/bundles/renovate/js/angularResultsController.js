@@ -35,6 +35,8 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.results = response.result;
+				initVK();
+				initFB();
 			}
 		})
 	}

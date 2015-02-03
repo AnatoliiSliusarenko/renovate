@@ -103,7 +103,7 @@
 				<div class="form-group" ng-class="{ 'has-error' : partnerForm.partnerUrl.$invalid && !partnerForm.partnerUrl.$pristine }">
     				<label for="partnerUrl" class="col-sm-2 control-label">Посилання</label>
     				<div class="col-sm-10">
-      					<input ng-model="partner.url" type="text" class="form-control" id="partnerUrl" name="partnerUrl">
+      					<input ng-model="partner.url" type="text" class="form-control" id="partnerUrl" name="partnerUrl" required>
     					<p ng-show="partnerForm.partnerUrl.$invalid && !partnerForm.partnerUrl.$pristine" class="help-block">Введіть посилання.</p>
 					</div>
   				</div>
@@ -148,7 +148,7 @@
 				<div class="form-group" ng-class="{ 'has-error' : partnerForm.partnerUrl.$invalid && !partnerForm.partnerUrl.$pristine }">
     				<label for="partnerUrl" class="col-sm-2 control-label">Посилання</label>
     				<div class="col-sm-10">
-      					<input ng-model="partner.url" type="text" class="form-control" id="partnerUrl" name="partnerUrl">
+      					<input ng-model="partner.url" type="text" class="form-control" id="partnerUrl" name="partnerUrl" required>
     					<p ng-show="partnerForm.partnerUrl.$invalid && !partnerForm.partnerUrl.$pristine" class="help-block">Введіть посилання.</p>
 					</div>
   				</div>
