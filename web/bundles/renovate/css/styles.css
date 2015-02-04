@@ -338,6 +338,27 @@ tfoot td.price {
 	min-height: 38px !important;
 }
 
+#main-navbar.navbar-inverse {
+	background-color: #060e57 !important;
+	border-color: #040834;
+}
+
+#main-navbar.navbar-inverse .navbar-toggle {
+	border-color: #040834;
+}
+
+#main-navbar.navbar-inverse .navbar-toggle:hover {
+	background-color: #040834;
+}
+
+#main-navbar.navbar-inverse .navbar-toggle:focus {
+	background-color: #020623;
+}
+
+#main-navbar.navbar-inverse .navbar-nav > .active > a, #main-navbar.navbar-inverse .navbar-nav > .active > a:hover, #main-navbar.navbar-inverse .navbar-nav > .active > a:focus{
+	background-color: #040834;
+}
+
 #main-navbar .navbar-nav li > a {
 	padding-top: 8px;
 	padding-bottom: 8px;
@@ -355,6 +376,44 @@ tfoot td.price {
 
 #main-navbar .btn {
 	padding: 4px 12px;
+}
+
+#user-navbar.navbar-inverse {
+	background-color: #060e57 !important;
+	border-color: #040834;
+}
+#user-navbar.navbar-inverse .navbar-toggle {
+	border-color: #040834;
+}
+
+#user-navbar.navbar-inverse .navbar-toggle:hover {
+	background-color: #040834;
+}
+
+#user-navbar.navbar-inverse .navbar-toggle:focus {
+	background-color: #020623;
+}
+
+#user-navbar.navbar-inverse .navbar-nav > .open > a, #user-navbar.navbar-inverse .navbar-nav > .open > a:hover, #user-navbar.navbar-inverse .navbar-nav > .open > a:focus{
+	background-color: #040834;
+}
+
+#user-navbar .dropdown-menu {
+	background-color: #060e57;	
+	border-color: #040834;
+}
+
+#user-navbar .dropdown-menu > li > a {
+	color: #9d9d9d;
+}
+
+#user-navbar .dropdown-menu > li > a:hover {
+	color: white;
+	background-color: #040834;
+}
+
+#user-navbar .dropdown-menu .divider {
+	background-color: #040834;
 }
 
 #user-navbar .btn {
@@ -385,6 +444,7 @@ tfoot td.price {
 #user-navbar .navbar-text {
 	margin-top: 5px;
 	margin-bottom: 5px;
+	color: white;
 }
 
 #navbar2 {
