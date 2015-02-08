@@ -34,12 +34,6 @@
 				</select>
 			  </div>
 			  <div class="form-group">
-				    <label for="clientRoles">Роль </label>
-				    <select id="clientRoles" ng-options="clientRole.id as clientRole.name for clientRole in clientRoles" class="form-control" ng-model="filter.role">
-						<option value="">усі</option>
-					</select>
-			  </div>
-			  <div class="form-group">
 				    <label for="categories">Категорія</label>
 				    <select id="categories" ng-options="serviceCategory.id as serviceCategory.name for serviceCategory in serviceCategories" class="form-control" ng-model="filter.category">
 						<option value="">усі</option>
@@ -48,13 +42,13 @@
 			  <div class="form-group">
 				  		Тип
 					  	<label class="radio-inline">
-						  <input ng-model="filter.type" type="radio" name="inlineRadioOptions" id="inlineRadio1"> усі
+						  <input ng-model="filter.logical" type="radio" name="inlineRadioOptions" id="inlineRadio1"> усі
 						</label>
 						<label class="radio-inline">
-						  <input ng-model="filter.type" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="boolean"> чекбокс
+						  <input ng-model="filter.logical" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1"> логічний(чекбокс)
 						</label>
 						<label class="radio-inline">
-						  <input ng-model="filter.type" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="object"> радіобатн
+						  <input ng-model="filter.logical" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="0"> вибір(радіобатн)
 						</label>
 					</div>
 			</form>
@@ -75,10 +69,9 @@
 			        <tr>
 			          <th>#</th>
 			          <th>Назва</th>
-			          <th>Роль</th>
 			          <th>Категорія</th>
-			          <th>Ціна</th>
 			          <th>Тип</th>
+			          <th>Створено</th>
 			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
 			        </tr>
       			</thead>
@@ -91,11 +84,10 @@
 			        <tr ng-repeat="service in services" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td>[[service.name]]</td>
-			          <td>[[service.role.name]]</td>
 			          <td>[[service.category.name]]</td>
-			          <td>[[service.price]] грн</td>
-			          <td>[[service.type]]</td>
-			          <td><button ng-click="removeRepair(repair, $event)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editRepair(repair, $event)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			          <td><span ng-show="service.logical == true" class="label label-default">Логічний(чекбокс)</span><span ng-show="service.logical == false" class="label label-success">Вибір(радіобатн)</span></td>
+			          <td>[[service.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
+			          <td><button ng-click="removeService(service)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editService(service)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			        </tr>
       			</tbody>
     		</table>
@@ -111,104 +103,148 @@
             <h3 class="modal-title">Додати вид послуг...</h3>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal" name="jobForm">
-  				<div class="form-group" ng-class="{'has-error': jobForm.jobName.$invalid && !jobForm.jobName.$pristine}">
-    				<label for="jobName" class="col-sm-2 control-label">Назва</label>
+            <form class="form-horizontal" name="serviceForm">
+  				<div class="form-group" ng-class="{'has-error': serviceForm.serviceName.$invalid && !serviceForm.serviceName.$pristine}">
+    				<label for="serviceName" class="col-sm-2 control-label">Назва</label>
     				<div class="col-sm-10">
-      					<input ng-model="job.name" type="text" class="form-control" id="jobName" name="jobName" required>
-    					<p ng-show="jobForm.jobName.$invalid && !jobForm.jobName.$pristine" class="help-block">Введіть назву.</p>
+      					<input ng-model="service.name" type="text" class="form-control" id="serviceName" name="serviceName" ng-change="checkFormInvalid()" required>
+    					<p ng-show="serviceForm.serviceName.$invalid && !serviceForm.serviceName.$pristine" class="help-block">Введіть назву.</p>
 					</div>
   				</div>
-				<div class="form-group" ng-class="{'has-error': jobForm.jobDocument.$invalid && !jobForm.jobDocument.$pristine}">
-    				<label for="jobDocument" class="col-sm-2 control-label">Обкладинка</label>
+				<div class="form-group" ng-class="{'has-error': serviceForm.serviceCategory.$invalid && !serviceForm.serviceCategory.$pristine}">
+    				<label for="serviceCategory" class="col-sm-2 control-label">Категорія</label>
     				<div class="col-sm-10">
-      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="jobDocument" ng-model="job.documentid" name="jobDocument" required>
+      					<select ng-options="category.id as category.name for category in serviceCategories" class="form-control" id="serviceCategory" ng-model="service.categoryid" name="serviceCategory" ng-change="checkFormInvalid()" required>
   						</select>
-						<p ng-show="jobForm.jobDocument.$invalid && !jobForm.jobDocument.$pristine" class="help-block">Оберіть обкладинку.</p>
-						<input type="file" name="file_upload" id="file_upload" />
-					</div>
-  				</div>
-				<div class="form-group" ng-class="{'has-error': jobForm.jobLabel.$invalid && !jobForm.jobLabel.$pristine}">
-    				<label for="jobLabel" class="col-sm-2 control-label">Ярлик</label>
-    				<div class="col-sm-10">
-      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="jobLabel" ng-model="job.labelid" name="jobLabel">
-						</select>
-						<p ng-show="jobForm.joLabel.$invalid && !jobForm.jobLabel.$pristine" class="help-block">Оберіть ярлик.</p>
-					</div>
-  				</div>
-  				<div class="form-group" ng-class="{'has-error': jobForm.jobDescription.$invalid && !jobForm.jobDescription.$pristine}">
-    				<label for="jobDescription" class="col-sm-2 control-label">Опис</label>
-    				<div class="col-sm-10">
-						<textarea ng-model="job.description" id="jobDescription" class="form-control" rows="5" name="jobDescription" required></textarea>
-    					<p ng-show="jobForm.jobDescription.$invalid && !jobForm.jobDescription.$pristine" class="help-block">Введіть опис.</p>
+						<p ng-show="serviceForm.serviceCategory.$invalid && !serviceForm.serviceCategory.$pristine" class="help-block">Оберіть категорію.</p>
 					</div>
   				</div>
 				<div class="form-group">
-    				<div class="col-sm-offset-2 col-sm-10">
-      					<div class="checkbox">
-        					<label>
-          						<input type="checkbox" ng-model="job.onhomepage" ng-init="job.onhomepage=false"> Показувати на головній
-        					</label>
-      					</div>
-    				</div>
+    				<label class="col-sm-2 control-label">Тип</label>
+    				<div class="col-sm-10">
+      					<label class="radio-inline">
+  							<input ng-model="service.logical" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" ng-init="service.logical='1'" ng-change="checkFormInvalid()"> логічний(чекбокс)
+						</label>
+						<label class="radio-inline">
+  							<input ng-model="service.logical" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0" ng-change="checkFormInvalid()"> вибір(радіобатн)
+						</label>
+					</div>
   				</div>
+				<tabset ng-show="service.logical==0">
+    				<tab heading="Опції">
+						<div class="form-group" ng-repeat="option in options" ng-class="{'has-error': options[$index].error }" style="margin-top: 10px;">
+    						<label class="col-sm-2 control-label"><input type="radio" checked></label>
+    						<div class="col-sm-10">
+								<input type="text" class="form-control" placeholder="Введіть значення" ng-model="options[$index].name" ng-change="checkFormInvalid()">
+							</div>
+						</div>
+						<div class="form-group">
+    						<label class="col-sm-2 control-label"></label>
+    						<div class="col-sm-10">
+								<button ng-click="addOption()" type="button" style="margin-right: 5px;" class="btn btn-success btn-xs">Додати</button><button ng-show="options.length > 2" ng-click="removeOption()" type="button" class="btn btn-danger btn-xs">Видалити</button>
+							</div>
+						</div>
+					</tab>
+				</tabset>
+				<tabset ng-show="service.logical==1">
+    				<tab heading="Ціна">
+						<div class="form-group" ng-repeat="role in clientRoles" ng-class="{'has-error': prices[$index].error }" style="margin-top: 10px;">
+    						<label class="col-sm-6 control-label">[[role.name]]</label>
+    						<div class="col-sm-6">
+      							<input ng-model="prices[$index].value" type="number" min="0.01" step="0.01" class="form-control" ng-change="checkFormInvalid()">
+							</div>
+  						</div>
+					</tab>
+  				</tabset>
+				<tabset ng-show="service.logical==0">
+    				<tab ng-repeat="(optionIndex, option) in options" heading="Ціна: [[options[$index].name]]">
+						<div class="form-group" ng-repeat="role in clientRoles" ng-class="{'has-error': optionsPrices[optionIndex][$index].error }" style="margin-top: 10px;">
+    						<label class="col-sm-6 control-label">[[role.name]]</label>
+    						<div class="col-sm-6">
+      							<input ng-model="optionsPrices[optionIndex][$index].value" type="number" min="0.01" step="0.01" class="form-control" ng-change="checkFormInvalid()">
+							</div>
+  						</div>
+					</tab>
+				</tabset>
 			</form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()" ng-disabled="jobForm.$invalid">Зберегти</button>
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="serviceForm.$invalid || formInvalid">Зберегти</button>
             <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
         </div>
     </script>
-    <script type="text/ng-template" id="editJob.html">
+    <script type="text/ng-template" id="editService.html">
         <div class="modal-header">
-            <h3 class="modal-title">Редагування виду робіт...</h3>
+            <h3 class="modal-title">Редагування виду послуг...</h3>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal" name="jobForm">
-  				<div class="form-group" ng-class="{'has-error': jobForm.jobName.$invalid && !jobForm.jobName.$pristine}">
-    				<label for="jobName" class="col-sm-2 control-label">Назва</label>
+            <form class="form-horizontal" name="serviceForm">
+  				<div class="form-group" ng-class="{'has-error': serviceForm.serviceName.$invalid && !serviceForm.serviceName.$pristine}">
+    				<label for="serviceName" class="col-sm-2 control-label">Назва</label>
     				<div class="col-sm-10">
-      					<input ng-model="job.name" type="text" class="form-control" id="jobName" name="jobName" required>
-    					<p ng-show="jobForm.jobName.$invalid && !jobForm.jobName.$pristine" class="help-block">Введіть назву.</p>
+      					<input ng-model="service.name" type="text" class="form-control" id="serviceName" name="serviceName" ng-change="checkFormInvalid()" required>
+    					<p ng-show="serviceForm.serviceName.$invalid && !serviceForm.serviceName.$pristine" class="help-block">Введіть назву.</p>
 					</div>
   				</div>
-				<div class="form-group" ng-class="{'has-error': jobForm.jobDocument.$invalid && !jobForm.jobDocument.$pristine}">
-    				<label for="jobDocument" class="col-sm-2 control-label">Обкладинка</label>
+				<div class="form-group" ng-class="{'has-error': serviceForm.serviceCategory.$invalid && !serviceForm.serviceCategory.$pristine}">
+    				<label for="serviceCategory" class="col-sm-2 control-label">Категорія</label>
     				<div class="col-sm-10">
-      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="jobDocument" ng-model="job.documentid" name="jobDocument" required>
+      					<select ng-options="category.id as category.name for category in serviceCategories" class="form-control" id="serviceCategory" ng-model="service.categoryid" name="serviceCategory" ng-change="checkFormInvalid()" required>
   						</select>
-						<p ng-show="jobForm.jobDocument.$invalid && !jobForm.jobDocument.$pristine" class="help-block">Оберіть обкладинку.</p>
-						<input type="file" name="file_upload" id="file_upload" />
-					</div>
-  				</div>
-				<div class="form-group" ng-class="{'has-error': jobForm.jobLabel.$invalid && !jobForm.jobLabel.$pristine}">
-    				<label for="jobLabel" class="col-sm-2 control-label">Ярлик</label>
-    				<div class="col-sm-10">
-      					<select ng-options="document.id as document.name for document in documents" class="form-control" id="jobLabel" ng-model="job.labelid" name="jobLabel">
-						</select>
-						<p ng-show="jobForm.joLabel.$invalid && !jobForm.jobLabel.$pristine" class="help-block">Оберіть ярлик.</p>
-					</div>
-  				</div>
-  				<div class="form-group" ng-class="{'has-error': jobForm.jobDescription.$invalid && !jobForm.jobDescription.$pristine}">
-    				<label for="jobDescription" class="col-sm-2 control-label">Опис</label>
-    				<div class="col-sm-10">
-						<textarea ng-model="job.description" id="jobDescription" class="form-control" rows="5" name="jobDescription" required></textarea>
-    					<p ng-show="jobForm.jobDescription.$invalid && !jobForm.jobDescription.$pristine" class="help-block">Введіть опис.</p>
+						<p ng-show="serviceForm.serviceCategory.$invalid && !serviceForm.serviceCategory.$pristine" class="help-block">Оберіть категорію.</p>
 					</div>
   				</div>
 				<div class="form-group">
-    				<div class="col-sm-offset-2 col-sm-10">
-      					<div class="checkbox">
-        					<label>
-          						<input type="checkbox" ng-model="job.onhomepage"> Показувати на головній
-        					</label>
-      					</div>
-    				</div>
+    				<label class="col-sm-2 control-label">Тип</label>
+    				<div class="col-sm-10">
+      					<label class="radio-inline">
+  							<input ng-model="service.logical" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" ng-change="checkFormInvalid()"> логічний(чекбокс)
+						</label>
+						<label class="radio-inline">
+  							<input ng-model="service.logical" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0" ng-change="checkFormInvalid()"> вибір(радіобатн)
+						</label>
+					</div>
   				</div>
+				<tabset ng-show="service.logical==0">
+    				<tab heading="Опції">
+						<div class="form-group" ng-repeat="option in options" ng-class="{'has-error': options[$index].error }" style="margin-top: 10px;">
+    						<label class="col-sm-2 control-label"><input type="radio" checked></label>
+    						<div class="col-sm-10">
+								<input type="text" class="form-control" placeholder="Введіть значення" ng-model="options[$index].name" ng-change="checkFormInvalid()">
+							</div>
+						</div>
+						<div class="form-group">
+    						<label class="col-sm-2 control-label"></label>
+    						<div class="col-sm-10">
+								<button ng-click="addOption()" type="button" style="margin-right: 5px;" class="btn btn-success btn-xs">Додати</button><button ng-show="options.length > 2" ng-click="removeOption()" type="button" class="btn btn-danger btn-xs">Видалити</button>
+							</div>
+						</div>
+					</tab>
+				</tabset>
+				<tabset ng-show="service.logical==1">
+    				<tab heading="Ціна">
+						<div class="form-group" ng-repeat="role in clientRoles" ng-class="{'has-error': prices[$index].error }" style="margin-top: 10px;">
+    						<label class="col-sm-6 control-label">[[role.name]]</label>
+    						<div class="col-sm-6">
+      							<input ng-model="prices[$index].value" type="number" min="0.01" step="0.01" class="form-control" ng-change="checkFormInvalid()">
+							</div>
+  						</div>
+					</tab>
+  				</tabset>
+				<tabset ng-show="service.logical==0">
+    				<tab ng-repeat="(optionIndex, option) in options" heading="Ціна: [[options[$index].name]]">
+						<div class="form-group" ng-repeat="role in clientRoles" ng-class="{'has-error': optionsPrices[optionIndex][$index].error }" style="margin-top: 10px;">
+    						<label class="col-sm-6 control-label">[[role.name]]</label>
+    						<div class="col-sm-6">
+      							<input ng-model="optionsPrices[optionIndex][$index].value" type="number" min="0.01" step="0.01" class="form-control" ng-change="checkFormInvalid()">
+							</div>
+  						</div>
+					</tab>
+				</tabset>
 			</form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()" ng-disabled="jobForm.$invalid">Зберегти</button>
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="serviceForm.$invalid || formInvalid">Зберегти</button>
             <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
         </div>
     </script>

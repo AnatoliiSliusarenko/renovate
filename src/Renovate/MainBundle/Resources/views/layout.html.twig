@@ -58,7 +58,7 @@
 	                {% if is_granted('ROLE_ADMIN') %}
 	                <li><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
 	                <li><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
-	                <!-- <li><a href="{{ path('renovate_services') }}">Послуги компанії</a></li> -->
+	                <li><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
@@ -235,6 +235,9 @@
   			repairsEditNg: "{{ path('renovate_ng_repairs_edit', {repair_id: 0}) }}",
   			servicesGetNg: "{{ path('renovate_ng_services') }}",
   			servicesCountNg: "{{ path('renovate_ng_services_count') }}",
+  			servicesAddNg: "{{ path('renovate_ng_services_add') }}",
+  			servicesEditNg: "{{ path('renovate_ng_services_edit', {service_id: 0}) }}",
+  			servicesRemoveNg: "{{ path('renovate_ng_services_remove', {service_id: 0}) }}",
   			serviceCategoriesGetAllNg: "{{ path('renovate_ng_service_categories_all') }}"
   			
   	}

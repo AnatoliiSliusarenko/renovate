@@ -29,6 +29,13 @@ class ServiceCategory
     private $name;
     
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="level", type="integer")
+     */
+    private $level;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Service", mappedBy="category")
      * @var array
      */
@@ -65,6 +72,29 @@ class ServiceCategory
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Set level
+     *
+     * @param integer $level
+     * @return ServiceCategory
+     */
+    public function setLevel($level)
+    {
+    	$this->level = $level;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get level
+     *
+     * @return integer
+     */
+    public function getLevel()
+    {
+    	return $this->level;
     }
     
     /**
@@ -112,7 +142,8 @@ class ServiceCategory
     {
     	return array(
     			'id' => $this->getId(),
-    			'name' => $this->getName()
+    			'name' => $this->getName(),
+    			'level' => $this->getLevel()
     	);
     }
     
@@ -121,7 +152,8 @@ class ServiceCategory
     	$qb = $em->getRepository("RenovateMainBundle:ServiceCategory")
     	->createQueryBuilder('s');
     
-    	$qb->select('s');
+    	$qb->select('s')
+    	   ->orderBy('s.level', 'DESC');
     
     	$result = $qb->getQuery()->getResult();
     

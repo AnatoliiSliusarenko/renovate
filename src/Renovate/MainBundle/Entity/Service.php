@@ -24,13 +24,6 @@ class Service
     /**
      * @var integer
      *
-     * @ORM\Column(name="roleid", type="integer")
-     */
-    private $roleid;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="categoryid", type="integer")
      */
     private $categoryid;
@@ -43,18 +36,10 @@ class Service
     private $name;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="price", type="float")
+     * @var boolean
+     * @ORM\Column(name="logical", type="boolean")
      */
-    private $price;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255)
-     */
-    private $type;
+    private $logical;
 
     /**
      * @var datetime
@@ -64,18 +49,89 @@ class Service
     private $created;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="services")
-     * @ORM\JoinColumn(name="roleid")
-     * @var Role
-     */
-    private $role;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="ServiceCategory", inversedBy="services")
      * @ORM\JoinColumn(name="categoryid")
      * @var ServiceCategory
      */
     private $category;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="ServicePrice", mappedBy="service")
+     * @var array
+     */
+    private $servicePrices;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="ServiceOption", mappedBy="service")
+     * @var array
+     */
+    private $serviceOptions;
+    
+    private function cleanService($em){
+    	$qb = $em->createQueryBuilder();
+    	 
+    	$pricesResult = $qb->delete('RenovateMainBundle:ServicePrice', 'sp')
+    	->where('sp.serviceid = :id')
+    	->setParameter('id', $this->getId())
+    	->getQuery()->getResult();
+    	
+    	
+    	$qb = $em->createQueryBuilder();
+    	
+    	$optionsResult = $qb->delete('RenovateMainBundle:ServiceOption', 'so')
+    	->where('so.serviceid = :id')
+    	->setParameter('id', $this->getId())
+    	->getQuery()->getResult();
+    	 
+    	return $pricesResult && $optionsResult;
+    }
+    
+    private function createOptionsAndPrices($em, $transliterater, $parameters){
+    	if ($this->getLogical() == true){
+    		foreach($parameters->prices as $price){
+    			$role = $em->getRepository("RenovateMainBundle:Role")->find($price->roleid);
+    
+    			$servicePrice = new ServicePrice();
+    			$servicePrice->setServiceid($this->getId());
+    			$servicePrice->setService($this);
+    			$servicePrice->setRoleid($role->getId());
+    			$servicePrice->setRole($role);
+    			$servicePrice->setValue($price->value);
+    			 
+    			$em->persist($servicePrice);
+    			$em->flush();
+    		}
+    	}else{
+    		foreach($parameters->options as $index => $option){
+    			$serviceOption = new ServiceOption();
+    			$serviceOption->setServiceid($this->getId());
+    			$serviceOption->setService($this);
+    			$serviceOption->setName($option->name);
+    			$serviceOption->setValue($transliterater->transliterate($option->name));
+    			 
+    			$em->persist($serviceOption);
+    			$em->flush();
+    
+    			foreach($parameters->prices[$index] as $price){
+    				$role = $em->getRepository("RenovateMainBundle:Role")->find($price->roleid);
+    					
+    				$servicePrice = new ServicePrice();
+    				$servicePrice->setServiceid($this->getId());
+    				$servicePrice->setService($this);
+    				$servicePrice->setRoleid($role->getId());
+    				$servicePrice->setRole($role);
+    				$servicePrice->setOptionid($serviceOption->getId());
+    				$servicePrice->setOption($serviceOption);
+    				$servicePrice->setValue($price->value);
+    					
+    				$em->persist($servicePrice);
+    				$em->flush();
+    			}
+    		}
+    	}
+    	 
+    	return true;
+    }
     
     /**
      * Get id
@@ -85,29 +141,6 @@ class Service
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set roleid
-     *
-     * @param integer $roleid
-     * @return Service
-     */
-    public function setRoleid($roleid)
-    {
-        $this->roleid = $roleid;
-
-        return $this;
-    }
-
-    /**
-     * Get roleid
-     *
-     * @return integer 
-     */
-    public function getRoleid()
-    {
-        return $this->roleid;
     }
 
     /**
@@ -157,49 +190,26 @@ class Service
     }
 
     /**
-     * Set price
+     * Set logical
      *
-     * @param float $price
+     * @param boolean $logical
      * @return Service
      */
-    public function setPrice($price)
+    public function setLogical($logical)
     {
-        $this->price = $price;
-
-        return $this;
+    	$this->logical = $logical;
+    
+    	return $this;
     }
-
+    
     /**
-     * Get price
+     * Get logical
      *
-     * @return float 
+     * @return boolean
      */
-    public function getPrice()
+    public function getLogical()
     {
-        return $this->price;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     * @return Service
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string 
-     */
-    public function getType()
-    {
-        return $this->type;
+    	return $this->logical;
     }
     
     /**
@@ -226,29 +236,6 @@ class Service
     }
     
     /**
-     * Set role
-     *
-     * @param \Renovate\MainBundle\Entity\Role $role
-     * @return Service
-     */
-    public function setRole(\Renovate\MainBundle\Entity\Role $role = null)
-    {
-    	$this->role = $role;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get role
-     *
-     * @return \Renovate\MainBundle\Entity\Role
-     */
-    public function getRole()
-    {
-    	return $this->role;
-    }
-    
-    /**
      * Set category
      *
      * @param \Renovate\MainBundle\Entity\ServiceCategory $category
@@ -271,18 +258,91 @@ class Service
     	return $this->category;
     }
     
+    /**
+     * Add servicePrices
+     *
+     * @param \Renovate\MainBundle\Entity\ServicePrice $servicePrices
+     * @return Service
+     */
+    public function addServicePrice(\Renovate\MainBundle\Entity\ServicePrice $servicePrices)
+    {
+    	$this->servicePrices[] = $servicePrices;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove servicePrices
+     *
+     * @param \Renovate\MainBundle\Entity\ServicePrice $servicePrices
+     */
+    public function removeServicePrice(\Renovate\MainBundle\Entity\ServicePrice $servicePrices)
+    {
+    	$this->servicePrices->removeElement($servicePrices);
+    }
+    
+    /**
+     * Get servicePrices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServicePrices()
+    {
+    	return $this->servicePrices;
+    }
+    
+    /**
+     * Add serviceOptions
+     *
+     * @param \Renovate\MainBundle\Entity\ServiceOption $serviceOptions
+     * @return Service
+     */
+    public function addServiceOption(\Renovate\MainBundle\Entity\ServiceOption $serviceOptions)
+    {
+    	$this->serviceOptions[] = $serviceOptions;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove serviceOptions
+     *
+     * @param \Renovate\MainBundle\Entity\ServiceOption $serviceOptions
+     */
+    public function removeServiceOption(\Renovate\MainBundle\Entity\ServiceOption $serviceOptions)
+    {
+    	$this->serviceOptions->removeElement($serviceOptions);
+    }
+    
+    /**
+     * Get serviceOptions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiceOptions()
+    {
+    	return $this->serviceOptions;
+    }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    	$this->servicePrices = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     public function getInArray()
     {
     	return array(
     			'id' => $this->getId(),
-    			'roleid' => $this->getRoleid(),
     			'categoryid' => $this->getCategoryid(),
     			'name' => $this->getName(),
-    			'price' => $this->getPrice(),
-    			'type' => $this->getType(),
+    			'logical' => $this->getLogical(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
-    			'role' => $this->getRole()->getInArray(),
-    			'category' => $this->getCategory()->getInArray()
+    			'category' => $this->getCategory()->getInArray(),
+    			'prices' => ($this->getServicePrices() == null ) ? array() : array_map(function($price){return $price->getInArray();}, $this->getServicePrices()->toArray()),
+    			'options' => ($this->getServiceOptions() == null) ? array() : array_map(function($option){return $option->getInArray();}, $this->getServiceOptions()->toArray())
     	);
     }
     
@@ -305,7 +365,7 @@ class Service
     }
     
     public static function getServices($em, $parameters, $inArray = false)
-    {
+    {	
     	$qb = $em->getRepository("RenovateMainBundle:Service")
     	->createQueryBuilder('s');
     
@@ -318,22 +378,16 @@ class Service
     		->setMaxResults($parameters['limit']);
     	}
     	
-    	if (isset($parameters['role']))
-    	{
-    		$qb->andWhere("s.roleid = :roleid")
-    		->setParameter("roleid", $parameters['role']);
-    	}
-    	
     	if (isset($parameters['category']))
     	{
     		$qb->andWhere("s.categoryid = :categoryid")
     		->setParameter("categoryid", $parameters['category']);
     	}
     	
-    	if (isset($parameters['type']))
+    	if (isset($parameters['logical']))
     	{
-    		$qb->andWhere("s.type = :type")
-    		->setParameter("type", $parameters['type']);
+    		$qb->andWhere("s.logical = :logical")
+    		->setParameter("logical", $parameters['logical']);
     	}
     
     	$result = $qb->getQuery()->getResult();
@@ -356,5 +410,82 @@ class Service
     	$total = $query->getSingleScalarResult();
     	 
     	return $total;
+    }
+    
+    public static function addService($em, $transliterater, $parameters)
+    {
+    	$em->getConnection()->beginTransaction();
+    	try {
+	    	$category = $em->getRepository("RenovateMainBundle:ServiceCategory")->find($parameters->categoryid);
+	    	 
+	    	$service = new Service();
+	    	$service->setName($parameters->name);
+	    	$service->setCategoryid($parameters->categoryid);
+	    	$service->setCategory($category);
+	    	$service->setLogical($parameters->logical);
+	    	$service->setCreated(new \DateTime());
+	    	
+	    	$em->persist($service);
+	    	$em->flush();
+    	
+	    	$service->createOptionsAndPrices($em, $transliterater, $parameters);
+	    	
+    		$em->getConnection()->commit();
+    		return $service;
+    	} catch(Exception $e) {
+    		$em->getConnection()->rollback();
+    		throw $e;
+		}
+    }
+    
+    
+    
+    public static function editServiceById($em, $transliterater, $id, $parameters)
+    {
+    	$em->getConnection()->beginTransaction();
+    	try {
+    		$service = $em->getRepository("RenovateMainBundle:Service")->find($id);
+    		$category = $em->getRepository("RenovateMainBundle:ServiceCategory")->find($parameters->categoryid);
+    		 
+    		$service->setName($parameters->name);
+    		$service->setCategoryid($parameters->categoryid);
+    		$service->setCategory($category);
+    		$service->setLogical($parameters->logical);
+    		 
+    		$em->persist($service);
+    		$em->flush();
+    		 
+    		$service->cleanService($em);
+    		$service->createOptionsAndPrices($em, $transliterater, $parameters);
+    		 
+    		$em->getConnection()->commit();
+    		return $service;
+    	}catch(Exception $e) {
+    		$em->getConnection()->rollback();
+    		throw $e;
+		}
+    	
+    }
+    
+    public static function removeServiceById($em, $id)
+    {
+    	$em->getConnection()->beginTransaction();
+    	try {
+	    	$service = $em->getRepository("RenovateMainBundle:Service")->find($id);
+	    	$service->cleanService($em);
+	    	
+	    	$qb = $em->createQueryBuilder();
+	    
+	    	$qb->delete('RenovateMainBundle:Service', 's')
+	    	->where('s.id = :id')
+	    	->setParameter('id', $id)
+	    	->getQuery()->getResult();
+	    
+	    	$em->getConnection()->commit();
+	    	return true;
+    	}catch(Exception $e) {
+    		$em->getConnection()->rollback();
+    		throw $e;
+		}
     }
 }

@@ -276,6 +276,18 @@ renovate_ng_services_count:
     path: /ng/services/count
     defaults: { _controller: RenovateMainBundle:Services:getServicesCountNg}
     
+renovate_ng_services_add:
+    path: /ng/services/add
+    defaults: { _controller: RenovateMainBundle:Services:addServiceNg}
+    
+renovate_ng_services_edit:
+    path: /ng/services/edit/{service_id}
+    defaults: { _controller: RenovateMainBundle:Services:editServiceNg}
+    
+renovate_ng_services_remove:
+    path: /ng/services/remove/{service_id}
+    defaults: { _controller: RenovateMainBundle:Services:removeServiceNg}
+    
 renovate_ng_service_categories_all:
     path: /ng/service-categories/all
     defaults: { _controller: RenovateMainBundle:ServiceCategories:getServiceCategoriesAllNg}

@@ -9,13 +9,13 @@ Renovate.controller('ServicesController', function($scope,$http,$modal){
 	$scope.itemsPerPage = 5;
 	
 	$scope.filter = {
-			role: null,
 			category: null,
-			type: null
+			logical: null
 	}
 	
 	$scope.urlsServicesGetNg = URLS.servicesGetNg;
 	$scope.urlsServicesCountNg = URLS.servicesCountNg;
+	$scope.urlsServicesRemoveNg = URLS.servicesRemoveNg;
 	$scope.urlsRolesGetClientRolesNg = URLS.rolesGetClientRolesNg;
 	$scope.urlsServiceCategoriesGetAllNg = URLS.serviceCategoriesGetAllNg;
 	
@@ -106,7 +106,11 @@ Renovate.controller('ServicesController', function($scope,$http,$modal){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addService.html',
 		      controller: 'AddServiceController',
-		      backdrop: "static"
+		      backdrop: "static",
+		      resolve: {
+		    	  serviceCategories: function(){return $scope.serviceCategories;},
+		    	  clientRoles: function(){return $scope.clientRoles;}
+		      }
 		});
 		
 		modalInstance.result.then(function (added) {
@@ -116,28 +120,30 @@ Renovate.controller('ServicesController', function($scope,$http,$modal){
 		});
 	}
 	
-	$scope.editJob = function(job){
+	$scope.editService = function(service){
 		var modalInstance = $modal.open({
-		      templateUrl: 'editJob.html',
-		      controller: 'EditJobController',
+		      templateUrl: 'editService.html',
+		      controller: 'EditServiceController',
 		      backdrop: "static",
 		      resolve: {
-		    	  job: function(){return job;}
+		    	  service: function(){return service;},
+		    	  serviceCategories: function(){return $scope.serviceCategories;},
+		    	  clientRoles: function(){return $scope.clientRoles;}
 		      }
 		});
 		
 		modalInstance.result.then(function (edited) {
-		      if (edited) getJobsCount();
+		      if (edited) getServicesCount();
 		    }, function () {
 		      //bad
 		});
 	}
 	
-	$scope.removeJob = function(job){
-		var remove = confirm("Дійсно бажаєте видалити: " + job.name + " ?");
+	$scope.removeService = function(service){
+		var remove = confirm("Дійсно бажаєте видалити: " + service.name + " ?");
 		if (!remove) return;
 		
-		var url = $scope.urlsJobsRemoveNg.replace('0', job.id);
+		var url = $scope.urlsServicesRemoveNg.replace('0', service.id);
 		
 		$http({
 			method: "GET", 
@@ -147,62 +153,110 @@ Renovate.controller('ServicesController', function($scope,$http,$modal){
 			console.log(response);
 			if (response.result)
 			{
-				getJobsCount();
+				getServicesCount();
 			}
 		});
 	}
 })
-.controller('AddServiceController', function($scope,$http,$modalInstance){
+.controller('AddServiceController', function($scope,$http,$modalInstance,serviceCategories,clientRoles){
 	console.log('AddServiceController loaded!');
-	$scope.urlsDocumentsGetNg = URLS.documentsGetNg;
-	$scope.urlsJobsAddNg = URLS.jobsAddNg;
-	$scope.documents = [];
+	$scope.urlsServicesAddNg = URLS.servicesAddNg;
+	$scope.serviceCategories = serviceCategories;
+	$scope.clientRoles = clientRoles;
+	$scope.options = [];
+	$scope.prices = [];
+	$scope.optionsPrices = [];
 	
-	function getDocuments(){
-		$http({
-			method: "GET", 
-			url: $scope.urlsDocumentsGetNg
-			  })
-		.success(function(response){
-			console.log("documents => ",response);
-			if (response.result)
-			{
-				$scope.documents = response.result;
-				$scope.documents.splice(0,0,{
-					id: null,
-					name: "--> не обрано <--"
-				});
-			}
-		})
+	$scope.formInvalid = true;
+	
+	function getRolePrices(){
+		var prices = [];
+		_.map($scope.clientRoles, function(role){
+			prices.push({roleid: role.id, value: 0.01});
+		});
+		return prices;
 	}
-	getDocuments();
+	(function initialization(){
+		$scope.prices = getRolePrices();
+		$scope.options.push({name: 'Варіант 1'},{name: 'Варіант 2'});
+		$scope.optionsPrices.push(getRolePrices(), getRolePrices());
+	})();
 	
-	setTimeout(function() {
-	    $('#file_upload').uploadify({
-	    	'fileSizeLimit': 0,
-	    	'progressData' : 'speed',
-	    	'formData'     : {
-				'timestamp' : TIMESTAMP,
-				'token'     : TOKEN
-			},
-	    	'buttonText' : 'Завантажити...',
-	        'swf'      : URLS.uploadifySWF,
-	        'uploader' : URLS.documentsUpload,
-	        'onUploadSuccess' : function(file, data, response) {
-	            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
-	            getDocuments();
-	        }
-	    });
-	}, 1000);
+	$scope.addOption = function(){
+		$scope.options.push({name: 'Варіант '+($scope.options.length+1)});
+		$scope.optionsPrices.push(getRolePrices());
+	}
 	
-	function addJob(){
+	$scope.removeOption = function(){
+		$scope.options.pop();
+		$scope.optionsPrices.pop();
+	}
+	
+	$scope.checkFormInvalid = function(){
+		
+		var invalid = false;
+		
+		if ($scope.service.logical == '1'){
+			_.map($scope.prices, function(price, i){
+					$scope.prices[i].error = false;
+			});
+			
+			_.map($scope.prices, function(price, i){
+				if (!price.value) {
+					$scope.prices[i].error = true;
+					invalid = true;
+				}
+			});
+			
+		}else{
+			_.map($scope.options, function(option, i){
+				$scope.options[i].error = false;
+			});
+			
+			_.map($scope.optionsPrices, function(option, i){
+				_.map(option, function(price, j){
+					$scope.optionsPrices[i][j].error = false;
+				});
+			});
+			
+			_.map($scope.options, function(option, i){
+				if (!option.name.trim()) {
+					$scope.options[i].error = true;
+					invalid = true;
+				}
+			});
+			
+			_.map($scope.optionsPrices, function(option, i){
+				_.map(option, function(price, j){
+					if (!price.value) {
+						$scope.optionsPrices[i][j].error = true;
+						invalid = true;
+					}
+				});
+			});
+		}
+		
+		$scope.formInvalid = invalid;
+		
+		return invalid;
+	}
+	
+	function addService(){
+		if ($scope.service.logical == '0'){
+			$scope.service.options = $scope.options;
+			$scope.service.prices = $scope.optionsPrices;
+		}else{
+			if (_.has($scope.service, 'options')) delete $scope.service.options;
+			$scope.service.prices = $scope.prices;
+		}
+		
 		$http({
 			method: "POST", 
-			url: $scope.urlsJobsAddNg,
-			data: $scope.job
+			url: $scope.urlsServicesAddNg,
+			data: $scope.service
 			  })
 		.success(function(response){
-			console.log("added job => ", response);
+			console.log("added service => ", response);
 			if (response.result)
 			{
 				$modalInstance.close(response.result);
@@ -211,122 +265,192 @@ Renovate.controller('ServicesController', function($scope,$http,$modal){
 	}
 	
 	$scope.ok = function () {
-		if (!$scope.jobForm.$valid) return;
-		addJob();
+		if (!$scope.serviceForm.$valid) return;
+		if ($scope.checkFormInvalid()) return;
+		addService();
 	};
 
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditJobController', function($scope,$http,$modalInstance,job){
-	console.log('EditJobController loaded!');
-	$scope.urlsDocumentsGetNg = URLS.documentsGetNg;
-	$scope.urlsJobsEditNg = URLS.jobsEditNg;
-	$scope.documents = [];
-	$scope.job = job;
+.controller('EditServiceController', function($scope,$http,$modalInstance,service,serviceCategories,clientRoles){
+	console.log('EditServiceController loaded!');
 	
-	function getDocuments(){
-		$http({
-			method: "GET", 
-			url: $scope.urlsDocumentsGetNg
-			  })
-		.success(function(response){
-			console.log("documents => ",response);
-			if (response.result)
-			{
-				$scope.documents = response.result;
-				$scope.documents.splice(0,0,{
-					id: null,
-					name: "--> не обрано <--"
+	$scope.urlsServicesEditNg = URLS.servicesEditNg;
+	$scope.serviceCategories = serviceCategories;
+	$scope.clientRoles = clientRoles;
+	$scope.service = service;
+	$scope.options = [];
+	$scope.prices = [];
+	$scope.optionsPrices = [];
+	
+	$scope.formInvalid = true;
+	
+	$scope.checkFormInvalid = function(){
+		
+		var invalid = false;
+		
+		if ($scope.service.logical == '1'){
+			_.map($scope.prices, function(price, i){
+					$scope.prices[i].error = false;
+			});
+			
+			_.map($scope.prices, function(price, i){
+				if (!price.value) {
+					$scope.prices[i].error = true;
+					invalid = true;
+				}
+			});
+			
+		}else{
+			_.map($scope.options, function(option, i){
+				$scope.options[i].error = false;
+			});
+			
+			_.map($scope.optionsPrices, function(option, i){
+				_.map(option, function(price, j){
+					$scope.optionsPrices[i][j].error = false;
+				});
+			});
+			
+			_.map($scope.options, function(option, i){
+				if (!option.name.trim()) {
+					$scope.options[i].error = true;
+					invalid = true;
+				}
+			});
+			
+			_.map($scope.optionsPrices, function(option, i){
+				_.map(option, function(price, j){
+					if (!price.value) {
+						$scope.optionsPrices[i][j].error = true;
+						invalid = true;
+					}
+				});
+			});
+		}
+		
+		$scope.formInvalid = invalid;
+		
+		return invalid;
+	}
+	
+	function getRolePrices(){
+		var prices = [];
+		_.map($scope.clientRoles, function(role){
+			prices.push({roleid: role.id, value: 0.01});
+		});
+		return prices;
+	};
+	
+	function copyLogicalPrices(){
+		_.map($scope.prices, function(price,i){
+			var p = _.find($scope.service.prices, function(p){
+				return p.roleid == price.roleid;
+			});
+			
+			if (p != undefined){
+				$scope.prices[i].value = p.value;
+			}
+		});
+	};
+	
+	function copyOptionsPrices(){
+		_.map($scope.service.options, function(option,i){
+			if(typeof $scope.options[i] == 'undefined') {
+				$scope.options.push({name: option.name});
+				$scope.optionsPrices.push(getRolePrices());
+				
+				var prices = _.filter($scope.service.prices, function(p){
+					return p.optionid == option.id;
+				});
+				
+				_.map($scope.optionsPrices[i], function(p, j){
+					var _p = _.find(prices, function(_p){
+						return _p.roleid == p.roleid;
+					});
+					
+					if (_p != undefined){
+						$scope.optionsPrices[i][j].value = _p.value;
+					}
 				});
 			}
-		})
-	}
-	getDocuments();
+			else {
+				$scope.options[i].name = option.name;
+				
+				var prices = _.filter($scope.service.prices, function(p){
+					return p.optionid == option.id;
+				});
+				
+				_.map($scope.optionsPrices[i], function(p, j){
+					var _p = _.find(prices, function(_p){
+						return _p.roleid == p.roleid;
+					});
+					
+					if (_p != undefined){
+						$scope.optionsPrices[i][j].value = _p.value;
+					}
+				});
+			}
+		});
+	};
 	
-	setTimeout(function() {
-	    $('#file_upload').uploadify({
-	    	'fileSizeLimit': 0,
-	    	'progressData' : 'speed',
-	    	'formData'     : {
-				'timestamp' : TIMESTAMP,
-				'token'     : TOKEN
-			},
-	    	'buttonText' : 'Завантажити...',
-	        'swf'      : URLS.uploadifySWF,
-	        'uploader' : URLS.documentsUpload,
-	        'onUploadSuccess' : function(file, data, response) {
-	            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
-	            getDocuments();
-	        }
-	    });
-	}, 1000);
+	$scope.addOption = function(){
+		$scope.options.push({name: 'Варіант '+($scope.options.length+1)});
+		$scope.optionsPrices.push(getRolePrices());
+	};
 	
-	function editJob(){
-		var url = $scope.urlsJobsEditNg.replace('0', $scope.job.id);
+	$scope.removeOption = function(){
+		$scope.options.pop();
+		$scope.optionsPrices.pop();
+	};
+	
+	(function initialization(){
+		$scope.prices = getRolePrices();
+		$scope.options.push({name: 'Варіант 1'},{name: 'Варіант 2'});
+		$scope.optionsPrices.push(getRolePrices(), getRolePrices());
+		
+		if ($scope.service.logical == true){
+			copyLogicalPrices();
+		}else{
+			copyOptionsPrices();
+		}
+		$scope.checkFormInvalid();
+	})();
+	
+	function editService(){
+		if ($scope.service.logical == '0'){
+			$scope.service.options = $scope.options;
+			$scope.service.prices = $scope.optionsPrices;
+		}else{
+			if (_.has($scope.service, 'options')) delete $scope.service.options;
+			$scope.service.prices = $scope.prices;
+		}
+		
+		var url = $scope.urlsServicesEditNg.replace('0', $scope.service.id);
 		
 		$http({
 			method: "POST", 
 			url: url,
-			data: $scope.job
+			data: $scope.service
 			  })
 		.success(function(response){
-			console.log("edited job => ", response);
+			console.log("edited service => ", response);
 			if (response.result)
 			{
 				$modalInstance.close(response.result);
 			}
 		})
-	}
+	};
 	
 	$scope.ok = function () {
-		if (!$scope.jobForm.$valid) return;
-		editJob();
+		if (!$scope.serviceForm.$valid) return;
+		if ($scope.checkFormInvalid()) return;
+		editService();
 	};
 
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
-})
-.controller('BlockJobsController', function($scope,$http){
-	console.log('BlockJobsController loaded!');
-	
-	$scope.urlsJobsGetNg = URLS.jobsGetNg;
-	$scope.urlsJobsShowJob = URLS.jobsShowJob;
-	$scope.jobs = [];
-	
-	function getJobs()
-	{
-		$http({
-			method: "GET", 
-			url: $scope.urlsJobsGetNg,
-			params: {onhomepage: 1}
-			  })
-		.success(function(response){
-			console.log("block jobs => ",response);
-			if (response.result)
-			{
-				$scope.jobs = response.result;
-				setTimeout(function(){
-					$('.jobs-slider').slick({
-						slidesToShow: 2,
-						slidesToScroll: 1,
-						centerMode: true,
-						dots: false,
-						focusOnSelect: true,
-						variableWidth: true,
-						autoplay: true,
-						autoPlaySpeed: 2000
-						});
-				},100);
-			}
-		})
-	}
-	getJobs();
-	
-	$scope.setItemDirectHref = function(job){
-		var href = $scope.urlsJobsShowJob.replace('0', job.nameTranslit);
-		job.href = href;
-	}	
 });

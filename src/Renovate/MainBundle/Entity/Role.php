@@ -51,10 +51,10 @@ class Role implements RoleInterface
 	private $users;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="Service", mappedBy="Role")
+	 * @ORM\OneToMany(targetEntity="ServicePrice", mappedBy="role")
 	 * @var array
 	 */
-	private $services;
+	private $servicePrices;
     
 	public function __construct()
 	{
@@ -174,36 +174,36 @@ class Role implements RoleInterface
     }
     
     /**
-     * Add services
+     * Add servicePrices
      *
-     * @param \Renovate\MainBundle\Entity\Service $services
+     * @param \Renovate\MainBundle\Entity\ServicePrice $servicePrices
      * @return Role
      */
-    public function addService(\Renovate\MainBundle\Entity\Service $services)
+    public function addServicePrice(\Renovate\MainBundle\Entity\ServicePrice $servicePrices)
     {
-    	$this->services[] = $services;
+    	$this->servicePrices[] = $servicePrices;
     
     	return $this;
     }
     
     /**
-     * Remove services
+     * Remove servicePrices
      *
-     * @param \Renovate\MainBundle\Entity\Service $services
+     * @param \Renovate\MainBundle\Entity\ServicePrice $servicePrices
      */
-    public function removeService(\Renovate\MainBundle\Entity\Service $services)
+    public function removeServicePrice(\Renovate\MainBundle\Entity\ServicePrice $servicePrices)
     {
-    	$this->services->removeElement($services);
+    	$this->servicePrices->removeElement($servicePrices);
     }
     
     /**
-     * Get services
+     * Get servicePrices
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServices()
+    public function getServicePrices()
     {
-    	return $this->services;
+    	return $this->servicePrices;
     }
     
     public function getInArray()

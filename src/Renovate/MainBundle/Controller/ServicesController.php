@@ -35,43 +35,43 @@ class ServicesController extends Controller
     }
     
     
-    public function addJobNgAction()
+    public function addServiceNgAction()
     {
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
     	$transliterater = $this->get('renovate.transliterater');
-    	$job = Job::addJob($em, $transliterater, $this->getUser(), $parameters);
+    	$service = Service::addService($em, $transliterater, $parameters);
     	
-    	$response = new Response(json_encode(array("result" => $job->getInArray())));
+    	$response = new Response(json_encode(array("result" => $service->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
     }
     
     
-    public function removeJobNgAction($job_id)
+    public function removeServiceNgAction($service_id)
     {
     	$em = $this->getDoctrine()->getManager();
     	
-    	$response = new Response(json_encode(array("result" => Job::removeJobById($em, $job_id))));
+    	$response = new Response(json_encode(array("result" => Service::removeServiceById($em, $service_id))));
     	$response->headers->set('Content-Type', 'application/json');
     	
     	return $response;
     }
     
     
-    public function editJobNgAction($job_id)
+    public function editServiceNgAction($service_id)
     {
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
     	$transliterater = $this->get('renovate.transliterater');
-    	$job = Job::editJobById($em, $transliterater, $job_id, $parameters);
+    	$service = Service::editServiceById($em, $transliterater, $service_id, $parameters);
     	
-    	$response = new Response(json_encode(array("result" => $job->getInArray())));
+    	$response = new Response(json_encode(array("result" => $service->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
