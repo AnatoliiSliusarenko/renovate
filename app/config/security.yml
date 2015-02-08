@@ -53,4 +53,7 @@ security:
         - { path: ^/ng/shares/add, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/shares/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/shares/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/services*, roles: ROLE_ADMIN }
+        - { path: ^/ng/services*, roles: ROLE_ADMIN }
+        
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
