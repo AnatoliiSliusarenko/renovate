@@ -88,6 +88,18 @@ renovate_tariffs:
     path: /tariffs
     defaults: { _controller: RenovateMainBundle:Tariffs:index}
     
+renovate_tariffs_panel:
+    path: /tariffs/panel
+    defaults: { _controller: RenovateMainBundle:Tariffs:showPanel}
+    
+renovate_ng_tariffs_panel_add:
+    path: /ng/tariffs/panel/add
+    defaults: { _controller: RenovateMainBundle:Tariffs:addTariffPublicNg}
+    
+renovate_ng_tariffs_panel_get:
+    path: /ng/tariffs/panel/get
+    defaults: { _controller: RenovateMainBundle:Tariffs:getTariffsPublicNg}
+    
 renovate_documents:
     path: /documents
     defaults: { _controller: RenovateMainBundle:Documents:index}
@@ -271,6 +283,10 @@ renovate_services:
 renovate_ng_services:
     path: /ng/services
     defaults: { _controller: RenovateMainBundle:Services:getServicesNg}
+    
+renovate_ng_services_calculator:
+    path: /ng/services/calculator
+    defaults: { _controller: RenovateMainBundle:Services:getServicesCalculatorNg}
     
 renovate_ng_services_count:
     path: /ng/services/count

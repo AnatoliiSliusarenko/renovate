@@ -67,6 +67,12 @@ class Service
      */
     private $serviceOptions;
     
+    /**
+     * @ORM\OneToMany(targetEntity="TariffService", mappedBy="service")
+     * @var array
+     */
+    private $tariffServices;
+    
     private function cleanService($em){
     	$qb = $em->createQueryBuilder();
     	 
@@ -86,7 +92,7 @@ class Service
     	return $pricesResult && $optionsResult;
     }
     
-    private function createOptionsAndPrices($em, $transliterater, $parameters){
+    private function createOptionsAndPrices($em, $parameters){
     	if ($this->getLogical() == true){
     		foreach($parameters->prices as $price){
     			$role = $em->getRepository("RenovateMainBundle:Role")->find($price->roleid);
@@ -107,7 +113,6 @@ class Service
     			$serviceOption->setServiceid($this->getId());
     			$serviceOption->setService($this);
     			$serviceOption->setName($option->name);
-    			$serviceOption->setValue($transliterater->transliterate($option->name));
     			 
     			$em->persist($serviceOption);
     			$em->flush();
@@ -325,6 +330,39 @@ class Service
     }
     
     /**
+     * Add tariffServices
+     *
+     * @param \Renovate\MainBundle\Entity\TariffService $tariffServices
+     * @return Service
+     */
+    public function addTariffService(\Renovate\MainBundle\Entity\TariffService $tariffServices)
+    {
+    	$this->tariffServices[] = $tariffServices;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove tariffServices
+     *
+     * @param \Renovate\MainBundle\Entity\TariffService $tariffServices
+     */
+    public function removeTariffService(\Renovate\MainBundle\Entity\TariffService $tariffServices)
+    {
+    	$this->tariffServices->removeElement($tariffServices);
+    }
+    
+    /**
+     * Get tariffServices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTariffServices()
+    {
+    	return $this->tariffServices;
+    }
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -400,6 +438,25 @@ class Service
     	}else return $result;
     }
     
+    public static function getServicesCalculator($em)
+    {
+    	$result = array();
+    	$categories = ServiceCategory::getAllServiceCategories($em);
+    	foreach($categories as $category){
+    		$qb = $em->getRepository("RenovateMainBundle:Service")
+    		->createQueryBuilder('s')
+    		->select('s')
+    		->orderBy('s.created', 'DESC')
+    		->where("s.categoryid = :id")
+    		->setParameter("id", $category->getId());
+    		
+    		$services = $qb->getQuery()->getResult();
+    		
+    		$result[] = array('category' => $category->getName(), 'services' => array_map(function($service){return $service->getInArray();}, $services));
+    	}
+    	return $result;
+    }
+    
     public static function getServicesCount($em)
     {
     	$query = $em->getRepository("RenovateMainBundle:Service")
@@ -412,7 +469,7 @@ class Service
     	return $total;
     }
     
-    public static function addService($em, $transliterater, $parameters)
+    public static function addService($em, $parameters)
     {
     	$em->getConnection()->beginTransaction();
     	try {
@@ -428,7 +485,7 @@ class Service
 	    	$em->persist($service);
 	    	$em->flush();
     	
-	    	$service->createOptionsAndPrices($em, $transliterater, $parameters);
+	    	$service->createOptionsAndPrices($em, $parameters);
 	    	
     		$em->getConnection()->commit();
     		return $service;
@@ -440,7 +497,7 @@ class Service
     
     
     
-    public static function editServiceById($em, $transliterater, $id, $parameters)
+    public static function editServiceById($em, $id, $parameters)
     {
     	$em->getConnection()->beginTransaction();
     	try {
@@ -456,7 +513,7 @@ class Service
     		$em->flush();
     		 
     		$service->cleanService($em);
-    		$service->createOptionsAndPrices($em, $transliterater, $parameters);
+    		$service->createOptionsAndPrices($em, $parameters);
     		 
     		$em->getConnection()->commit();
     		return $service;

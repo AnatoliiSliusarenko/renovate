@@ -55,5 +55,7 @@ security:
         - { path: ^/ng/shares/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/services*, roles: ROLE_ADMIN }
         - { path: ^/ng/services*, roles: ROLE_ADMIN }
+        - { path: ^/tariffs/panel*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/tariffs/panel*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

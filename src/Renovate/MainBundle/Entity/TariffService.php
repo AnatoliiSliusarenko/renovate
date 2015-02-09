@@ -36,12 +36,32 @@ class TariffService
     private $serviceid;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="value", type="string", length=255)
+     * @ORM\Column(name="optionid", type="integer")
      */
-    private $value;
+    private $optionid;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Tariff", inversedBy="tariffServices")
+     * @ORM\JoinColumn(name="tariffid")
+     * @var Tariff
+     */
+    private $tariff;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Service", inversedBy="tariffServices")
+     * @ORM\JoinColumn(name="serviceid")
+     * @var Service
+     */
+    private $service;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="ServiceOption", inversedBy="tariffServices")
+     * @ORM\JoinColumn(name="optionid")
+     * @var ServiceOption
+     */
+    private $option;
 
     /**
      * Get id
@@ -100,25 +120,94 @@ class TariffService
     }
 
     /**
-     * Set value
+     * Set optionid
      *
-     * @param string $value
+     * @param integer $optionid
      * @return TariffService
      */
-    public function setValue($value)
+    public function setOptionid($optionid)
     {
-        $this->value = $value;
+        $this->optionid = $optionid;
 
         return $this;
     }
 
     /**
-     * Get value
+     * Get optionid
      *
-     * @return string 
+     * @return integer 
      */
-    public function getValue()
+    public function getOptionid()
     {
-        return $this->value;
+        return $this->optionid;
+    }
+
+    /**
+     * Set tariff
+     *
+     * @param \Renovate\MainBundle\Entity\Tariff $tariff
+     * @return TariffService
+     */
+    public function setTariff(\Renovate\MainBundle\Entity\Tariff $tariff = null)
+    {
+        $this->tariff = $tariff;
+
+        return $this;
+    }
+
+    /**
+     * Get tariff
+     *
+     * @return \Renovate\MainBundle\Entity\Tariff 
+     */
+    public function getTariff()
+    {
+        return $this->tariff;
+    }
+
+    /**
+     * Set service
+     *
+     * @param \Renovate\MainBundle\Entity\Service $service
+     * @return TariffService
+     */
+    public function setService(\Renovate\MainBundle\Entity\Service $service = null)
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * Get service
+     *
+     * @return \Renovate\MainBundle\Entity\Service 
+     */
+    public function getService()
+    {
+        return $this->service;
+    }
+
+    /**
+     * Set option
+     *
+     * @param \Renovate\MainBundle\Entity\ServiceOption $option
+     * @return TariffService
+     */
+    public function setOption(\Renovate\MainBundle\Entity\ServiceOption $option = null)
+    {
+        $this->option = $option;
+
+        return $this;
+    }
+
+    /**
+     * Get option
+     *
+     * @return \Renovate\MainBundle\Entity\ServiceOption 
+     */
+    public function getOption()
+    {
+        return $this->option;
     }
 }

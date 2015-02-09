@@ -24,6 +24,16 @@ class ServicesController extends Controller
     	return $response;
     }
     
+    public function getServicesCalculatorNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	 
+    	$response = new Response(json_encode(array("result" => Service::getServicesCalculator($em))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
     public function getServicesCountNgAction()
     {
     	$em = $this->getDoctrine()->getManager();
@@ -41,8 +51,7 @@ class ServicesController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$transliterater = $this->get('renovate.transliterater');
-    	$service = Service::addService($em, $transliterater, $parameters);
+    	$service = Service::addService($em, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $service->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
@@ -68,8 +77,7 @@ class ServicesController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$transliterater = $this->get('renovate.transliterater');
-    	$service = Service::editServiceById($em, $transliterater, $service_id, $parameters);
+    	$service = Service::editServiceById($em, $service_id, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $service->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

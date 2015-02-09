@@ -121,6 +121,12 @@ class User implements UserInterface,\Serializable
 	 * @var array
 	 */
 	private $shares;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Tariff", mappedBy="user")
+	 * @var array
+	 */
+	private $tariffs;
     
 	public function __construct()
 	{
@@ -384,6 +390,237 @@ class User implements UserInterface,\Serializable
         $this->roles->removeElement($roles);
     }
     
+    /**
+     * Add documents
+     *
+     * @param \Renovate\MainBundle\Entity\Document $documents
+     * @return User
+     */
+    public function addDocument(\Renovate\MainBundle\Entity\Document $documents)
+    {
+    	$this->documents[] = $documents;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove documents
+     *
+     * @param \Renovate\MainBundle\Entity\Document $documents
+     */
+    public function removeDocument(\Renovate\MainBundle\Entity\Document $documents)
+    {
+    	$this->documents->removeElement($documents);
+    }
+    
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+    	return $this->documents;
+    }
+    
+    /**
+     * Add jobs
+     *
+     * @param \Renovate\MainBundle\Entity\Job $jobs
+     * @return User
+     */
+    public function addJob(\Renovate\MainBundle\Entity\Job $jobs)
+    {
+    	$this->jobs[] = $jobs;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove jobs
+     *
+     * @param \Renovate\MainBundle\Entity\Job $jobs
+     */
+    public function removeJob(\Renovate\MainBundle\Entity\Job $jobs)
+    {
+    	$this->jobs->removeElement($jobs);
+    }
+    
+    /**
+     * Get jobs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getJobs()
+    {
+    	return $this->jobs;
+    }
+    
+    /**
+     * Add news
+     *
+     * @param \Renovate\MainBundle\Entity\News $news
+     * @return User
+     */
+    public function addNews(\Renovate\MainBundle\Entity\News $news)
+    {
+    	$this->news[] = $news;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove news
+     *
+     * @param \Renovate\MainBundle\Entity\News $news
+     */
+    public function removeNews(\Renovate\MainBundle\Entity\News $news)
+    {
+    	$this->news->removeElement($news);
+    }
+    
+    /**
+     * Get news
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNews()
+    {
+    	return $this->news;
+    }
+    
+    /**
+     * Add results
+     *
+     * @param \Renovate\MainBundle\Entity\Result $results
+     * @return User
+     */
+    public function addResult(\Renovate\MainBundle\Entity\Result $results)
+    {
+    	$this->results[] = $results;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove results
+     *
+     * @param \Renovate\MainBundle\Entity\Result $results
+     */
+    public function removeResult(\Renovate\MainBundle\Entity\Result $results)
+    {
+    	$this->results->removeElement($results);
+    }
+    
+    /**
+     * Get results
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getResults()
+    {
+    	return $this->results;
+    }
+    
+    /**
+     * Add articles
+     *
+     * @param \Renovate\MainBundle\Entity\Article $articles
+     * @return User
+     */
+    public function addArticle(\Renovate\MainBundle\Entity\Article $articles)
+    {
+    	$this->articles[] = $articles;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove articles
+     *
+     * @param \Renovate\MainBundle\Entity\Article $articles
+     */
+    public function removeArticle(\Renovate\MainBundle\Entity\Article $articles)
+    {
+    	$this->articles->removeElement($articles);
+    }
+    
+    /**
+     * Get articles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticles()
+    {
+    	return $this->articles;
+    }
+    
+    /**
+     * Add shares
+     *
+     * @param \Renovate\MainBundle\Entity\Share $shares
+     * @return User
+     */
+    public function addShare(\Renovate\MainBundle\Entity\Share $shares)
+    {
+    	$this->shares[] = $shares;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove shares
+     *
+     * @param \Renovate\MainBundle\Entity\Share $shares
+     */
+    public function removeShare(\Renovate\MainBundle\Entity\Share $shares)
+    {
+    	$this->shares->removeElement($shares);
+    }
+    
+    /**
+     * Get shares
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShares()
+    {
+    	return $this->shares;
+    }
+    
+    /**
+     * Add tariffs
+     *
+     * @param \Renovate\MainBundle\Entity\Tariff $tariffs
+     * @return User
+     */
+    public function addTariff(\Renovate\MainBundle\Entity\Tariff $tariffs)
+    {
+    	$this->tariffs[] = $tariffs;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove tariffs
+     *
+     * @param \Renovate\MainBundle\Entity\Tariff $tariffs
+     */
+    public function removeTariff(\Renovate\MainBundle\Entity\Tariff $tariffs)
+    {
+    	$this->tariffs->removeElement($tariffs);
+    }
+    
+    /**
+     * Get tariffs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTariffs()
+    {
+    	return $this->tariffs;
+    }
+    
     public function getInArray()
     {
     	return array(
@@ -549,203 +786,5 @@ class User implements UserInterface,\Serializable
     	$em->flush();
     	
     	return $user;
-    }
-
-    /**
-     * Add documents
-     *
-     * @param \Renovate\MainBundle\Entity\Document $documents
-     * @return User
-     */
-    public function addDocument(\Renovate\MainBundle\Entity\Document $documents)
-    {
-        $this->documents[] = $documents;
-
-        return $this;
-    }
-
-    /**
-     * Remove documents
-     *
-     * @param \Renovate\MainBundle\Entity\Document $documents
-     */
-    public function removeDocument(\Renovate\MainBundle\Entity\Document $documents)
-    {
-        $this->documents->removeElement($documents);
-    }
-
-    /**
-     * Get documents
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getDocuments()
-    {
-        return $this->documents;
-    }
-
-    /**
-     * Add jobs
-     *
-     * @param \Renovate\MainBundle\Entity\Job $jobs
-     * @return User
-     */
-    public function addJob(\Renovate\MainBundle\Entity\Job $jobs)
-    {
-        $this->jobs[] = $jobs;
-
-        return $this;
-    }
-
-    /**
-     * Remove jobs
-     *
-     * @param \Renovate\MainBundle\Entity\Job $jobs
-     */
-    public function removeJob(\Renovate\MainBundle\Entity\Job $jobs)
-    {
-        $this->jobs->removeElement($jobs);
-    }
-
-    /**
-     * Get jobs
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getJobs()
-    {
-        return $this->jobs;
-    }
-
-    /**
-     * Add news
-     *
-     * @param \Renovate\MainBundle\Entity\News $news
-     * @return User
-     */
-    public function addNews(\Renovate\MainBundle\Entity\News $news)
-    {
-        $this->news[] = $news;
-
-        return $this;
-    }
-
-    /**
-     * Remove news
-     *
-     * @param \Renovate\MainBundle\Entity\News $news
-     */
-    public function removeNews(\Renovate\MainBundle\Entity\News $news)
-    {
-        $this->news->removeElement($news);
-    }
-
-    /**
-     * Get news
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getNews()
-    {
-        return $this->news;
-    }
-
-    /**
-     * Add results
-     *
-     * @param \Renovate\MainBundle\Entity\Result $results
-     * @return User
-     */
-    public function addResult(\Renovate\MainBundle\Entity\Result $results)
-    {
-        $this->results[] = $results;
-
-        return $this;
-    }
-
-    /**
-     * Remove results
-     *
-     * @param \Renovate\MainBundle\Entity\Result $results
-     */
-    public function removeResult(\Renovate\MainBundle\Entity\Result $results)
-    {
-        $this->results->removeElement($results);
-    }
-
-    /**
-     * Get results
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getResults()
-    {
-        return $this->results;
-    }
-
-    /**
-     * Add articles
-     *
-     * @param \Renovate\MainBundle\Entity\Article $articles
-     * @return User
-     */
-    public function addArticle(\Renovate\MainBundle\Entity\Article $articles)
-    {
-        $this->articles[] = $articles;
-
-        return $this;
-    }
-
-    /**
-     * Remove articles
-     *
-     * @param \Renovate\MainBundle\Entity\Article $articles
-     */
-    public function removeArticle(\Renovate\MainBundle\Entity\Article $articles)
-    {
-        $this->articles->removeElement($articles);
-    }
-
-    /**
-     * Get articles
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getArticles()
-    {
-        return $this->articles;
-    }
-
-    /**
-     * Add shares
-     *
-     * @param \Renovate\MainBundle\Entity\Share $shares
-     * @return User
-     */
-    public function addShare(\Renovate\MainBundle\Entity\Share $shares)
-    {
-        $this->shares[] = $shares;
-
-        return $this;
-    }
-
-    /**
-     * Remove shares
-     *
-     * @param \Renovate\MainBundle\Entity\Share $shares
-     */
-    public function removeShare(\Renovate\MainBundle\Entity\Share $shares)
-    {
-        $this->shares->removeElement($shares);
-    }
-
-    /**
-     * Get shares
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getShares()
-    {
-        return $this->shares;
     }
 }

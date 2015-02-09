@@ -31,13 +31,6 @@ class ServiceOption
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="string", length=255)
-     */
-    private $value;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -54,6 +47,12 @@ class ServiceOption
      * @var array
      */
     private $servicePrices;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="TariffService", mappedBy="option")
+     * @var array
+     */
+    private $tariffServices;
 
     /**
      * Get id
@@ -86,29 +85,6 @@ class ServiceOption
     public function getServiceid()
     {
         return $this->serviceid;
-    }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     * @return ServiceOption
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return string 
-     */
-    public function getValue()
-    {
-        return $this->value;
     }
 
     /**
@@ -191,6 +167,39 @@ class ServiceOption
     }
     
     /**
+     * Add tariffServices
+     *
+     * @param \Renovate\MainBundle\Entity\TariffService $tariffServices
+     * @return ServiceOption
+     */
+    public function addTariffService(\Renovate\MainBundle\Entity\TariffService $tariffServices)
+    {
+    	$this->tariffServices[] = $tariffServices;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove tariffServices
+     *
+     * @param \Renovate\MainBundle\Entity\TariffService $tariffServices
+     */
+    public function removeTariffService(\Renovate\MainBundle\Entity\TariffService $tariffServices)
+    {
+    	$this->tariffServices->removeElement($tariffServices);
+    }
+    
+    /**
+     * Get tariffServices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTariffServices()
+    {
+    	return $this->tariffServices;
+    }
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -203,7 +212,6 @@ class ServiceOption
     	return array(
     			'id' => $this->getId(),
     			'serviceid' => $this->getServiceid(),
-    			'value' => $this->getValue(),
     			'name' => $this->getName()
     	);
     }

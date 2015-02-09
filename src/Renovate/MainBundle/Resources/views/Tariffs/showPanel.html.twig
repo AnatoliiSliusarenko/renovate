@@ -1,0 +1,131 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}Тарифи компанії{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li class="active">Тарифи компанії</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="row" ng-controller="TariffsPanelController">
+	<div class="col-md-12">
+		<button class="btn btn-default" ng-class="{active: publicTariffsColapsed}" ng-click="publicTariffsColapsed = !publicTariffsColapsed">Види тарифів</button>
+		<hr>
+		<div collapse="!publicTariffsColapsed">
+			<div class="well well-lg">
+				<div class="row">
+					<div class="col-md-12">
+						<button ng-click="addTariff()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<table class="table table-hover table-mobile">
+			      			<thead>
+						        <tr>
+						          <th>#</th>
+						          <th>Назва</th>
+						          <th>Знижка</th>
+						          <th>Створено</th>
+						          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+						        </tr>
+			      			</thead>
+			      			<tbody>
+			      				<tr class="splash" ng-cloak>
+				      				<td colspan="8">
+										<div class="image center-block"></div>
+									</td>
+			      				</tr>
+						        <tr ng-repeat="tariff in tariffs" ng-cloak>
+						          <th scope="row">[[$index+1]]</th>
+						          <td>[[tariff.name]]</td>
+						          <td>[[tariff.discount]] %</td>
+						          <td>[[tariff.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
+						          <td><button ng-click="removeUser(user)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editUser(user)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+						        </tr>
+			      			</tbody>
+    					</table>
+					</div>
+				</div>
+			</div> 
+		</div>
+	</div>
+	<div class="col-md-12">
+		<button class="btn btn-default" ng-class="{active: activatingTariffsColapsed}" ng-click="activatingTariffsColapsed = !activatingTariffsColapsed">Активація тарифів</button>
+		<hr>
+		<div collapse="!activatingTariffsColapsed">
+			<div class="well well-lg">Some content 2</div> 
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="addTariff.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Додати тариф...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="tariffForm">
+  				<div class="form-group" ng-class="{'has-error': tariffForm.tariffName.$invalid && !tariffForm.tariffName.$pristine}">
+    				<label for="tariffName" class="col-sm-2 control-label">Назва</label>
+    				<div class="col-sm-10">
+      					<input ng-model="tariff.name" type="text" class="form-control" id="tariffName" name="tariffName" required>
+    					<p ng-show="tariffForm.tariffName.$invalid && !tariffForm.tariffName.$pristine" class="help-block">Введіть назву.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{'has-error': tariffForm.tariffDiscount.$invalid && !tariffForm.tariffDiscount.$pristine}">
+    				<label for="tariffDiscount" class="col-sm-2 control-label">Знижка (%)</label>
+    				<div class="col-sm-10">
+      					<input ng-model="tariff.discount" type="number" min="0.01" step="0.01" class="form-control" id="tariffDiscount" name="tariffDiscount" required>
+    					<p ng-show="tariffForm.tariffDiscount.$invalid && !tariffForm.tariffDiscount.$pristine" class="help-block">Введіть знижку.</p>
+					</div>
+  				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-6" ng-repeat="servicesList in services">
+						<div class="panel panel-info">
+							<div class="panel-heading">[[servicesList.category]]</div>
+							<div class="panel-body">
+								<div class="col-sm-12" ng-repeat="service in servicesList.services">
+									<div class="form-group" ng-if="service.logical">
+										<div class="checkbox">
+    										<label>
+      											<input ng-model="tariff.services[service.id].checked" type="checkbox"> [[service.name]]
+    										</label>
+  										</div>
+									</div>
+									<div class="form-group" ng-if="!service.logical">
+										<div class="checkbox">
+    										<label>
+      											<input type="checkbox" ng-model="tariff.services[service.id].checked" ng-init="checkbox1=false" ng-click="checkbox1=!checkbox1"> [[service.name]]
+    										</label>
+  										</div>
+										<label class="radio-inline" ng-repeat="option in service.options" ng-init="tariff.services[service.id].value == null">
+  											<input type="radio" name="[[service.name]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1"> [[option.name]]
+										</label>
+									</div>
+								</div>
+  							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<ul class="list-unstyled text-right">
+  					<li ng-repeat="price in prices"><h4>[[price.name]] - <span class="label label-success">[[price.price]] грн</span></h4></li>
+				</ul>
+			</form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="tariffForm.$invalid">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+{% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/angularTariffsController.js') }}"></script>
+{% endblock %}
