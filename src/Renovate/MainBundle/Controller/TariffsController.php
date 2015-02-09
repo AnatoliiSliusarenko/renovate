@@ -42,4 +42,28 @@ class TariffsController extends Controller
     	
     	return $response;
     }
+    
+    public function removeTariffPublicNgAction($tariff_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	 
+    	$response = new Response(json_encode(array("result" => Tariff::removeTariffPublicById($em, $tariff_id))));
+    	$response->headers->set('Content-Type', 'application/json');
+    	 
+    	return $response;
+    }
+    
+    public function editTariffPublicNgAction($tariff_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = json_decode(file_get_contents("php://input"));
+    	$parameters = (object) $data;
+    	 
+    	$tariff = Tariff::editTariffPublicById($em, $tariff_id, $parameters);
+    	 
+    	$response = new Response(json_encode(array("result" => $tariff->getInArray())));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
 }

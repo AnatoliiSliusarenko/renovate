@@ -210,4 +210,14 @@ class TariffService
     {
         return $this->option;
     }
+    
+    public function getInArray()
+    {
+    	return array(
+    			'id' => $this->getId(),
+    			'tariffid' => $this->getTariffid(),
+    			'serviceid' => $this->getServiceid(),
+    			'optionid' => $this->getOptionid()
+    	);
+    }
 }

@@ -64,13 +64,6 @@ class Tariff
     private $payment;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="price", type="float")
-     */
-    private $price;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="squaring", type="integer")
@@ -104,8 +97,84 @@ class Tariff
      */
     private $tariffServices;
     
+    /**
+     * @ORM\OneToMany(targetEntity="TariffPrice", mappedBy="tariff")
+     * @var array
+     */
+    private $tariffPrices;
+    
     private function createTariffServices($em, $parameters){
+    	foreach($parameters->services as $id => $_service){
+    		if ($_service->checked){
+    			$tariffService = new TariffService();
+    			$tariffService->setTariffid($this->getId());
+    			$tariffService->setTariff($this);
+    			
+    			$service = $em->getRepository("RenovateMainBundle:Service")->find($id);
+    			
+    			$tariffService->setServiceid($service->getId());
+    			$tariffService->setService($service);
+    			
+    			if (!$service->getLogical()){
+    				$option = $em->getRepository("RenovateMainBundle:ServiceOption")->find($_service->optionid);
+    				 
+    				$tariffService->setOptionid($option->getId());
+    				$tariffService->setOption($option);
+    			}
+    			
+    			$em->persist($tariffService);
+    			$em->flush();
+    		}
+    	}
+    }
+    
+    private function createTariffPrices($em, $parameters){
+    	 $clientRoles = Role::getClientRoles($em);
+    	 foreach($clientRoles as $role){
+    	 	$price = $this->calculatePrice($em, $role, $parameters->services);
+    	 	
+    	 	$tariffPrice = new TariffPrice();
+    	 	$tariffPrice->setTariffid($this->getId());
+    	 	$tariffPrice->setTariff($this);
+    	 	$tariffPrice->setRoleid($role->getId());
+    	 	$tariffPrice->setRole($role);
+    	 	$tariffPrice->setValue($price);
+    	 	
+    	 	$em->persist($tariffPrice);
+    	 	$em->flush();
+    	 }
+    }
+    
+    private function calculatePrice($em, $role, $services){
+    	$suma = 0;
+    	foreach($services as $id => $_service){
+    		if ($_service->checked){
+    			$service = $em->getRepository("RenovateMainBundle:Service")->find($id);
+    			$price = $service->getPriceForRole($em, $role, $_service->optionid);
+    			$suma = $suma + $price;
+    		}
+    	}
     	
+    	return $suma;
+    }
+    
+    private function cleanTariff($em){
+    	$qb = $em->createQueryBuilder();
+    	
+    	$servicesResult = $qb->delete('RenovateMainBundle:TariffService', 'ts')
+    	->where('ts.tariffid = :id')
+    	->setParameter('id', $this->getId())
+    	->getQuery()->getResult();
+    	 
+    	 
+    	$qb = $em->createQueryBuilder();
+    	 
+    	$pricesResult = $qb->delete('RenovateMainBundle:TariffPrice', 'tp')
+    	->where('tp.tariffid = :id')
+    	->setParameter('id', $this->getId())
+    	->getQuery()->getResult();
+    	
+    	return $servicesResult && $pricesResult;
     }
     
     /**
@@ -257,29 +326,6 @@ class Tariff
     }
 
     /**
-     * Set price
-     *
-     * @param float $price
-     * @return Tariff
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return float 
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
      * Set squaring
      *
      * @param integer $squaring
@@ -405,6 +451,39 @@ class Tariff
     }
     
     /**
+     * Add tariffPrices
+     *
+     * @param \Renovate\MainBundle\Entity\TariffPrice $tariffPrices
+     * @return Tariff
+     */
+    public function addTariffPrice(\Renovate\MainBundle\Entity\TariffPrice $tariffPrices)
+    {
+    	$this->tariffPrices[] = $tariffPrices;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove tariffPrices
+     *
+     * @param \Renovate\MainBundle\Entity\TariffPrice $tariffPrices
+     */
+    public function removeTariffPrice(\Renovate\MainBundle\Entity\TariffPrice $tariffPrices)
+    {
+    	$this->tariffPrices->removeElement($tariffPrices);
+    }
+    
+    /**
+     * Get tariffPrices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTariffPrices()
+    {
+    	return $this->tariffPrices;
+    }
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -422,11 +501,11 @@ class Tariff
     			'active' => $this->getActive(),
     			'discount' => $this->getDiscount(),
     			'payment' => $this->getPayment(),
-    			'price' => $this->getPrice(),
     			'squaring' => $this->getSquaring(),
-    			'activated' => $this->getActivated()->getTimestamp()*1000,
     			'created' => $this->getCreated()->getTimestamp()*1000,
-    			'user' => $this->getUser()->getInArray()
+    			'activated' => $this->getActivated()->getTimestamp()*1000,
+    			'user' => $this->getUser()->getInArray(),
+    			'tariffServices' => ($this->getTariffServices() == null ) ? array() : array_map(function($tariffService){return $tariffService->getInArray();}, $this->getTariffServices()->toArray())
     	);
     }
     
@@ -453,8 +532,6 @@ class Tariff
     {
     	$em->getConnection()->beginTransaction();
     	try {
-    		//$category = $em->getRepository("RenovateMainBundle:ServiceCategory")->find($parameters->categoryid);
-    		 
     		$tariff = new Tariff();
     		$tariff->setUserid($user->getId());
     		$tariff->setUser($user);
@@ -462,10 +539,9 @@ class Tariff
     		$tariff->setActive(TRUE);
     		$tariff->setDiscount($parameters->discount);
     		
-    		$tariff->setPayment(1);///!!!
-    		$tariff->setPrice(1);////!!!
+    		$tariff->setPayment(0);
+    		$tariff->setSquaring(0);
     		
-    		$tariff->setSquaring(1);
     		$tariff->setCreated(new \DateTime());
     		$tariff->setActivated(new \DateTime());
     		
@@ -473,10 +549,59 @@ class Tariff
     		$em->flush();
     		 
     		$tariff->createTariffServices($em, $parameters);
+    		$tariff->createTariffPrices($em, $parameters);
     
     		$em->getConnection()->commit();
     		return $tariff;
     	} catch(Exception $e) {
+    		$em->getConnection()->rollback();
+    		throw $e;
+    	}
+    }
+    
+    public static function editTariffPublicById($em, $id, $parameters)
+    {
+    	$em->getConnection()->beginTransaction();
+    	try {
+    		$tariff = $em->getRepository("RenovateMainBundle:Tariff")->find($id);
+    		
+    		$tariff->setName($parameters->name);
+    		$tariff->setDiscount($parameters->discount);
+    		$tariff->setActivated(new \DateTime());
+    		
+    		$em->persist($tariff);
+    		$em->flush();
+
+    		$tariff->cleanTariff($em);
+    		
+    		$tariff->createTariffServices($em, $parameters);
+    		$tariff->createTariffPrices($em, $parameters);
+    		
+    		$em->getConnection()->commit();
+    		return $tariff;
+    	}catch(Exception $e) {
+    		$em->getConnection()->rollback();
+    		throw $e;
+    	}
+    }
+    
+    public static function removeTariffPublicById($em, $id)
+    {
+    	$em->getConnection()->beginTransaction();
+    	try {
+    		$tariff = $em->getRepository("RenovateMainBundle:Tariff")->find($id);
+    		$tariff->cleanTariff($em);
+    
+    		$qb = $em->createQueryBuilder();
+    	  
+    		$qb->delete('RenovateMainBundle:Tariff', 't')
+    		->where('t.id = :id')
+    		->setParameter('id', $id)
+    		->getQuery()->getResult();
+    	  
+    		$em->getConnection()->commit();
+    		return true;
+    	}catch(Exception $e) {
     		$em->getConnection()->rollback();
     		throw $e;
     	}

@@ -96,6 +96,14 @@ renovate_ng_tariffs_panel_add:
     path: /ng/tariffs/panel/add
     defaults: { _controller: RenovateMainBundle:Tariffs:addTariffPublicNg}
     
+renovate_ng_tariffs_panel_edit:
+    path: /ng/tariffs/panel/edit/{tariff_id}
+    defaults: { _controller: RenovateMainBundle:Tariffs:editTariffPublicNg}
+    
+renovate_ng_tariffs_panel_remove:
+    path: /ng/tariffs/panel/remove/{tariff_id}
+    defaults: { _controller: RenovateMainBundle:Tariffs:removeTariffPublicNg}
+    
 renovate_ng_tariffs_panel_get:
     path: /ng/tariffs/panel/get
     defaults: { _controller: RenovateMainBundle:Tariffs:getTariffsPublicNg}

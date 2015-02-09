@@ -55,6 +55,12 @@ class Role implements RoleInterface
 	 * @var array
 	 */
 	private $servicePrices;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="TariffPrice", mappedBy="role")
+	 * @var array
+	 */
+	private $tariffPrices;
     
 	public function __construct()
 	{
@@ -204,6 +210,39 @@ class Role implements RoleInterface
     public function getServicePrices()
     {
     	return $this->servicePrices;
+    }
+    
+    /**
+     * Add tariffPrices
+     *
+     * @param \Renovate\MainBundle\Entity\TariffPrice $tariffPrices
+     * @return Role
+     */
+    public function addTariffPrice(\Renovate\MainBundle\Entity\TariffPrice $tariffPrices)
+    {
+    	$this->tariffPrices[] = $tariffPrices;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove tariffPrices
+     *
+     * @param \Renovate\MainBundle\Entity\TariffPrice $tariffPrices
+     */
+    public function removeTariffPrice(\Renovate\MainBundle\Entity\TariffPrice $tariffPrices)
+    {
+    	$this->tariffPrices->removeElement($tariffPrices);
+    }
+    
+    /**
+     * Get tariffPrices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTariffPrices()
+    {
+    	return $this->tariffPrices;
     }
     
     public function getInArray()

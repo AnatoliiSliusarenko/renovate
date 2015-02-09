@@ -384,6 +384,26 @@ class Service
     	);
     }
     
+    public function getPriceForRole($em, $role, $optionid = null){
+    	$qb = $em->getRepository("RenovateMainBundle:ServicePrice")
+    	->createQueryBuilder('s');
+    	
+    	$qb->select('s')
+    	->andWhere('s.serviceid = :serviceid')
+    	->andWhere('s.roleid = :roleid')
+    	->setParameter('serviceid', $this->getId())
+    	->setParameter('roleid', $role->getId());
+    	
+    	if ($optionid != null){
+    		$qb->andWhere('s.optionid = :optionid')
+    		->setParameter('optionid', $optionid);
+    	}
+    	
+    	$result = $qb->getQuery()->getSingleResult();
+    	
+    	return ($result != null ) ? $result->getValue() : 0 ;
+    }
+    
     public static function getAllServices($em, $inArray = false)
     {
     	$qb = $em->getRepository("RenovateMainBundle:Service")

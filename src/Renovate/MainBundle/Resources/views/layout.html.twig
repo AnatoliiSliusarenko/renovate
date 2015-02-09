@@ -242,7 +242,9 @@
   			servicesRemoveNg: "{{ path('renovate_ng_services_remove', {service_id: 0}) }}",
   			serviceCategoriesGetAllNg: "{{ path('renovate_ng_service_categories_all') }}",
   			tariffsPanelGetPublicNg: "{{ path('renovate_ng_tariffs_panel_get') }}",
-  			tariffsPanelAddPublicNg: "{{ path('renovate_ng_tariffs_panel_add') }}"
+  			tariffsPanelAddPublicNg: "{{ path('renovate_ng_tariffs_panel_add') }}",
+  			tariffsPanelEditPublicNg: "{{ path('renovate_ng_tariffs_panel_edit', {tariff_id: 0}) }}",
+  			tariffsPanelRemovePublicNg: "{{ path('renovate_ng_tariffs_panel_remove', {tariff_id: 0}) }}"
   			
   	}
   	</script>
