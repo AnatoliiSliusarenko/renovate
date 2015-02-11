@@ -495,7 +495,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		});
 		
 		modalInstance.result.then(function (added) {
-		      if (added) getTariffs();
+		      if (added) getTariffsPublic();
 		    }, function () {
 		      //bad
 		});
@@ -515,13 +515,13 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		});
 		
 		modalInstance.result.then(function (edited) {
-		      if (edited) getTariffs();
+		      if (edited) getTariffsPublic();
 		    }, function () {
 		      //bad
 		});
 	}
 	
-	$scope.removeTariff = function(tariff){
+	$scope.removeTariffPublic = function(tariff){
 		var remove = confirm("Дійсно бажаєте видалити: " + tariff.name + " ?");
 		if (!remove) return;
 		
@@ -535,7 +535,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 			console.log(response);
 			if (response.result)
 			{
-				getTariffs();
+				getTariffsPublic();
 			}
 		});
 	}

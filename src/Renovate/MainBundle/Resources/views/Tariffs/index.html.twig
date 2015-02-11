@@ -120,7 +120,7 @@
     										</label>
   										</div>
 										<label class="radio-inline" ng-repeat="option in service.options" ng-init="tariff.services[service.id].value == null">
-  											<input type="radio" name="[[service.name]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1 || option.fixed == true"> [[option.name]]
+  											<input type="radio" name="[[service.name]][[service.id]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1 || option.fixed == true"> [[option.name]]
 										</label>
 									</div>
 								</div>

@@ -612,15 +612,15 @@ class Tariff
     		->setParameter('to', $parameters['to']);
     	}
     	
-    	if (isset($parameters['parent']) && $parameters['parent'] == 'true'){
+    	if (isset($parameters['parentid']) && $parameters['parentid'] == 'true'){
     		$qb->andWhere('t.parentid is not NULL');
-    	}elseif (isset($parameters['parent']) && $parameters['parent'] == 'false'){
+    	}elseif (isset($parameters['parentid']) && $parameters['parentid'] == 'false'){
     		$qb->andWhere('t.parentid is NULL');
     	}
     	
-    	if (isset($parameters['client'])){
+    	if (isset($parameters['userid'])){
     		$qb->andWhere('t.userid = :userid')
-    		->setParameter('userid', $parameters['client']);
+    		->setParameter('userid', $parameters['userid']);
     	}
     	
     	if (isset($parameters['active'])){

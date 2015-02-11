@@ -28,6 +28,7 @@ security:
     access_control:
         - { path: ^/users*, roles: ROLE_ADMIN }
         - { path: ^/ng/users/check-tariff, roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: ^/ng/users/clients*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/users*, roles: ROLE_ADMIN }
         - { path: ^/ng/workers*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/documents*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
