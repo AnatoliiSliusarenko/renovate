@@ -189,11 +189,13 @@
   			jobsRemoveNg: "{{ path('renovate_ng_jobs_remove', {job_id: 0}) }}",
   			jobsEditNg: "{{ path('renovate_ng_jobs_edit', {job_id: 0}) }}",
   			usersGetNg: "{{ path('renovate_ng_users') }}",
+  			usersGetClientsNg: "{{ path('renovate_ng_users_get_clients') }}",
   			workersGetNg: "{{ path('renovate_ng_workers') }}",
   			usersCountNg: "{{ path('renovate_ng_users_count') }}",
   			usersAddNg: "{{ path('renovate_ng_users_add') }}",
   			usersRemoveNg: "{{ path('renovate_ng_users_remove', {user_id: 0}) }}",
   			usersEditNg: "{{ path('renovate_ng_users_edit', {user_id: 0}) }}",
+  			usersCheckTariffNg: "{{ path('renovate_ng_users_check_tariff') }}",
   			rolesGetNg: "{{ path('renovate_ng_roles') }}",
   			rolesGetClientRolesNg: "{{ path('renovate_ng_roles_client') }}",
   			documentsGetNg: "{{ path('renovate_ng_documents') }}",
@@ -241,10 +243,13 @@
   			servicesEditNg: "{{ path('renovate_ng_services_edit', {service_id: 0}) }}",
   			servicesRemoveNg: "{{ path('renovate_ng_services_remove', {service_id: 0}) }}",
   			serviceCategoriesGetAllNg: "{{ path('renovate_ng_service_categories_all') }}",
-  			tariffsPanelGetPublicNg: "{{ path('renovate_ng_tariffs_panel_get') }}",
+  			tariffsNg: "{{ path('renovate_ng_tariffs') }}",
+  			tariffsCountNg: "{{ path('renovate_ng_tariffs_count') }}",
   			tariffsPanelAddPublicNg: "{{ path('renovate_ng_tariffs_panel_add') }}",
+  			tariffsPanelActivatePrivateNg: "{{ path('renovate_ng_tariffs_panel_activate', {tariff_id: 0}) }}",
   			tariffsPanelEditPublicNg: "{{ path('renovate_ng_tariffs_panel_edit', {tariff_id: 0}) }}",
-  			tariffsPanelRemovePublicNg: "{{ path('renovate_ng_tariffs_panel_remove', {tariff_id: 0}) }}"
+  			tariffsRemoveNg: "{{ path('renovate_ng_tariffs_remove', {tariff_id: 0}) }}",
+  			tariffsAddPrivateNg: "{{ path('renovate_ng_tariffs_add') }}"
   			
   	}
   	</script>

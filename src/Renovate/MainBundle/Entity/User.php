@@ -636,6 +636,20 @@ class User implements UserInterface,\Serializable
     	);
     }
     
+    public function checkUserTariff($em)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Tariff")
+    	->createQueryBuilder('t');
+    	 
+    	$qb->select('t')
+    	->andWhere('t.userid = :userid')
+    	->andWhere('t.active = :active')
+    	->setParameter('userid', $this->getId())
+    	->setParameter('active', 0);
+    	 
+    	return (count($qb->getQuery()->getResult()) > 0) ? true : false;
+    }
+    
     public static function getAllUsers($em, $inArray = false)
     {
     	$qb = $em->getRepository("RenovateMainBundle:User")
@@ -683,6 +697,29 @@ class User implements UserInterface,\Serializable
 		   ->join("u.roles", "r")
 		   ->where("r.role = 'ROLE_WORKER'")
     	   ->orderBy('u.registered', 'DESC');
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($user){
+    			return $user->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
+    
+    public static function getClients($em, $inArray = false)
+    {
+    	$clientRoles = Role::getClientRoles($em);
+    	$clientRolesIds = array_map(function($role){return $role->getId();}, $clientRoles); 
+    	
+    	$qb = $em->getRepository("RenovateMainBundle:User")
+    	->createQueryBuilder('u');
+    
+    	$qb->select('u')
+    	->join("u.roles", "r")
+    	->where($qb->expr()->in('r.id', $clientRolesIds))
+    	->orderBy('u.registered', 'DESC');
     
     	$result = $qb->getQuery()->getResult();
     

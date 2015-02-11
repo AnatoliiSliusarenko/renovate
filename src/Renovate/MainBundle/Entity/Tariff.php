@@ -83,6 +83,13 @@ class Tariff
      * @ORM\Column(name="activated", type="datetime")
      */
     private $activated;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="page", type="string", length=255)
+     */
+    private $page;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="tariffs")
@@ -395,6 +402,29 @@ class Tariff
     }
     
     /**
+     * Set page
+     *
+     * @param string $page
+     * @return Tariff
+     */
+    public function setPage($page)
+    {
+    	$this->page = $page;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get page
+     *
+     * @return string
+     */
+    public function getPage()
+    {
+    	return $this->page;
+    }
+    
+    /**
      * Set user
      *
      * @param \Renovate\MainBundle\Entity\User $user
@@ -503,20 +533,55 @@ class Tariff
     			'payment' => $this->getPayment(),
     			'squaring' => $this->getSquaring(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
-    			'activated' => $this->getActivated()->getTimestamp()*1000,
+    			'activated' => ($this->getActivated() == null ) ? null : $this->getActivated()->getTimestamp()*1000,
+    			'page' => $this->getPage(),
     			'user' => $this->getUser()->getInArray(),
-    			'tariffServices' => ($this->getTariffServices() == null ) ? array() : array_map(function($tariffService){return $tariffService->getInArray();}, $this->getTariffServices()->toArray())
+    			'tariffServices' => ($this->getTariffServices() == null ) ? array() : array_map(function($tariffService){return $tariffService->getInArray();}, $this->getTariffServices()->toArray()),
+    			'tariffPrices' => ($this->getTariffPrices() == null ) ? array() : array_map(function($tariffPrice){return $tariffPrice->getInArray();}, $this->getTariffPrices()->toArray())
     	);
     }
     
-    public static function getTariffsPublic($em, $inArray = false)
+    public static function getTariffs($em, $parameters, $inArray = false)
     {
     	$qb = $em->getRepository("RenovateMainBundle:Tariff")
     	->createQueryBuilder('t');
     
     	$qb->select('t')
-    	->orderBy('t.created', 'DESC')
-    	->where('t.parentid is NULL');
+    	->orderBy('t.created', 'DESC');
+    	
+    	if (isset($parameters['offset']) && isset($parameters['limit']))
+    	{
+    		$qb->setFirstResult($parameters['offset'])
+    		->setMaxResults($parameters['limit']);
+    	}
+    	 
+    	if (isset($parameters['from']))
+    	{
+    		$qb->andWhere('t.created > :from')
+    		->setParameter('from', $parameters['from']);
+    	}
+    	
+    	if (isset($parameters['to']))
+    	{
+    		$qb->andWhere('t.created < :to')
+    		->setParameter('to', $parameters['to']);
+    	}
+    	
+    	if (isset($parameters['parentid']) && $parameters['parentid'] == 'true'){
+    		$qb->andWhere('t.parentid is not NULL');
+    	}elseif (isset($parameters['parentid']) && $parameters['parentid'] == 'false'){
+    		$qb->andWhere('t.parentid is NULL');
+    	}
+    	
+    	if (isset($parameters['userid'])){
+    		$qb->andWhere('t.userid = :userid')
+    		->setParameter('userid', $parameters['userid']);
+    	}
+    	
+    	if (isset($parameters['active'])){
+    		$qb->andWhere('t.active = :active')
+    		->setParameter('active', $parameters['active']);
+    	}
     
     	$result = $qb->getQuery()->getResult();
     
@@ -526,6 +591,46 @@ class Tariff
     			return $tariff->getInArray();
     		}, $result);
     	}else return $result;
+    }
+    
+    public static function getTariffsCount($em, $parameters)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Tariff")
+    	->createQueryBuilder('t');
+    	 
+    	$qb->select('COUNT(t.id)');
+    	 
+    	if (isset($parameters['from']))
+    	{
+    		$qb->andWhere('t.created > :from')
+    		->setParameter('from', $parameters['from']);
+    	}
+    	
+    	if (isset($parameters['to']))
+    	{
+    		$qb->andWhere('t.created < :to')
+    		->setParameter('to', $parameters['to']);
+    	}
+    	
+    	if (isset($parameters['parent']) && $parameters['parent'] == 'true'){
+    		$qb->andWhere('t.parentid is not NULL');
+    	}elseif (isset($parameters['parent']) && $parameters['parent'] == 'false'){
+    		$qb->andWhere('t.parentid is NULL');
+    	}
+    	
+    	if (isset($parameters['client'])){
+    		$qb->andWhere('t.userid = :userid')
+    		->setParameter('userid', $parameters['client']);
+    	}
+    	
+    	if (isset($parameters['active'])){
+    		$qb->andWhere('t.active = :active')
+    		->setParameter('active', $parameters['active']);
+    	}
+    	 
+    	$total = $qb->getQuery()->getSingleScalarResult();
+    	 
+    	return $total;
     }
     
     public static function addTariffPublic($em, \Renovate\MainBundle\Entity\User $user, $parameters)
@@ -540,10 +645,11 @@ class Tariff
     		$tariff->setDiscount($parameters->discount);
     		
     		$tariff->setPayment(0);
-    		$tariff->setSquaring(0);
+    		$tariff->setSquaring(1);
     		
     		$tariff->setCreated(new \DateTime());
     		$tariff->setActivated(new \DateTime());
+    		$tariff->setPage($parameters->page);
     		
     		$em->persist($tariff);
     		$em->flush();
@@ -559,6 +665,57 @@ class Tariff
     	}
     }
     
+    public static function addTariffPrivate($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    {
+    	$em->getConnection()->beginTransaction();
+    	try {
+    		$tariffParent = $em->getRepository("RenovateMainBundle:Tariff")->find($parameters->id);
+    		
+    		$tariff = new Tariff();
+    		$tariff->setParentid($tariffParent->getId());
+    		$tariff->setUserid($user->getId());
+    		$tariff->setUser($user);
+    		
+    		$name = ($parameters->edited == true) ? $tariffParent->getName().'+' : $tariffParent->getName();
+    		$tariff->setName($name);
+    		
+    		$tariff->setActive(FALSE);
+    		$tariff->setDiscount($tariffParent->getDiscount());
+    		$tariff->setSquaring($parameters->squaring);
+    		$tariff->setPayment(0);
+    		$tariff->setCreated(new \DateTime());
+    		
+    		$em->persist($tariff);
+    		$em->flush();
+    		
+    		$role = $em->getRepository("RenovateMainBundle:Role")->find($parameters->clientRole->id);
+    		
+    		$price = $tariff->calculatePrice($em, $role, $parameters->services);
+    		$tariffPrice = new TariffPrice();
+    		$tariffPrice->setTariffid($tariff->getId());
+    		$tariffPrice->setTariff($tariff);
+    		$tariffPrice->setRoleid($role->getId());
+    		$tariffPrice->setRole($role);
+    		$tariffPrice->setValue($price);
+    		 
+    		$em->persist($tariffPrice);
+    		$em->flush();
+    		
+    		$tariff->setPayment($price*$tariff->getSquaring());
+    		
+    		$em->persist($tariff);
+    		$em->flush();
+    		
+    		$tariff->createTariffServices($em, $parameters);
+    		
+    		$em->getConnection()->commit();
+    		return $tariff;
+    	}catch(Exception $e) {
+    		$em->getConnection()->rollback();
+    		throw $e;
+    	}
+    }
+    
     public static function editTariffPublicById($em, $id, $parameters)
     {
     	$em->getConnection()->beginTransaction();
@@ -568,6 +725,7 @@ class Tariff
     		$tariff->setName($parameters->name);
     		$tariff->setDiscount($parameters->discount);
     		$tariff->setActivated(new \DateTime());
+    		$tariff->setPage($parameters->page);
     		
     		$em->persist($tariff);
     		$em->flush();
@@ -599,6 +757,36 @@ class Tariff
     		->setParameter('id', $id)
     		->getQuery()->getResult();
     	  
+    		$em->getConnection()->commit();
+    		return true;
+    	}catch(Exception $e) {
+    		$em->getConnection()->rollback();
+    		throw $e;
+    	}
+    }
+    
+    public static function activateTariffPrivateById($em, $id)
+    {
+    	$em->getConnection()->beginTransaction();
+    	try {
+    		$newTariff = $em->getRepository("RenovateMainBundle:Tariff")->find($id);
+    		
+    		
+    		$tariffs = Tariff::getTariffs($em, array('parentid' => 'true', 
+							    		  'userid' => $newTariff->getUserid(), 
+							    		  'active' => '1'));
+    		foreach($tariffs as $tariff){
+    			$tariff->cleanTariff($em);
+    			$em->remove($tariff);
+    			$em->flush();
+    		}
+    		
+    		$newTariff->setActive(TRUE);
+    		$newTariff->setActivated(new \DateTime());
+    
+    		$em->persist($newTariff);
+    		$em->flush();
+    		 
     		$em->getConnection()->commit();
     		return true;
     	}catch(Exception $e) {

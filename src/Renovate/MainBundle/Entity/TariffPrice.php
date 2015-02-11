@@ -180,4 +180,14 @@ class TariffPrice
     {
         return $this->role;
     }
+    
+    public function getInArray()
+    {
+    	return array(
+    			'id' => $this->getId(),
+    			'tariffid' => $this->getTariffid(),
+    			'roleid' => $this->getRoleid(),
+    			'value' => $this->getValue()
+    	);
+    }
 }

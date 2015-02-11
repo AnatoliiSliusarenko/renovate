@@ -32,6 +32,7 @@
 						          <th>#</th>
 						          <th>Назва</th>
 						          <th>Знижка</th>
+						          <th>Сторінка</th>
 						          <th>Створено</th>
 						          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
 						        </tr>
@@ -46,6 +47,7 @@
 						          <th scope="row">[[$index+1]]</th>
 						          <td>[[tariff.name]]</td>
 						          <td>[[tariff.discount]] %</td>
+						          <td>[[tariff.page]]</td>
 						          <td>[[tariff.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 						          <td><button ng-click="removeTariff(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariff(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 						        </tr>
@@ -57,10 +59,107 @@
 		</div>
 	</div>
 	<div class="col-md-12">
-		<button class="btn btn-default" ng-class="{active: activatingTariffsColapsed}" ng-click="activatingTariffsColapsed = !activatingTariffsColapsed">Активація тарифів</button>
+		<button class="btn btn-default" ng-class="{active: activatingTariffsColapsed}" ng-click="activatingTariffsColapsed = !activatingTariffsColapsed">Тарифи клієнтів</button>
 		<hr>
 		<div collapse="!activatingTariffsColapsed">
-			<div class="well well-lg">Some content 2</div> 
+			<div class="well well-lg">
+				<div class="row">
+					<div class="col-md-12">
+						<form class="form-inline">
+						  <div class="form-group">
+						    <label for="itemsPerPage">На сторінці</label>
+					      	<select id="itemsPerPage" class="form-control" ng-model="itemsPerPage">
+							  <option>1</option>
+							  <option>2</option>
+							  <option>3</option>
+							  <option>4</option>
+							  <option>5</option>
+							  <option>10</option>
+							  <option>25</option>
+							  <option>50</option>
+							  <option>100</option>
+							  <option>500</option>
+							  <option>1000</option>
+							</select>
+						  </div>
+						  <div class="form-group">
+						    <label for="clients">Клієнти</label>
+						    <select id="clients" ng-options="client.id as (client.name+' '+client.surname+'('+client.username+')') for client in clients" class="form-control" ng-model="filter.userid">
+								<option value="">усі</option>
+							</select>
+						  </div>
+						  <div class="form-group datepicker">
+						  	<div class="input-group">
+						  		<input placeholder="Від" id="from" ng-click="openFrom($event)" type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="filter.from" is-open="openedFrom" close-text="Закрити" clear-text="Очистити" current-text="Сьогодні" />
+						  		<div class="input-group-addon" ng-click="openFrom($event)"><i class="glyphicon glyphicon-calendar"></i></div>
+						  	</div>
+						  </div>
+						  <div class="form-group datepicker">
+						  	<div class="input-group">
+						  		<input placeholder="До" id="to" ng-click="openTo($event)" type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="filter.to" is-open="openedTo" close-text="Закрити" clear-text="Очистити" current-text="Сьогодні"/>
+						  		<div class="input-group-addon" ng-click="openTo($event)"><i class="glyphicon glyphicon-calendar"></i></div>
+						  	</div>
+						  </div>
+						  	<div class="form-group">
+							  	<label class="radio-inline">
+								  <input ng-model="filter.active" type="radio" name="inlineRadioOptions" id="inlineRadio1"> усі
+								</label>
+								<label class="radio-inline">
+								  <input ng-model="filter.active" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1"> активні
+								</label>
+								<label class="radio-inline">
+								  <input ng-model="filter.active" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="0"> не активні
+								</label>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<table class="table table-hover table-mobile">
+			      			<thead>
+						        <tr>
+						          <th>#</th>
+						          <th>Клієнт</th>
+						          <th>Назва</th>
+						          <th>Знижка</th>
+						          <th>Активний</th>
+						          <th>Створено</th>
+						          <th>Активований</th>
+						          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+						        </tr>
+			      			</thead>
+			      			<tbody>
+			      				<tr class="splash" ng-cloak>
+				      				<td colspan="8">
+										<div class="image center-block"></div>
+									</td>
+			      				</tr>
+						        <tr ng-repeat="tariff in tariffsPrivate" ng-cloak>
+						          <th scope="row">[[$index+1]]</th>
+						          <td><cite title="[[tariff.user.name + ' ' + tariff.user.surname]]">[[tariff.user.username]]</cite></td>
+						          <td>[[tariff.name]]</td>
+						          <td>[[tariff.discount]] %</td>
+						          <td><span ng-show="tariff.active" class="label label-success"><span class="glyphicon glyphicon-ok-sign"></span></span><span ng-show="!tariff.active" class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span></span></td>
+						          <td>[[tariff.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
+						          <td><button ng-show="!tariff.active" ng-click="activateTariffPrivate(tariff)" type="button" class="close pull-left"><span class="glyphicon glyphicon-ok-sign"></span></button>[[tariff.activated | date:"dd.MM.yyyy HH:mm:ss"]]</td>
+						          <td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button></td>
+						        </tr>
+			      			</tbody>
+    					</table>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+					</div>
+				</div>
+			</div> 
 		</div>
 	</div>
 </div>
@@ -82,6 +181,13 @@
     				<div class="col-sm-10">
       					<input ng-model="tariff.discount" type="number" min="0.01" step="0.01" class="form-control" id="tariffDiscount" name="tariffDiscount" required>
     					<p ng-show="tariffForm.tariffDiscount.$invalid && !tariffForm.tariffDiscount.$pristine" class="help-block">Введіть знижку.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{'has-error': tariffForm.tariffPage.$invalid && !tariffForm.tariffPage.$pristine}">
+    				<label for="tariffPage" class="col-sm-2 control-label">Сторінка</label>
+    				<div class="col-sm-10">
+      					<input ng-model="tariff.page" type="text" class="form-control" id="tariffPage" name="tariffPage">
+    					<p ng-show="tariffForm.tariffPage.$invalid && !tariffForm.tariffPage.$pristine" class="help-block">Введіть сторінку.</p>
 					</div>
   				</div>
 				<hr>
@@ -142,6 +248,13 @@
     				<div class="col-sm-10">
       					<input ng-model="tariff.discount" type="number" min="0.01" step="0.01" class="form-control" id="tariffDiscount" name="tariffDiscount" required>
     					<p ng-show="tariffForm.tariffDiscount.$invalid && !tariffForm.tariffDiscount.$pristine" class="help-block">Введіть знижку.</p>
+					</div>
+  				</div>
+				<div class="form-group" ng-class="{'has-error': tariffForm.tariffPage.$invalid && !tariffForm.tariffPage.$pristine}">
+    				<label for="tariffPage" class="col-sm-2 control-label">Сторінка</label>
+    				<div class="col-sm-10">
+      					<input ng-model="tariff.page" type="text" class="form-control" id="tariffPage" name="tariffPage">
+    					<p ng-show="tariffForm.tariffPage.$invalid && !tariffForm.tariffPage.$pristine" class="help-block">Введіть сторінку.</p>
 					</div>
   				</div>
 				<hr>

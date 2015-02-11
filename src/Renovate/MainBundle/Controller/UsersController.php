@@ -26,11 +26,21 @@ class UsersController extends Controller
     	return $response;
     }
     
-    public function getWorkersNgAction(Request $request)
+    public function getWorkersNgAction()
     {
     	$em = $this->getDoctrine()->getManager();
     	
     	$response = new Response(json_encode(array("result" => User::getWorkers($em, true))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
+    public function getClientsNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	 
+    	$response = new Response(json_encode(array("result" => User::getClients($em, true))));
     	$response->headers->set('Content-Type', 'application/json');
     
     	return $response;
@@ -73,7 +83,6 @@ class UsersController extends Controller
     	return $response;
     }
     
-    
     public function editUserNgAction($user_id)
     {
     	$em = $this->getDoctrine()->getManager();
@@ -86,6 +95,16 @@ class UsersController extends Controller
     	$response = new Response(json_encode(array("result" => $user->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     	 
+    	return $response;
+    }
+    
+    public function checkUserTariffNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	 
+    	$response = new Response(json_encode(array("result" => $this->getUser()->checkUserTariff($em))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
     	return $response;
     }
 }

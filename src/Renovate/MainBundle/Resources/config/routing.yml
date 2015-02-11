@@ -56,6 +56,14 @@ renovate_ng_users:
     path: /ng/users
     defaults: { _controller: RenovateMainBundle:Users:getUsersNg}
     
+renovate_ng_users_check_tariff:
+    path: /ng/users/check-tariff
+    defaults: { _controller: RenovateMainBundle:Users:checkUserTariffNg}
+    
+renovate_ng_users_get_clients:
+    path: /ng/users/clients
+    defaults: { _controller: RenovateMainBundle:Users:getClientsNg}
+    
 renovate_ng_workers:
     path: /ng/workers
     defaults: { _controller: RenovateMainBundle:Users:getWorkersNg}
@@ -88,6 +96,18 @@ renovate_tariffs:
     path: /tariffs
     defaults: { _controller: RenovateMainBundle:Tariffs:index}
     
+renovate_ng_tariffs:
+    path: /ng/tariffs
+    defaults: { _controller: RenovateMainBundle:Tariffs:getTariffsNg}
+    
+renovate_ng_tariffs_count:
+    path: /ng/tariffs/count
+    defaults: { _controller: RenovateMainBundle:Tariffs:getTariffsCountNg}
+    
+renovate_ng_tariffs_add:
+    path: /ng/tariffs/add
+    defaults: { _controller: RenovateMainBundle:Tariffs:addTariffPrivateNg}
+    
 renovate_tariffs_panel:
     path: /tariffs/panel
     defaults: { _controller: RenovateMainBundle:Tariffs:showPanel}
@@ -100,13 +120,13 @@ renovate_ng_tariffs_panel_edit:
     path: /ng/tariffs/panel/edit/{tariff_id}
     defaults: { _controller: RenovateMainBundle:Tariffs:editTariffPublicNg}
     
-renovate_ng_tariffs_panel_remove:
-    path: /ng/tariffs/panel/remove/{tariff_id}
+renovate_ng_tariffs_remove:
+    path: /ng/tariffs/remove/{tariff_id}
     defaults: { _controller: RenovateMainBundle:Tariffs:removeTariffPublicNg}
     
-renovate_ng_tariffs_panel_get:
-    path: /ng/tariffs/panel/get
-    defaults: { _controller: RenovateMainBundle:Tariffs:getTariffsPublicNg}
+renovate_ng_tariffs_panel_activate:
+    path: /ng/tariffs/panel/activate/{tariff_id}
+    defaults: { _controller: RenovateMainBundle:Tariffs:activateTariffPrivateNg}
     
 renovate_documents:
     path: /documents
