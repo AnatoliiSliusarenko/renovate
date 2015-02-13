@@ -5,6 +5,7 @@ namespace Renovate\MainBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Renovate\MainBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
 
 class IndexController extends Controller
@@ -26,10 +27,13 @@ class IndexController extends Controller
     	 
     	//last username entered by the user
     	$lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
-    	 
-        return $this->render('RenovateMainBundle:Index:index.html.twig', array(
-        		'last_username' => $lastUsername,
-        		'error' => $error
-        ));
+    	
+    	$parameters = array(
+    			'last_username' => $lastUsername,
+        		'error' => $error);
+    	
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	
+        return $this->render('RenovateMainBundle:Index:index.html.twig', $parameters);
     }
 }

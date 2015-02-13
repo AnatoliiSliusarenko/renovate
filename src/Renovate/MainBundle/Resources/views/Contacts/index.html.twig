@@ -2,6 +2,12 @@
 
 {% block title %}Контакти{% endblock %}
 
+{% block description %}
+	{% if pageDescription is not null %}
+		<meta name="description" content="{{pageDescription}}">
+	{% endif %}
+{% endblock %}
+
 {% block head %}
 <link href="{{ asset('web/bundles/renovate/css/contacts.css') }}" rel="stylesheet">
 <script src="https://maps.googleapis.com/maps/api/js"></script>

@@ -4,3 +4,8 @@ parameters:
 services:
     renovate.transliterater:
         class: Renovate\MainBundle\Services\Transliterater
+        
+    renovate.seo:
+        class: Renovate\MainBundle\Services\SEO
+        arguments: 
+            - @doctrine.orm.entity_manager

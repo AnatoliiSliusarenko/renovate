@@ -14,17 +14,27 @@ class NewsController extends Controller
     {
     	$timestamp = time();
     	$token = Document::getToken($timestamp);
-    	return $this->render('RenovateMainBundle:News:index.html.twig', array(
+    	
+    	$parameters = array(
     			'timestamp' => $timestamp,
     			'token' => $token
-    	));
+    	);
+    	
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	
+    	return $this->render('RenovateMainBundle:News:index.html.twig', $parameters);
     }
     
     public function showNewsAction($news_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
     	$news = $em->getRepository("RenovateMainBundle:News")->findByNameTranslit($news_name_translit);
-    	return $this->render('RenovateMainBundle:News:showNews.html.twig', array("news" => $news[0]));
+    	
+    	$parameters = array("news" => $news[0]);
+    	
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	
+    	return $this->render('RenovateMainBundle:News:showNews.html.twig', $parameters);
     }
     
     public function getNewsNgAction(Request $request)

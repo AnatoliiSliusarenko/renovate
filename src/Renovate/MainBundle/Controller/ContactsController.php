@@ -10,7 +10,10 @@ class ContactsController extends Controller
 {
     public function indexAction(Request $request)
     {
-        return $this->render('RenovateMainBundle:Contacts:index.html.twig');
+    	$parameters = array();
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	
+        return $this->render('RenovateMainBundle:Contacts:index.html.twig', $parameters);
     }
     
     public function contactUsNgAction(Request $request)

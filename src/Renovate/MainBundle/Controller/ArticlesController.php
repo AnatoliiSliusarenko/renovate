@@ -14,17 +14,27 @@ class ArticlesController extends Controller
     {
     	$timestamp = time();
     	$token = Document::getToken($timestamp);
-    	return $this->render('RenovateMainBundle:Articles:index.html.twig', array(
+    	
+    	$parameters = array(
     			'timestamp' => $timestamp,
     			'token' => $token
-    	));
+    	);
+    	
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	
+    	return $this->render('RenovateMainBundle:Articles:index.html.twig', $parameters);
     }
     
     public function showArticleAction($article_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
     	$article = $em->getRepository("RenovateMainBundle:Article")->findByNameTranslit($article_name_translit);
-    	return $this->render('RenovateMainBundle:Articles:showArticle.html.twig', array("article" => $article[0]));
+    	
+    	$parameters = array("article" => $article[0]);
+    	
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	
+    	return $this->render('RenovateMainBundle:Articles:showArticle.html.twig', $parameters);
     }
     
     public function getArticlesNgAction(Request $request)

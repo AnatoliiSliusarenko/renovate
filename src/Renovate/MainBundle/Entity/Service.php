@@ -399,9 +399,8 @@ class Service
     		->setParameter('optionid', $optionid);
     	}
     	
-    	$result = $qb->getQuery()->getSingleResult();
-    	
-    	return ($result != null ) ? $result->getValue() : 0 ;
+    	$result = $qb->getQuery()->getResult();
+    	return ($result != null ) ? $result[0]->getValue() : 0 ;
     }
     
     public static function getAllServices($em, $inArray = false)

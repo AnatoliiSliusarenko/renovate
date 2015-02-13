@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% block description %}<meta name="description" content="Ми створили ремонтно-обслуговуючу компанію європейського зразка, на даний момент йдуть завершальні роботи по облаштуванню центрального офісу та створенню сайту. - Ми будемо приймати на баланс ОСББ та допомагати іншим будинкам відходити від ЖЕКів. - Ми маючи непоганий статуний капітал, зможемо не лише перебирати заборгованість будинку на себе, та виконати реструктуризацію боргу, але подавати на ЖЕК в суд за невиконання його обов`язків.">{% endblock %}
+    {% block description %}{% endblock %}
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('web/bundles/renovate/images/logo_renovate.png') }}">
 
@@ -59,6 +59,7 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_partners' %}class="active"{% endif %}><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_services' %}class="active"{% endif %}><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_page_descriptions' %}class="active"{% endif %}><a href="{{ path('renovate_page_descriptions') }}">Описи сторінок</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_documents' %}class="active"{% endif %}><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
@@ -249,7 +250,12 @@
   			tariffsPanelActivatePrivateNg: "{{ path('renovate_ng_tariffs_panel_activate', {tariff_id: 0}) }}",
   			tariffsPanelEditPublicNg: "{{ path('renovate_ng_tariffs_panel_edit', {tariff_id: 0}) }}",
   			tariffsRemoveNg: "{{ path('renovate_ng_tariffs_remove', {tariff_id: 0}) }}",
-  			tariffsAddPrivateNg: "{{ path('renovate_ng_tariffs_add') }}"
+  			tariffsAddPrivateNg: "{{ path('renovate_ng_tariffs_add') }}",
+  			pageDescriptionsGetNg: "{{ path('renovate_ng_page_descriptions') }}",
+  			pageDescriptionsCountNg: "{{ path('renovate_ng_page_descriptions_count') }}",
+  			pageDescriptionsAddNg: "{{ path('renovate_ng_page_descriptions_add') }}",
+  			pageDescriptionsRemoveNg: "{{ path('renovate_ng_page_descriptions_remove', {page_description_id: 0}) }}",
+  			pageDescriptionsEditNg: "{{ path('renovate_ng_page_descriptions_edit', {page_description_id: 0}) }}",
   			
   	}
   	</script>

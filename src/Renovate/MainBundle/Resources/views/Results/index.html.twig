@@ -2,6 +2,12 @@
 
 {% block title %}Результати роботи{% endblock %}
 
+{% block description %}
+	{% if pageDescription is not null %}
+		<meta name="description" content="{{pageDescription}}">
+	{% endif %}
+{% endblock %}
+
 {% block head %}
 <link href="{{ asset('web/bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>

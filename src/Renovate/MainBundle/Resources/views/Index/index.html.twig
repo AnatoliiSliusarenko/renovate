@@ -1,6 +1,11 @@
 {% extends "RenovateMainBundle::layout.html.twig" %}
 
 {% block title %}Головна{% endblock %}
+{% block description %}
+	{% if pageDescription is not null %}
+		<meta name="description" content="{{pageDescription}}">
+	{% endif %}
+{% endblock %}
 
 {% block head %}
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>

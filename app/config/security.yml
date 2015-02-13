@@ -27,7 +27,7 @@ security:
 
     access_control:
         - { path: ^/users*, roles: ROLE_ADMIN }
-        - { path: ^/ng/users/check-tariff, roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: ^/ng/users/check-tariff, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/ng/users/clients*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/users*, roles: ROLE_ADMIN }
         - { path: ^/ng/workers*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
@@ -62,5 +62,7 @@ security:
         - { path: ^/ng/tariffs/panel/add*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/tariffs/panel/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/tariffs/panel/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/page-descriptions*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/page-descriptions*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

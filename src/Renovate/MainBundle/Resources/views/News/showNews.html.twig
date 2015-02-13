@@ -1,7 +1,15 @@
 {% extends "RenovateMainBundle::layout.html.twig" %}
 
 {% block title %}{{news.name}}{% endblock %}
-{% block description %}<meta name="description" content="{{news.description}}">{% endblock %}
+
+{% block description %}
+	{% if pageDescription is not null %}
+		<meta name="description" content="{{pageDescription}}">
+	{% else %}
+		<meta name="description" content="{{news.description | escape | slice(0, 300)}}">
+	{% endif %}
+{% endblock %}
+
 {% block head %}
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>
 {% endblock %}

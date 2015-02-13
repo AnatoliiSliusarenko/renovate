@@ -14,17 +14,27 @@ class ResultsController extends Controller
     {
     	$timestamp = time();
     	$token = Document::getToken($timestamp);
-    	return $this->render('RenovateMainBundle:Results:index.html.twig', array(
+    	
+    	$parameters = array(
     			'timestamp' => $timestamp,
     			'token' => $token
-    	));
+    	);
+    	
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	 
+    	return $this->render('RenovateMainBundle:Results:index.html.twig', $parameters);
     }
     
     public function showResultAction($result_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
     	$result = $em->getRepository("RenovateMainBundle:Result")->findByNameTranslit($result_name_translit);
-    	return $this->render('RenovateMainBundle:Results:showResult.html.twig', array("result" => $result[0]));
+    	
+    	$parameters = array("result" => $result[0]);
+    	
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	
+    	return $this->render('RenovateMainBundle:Results:showResult.html.twig', $parameters);
     }
     
     public function getResultsNgAction(Request $request)

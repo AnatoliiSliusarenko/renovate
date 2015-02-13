@@ -2,6 +2,12 @@
 
 {% block title %}Про нас{% endblock %}
 
+{% block description %}
+	{% if pageDescription is not null %}
+		<meta name="description" content="{{pageDescription}}">
+	{% endif %}
+{% endblock %}
+
 {% block head %}
 {% endblock %}
 

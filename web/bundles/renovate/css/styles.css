@@ -364,10 +364,9 @@ tfoot td.price {
 
 #main-navbar.navbar-inverse {
 	border-color: #070E5E;
-	
 	background : #464646;
-	background : -webkit-gradient(linear, left top, left bottom, from(rgb(19, 151, 245)), to(rgb(5, 6, 98)));
-	background : -moz-linear-gradient(top, rgb(19, 151, 245), rgb(5, 6, 98));
+	background : -webkit-gradient(linear, left top, left bottom, from(rgb(35, 48, 164)), to(rgb(6, 14, 87)));
+	background : -moz-linear-gradient(top, rgb(35, 48, 164), rgb(6, 14, 87));
 }
 
 #main-navbar.navbar-inverse .navbar-toggle {
@@ -392,6 +391,8 @@ tfoot td.price {
 }
 
 #main-navbar .navbar-nav li > a {
+	font-weight:bold;
+	
 	padding-top: 8px;
 	padding-bottom: 8px;
 	
@@ -409,7 +410,7 @@ tfoot td.price {
 }
 
 #main-navbar .form-control {
-	width: 175px;
+	width: 150px;
 	height: 30px;
 }
 
@@ -420,8 +421,8 @@ tfoot td.price {
 #user-navbar.navbar-inverse {
 	border-color: #070E5E;
 	background : #464646;
-	background : -webkit-gradient(linear, left top, left bottom, from(rgb(19, 151, 245)), to(rgb(5, 6, 98)));
-	background : -moz-linear-gradient(top, rgb(19, 151, 245), rgb(5, 6, 98));
+	background : -webkit-gradient(linear, left top, left bottom, from(rgb(35, 48, 164)), to(rgb(6, 14, 87)));
+	background : -moz-linear-gradient(top, rgb(35, 48, 164), rgb(6, 14, 87));
 }
 #user-navbar.navbar-inverse .navbar-toggle {
 	border-color: #040834;

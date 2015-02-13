@@ -11,7 +11,10 @@ class TariffsController extends Controller
 {
     public function indexAction()
     {
-    	return $this->render('RenovateMainBundle:Tariffs:index.html.twig');
+    	$parameters = array();
+    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	 
+    	return $this->render('RenovateMainBundle:Tariffs:index.html.twig',$parameters);
     }
     
     public function showPanelAction()
