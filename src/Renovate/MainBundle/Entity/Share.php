@@ -510,4 +510,26 @@ class Share
     	
     	return $share;
     }
+    
+    public static function searchShares($em, $search, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Share")
+    	->createQueryBuilder('s');
+    
+    	$qb->select('s')
+    	->orderBy('s.created', 'DESC')
+    	->where($qb->expr()->orX(
+    			$qb->expr()->like('s.name', $qb->expr()->literal('%'.$search.'%')),
+    			$qb->expr()->like('s.description', $qb->expr()->literal('%'.$search.'%'))
+    	));
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($share){
+    			return $share->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
 }

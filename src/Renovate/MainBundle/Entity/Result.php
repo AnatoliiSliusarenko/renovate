@@ -510,4 +510,26 @@ class Result
     	
     	return $result;
     }
+    
+    public static function searchResults($em, $search, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Result")
+    	->createQueryBuilder('r');
+    
+    	$qb->select('r')
+    	->orderBy('r.created', 'DESC')
+    	->where($qb->expr()->orX(
+    			$qb->expr()->like('r.name', $qb->expr()->literal('%'.$search.'%')),
+    			$qb->expr()->like('r.description', $qb->expr()->literal('%'.$search.'%'))
+    	));
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($res){
+    			return $res->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
 }

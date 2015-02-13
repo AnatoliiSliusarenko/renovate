@@ -36,7 +36,7 @@
     
   </head>
 
-  <body>
+  <body ng-app="Renovate">
   	<div id="fb-root"></div>
   	<nav id="user-navbar" class="navbar navbar-inverse">
       <div class="container">
@@ -113,17 +113,17 @@
             <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}">Про нас</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}">Контакти</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
+          <form class="navbar-form navbar-right" method="post" action="{{ path('renovate_search') }}" ng-controller="SearchController">
             <div class="form-group">
-              <input type="text" placeholder="Введіть запит..." class="form-control">
+              <input ng-model="search" name="search" ng-change="checkCanSeacrh()" type="text" placeholder="Введіть запит..." class="form-control">
             </div>
-            <button type="submit" class="btn btn-info disabled">ПОШУК!</button>
+            <button type="submit" class="btn btn-info" ng-disabled="!canSearch">ПОШУК!</button>
           </form>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-    <div class="container" ng-app="Renovate">
+    <div class="container">
 		{% block breadcrumb %}{% endblock %}
 	
 	  	{% block content %}{% endblock %}

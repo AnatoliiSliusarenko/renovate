@@ -11,6 +11,25 @@ var Renovate = angular.module('Renovate',['ui.bootstrap','ngSanitize'])
         }
         return text;
     }
+})
+.controller('SearchController', function($scope){
+	console.log('SearchController loaded!');
+	$scope.search = '';
+	$scope.canSearch = false;
+	
+	$scope.isColapsedArticles = false;
+	$scope.isColapsedJobs = false;
+	$scope.isColapsedNews = false;
+	$scope.isColapsedResults = false;
+	$scope.isColapsedShares = false;
+	
+	String.prototype.isEmpty = function() {
+	    return (this.length === 0 || !this.trim());
+	};
+	
+	$scope.checkCanSeacrh = function(){
+		$scope.canSearch = !$scope.search.isEmpty();
+	}
 });
 
 console.log('Angular Initialization finished...');

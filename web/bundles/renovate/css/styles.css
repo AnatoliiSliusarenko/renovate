@@ -1,3 +1,22 @@
+/* Seacrh */
+.media.search img {
+	width: 100%;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+.media.search img:hover {
+	-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+}
+
+.media.search .title {
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0;
+}
+
 /* Contacts */
 .cantacts-block{
 	margin: 0 auto;

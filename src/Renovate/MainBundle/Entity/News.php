@@ -510,4 +510,26 @@ class News
     	
     	return $news;
     }
+    
+    public static function searchNews($em, $search, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:News")
+    	->createQueryBuilder('n');
+    
+    	$qb->select('n')
+    	->orderBy('n.created', 'DESC')
+    	->where($qb->expr()->orX(
+    			$qb->expr()->like('n.name', $qb->expr()->literal('%'.$search.'%')),
+    			$qb->expr()->like('n.description', $qb->expr()->literal('%'.$search.'%'))
+    	));
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($news){
+    			return $news->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
 }

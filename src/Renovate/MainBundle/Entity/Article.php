@@ -510,4 +510,26 @@ class Article
     	
     	return $article;
     }
+    
+    public static function searchArticles($em, $search, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Article")
+    	->createQueryBuilder('a');
+    	
+    	$qb->select('a')
+    	->orderBy('a.created', 'DESC')
+    	->where($qb->expr()->orX(
+       		$qb->expr()->like('a.name', $qb->expr()->literal('%'.$search.'%')),
+       		$qb->expr()->like('a.description', $qb->expr()->literal('%'.$search.'%'))
+   		));
+    	
+    	$result = $qb->getQuery()->getResult();
+    	
+    	if ($inArray)
+    	{
+    		return array_map(function($article){
+    			return $article->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
 }

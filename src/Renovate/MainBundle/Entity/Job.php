@@ -510,4 +510,26 @@ class Job
     	
     	return $job;
     }
+    
+    public static function searchJobs($em, $search, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Job")
+    	->createQueryBuilder('j');
+    	 
+    	$qb->select('j')
+    	->orderBy('j.created', 'DESC')
+    	->where($qb->expr()->orX(
+    			$qb->expr()->like('j.name', $qb->expr()->literal('%'.$search.'%')),
+    			$qb->expr()->like('j.description', $qb->expr()->literal('%'.$search.'%'))
+    	));
+    	 
+    	$result = $qb->getQuery()->getResult();
+    	 
+    	if ($inArray)
+    	{
+    		return array_map(function($job){
+    			return $job->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
 }
