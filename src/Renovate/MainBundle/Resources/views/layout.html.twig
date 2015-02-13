@@ -56,16 +56,16 @@
 	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.name ~ ' ' ~ app.user.surname }} <span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
 	                {% if is_granted('ROLE_ADMIN') %}
-	                <li><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
-	                <li><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
-	                <li><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_partners' %}class="active"{% endif %}><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_services' %}class="active"{% endif %}><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
-	                <li><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
-	                <li><a href="{{ path('renovate_tariffs_panel') }}">Тарифи компанії</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_documents' %}class="active"{% endif %}><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_tariffs_panel' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs_panel') }}">Тарифи компанії</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') or is_granted('ROLE_WORKER')) %}
-	                <li><a href="{{ path('renovate_repairs') }}">Ремонтні роботи</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_repairs' %}class="active"{% endif %}><a href="{{ path('renovate_repairs') }}">Ремонтні роботи</a></li>
 	                {% endif %}
 	                <li class="divider"></li>
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
@@ -84,7 +84,7 @@
               <input type="password" placeholder="Пароль" class="form-control {% if error is defined and error %}btn-danger{% endif %}" name="_password">
               <input type="hidden" name="_target_path" value="{{ app.request.uri }}">
             </div>
-            <button type="submit" class="btn btn-success">УВІЙТИ</button>
+            <button type="submit" class="btn btn-info">УВІЙТИ</button>
           </form>
         </div><!--/.nav-collapse -->
         {% endif %}
@@ -117,7 +117,7 @@
             <div class="form-group">
               <input type="text" placeholder="Введіть запит..." class="form-control">
             </div>
-            <button type="submit" class="btn btn-success disabled">ПОШУК!</button>
+            <button type="submit" class="btn btn-info disabled">ПОШУК!</button>
           </form>
         </div><!--/.nav-collapse -->
       </div>
