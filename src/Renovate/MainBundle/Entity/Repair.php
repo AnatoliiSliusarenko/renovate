@@ -329,10 +329,16 @@ class Repair
     		->setParameter('to', $parameters['to']);
     	}
     	 
-    	if (isset($parameters['worker']))
+    	if (isset($parameters['workerid']))
     	{
     		$qb->andWhere("r.workerid = :id")
-    		->setParameter("id", $parameters['worker']);
+    		->setParameter("id", $parameters['workerid']);
+    	}
+    	
+    	if (isset($parameters['paid']))
+    	{
+    		$qb->andWhere("r.paid = :paid")
+    		->setParameter("paid", $parameters['paid']);
     	}
     	
     	$result = $qb->getQuery()->getResult();
@@ -364,10 +370,16 @@ class Repair
     		   ->setParameter('to', $parameters['to']);
     	}
     	
-    	if (isset($parameters['worker']))
+    	if (isset($parameters['workerid']))
     	{
     		$qb->andWhere("r.workerid = :id")
-    		   ->setParameter("id", $parameters['worker']);
+    		   ->setParameter("id", $parameters['workerid']);
+    	}
+    	
+    	if (isset($parameters['paid']))
+    	{
+    		$qb->andWhere("r.paid = :paid")
+    		->setParameter("paid", $parameters['paid']);
     	}
     	
     	$total = $qb->getQuery()->getSingleScalarResult();

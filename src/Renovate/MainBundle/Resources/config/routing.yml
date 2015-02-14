@@ -64,8 +64,8 @@ renovate_ng_users_get_clients:
     path: /ng/users/clients
     defaults: { _controller: RenovateMainBundle:Users:getClientsNg}
     
-renovate_ng_workers:
-    path: /ng/workers
+renovate_ng_users_get_workers:
+    path: /ng/users/workers
     defaults: { _controller: RenovateMainBundle:Users:getWorkersNg}
     
 renovate_ng_users_count:

@@ -106,8 +106,15 @@
           <ul class="nav navbar-nav">
             <li {% if app.request.attributes.get('_route') == 'renovate_main_homepage' %}class="active"{% endif %}><a href="{{ path('renovate_main_homepage') }}">Головна</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_tariffs' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs') }}">Тарифи</a></li>
-            <li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
-            <li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
+            
+            <li class="dropdown">
+	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Робота <span class="caret"></span></a>
+	            <ul class="dropdown-menu" role="menu">
+	            	<li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
+            		<li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
+	            </ul>
+	        </li>
+            
             <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}">Новини</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_articles' %}class="active"{% endif %}><a href="{{ path('renovate_articles') }}">Статті</a></li>
             <li {% if app.request.attributes.get('_route') == 'renovate_shares' %}class="active"{% endif %}><a href="{{ path('renovate_shares') }}">Акції</a></li>
@@ -191,7 +198,7 @@
   			jobsEditNg: "{{ path('renovate_ng_jobs_edit', {job_id: 0}) }}",
   			usersGetNg: "{{ path('renovate_ng_users') }}",
   			usersGetClientsNg: "{{ path('renovate_ng_users_get_clients') }}",
-  			workersGetNg: "{{ path('renovate_ng_workers') }}",
+  			usersGetWorkersNg: "{{ path('renovate_ng_users_get_workers') }}",
   			usersCountNg: "{{ path('renovate_ng_users_count') }}",
   			usersAddNg: "{{ path('renovate_ng_users_add') }}",
   			usersRemoveNg: "{{ path('renovate_ng_users_remove', {user_id: 0}) }}",

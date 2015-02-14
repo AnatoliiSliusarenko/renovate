@@ -12,8 +12,8 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	$scope.filter = {
 			from: null,
 			to:null,
-			worker: null,
-			calculate: 'all'
+			workerid: null,
+			paid: null
 	}
 	$scope.totalPrice = 0;
 	$scope.isAdmin = false;
@@ -22,7 +22,7 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	$scope.urlsRepairsCountNg = URLS.repairsCountNg;
 	$scope.urlsRepairsPaidSetNg = URLS.repairsPaidSetNg;
 	$scope.urlsRepairsRemoveNg = URLS.repairsRemoveNg;
-	$scope.urlsWorkersGetNg = URLS.workersGetNg;
+	$scope.urlsUsersGetWorkersNg = URLS.usersGetWorkersNg;
 	
 	function Initialize(){
 		var user = JSON.parse(USER);
@@ -74,16 +74,7 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	function calculateTotalPrice(){
 		$scope.totalPrice = 0;
 		_.each($scope.repairs, function(repair){
-			if ($scope.filter.calculate == 'all'){
-				$scope.totalPrice += repair.price;
-			}
-			else
-			if (($scope.filter.calculate == 'paid') && (repair.paid == true)){
-				$scope.totalPrice += repair.price;
-			}else
-			if (($scope.filter.calculate == 'notpaid') && (repair.paid == false)){
-				$scope.totalPrice += repair.price;
-			}
+			$scope.totalPrice += repair.price;
 		});
 	}
 	
@@ -126,7 +117,7 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	{
 		$http({
 			method: "GET", 
-			url: $scope.urlsWorkersGetNg
+			url: $scope.urlsUsersGetWorkersNg
 			  })
 		.success(function(response){
 			console.log(" workers => ",response);

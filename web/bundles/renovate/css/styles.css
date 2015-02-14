@@ -229,6 +229,13 @@ td {
 	max-width: 300px;
 }
 
+tr.red  {
+	background-color: #f8332f !important;
+}
+tr.red:hover {
+	background-color: #DF2E2A !important;
+}
+
 tr.green  {
 	background-color: #9ed744 !important;
 }
@@ -418,6 +425,36 @@ tfoot td.price {
 	padding: 4px 12px;
 }
 
+#main-navbar li.dropdown:hover > .dropdown-menu {
+	display: block;
+}
+
+#main-navbar .dropdown-menu {
+	background-color: #06309D;	
+	border-color: #070E5E;
+}
+
+#main-navbar .dropdown-menu > li {
+	background: -webkit-gradient(radial, 50% 100%, 10, 50% 170%, 140, from(rgba(31,169,244,1)), to(rgba(0,28,78, 1)) );
+	background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(31,169,244,1) 0%, rgba(0,28,78, 1) 100%);
+}
+
+#main-navbar .dropdown-menu > li > a {
+	color: #9d9d9d;
+	border-top: 1px solid rgba(255,255,255,0.1);
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	background : #06309D;
+	-webkit-transition-property: background;
+	-webkit-transition-duration: 500ms;
+	-moz-transition-property: background;
+	-moz-transition-duration: 500ms;
+}
+
+#main-navbar .dropdown-menu > li > a:hover, #main-navbar .dropdown-menu > li.active > a {
+	color: white;
+	background: transparent none;
+}
+
 #user-navbar.navbar-inverse {
 	border-color: #070E5E;
 	background : #464646;
@@ -534,6 +571,20 @@ tfoot td.price {
 	}
 	#main-navbar .form-control {
 		width: 100%;
+	}
+	
+	#main-navbar li.dropdown:hover > .dropdown-menu {
+		position: static;
+		float: none;
+		width: auto;
+		margin-top: 0;
+		border: 0;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+	
+	#main-navbar li.dropdown:hover > .dropdown-menu > li > a{
+		padding-left: 25px;
 	}
 }
 

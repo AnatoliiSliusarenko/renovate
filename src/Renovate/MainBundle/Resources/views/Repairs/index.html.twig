@@ -36,7 +36,7 @@
 				  {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 				  <div class="form-group">
 				    <label for="workers">Робітники</label>
-				    <select id="workers" ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" ng-model="filter.worker">
+				    <select id="workers" ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" ng-model="filter.workerid">
 						<option value="">усі</option>
 					</select>
 				  </div>
@@ -55,16 +55,13 @@
 				  </div>
 				  	<div class="form-group">
 					  	<label class="radio-inline">
-						  <input ng-model="filter.calculate" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="all"> усі
+						  <input ng-model="filter.paid" type="radio" name="inlineRadioOptions" id="inlineRadio1"> усі
 						</label>
 						<label class="radio-inline">
-						  <input ng-model="filter.calculate" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="paid"> розраховані
+						  <input ng-model="filter.paid" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1"> розраховані
 						</label>
 						<label class="radio-inline">
-						  <input ng-model="filter.calculate" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="notpaid"> не розраховані
-						</label>
-						<label class="radio-inline">
-						  <input ng-model="filter.calculate" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="fine"> штрафи
+						  <input ng-model="filter.paid" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="0"> не розраховані
 						</label>
 					</div>
 				</form>
@@ -111,7 +108,7 @@
 							<div class="image center-block"></div>
 						</td>
       				</tr>
-			        <tr ng-click="selectItem(repair.id)" ng-class="{green: !repair.paid, gray: repair.paid}" ng-repeat="repair in repairs" ng-cloak>
+			        <tr ng-click="selectItem(repair.id)" ng-class="{red: !repair.paid && repair.price < 0, green: !repair.paid && repair.price > 0, gray: repair.paid}" ng-repeat="repair in repairs" ng-cloak>
 			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 			          <th><input type="checkbox" ng-checked="isSelected(repair.id)"></th>
 			          {% endif %}
