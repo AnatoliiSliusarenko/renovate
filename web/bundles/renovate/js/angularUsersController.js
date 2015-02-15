@@ -10,6 +10,8 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	$scope.urlsUsersCountNg = URLS.usersCountNg;
 	$scope.urlsUsersRemoveNg = URLS.usersRemoveNg;
 	$scope.urlsRolesGetNg = URLS.rolesGetNg;
+	$scope.urlsRolesGetClientRolesNg = URLS.rolesGetClientRolesNg;
+	$scope.searchHandler = null;
 	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
@@ -20,6 +22,29 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		console.log("currentPage => ", $scope.currentPage);
 		getUsers();
 	});
+	
+	$scope.$watch('search', function(){
+		clearTimeout($scope.searchHandler);
+		$scope.searchHandler = setTimeout(function(){
+			console.log("search => ", $scope.search);
+			getUsersCount();
+		}, 500);
+	});
+	
+	(function getClientRoles()
+	{
+		$http({
+			method: "GET", 
+			url: $scope.urlsRolesGetClientRolesNg
+			  })
+		.success(function(response){
+			console.log(" client roles => ",response);
+			if (response.result)
+			{
+				$scope.clientRoles = response.result;
+			}
+		})
+	})();
 	
 	(function getRoles(){
 		$http({
@@ -42,7 +67,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		$http({
 			method: "GET", 
 			url: $scope.urlsUsersGetNg,
-			params: {offset: offset, limit: limit}
+			params: {offset: offset, limit: limit, search: $scope.search}
 			  })
 		.success(function(response){
 			console.log("users => ",response);
@@ -57,7 +82,8 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	{
 		$http({
 			method: "GET", 
-			url: $scope.urlsUsersCountNg
+			url: $scope.urlsUsersCountNg,
+			params: {search: $scope.search}
 			  })
 		.success(function(response){
 			console.log(response);
@@ -76,7 +102,8 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		      controller: 'AddUserController',
 		      backdrop: "static",
 		      resolve: {
-		    	  roles: function(){return $scope.roles;}
+		    	  roles: function(){return $scope.roles;},
+		    	  clientRoles: function(){return $scope.clientRoles;}
 		      }
 		});
 		
@@ -94,7 +121,8 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		      backdrop: "static",
 		      resolve: {
 		    	  user: function(){return user;},
-		    	  roles: function(){return $scope.roles;}
+		    	  roles: function(){return $scope.roles;},
+		    	  clientRoles: function(){return $scope.clientRoles;}
 		      }
 		});
 		
@@ -124,10 +152,67 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		});
 	}
 })
-.controller('AddUserController', function($scope,$http,$modalInstance, roles){
+.controller('AddUserController', function($scope,$http,$modalInstance, roles, clientRoles){
 	console.log('AddUserController loaded!');
 	$scope.urlsUsersAddNg = URLS.usersAddNg;
+	$scope.urlsUsersCheckUsernameNg = URLS.usersCheckUsernameNg;
+	$scope.urlsUsersCheckEmailNg = URLS.usersCheckEmailNg;
 	$scope.roles = roles;
+	$scope.clientRoles = clientRoles;
+	$scope.hasClientRole = false;
+	
+	$scope.checkUsernameHandler = null;
+	$scope.checkEmailHandler = null;
+	
+	function checkHasClientRole(){
+		if ($scope.user){
+			$scope.hasClientRole = false;
+			_.map($scope.clientRoles, function(clientRole){
+				var role = _.find($scope.user.roles, function(role){
+					return role == clientRole.id;
+				});
+				
+				if (role != undefined) $scope.hasClientRole = true;
+			});
+			if (!$scope.hasClientRole) delete $scope.user.contract;
+		}
+	}
+	
+	$scope.$watch('user.roles', function(){
+		checkHasClientRole();
+	});
+	
+	$scope.checkUserUsername = function(){
+		clearTimeout($scope.checkUsernameHandler);
+		if ($scope.user.username){
+			$scope.checkUsernameHandler = setTimeout(function(){
+				$http({
+					method: "GET", 
+					url: $scope.urlsUsersCheckUsernameNg,
+					params: {username: $scope.user.username}
+					  })
+				.success(function(response){
+					$scope.userForm.username.$error.existed = response.result;
+				})
+			}, 500);
+		}
+	}
+	
+	$scope.checkUserEmail = function(){
+		clearTimeout($scope.checkEmailHandler);
+		if ($scope.user.email){
+			$scope.checkEmailHandler = setTimeout(function(){
+				$http({
+					method: "GET", 
+					url: $scope.urlsUsersCheckEmailNg,
+					params: {email: $scope.user.email}
+					  })
+				.success(function(response){
+					$scope.userForm.email.$error.existed = response.result;
+				})
+			}, 500);
+		}
+	}
 	
 	function addUser(){
 		$http({
@@ -159,15 +244,70 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditUserController', function($scope,$http,$modalInstance, user, roles){
+.controller('EditUserController', function($scope,$http,$modalInstance, user, roles, clientRoles){
 	console.log('EditUserController loaded!');
 	$scope.urlsUsersEditNg = URLS.usersEditNg;
+	$scope.urlsUsersCheckUsernameNg = URLS.usersCheckUsernameNg;
+	$scope.urlsUsersCheckEmailNg = URLS.usersCheckEmailNg;
 	
 	$scope.user = user;
-	
 	$scope.user.roles = _.map(user.roles, function(role){return role.id;});
-	
 	$scope.roles = roles;
+	$scope.clientRoles = clientRoles;
+	$scope.hasClientRole = false;
+	
+	$scope.checkUsernameHandler = null;
+	$scope.checkEmailHandler = null;
+	
+	function checkHasClientRole(){
+		if ($scope.user){
+			$scope.hasClientRole = false;
+			_.map($scope.clientRoles, function(clientRole){
+				var role = _.find($scope.user.roles, function(role){
+					return role == clientRole.id;
+				});
+				
+				if (role != undefined) $scope.hasClientRole = true;
+			});
+			if (!$scope.hasClientRole) delete $scope.user.contract;
+		}
+	}
+	
+	$scope.$watch('user.roles', function(){
+		checkHasClientRole();
+	});
+	
+	$scope.checkUserUsername = function(){
+		clearTimeout($scope.checkUsernameHandler);
+		if ($scope.user.username){
+			$scope.checkUsernameHandler = setTimeout(function(){
+				$http({
+					method: "GET", 
+					url: $scope.urlsUsersCheckUsernameNg,
+					params: {username: $scope.user.username, id: $scope.user.id}
+					  })
+				.success(function(response){
+					$scope.userForm.username.$error.existed = response.result;
+				})
+			}, 500);
+		}
+	}
+	
+	$scope.checkUserEmail = function(){
+		clearTimeout($scope.checkEmailHandler);
+		if ($scope.user.email){
+			$scope.checkEmailHandler = setTimeout(function(){
+				$http({
+					method: "GET", 
+					url: $scope.urlsUsersCheckEmailNg,
+					params: {email: $scope.user.email, id: $scope.user.id}
+					  })
+				.success(function(response){
+					$scope.userForm.email.$error.existed = response.result;
+				})
+			}, 500);
+		}
+	}
 	
 	$scope.checkPassword = function () {
 		if (($scope.user.password !== undefined)&&($scope.user.password.trim() == ""))

@@ -57,8 +57,16 @@ renovate_ng_users:
     defaults: { _controller: RenovateMainBundle:Users:getUsersNg}
     
 renovate_ng_users_check_tariff:
-    path: /ng/users/check-tariff
+    path: /ng/users/check/tariff
     defaults: { _controller: RenovateMainBundle:Users:checkUserTariffNg}
+    
+renovate_ng_users_check_username:
+    path: /ng/users/check/username
+    defaults: { _controller: RenovateMainBundle:Users:checkUserUsernameNg}
+    
+renovate_ng_users_check_email:
+    path: /ng/users/check/email
+    defaults: { _controller: RenovateMainBundle:Users:checkUserEmailNg}
     
 renovate_ng_users_get_clients:
     path: /ng/users/clients
@@ -83,6 +91,8 @@ renovate_ng_users_remove:
 renovate_ng_users_edit:
     path: /ng/users/edit/{user_id}
     defaults: { _controller: RenovateMainBundle:Users:editUserNg}
+    
+
     
 renovate_ng_roles:
     path: /ng/roles

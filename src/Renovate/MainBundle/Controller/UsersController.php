@@ -17,10 +17,8 @@ class UsersController extends Controller
     public function getUsersNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$offset = ($request->query->get('offset')) ? $request->query->get('offset') : 0 ;
-    	$limit = ($request->query->get('limit')) ? $request->query->get('limit') : 20 ;
     	
-    	$response = new Response(json_encode(array("result" => User::getUsers($em, $offset, $limit, true))));
+    	$response = new Response(json_encode(array("result" => User::getUsers($em, $request->query->all(), true))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
@@ -46,11 +44,11 @@ class UsersController extends Controller
     	return $response;
     }
     
-    public function getUsersCountNgAction()
+    public function getUsersCountNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
     	 
-    	$response = new Response(json_encode(array("result" => User::getusersCount($em))));
+    	$response = new Response(json_encode(array("result" => User::getUsersCount($em, $request->query->all()))));
     	$response->headers->set('Content-Type', 'application/json');
     	
     	return $response;
@@ -103,6 +101,26 @@ class UsersController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	 
     	$response = new Response(json_encode(array("result" => $this->getUser()->checkUserTariff($em))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
+    public function checkUserUsernameNgAction(Request $request)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$response = new Response(json_encode(array("result" => User::checkUserUsername($em, $request->query->all()))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
+    public function checkUserEmailNgAction(Request $request)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$response = new Response(json_encode(array("result" => User::checkUserEmail($em, $request->query->all()))));
     	$response->headers->set('Content-Type', 'application/json');
     
     	return $response;

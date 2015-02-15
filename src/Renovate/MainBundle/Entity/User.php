@@ -72,6 +72,13 @@ class User implements UserInterface,\Serializable
      * @ORM\Column(name="mobilephone", type="string", length=255)
      */
     private $mobilephone;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contract", type="string", length=255)
+     */
+    private $contract;
 
     /**
      * @var \DateTime
@@ -302,6 +309,29 @@ class User implements UserInterface,\Serializable
     public function getMobilephone()
     {
         return $this->mobilephone;
+    }
+    
+    /**
+     * Set contract
+     *
+     * @param string $contract
+     * @return User
+     */
+    public function setContract($contract)
+    {
+    	$this->contract = $contract;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get contract
+     *
+     * @return string
+     */
+    public function getContract()
+    {
+    	return $this->contract;
     }
 
     /**
@@ -631,6 +661,7 @@ class User implements UserInterface,\Serializable
     			'patronymic' => $this->getPatronymic(),
     			'email' => $this->getEmail(),
     			'mobilephone' => $this->getMobilephone(),
+    			'contract' => $this->getContract(),
     			'registered' => $this->getRegistered()->getTimestamp()*1000,
     			'roles' => array_map(function($role){return $role->getInArray();}, $this->getRoles())
     	);
@@ -647,6 +678,40 @@ class User implements UserInterface,\Serializable
     	->setParameter('userid', $this->getId())
     	->setParameter('active', 0);
     	 
+    	return (count($qb->getQuery()->getResult()) > 0) ? true : false;
+    }
+    
+    public static function checkUserUsername($em, $parameters)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:User")
+    	->createQueryBuilder('u');
+    
+    	$qb->select('u')
+    	->andWhere('u.username = :username')
+    	->setParameter('username', $parameters['username']);
+    	
+    	if (isset($parameters['id'])){
+    		$qb->andWhere('u.id != :id')
+    		->setParameter('id', $parameters['id']);
+    	}
+    
+    	return (count($qb->getQuery()->getResult()) > 0) ? true : false;
+    }
+    
+    public static function checkUserEmail($em, $parameters)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:User")
+    	->createQueryBuilder('u');
+    
+    	$qb->select('u')
+    	->andWhere('u.email = :email')
+    	->setParameter('email', $parameters['email']);
+    	 
+    	if (isset($parameters['id'])){
+    		$qb->andWhere('u.id != :id')
+    		->setParameter('id', $parameters['id']);
+    	}
+    
     	return (count($qb->getQuery()->getResult()) > 0) ? true : false;
     }
     
@@ -668,16 +733,33 @@ class User implements UserInterface,\Serializable
     	}else return $result;
     }
     
-    public static function getUsers($em, $offset, $limit, $inArray = false)
+    public static function getUsers($em, $parameters, $inArray = false)
     {
     	$qb = $em->getRepository("RenovateMainBundle:User")
     	->createQueryBuilder('u');
     
     	$qb->select('u')
-    	->orderBy('u.registered', 'DESC')
-    	->setFirstResult($offset)
-    	->setMaxResults($limit);
-    
+    	->orderBy('u.registered', 'DESC');
+    	
+    	if (isset($parameters['offset']) && isset($parameters['limit']))
+    	{
+    		$qb->setFirstResult($parameters['offset'])
+    		->setMaxResults($parameters['limit']);
+    	}
+    	
+    	if (isset($parameters['search']))
+    	{
+    		$qb->where($qb->expr()->orX(
+    				$qb->expr()->like('u.username', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.name', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.surname', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.patronymic', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.email', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.mobilephone', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.contract', $qb->expr()->literal('%'.$parameters['search'].'%'))
+    		));
+    	}
+    	
     	$result = $qb->getQuery()->getResult();
     
     	if ($inArray)
@@ -731,14 +813,27 @@ class User implements UserInterface,\Serializable
     	}else return $result;
     }
     
-    public static function getUsersCount($em)
+    public static function getUsersCount($em, $parameters)
     {
-    	$query = $em->getRepository("RenovateMainBundle:User")
-    	->createQueryBuilder('u')
-    	->select('COUNT(u.id)')
-    	->getQuery();
-    	 
-    	$total = $query->getSingleScalarResult();
+    	$qb = $em->getRepository("RenovateMainBundle:User")
+    	->createQueryBuilder('u');
+    	
+    	$qb->select('COUNT(u.id)');
+    	
+    	if (isset($parameters['search']))
+    	{
+    		$qb->where($qb->expr()->orX(
+    				$qb->expr()->like('u.username', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.name', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.surname', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.patronymic', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.email', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.mobilephone', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.contract', $qb->expr()->literal('%'.$parameters['search'].'%'))
+    		));
+    	}
+    	
+    	$total = $qb->getQuery()->getSingleScalarResult();
     	 
     	return $total;
     }
@@ -757,6 +852,9 @@ class User implements UserInterface,\Serializable
     	$user->setPatronymic($parameters->patronymic);
     	$user->setEmail($parameters->email);
     	$user->setMobilephone($parameters->mobilephone);
+    	if (isset($parameters->contract)){
+    		$user->setContract($parameters->contract);
+    	}
     	$user->setRegistered(new \DateTime());
     	 
     	foreach($parameters->roles as $role_id){
@@ -803,6 +901,12 @@ class User implements UserInterface,\Serializable
     	$user->setPatronymic($parameters->patronymic);
     	$user->setEmail($parameters->email);
     	$user->setMobilephone($parameters->mobilephone);
+    	
+    	if (isset($parameters->contract)){
+    		$user->setContract($parameters->contract);
+    	}else{
+    		$user->setContract(NULL);
+    	}
     	 
     	$em->persist($user);
     	$em->flush();

@@ -127,6 +127,7 @@
 						          <th>#</th>
 						          <th>Клієнт</th>
 						          <th>Назва</th>
+						          <th>Щомісячний платіж</th>
 						          <th>Знижка</th>
 						          <th>Активний</th>
 						          <th>Створено</th>
@@ -144,6 +145,7 @@
 						          <th scope="row">[[$index+1]]</th>
 						          <td><cite title="[[tariff.user.name + ' ' + tariff.user.surname]]">[[tariff.user.username]]</cite></td>
 						          <td>[[tariff.name]]</td>
+						          <td>[[tariff.tariffPrices[0].value]] грн</td>
 						          <td>[[tariff.discount]] %</td>
 						          <td><span ng-show="tariff.active" class="label label-success"><span class="glyphicon glyphicon-ok-sign"></span></span><span ng-show="!tariff.active" class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span></span></td>
 						          <td>[[tariff.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
