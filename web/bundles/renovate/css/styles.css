@@ -370,10 +370,8 @@ tfoot td.price {
 }
 
 #main-navbar.navbar-inverse {
-	border-color: #070E5E;
-	background : #464646;
-	background : -webkit-gradient(linear, left top, left bottom, from(rgb(35, 48, 164)), to(rgb(6, 14, 87)));
-	background : -moz-linear-gradient(top, rgb(35, 48, 164), rgb(6, 14, 87));
+	border-color: #010950;
+	background : #010b64;
 }
 
 #main-navbar.navbar-inverse .navbar-toggle {
@@ -381,11 +379,11 @@ tfoot td.price {
 }
 
 #main-navbar.navbar-inverse .navbar-toggle:hover {
-	background-color: #05267E;
+	background-color: #010950;
 }
 
 #main-navbar.navbar-inverse .navbar-toggle:focus {
-	background-color: #05267E;
+	background-color: #010950;
 }
 
 #main-navbar.navbar-inverse .navbar-nav > .active > a, #main-navbar.navbar-inverse .navbar-nav > .active > a:hover, #main-navbar.navbar-inverse .navbar-nav > .active > a:focus{
@@ -393,6 +391,7 @@ tfoot td.price {
 }
 
 #main-navbar .navbar-nav li {
+	background: #010950;
 	background: -webkit-gradient(radial, 50% 100%, 10, 50% 170%, 85, from(rgba(31,169,244,1)), to(rgba(0,28,78, 1)) );
 	background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(31,169,244,1) 0%, rgba(0,28,78, 1) 100%);
 }
@@ -405,7 +404,7 @@ tfoot td.price {
 	
 	border-left: 1px solid rgba(255,255,255,0.1);
 	border-right: 1px solid rgba(0,0,0,0.1);
-	background : #06309D;
+	background : #010b64;
 	-webkit-transition-property: background;
 	-webkit-transition-duration: 500ms;
 	-moz-transition-property: background;
@@ -430,11 +429,12 @@ tfoot td.price {
 }
 
 #main-navbar .dropdown-menu {
-	background-color: #06309D;	
-	border-color: #070E5E;
+	background-color: #010b64;	
+	border-color: #010950;
 }
 
 #main-navbar .dropdown-menu > li {
+	background: #010950;
 	background: -webkit-gradient(radial, 50% 100%, 10, 50% 170%, 140, from(rgba(31,169,244,1)), to(rgba(0,28,78, 1)) );
 	background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(31,169,244,1) 0%, rgba(0,28,78, 1) 100%);
 }
@@ -443,7 +443,7 @@ tfoot td.price {
 	color: #9d9d9d;
 	border-top: 1px solid rgba(255,255,255,0.1);
 	border-bottom: 1px solid rgba(0,0,0,0.1);
-	background : #06309D;
+	background : #010b64;
 	-webkit-transition-property: background;
 	-webkit-transition-duration: 500ms;
 	-moz-transition-property: background;
@@ -456,35 +456,34 @@ tfoot td.price {
 }
 
 #user-navbar.navbar-inverse {
-	border-color: #070E5E;
-	background : #464646;
-	background : -webkit-gradient(linear, left top, left bottom, from(rgb(35, 48, 164)), to(rgb(6, 14, 87)));
-	background : -moz-linear-gradient(top, rgb(35, 48, 164), rgb(6, 14, 87));
+	border-color: #010950;
+	background : #010b64;
 }
 #user-navbar.navbar-inverse .navbar-toggle {
 	border-color: #040834;
 }
 
 #user-navbar.navbar-inverse .navbar-toggle:hover {
-	background-color: #05267E;
+	background-color: #010950;
 }
 
 #user-navbar.navbar-inverse .navbar-toggle:focus {
-	background-color: #05267E;
+	background-color: #010950;
 }
 
 #user-navbar.navbar-inverse .navbar-nav > .open > a{
-	background-color: #05267E;
-	border-left: 1px solid rgba(255,255,255,0.1);
+	background-color: #010950;
+	border-left: 1px solid rgba(0,0,0,0.1);
 	border-right: 1px solid rgba(0,0,0,0.1);
 }
 
 #user-navbar .dropdown-menu {
-	background-color: #06309D;	
-	border-color: #070E5E;
+	background-color: #010b64;	
+	border-color: #010950;
 }
 
 #user-navbar .dropdown-menu > li {
+	background: #010950;
 	background: -webkit-gradient(radial, 50% 100%, 10, 50% 170%, 140, from(rgba(31,169,244,1)), to(rgba(0,28,78, 1)) );
 	background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(31,169,244,1) 0%, rgba(0,28,78, 1) 100%);
 }
@@ -493,7 +492,7 @@ tfoot td.price {
 	color: #9d9d9d;
 	border-top: 1px solid rgba(255,255,255,0.1);
 	border-bottom: 1px solid rgba(0,0,0,0.1);
-	background : #06309D;
+	background : #010b64;
 	-webkit-transition-property: background;
 	-webkit-transition-duration: 500ms;
 	-moz-transition-property: background;
@@ -506,7 +505,7 @@ tfoot td.price {
 }
 
 #user-navbar .dropdown-menu .divider {
-	background-color: #040834;
+	background-color: #010950;
 }
 
 #user-navbar .btn {
