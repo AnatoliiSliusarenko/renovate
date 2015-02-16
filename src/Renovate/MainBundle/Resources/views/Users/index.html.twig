@@ -61,6 +61,7 @@
 			          <th>По батькові</th>
 			          <th>Email</th>
 			          <th>Моб.тел.</th>
+			          <th>№ договору</th>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
 			          {% endif %}
@@ -80,6 +81,7 @@
 			          <td>[[user.patronymic]]</td>
 			          <td>[[user.email]]</td>
 			          <td>[[user.mobilephone]]</td>
+			          <td>[[user.contract]]<span ng-show="!user.contract" class="glyphicon glyphicon-minus-sign"></span></td>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <td><button ng-click="removeUser(user)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editUser(user)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			          {% endif %}
