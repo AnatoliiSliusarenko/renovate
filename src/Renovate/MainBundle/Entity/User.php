@@ -908,8 +908,14 @@ class User implements UserInterface,\Serializable
     {	
     	$user = $em->getRepository("RenovateMainBundle:User")->find($id);
     	foreach($user->getRoles() as $role){
+    		$role->removeUser($user);
     		$user->removeRole($role);
     	}
+    	
+    	foreach($user->getTariffs() as $tariff){
+    		$em->remove($tariff);
+    	}
+    	
     	$em->persist($user);
     	$em->flush();
     	$em->remove($user);
@@ -948,6 +954,7 @@ class User implements UserInterface,\Serializable
     	$em->flush();
     	 
     	foreach($user->getRoles() as $role){
+    		$role->removeUser($user);
     		$user->removeRole($role);
     	}
     	$em->persist($user);
