@@ -62,7 +62,8 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addJob.html',
 		      controller: 'AddJobController',
-		      backdrop: "static"
+		      backdrop: "static",
+		      size: 'lg'
 		});
 		
 		modalInstance.result.then(function (added) {
@@ -77,6 +78,7 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 		      templateUrl: 'editJob.html',
 		      controller: 'EditJobController',
 		      backdrop: "static",
+		      size: 'lg',
 		      resolve: {
 		    	  job: function(){return job;}
 		      }
@@ -154,6 +156,12 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	            getDocuments();
 	        }
 	    });
+	    
+	    CKEDITOR.replace('jobDescription',{language: 'uk'});
+	    CKEDITOR.instances.jobDescription.on('change', function(e){
+	    	$scope.job.description = e.editor.getData();
+	    	$scope.$apply();
+	    });
 	}, 1000);
 	
 	function addJob(){
@@ -221,6 +229,12 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
 	            getDocuments();
 	        }
+	    });
+	    
+	    CKEDITOR.replace('jobDescription',{language: 'uk'});
+	    CKEDITOR.instances.jobDescription.on('change', function(e){
+	    	$scope.job.description = e.editor.getData();
+	    	$scope.$apply();
 	    });
 	}, 1000);
 	

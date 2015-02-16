@@ -62,7 +62,8 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addResult.html',
 		      controller: 'AddResultController',
-		      backdrop: "static"
+		      backdrop: "static",
+		      size: 'lg'
 		});
 		
 		modalInstance.result.then(function (added) {
@@ -77,6 +78,7 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 		      templateUrl: 'editResult.html',
 		      controller: 'EditResultController',
 		      backdrop: "static",
+		      size: 'lg',
 		      resolve: {
 		    	  result: function(){return result;}
 		      }
@@ -154,6 +156,12 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 	            getDocuments();
 	        }
 	    });
+	    
+	    CKEDITOR.replace('resultDescription',{language: 'uk'});
+	    CKEDITOR.instances.resultDescription.on('change', function(e){
+	    	$scope.result.description = e.editor.getData();
+	    	$scope.$apply();
+	    });
 	}, 1000);
 	
 	function addResult(){
@@ -221,6 +229,12 @@ Renovate.controller('ResultsController', function($scope,$http,$modal){
 	            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
 	            getDocuments();
 	        }
+	    });
+	    
+	    CKEDITOR.replace('resultDescription',{language: 'uk'});
+	    CKEDITOR.instances.resultDescription.on('change', function(e){
+	    	$scope.result.description = e.editor.getData();
+	    	$scope.$apply();
 	    });
 	}, 1000);
 	

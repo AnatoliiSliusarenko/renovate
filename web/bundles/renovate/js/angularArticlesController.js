@@ -62,7 +62,8 @@ Renovate.controller('ArticlesController', function($scope,$http,$modal){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addArticle.html',
 		      controller: 'AddArticleController',
-		      backdrop: "static"
+		      backdrop: "static",
+		      size: 'lg'
 		});
 		
 		modalInstance.result.then(function (added) {
@@ -77,6 +78,7 @@ Renovate.controller('ArticlesController', function($scope,$http,$modal){
 		      templateUrl: 'editArticle.html',
 		      controller: 'EditArticleController',
 		      backdrop: "static",
+		      size: 'lg',
 		      resolve: {
 		    	  article: function(){return article;}
 		      }
@@ -154,6 +156,13 @@ Renovate.controller('ArticlesController', function($scope,$http,$modal){
 	            getDocuments();
 	        }
 	    });
+	    
+	    CKEDITOR.replace('articleDescription',{language: 'uk'});
+	    CKEDITOR.instances.articleDescription.on('change', function(e){
+	    	$scope.article.description = e.editor.getData();
+	    	$scope.$apply();
+	    });
+	   
 	}, 1000);
 	
 	function addArticle(){
@@ -222,6 +231,13 @@ Renovate.controller('ArticlesController', function($scope,$http,$modal){
 	            getDocuments();
 	        }
 	    });
+	    
+	    CKEDITOR.replace('articleDescription',{language: 'uk'});
+	    CKEDITOR.instances.articleDescription.on('change', function(e){
+	    	$scope.article.description = e.editor.getData();
+	    	$scope.$apply();
+	    });
+	    
 	}, 1000);
 	
 	function editArticle(){

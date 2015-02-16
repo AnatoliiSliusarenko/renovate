@@ -62,7 +62,8 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addNews.html',
 		      controller: 'AddNewsController',
-		      backdrop: "static"
+		      backdrop: "static",
+		      size: 'lg'
 		});
 		
 		modalInstance.result.then(function (added) {
@@ -77,6 +78,7 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 		      templateUrl: 'editNews.html',
 		      controller: 'EditNewsController',
 		      backdrop: "static",
+		      size: 'lg',
 		      resolve: {
 		    	  newsp: function(){return newsp;}
 		      }
@@ -154,6 +156,12 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	            getDocuments();
 	        }
 	    });
+	    
+	    CKEDITOR.replace('newsDescription',{language: 'uk'});
+	    CKEDITOR.instances.newsDescription.on('change', function(e){
+	    	$scope.news.description = e.editor.getData();
+	    	$scope.$apply();
+	    });
 	}, 1000);
 	
 	function addNews(){
@@ -221,6 +229,12 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
 	            getDocuments();
 	        }
+	    });
+	    
+	    CKEDITOR.replace('newsDescription',{language: 'uk'});
+	    CKEDITOR.instances.newsDescription.on('change', function(e){
+	    	$scope.news.description = e.editor.getData();
+	    	$scope.$apply();
 	    });
 	}, 1000);
 	

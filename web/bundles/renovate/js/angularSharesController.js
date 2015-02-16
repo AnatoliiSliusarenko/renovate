@@ -62,7 +62,8 @@ Renovate.controller('SharesController', function($scope,$http,$modal){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addShare.html',
 		      controller: 'AddShareController',
-		      backdrop: "static"
+		      backdrop: "static",
+		      size: 'lg'
 		});
 		
 		modalInstance.result.then(function (added) {
@@ -77,6 +78,7 @@ Renovate.controller('SharesController', function($scope,$http,$modal){
 		      templateUrl: 'editShare.html',
 		      controller: 'EditShareController',
 		      backdrop: "static",
+		      size: 'lg',
 		      resolve: {
 		    	  share: function(){return share;}
 		      }
@@ -154,6 +156,12 @@ Renovate.controller('SharesController', function($scope,$http,$modal){
 	            getDocuments();
 	        }
 	    });
+	    
+	    CKEDITOR.replace('shareDescription',{language: 'uk'});
+	    CKEDITOR.instances.shareDescription.on('change', function(e){
+	    	$scope.share.description = e.editor.getData();
+	    	$scope.$apply();
+	    });
 	}, 1000);
 	
 	function addShare(){
@@ -221,6 +229,12 @@ Renovate.controller('SharesController', function($scope,$http,$modal){
 	            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
 	            getDocuments();
 	        }
+	    });
+	    
+	    CKEDITOR.replace('shareDescription',{language: 'uk'});
+	    CKEDITOR.instances.shareDescription.on('change', function(e){
+	    	$scope.share.description = e.editor.getData();
+	    	$scope.$apply();
 	    });
 	}, 1000);
 	

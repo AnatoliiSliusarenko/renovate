@@ -225,7 +225,7 @@ table.repairs tbody tr:hover {
 	cursor: pointer;
 }
 
-td {
+table.repairs td {
 	max-width: 300px;
 }
 
