@@ -62,6 +62,7 @@
 			          <th>Email</th>
 			          <th>Моб.тел.</th>
 			          <th>№ договору</th>
+			          <th>Адреса</th>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
 			          {% endif %}
@@ -82,6 +83,7 @@
 			          <td>[[user.email]]</td>
 			          <td>[[user.mobilephone]]</td>
 			          <td>[[user.contract]]<span ng-show="!user.contract" class="glyphicon glyphicon-minus-sign"></span></td>
+			          <td>[[user.address]]</td>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <td><button ng-click="removeUser(user)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editUser(user)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			          {% endif %}
@@ -165,6 +167,13 @@
     				<div class="col-sm-10">
       					<input ng-model="user.contract" type="text" class="form-control" id="contract" name="contract" ng-required="hasClientRole">
 						<p ng-show="userForm.contract.$invalid && !userForm.contract.$pristine" class="help-block">Введіть № договору.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.address.$invalid && !userForm.address.$pristine }">
+    				<label for="address" class="col-sm-2 control-label">Адреса</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.address" type="text" class="form-control" id="address" name="address" required>
+						<p ng-show="userForm.address.$invalid && !userForm.address.$pristine" class="help-block">Введіть адресу.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
@@ -253,6 +262,13 @@
     				<div class="col-sm-10">
       					<input ng-model="user.contract" type="text" class="form-control" id="contract" name="contract" ng-required="hasClientRole">
 						<p ng-show="userForm.contract.$invalid && !userForm.contract.$pristine" class="help-block">Введіть № договору.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.address.$invalid && !userForm.address.$pristine }">
+    				<label for="address" class="col-sm-2 control-label">Адреса</label>
+    				<div class="col-sm-10">
+      					<input ng-model="user.address" type="text" class="form-control" id="address" name="address" required>
+						<p ng-show="userForm.address.$invalid && !userForm.address.$pristine" class="help-block">Введіть адресу.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">

@@ -79,6 +79,13 @@ class User implements UserInterface,\Serializable
      * @ORM\Column(name="contract", type="string", length=255)
      */
     private $contract;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address", type="string", length=255)
+     */
+    private $address;
 
     /**
      * @var \DateTime
@@ -332,6 +339,29 @@ class User implements UserInterface,\Serializable
     public function getContract()
     {
     	return $this->contract;
+    }
+    
+    /**
+     * Set address
+     *
+     * @param string $address
+     * @return User
+     */
+    public function setAddress($address)
+    {
+    	$this->address = $address;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+    	return $this->address;
     }
 
     /**
@@ -662,6 +692,7 @@ class User implements UserInterface,\Serializable
     			'email' => $this->getEmail(),
     			'mobilephone' => $this->getMobilephone(),
     			'contract' => $this->getContract(),
+    			'address' => $this->getAddress(),
     			'registered' => $this->getRegistered()->getTimestamp()*1000,
     			'roles' => array_map(function($role){return $role->getInArray();}, $this->getRoles())
     	);
@@ -756,7 +787,8 @@ class User implements UserInterface,\Serializable
     				$qb->expr()->like('u.patronymic', $qb->expr()->literal('%'.$parameters['search'].'%')),
     				$qb->expr()->like('u.email', $qb->expr()->literal('%'.$parameters['search'].'%')),
     				$qb->expr()->like('u.mobilephone', $qb->expr()->literal('%'.$parameters['search'].'%')),
-    				$qb->expr()->like('u.contract', $qb->expr()->literal('%'.$parameters['search'].'%'))
+    				$qb->expr()->like('u.contract', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.address', $qb->expr()->literal('%'.$parameters['search'].'%'))
     		));
     	}
     	
@@ -829,7 +861,8 @@ class User implements UserInterface,\Serializable
     				$qb->expr()->like('u.patronymic', $qb->expr()->literal('%'.$parameters['search'].'%')),
     				$qb->expr()->like('u.email', $qb->expr()->literal('%'.$parameters['search'].'%')),
     				$qb->expr()->like('u.mobilephone', $qb->expr()->literal('%'.$parameters['search'].'%')),
-    				$qb->expr()->like('u.contract', $qb->expr()->literal('%'.$parameters['search'].'%'))
+    				$qb->expr()->like('u.contract', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.address', $qb->expr()->literal('%'.$parameters['search'].'%'))
     		));
     	}
     	
@@ -855,6 +888,7 @@ class User implements UserInterface,\Serializable
     	if (isset($parameters->contract)){
     		$user->setContract($parameters->contract);
     	}
+    	$user->setAddress($parameters->address);
     	$user->setRegistered(new \DateTime());
     	 
     	foreach($parameters->roles as $role_id){
@@ -907,6 +941,8 @@ class User implements UserInterface,\Serializable
     	}else{
     		$user->setContract(NULL);
     	}
+    	
+    	$user->setAddress($parameters->address);
     	 
     	$em->persist($user);
     	$em->flush();
