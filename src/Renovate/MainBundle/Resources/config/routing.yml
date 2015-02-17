@@ -373,3 +373,7 @@ renovate_ng_page_descriptions_edit:
 renovate_ng_page_descriptions_remove:
     path: /ng/page-descriptions/remove/{page_description_id}
     defaults: { _controller: RenovateMainBundle:PageDescriptions:removePageDescriptionNg}
+    
+renovate_vacancies:
+    path: /vacancies
+    defaults: { _controller: RenovateMainBundle:Vacancies:index}

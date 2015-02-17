@@ -1,0 +1,30 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}Вакансії{% endblock %}
+
+{% block description %}
+	{% if pageDescription is not null %}
+		<meta name="description" content="{{pageDescription}}">
+	{% endif %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li class="active">Вакансії</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<h1><span>На цій сторінці буде розміщено вакансії компанії RENOVATE</span></h1>
+	</div>
+</div>
+{% endblock %} 
+
+{% block javascripts %}
+{% endblock %}

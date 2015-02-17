@@ -194,30 +194,64 @@
   				</div>
 				<hr>
 				<div class="row">
-					<div class="col-md-6" ng-repeat="servicesList in services">
-						<div class="panel panel-info">
-							<div class="panel-heading">[[servicesList.category]]</div>
-							<div class="panel-body">
-								<div class="col-sm-12" ng-repeat="service in servicesList.services">
-									<div class="form-group" ng-if="service.logical">
-										<div class="checkbox">
-    										<label>
-      											<input ng-model="tariff.services[service.id].checked" type="checkbox"> [[service.name]]
-    										</label>
-  										</div>
-									</div>
-									<div class="form-group" ng-if="!service.logical">
-										<div class="checkbox">
-    										<label>
-      											<input type="checkbox" ng-model="tariff.services[service.id].checked" ng-init="checkbox1=tariff.services[service.id].checked" ng-click="checkbox1=!checkbox1"> [[service.name]]
-    										</label>
-  										</div>
-										<label class="radio-inline" ng-repeat="option in service.options" ng-init="tariff.services[service.id].value == null">
-  											<input type="radio" name="[[service.name]][[service.id]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1"> [[option.name]]
-										</label>
-									</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-12" ng-repeat="servicesList in services">
+								<div ng-if="$even" class="panel panel-info">
+									<div class="panel-heading">[[servicesList.category]]</div>
+									<div class="panel-body">
+										<div class="col-sm-12" ng-repeat="service in servicesList.services">
+											<div class="form-group" ng-if="service.logical">
+												<div class="checkbox">
+    												<label>
+      													<input ng-model="tariff.services[service.id].checked" type="checkbox"> [[service.name]]
+    												</label>
+  												</div>
+											</div>
+											<div class="form-group" ng-if="!service.logical">
+												<div class="checkbox">
+    												<label>
+      													<input type="checkbox" ng-model="tariff.services[service.id].checked" ng-init="checkbox1=tariff.services[service.id].checked" ng-click="checkbox1=!checkbox1"> [[service.name]]
+    												</label>
+  												</div>
+												<label class="radio-inline" ng-repeat="option in service.options" ng-init="tariff.services[service.id].value == null">
+  													<input type="radio" name="[[service.name]][[service.id]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1"> [[option.name]]
+												</label>
+											</div>
+										</div>
+  									</div>
 								</div>
-  							</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-12" ng-repeat="servicesList in services">
+								<div ng-if="$odd" class="panel panel-info">
+									<div class="panel-heading">[[servicesList.category]]</div>
+									<div class="panel-body">
+										<div class="col-sm-12" ng-repeat="service in servicesList.services">
+											<div class="form-group" ng-if="service.logical">
+												<div class="checkbox">
+    												<label>
+      													<input ng-model="tariff.services[service.id].checked" type="checkbox"> [[service.name]]
+    												</label>
+  												</div>
+											</div>
+											<div class="form-group" ng-if="!service.logical">
+												<div class="checkbox">
+    												<label>
+      													<input type="checkbox" ng-model="tariff.services[service.id].checked" ng-init="checkbox1=tariff.services[service.id].checked" ng-click="checkbox1=!checkbox1"> [[service.name]]
+    												</label>
+  												</div>
+												<label class="radio-inline" ng-repeat="option in service.options" ng-init="tariff.services[service.id].value == null">
+  													<input type="radio" name="[[service.name]][[service.id]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1"> [[option.name]]
+												</label>
+											</div>
+										</div>
+  									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -261,30 +295,64 @@
   				</div>
 				<hr>
 				<div class="row">
-					<div class="col-md-6" ng-repeat="servicesList in services">
-						<div class="panel panel-info">
-							<div class="panel-heading">[[servicesList.category]]</div>
-							<div class="panel-body">
-								<div class="col-sm-12" ng-repeat="service in servicesList.services">
-									<div class="form-group" ng-if="service.logical">
-										<div class="checkbox">
-    										<label>
-      											<input ng-model="tariff.services[service.id].checked" type="checkbox"> [[service.name]]
-    										</label>
-  										</div>
-									</div>
-									<div class="form-group" ng-if="!service.logical">
-										<div class="checkbox">
-    										<label>
-      											<input type="checkbox" ng-model="tariff.services[service.id].checked" ng-init="checkbox1=tariff.services[service.id].checked" ng-click="checkbox1=!checkbox1"> [[service.name]]
-    										</label>
-  										</div>
-										<label class="radio-inline" ng-repeat="option in service.options" ng-init="tariff.services[service.id].value == null">
-  											<input type="radio" name="[[service.name]][[service.id]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1"> [[option.name]]
-										</label>
-									</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-12" ng-repeat="servicesList in services">
+								<div ng-if="$even" class="panel panel-info">
+									<div class="panel-heading">[[servicesList.category]]</div>
+									<div class="panel-body">
+										<div class="col-sm-12" ng-repeat="service in servicesList.services">
+											<div class="form-group" ng-if="service.logical">
+												<div class="checkbox">
+    												<label>
+      													<input ng-model="tariff.services[service.id].checked" type="checkbox"> [[service.name]]
+    												</label>
+  												</div>
+											</div>
+											<div class="form-group" ng-if="!service.logical">
+												<div class="checkbox">
+    												<label>
+      													<input type="checkbox" ng-model="tariff.services[service.id].checked" ng-init="checkbox1=tariff.services[service.id].checked" ng-click="checkbox1=!checkbox1"> [[service.name]]
+    												</label>
+  												</div>
+												<label class="radio-inline" ng-repeat="option in service.options" ng-init="tariff.services[service.id].value == null">
+  													<input type="radio" name="[[service.name]][[service.id]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1"> [[option.name]]
+												</label>
+											</div>
+										</div>
+  									</div>
 								</div>
-  							</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-12" ng-repeat="servicesList in services">
+								<div ng-if="$odd" class="panel panel-info">
+									<div class="panel-heading">[[servicesList.category]]</div>
+									<div class="panel-body">
+										<div class="col-sm-12" ng-repeat="service in servicesList.services">
+											<div class="form-group" ng-if="service.logical">
+												<div class="checkbox">
+    												<label>
+      													<input ng-model="tariff.services[service.id].checked" type="checkbox"> [[service.name]]
+    												</label>
+  												</div>
+											</div>
+											<div class="form-group" ng-if="!service.logical">
+												<div class="checkbox">
+    												<label>
+      													<input type="checkbox" ng-model="tariff.services[service.id].checked" ng-init="checkbox1=tariff.services[service.id].checked" ng-click="checkbox1=!checkbox1"> [[service.name]]
+    												</label>
+  												</div>
+												<label class="radio-inline" ng-repeat="option in service.options" ng-init="tariff.services[service.id].value == null">
+  													<input type="radio" name="[[service.name]][[service.id]]" id="[[option.value]]" value="[[option.id]]" ng-model="tariff.services[service.id].optionid" ng-disabled="!checkbox1"> [[option.name]]
+												</label>
+											</div>
+										</div>
+  									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

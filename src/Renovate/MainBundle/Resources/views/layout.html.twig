@@ -112,6 +112,7 @@
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
+            		<li {% if app.request.attributes.get('_route') == 'renovate_vacancies' %}class="active"{% endif %}><a href="{{ path('renovate_vacancies') }}">Вакансії</a></li>
 	            </ul>
 	        </li>
             
