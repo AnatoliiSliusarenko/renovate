@@ -141,6 +141,18 @@ class User implements UserInterface,\Serializable
 	 * @var array
 	 */
 	private $tariffs;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Repair", mappedBy="user")
+	 * @var array
+	 */
+	private $repairsCreated;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Repair", mappedBy="worker")
+	 * @var array
+	 */
+	private $repairsDone;
     
 	public function __construct()
 	{
@@ -681,6 +693,72 @@ class User implements UserInterface,\Serializable
     	return $this->tariffs;
     }
     
+    /**
+     * Add repairsCreated
+     *
+     * @param \Renovate\MainBundle\Entity\Repair $repairsCreated
+     * @return User
+     */
+    public function addRepairsCreated(\Renovate\MainBundle\Entity\Repair $repairsCreated)
+    {
+    	$this->repairsCreated[] = $repairsCreated;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove repairsCreated
+     *
+     * @param \Renovate\MainBundle\Entity\Repair $repairsCreated
+     */
+    public function removeRepairsCreated(\Renovate\MainBundle\Entity\Repair $repairsCreated)
+    {
+    	$this->repairsCreated->removeElement($repairsCreated);
+    }
+    
+    /**
+     * Get repairsCreated
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRepairsCreated()
+    {
+    	return $this->repairsCreated;
+    }
+    
+    /**
+     * Add repairsDone
+     *
+     * @param \Renovate\MainBundle\Entity\Repair $repairsDone
+     * @return User
+     */
+    public function addRepairsDone(\Renovate\MainBundle\Entity\Repair $repairsDone)
+    {
+    	$this->repairsDone[] = $repairsDone;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove repairsDone
+     *
+     * @param \Renovate\MainBundle\Entity\Repair $repairsDone
+     */
+    public function removeRepairsDone(\Renovate\MainBundle\Entity\Repair $repairsDone)
+    {
+    	$this->repairsDone->removeElement($repairsDone);
+    }
+    
+    /**
+     * Get repairsDone
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRepairsDone()
+    {
+    	return $this->repairsDone;
+    }
+    
     public function getInArray()
     {
     	return array(
@@ -914,6 +992,10 @@ class User implements UserInterface,\Serializable
     	
     	foreach($user->getTariffs() as $tariff){
     		$em->remove($tariff);
+    	}
+    	
+    	foreach($user->getRepairsDone() as $repair){
+    		$em->remove($repair);
     	}
     	
     	$em->persist($user);
