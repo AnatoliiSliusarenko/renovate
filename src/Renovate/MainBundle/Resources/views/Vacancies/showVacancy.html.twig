@@ -1,0 +1,58 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}{{vacancy.name}}{% endblock %}
+
+{% block description %}
+	{% if pageDescription is not null %}
+		<meta name="description" content="{{pageDescription}}">
+	{% else %}
+		<meta name="description" content="{{vacancy.description | escape | slice(0, 300)}}">
+	{% endif %}
+{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li><a href="{{path('renovate_vacancies')}}">Вакансії</a></li>
+ 	<li class="active">{{vacancy.name}}</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-2" style="margin-top: 5px;">
+			<!-- VK -->
+			<div id="vk_like" class="vk"></div>
+		</div>
+		<div class="col-md-2" style="margin-top: 5px;">
+			<!-- FB -->
+			<div class="fb-share-button" data-href="{{ app.request.uri }}" data-layout="button_count"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+  				<h2>{{vacancy.name}}</h2>
+  				<p>{{vacancy.created|date("d.m.Y H:i")}}</p>
+  				<hr>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="data-content">
+				<div class="col-md-4">
+					<img src="{{asset(vacancy.document.path)}}" alt="{{vacancy.name}}" class="img-thumbnail">
+				</div>
+				<div class="text-justify">{{vacancy.description | raw}}</div>
+			</div>
+		</div>
+	</div>
+{% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/vkButton.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/fbButton.js') }}"></script>
+{% endblock %}

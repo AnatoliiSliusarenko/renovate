@@ -141,7 +141,7 @@
 				<div class="media search">
 					<div class="col-md-3">
 					  	<a class="media-left" href="{{ path('renovate_shares_show_share', {share_name_translit: share.getNameTranslit()}) }}">
-					    	{% if share.label %}<img src="{{ asset(share.label.path) }}" alt="{{sharet.name}}">
+					    	{% if share.label %}<img src="{{ asset(share.label.path) }}" alt="{{share.name}}">
 					    	{% elseif share.document %}<img src="{{ asset(share.document.path) }}" alt="{{share.name}}">{%endif%}
 					  	</a>
 					</div>
@@ -155,6 +155,33 @@
 			</div>
 			{% endfor %}
 		</div>
+		{% endif %}
+		{% if vacancies|length > 0 %}
+		<button class="btn btn-primary" type="button" ng-click="isCollapsedVacancies = !isCollapsedVacancies">
+			Вакансії <span class="badge">{{vacancies|length}}</span>
+		</button>
+		<hr>
+		<div collapse="isCollapsedVacancies">
+			{% for vacancy in vacancies %}
+			<div class="row">
+				<div class="media search">
+					<div class="col-md-3">
+						<a class="media-left" href="{{ path('renovate_vacancies_show_vacancy', {vacancy_name_translit: vacancy.getNameTranslit()}) }}">
+							{% if vacancy.label %}<img src="{{ asset(vacancy.label.path) }}" alt="{{vacancy.name}}">
+							{% elseif vacancy.document %}<img src="{{ asset(vacancy.document.path) }}" alt="{{vacancy.name}}">{%endif%}
+						</a>
+					</div>
+					<div class="col-md-9">
+						<div class="media-body">
+							<p class="title"><a href="{{ path('renovate_vacancies_show_vacancy', {vacancy_name_translit: vacancy.getNameTranslit()}) }}">{{vacancy.name}}</a></p>
+							<p class="description">{{vacancy.description | slice(0, 370) | raw}}{% if vacancy.description | length > 370%}...{% endif %}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<hr>
 		{% endif %}
 	</div>
 </div>

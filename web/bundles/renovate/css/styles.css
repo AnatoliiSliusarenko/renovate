@@ -46,6 +46,10 @@
 	font-weight:normal;
 	margin-right:7px;
 }
+.contact-info-box h3 img{
+	width: 150px;
+	margin-top: 10px;
+}
 .contact-info-box p{
 	line-height:28px;
 	display:inline-block;
@@ -61,6 +65,9 @@
 	.contact-info-box h3{
 		width: 120px;
 		font-size: 13px;
+	}
+	.contact-info-box h3 img{
+		width: 115px;
 	}
 	.contact-info-box p{
 		width: 192px;

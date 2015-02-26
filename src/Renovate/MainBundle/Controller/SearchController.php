@@ -9,6 +9,7 @@ use Renovate\MainBundle\Entity\Job;
 use Renovate\MainBundle\Entity\News;
 use Renovate\MainBundle\Entity\Result;
 use Renovate\MainBundle\Entity\Share;
+use Renovate\MainBundle\Entity\Vacancy;
 
 class SearchController extends Controller
 {
@@ -30,6 +31,8 @@ class SearchController extends Controller
     			$parameters['results'] = $results;
     			$shares = Share::searchShares($em, $request->request->get('search'));
     			$parameters['shares'] = $shares;
+    			$vacancies = Vacancy::searchVacancies($em, $request->request->get('search'));
+    			$parameters['vacancies'] = $vacancies;
     		}
     		
     		$parameters['search'] = $request->request->get('search');

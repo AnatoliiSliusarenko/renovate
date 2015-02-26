@@ -9,13 +9,16 @@ Renovate.controller('MainSliderController', function($scope,$http){
 	$scope.urlsArticlesShowArticle = URLS.articlesShowArticle;
 	$scope.urlsSharesGetNg = URLS.sharesGetNg;
 	$scope.urlsSharesShowShare = URLS.sharesShowShare;
+	$scope.urlsVacanciesGetNg = URLS.vacanciesGetNg;
+	$scope.urlsVacanciesShowVacancy = URLS.vacanciesShowVacancy;
 	
 	$scope.items = [];
 	$scope.dataReady = {
 			results: false,
 			news: false,
 			articles: false,
-			shares: false
+			shares: false,
+			vacancies: false
 	}
 	
 	$scope.$watch('dataReady', function(){
@@ -23,7 +26,8 @@ Renovate.controller('MainSliderController', function($scope,$http){
 		if ($scope.dataReady.results 
 				&& $scope.dataReady.news 
 				&& $scope.dataReady.articles 
-				&& $scope.dataReady.shares)
+				&& $scope.dataReady.shares
+				&& $scope.dataReady.vacancies)
 		{
 			setTimeout(function(){
 				$('.results-for').slick({
@@ -129,6 +133,26 @@ Renovate.controller('MainSliderController', function($scope,$http){
 		})
 	}
 	
+	function getVacancies()
+	{
+		$http({
+			method: "GET", 
+			url: $scope.urlsVacanciesGetNg,
+			params: {onhomepage: 1}
+			  })
+		.success(function(response){
+			console.log("main slider vacancies => ",response);
+			if (response.result)
+			{
+				_.each(response.result, function(vacancy){
+					setVacancyDirectHref(vacancy);
+				});
+				$scope.items = $scope.items.concat(response.result);
+				$scope.dataReady.vacancies = true;
+			}
+		})
+	}
+	
 	function setResultDirectHref(result){
 		var href = $scope.urlsResultsShowResult.replace('0', result.nameTranslit);
 		result.href = href;
@@ -149,11 +173,17 @@ Renovate.controller('MainSliderController', function($scope,$http){
 		share.href = href;
 	}
 	
+	function setVacancyDirectHref(vacancy){
+		var href = $scope.urlsVacanciesShowVacancy.replace('0', vacancy.nameTranslit);
+		vacancy.href = href;
+	}
+	
 	function getItems(){
 		getResults();
 		getNews();
 		getArticles();
 		getShares();
+		getVacancies();
 	}
 	
 	getItems();

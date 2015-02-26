@@ -92,8 +92,6 @@ renovate_ng_users_edit:
     path: /ng/users/edit/{user_id}
     defaults: { _controller: RenovateMainBundle:Users:editUserNg}
     
-
-    
 renovate_ng_roles:
     path: /ng/roles
     defaults: { _controller: RenovateMainBundle:Roles:getRolesNg}
@@ -377,3 +375,51 @@ renovate_ng_page_descriptions_remove:
 renovate_vacancies:
     path: /vacancies
     defaults: { _controller: RenovateMainBundle:Vacancies:index}
+    
+renovate_vacancies_show_vacancy:
+    path: /vacancies/{vacancy_name_translit}
+    defaults: { _controller: RenovateMainBundle:Vacancies:showVacancy}
+    
+renovate_ng_vacancies:
+    path: /ng/vacancies
+    defaults: { _controller: RenovateMainBundle:Vacancies:getVacanciesNg}
+    
+renovate_ng_vacancies_count:
+    path: /ng/vacancies/count
+    defaults: { _controller: RenovateMainBundle:Vacancies:getVacanciesCountNg}
+    
+renovate_ng_vacancies_add:
+    path: /ng/vacancies/add
+    defaults: { _controller: RenovateMainBundle:Vacancies:addVacancyNg}
+    
+renovate_ng_vacancies_remove:
+    path: /ng/vacancies/remove/{vacancy_id}
+    defaults: { _controller: RenovateMainBundle:Vacancies:removeVacancyNg}
+    
+renovate_ng_vacancies_edit:
+    path: /ng/vacancies/edit/{vacancy_id}
+    defaults: { _controller: RenovateMainBundle:Vacancies:editVacancyNg}
+    
+renovate_prices:
+    path: /prices
+    defaults: { _controller: RenovateMainBundle:Prices:index}
+    
+renovate_ng_prices:
+    path: /ng/prices
+    defaults: { _controller: RenovateMainBundle:Prices:getPricesNg}
+    
+renovate_ng_prices_count:
+    path: /ng/prices/count
+    defaults: { _controller: RenovateMainBundle:Prices:getPricesCountNg}
+    
+renovate_ng_prices_add:
+    path: /ng/prices/add
+    defaults: { _controller: RenovateMainBundle:Prices:addPriceNg}
+    
+renovate_ng_prices_remove:
+    path: /ng/prices/remove/{price_id}
+    defaults: { _controller: RenovateMainBundle:Prices:removePriceNg}
+    
+renovate_ng_prices_edit:
+    path: /ng/prices/edit/{price_id}
+    defaults: { _controller: RenovateMainBundle:Prices:editPriceNg}

@@ -1,0 +1,166 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}Прайслист робіт{% endblock %}
+
+{% block description %}
+	{% if pageDescription is not null %}
+		<meta name="description" content="{{pageDescription}}">
+	{% endif %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li class="active">Прайслист робіт</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div ng-controller="PricesController">
+	<div class="row">
+		<div class="col-md-3">
+				<form class="form-inline">
+				  <div class="form-group">
+				    <label for="itemsPerPage">Показувати на сторінці</label>
+			      	<select id="itemsPerPage" class="form-control" ng-model="itemsPerPage">
+					  <option>1</option>
+					  <option>2</option>
+					  <option>3</option>
+					  <option>4</option>
+					  <option>5</option>
+					  <option>10</option>
+					  <option>25</option>
+					  <option>50</option>
+					  <option>100</option>
+					  <option>500</option>
+					  <option>1000</option>
+					</select>
+				  </div>
+				</form>
+		</div>
+		{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+		<div class="col-md-4">
+			<button ng-click="addPrice()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+		</div>
+		{% endif %}
+	</div>
+	<div class="row">
+			<div class="col-md-12 text-center">
+				<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+			</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-hover table-mobile">
+      			<thead>
+			        <tr>
+			          <th>#</th>
+			          <th>Назва</th>
+			          <th>Одиниці виміру</th>
+			          <th>Вартість (грн)</th>
+			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+			          {% endif %}
+			        </tr>
+      			</thead>
+      			<tbody>
+      				<tr class="splash" ng-cloak>
+	      				<td colspan="8">
+							<div class="image center-block"></div>
+						</td>
+      				</tr>
+			        <tr ng-repeat="price in prices" ng-cloak>
+			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
+			          <td>[[price.name]]</td>
+			          <td>[[price.units]]</td>
+			          <td>[[price.value]]</td>
+			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+			          <td><button ng-click="removePrice(price)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editPrice(price)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			          {% endif %}
+			        </tr>
+      			</tbody>
+    		</table>
+		</div>
+	</div>
+	<div class="row">
+			<div class="col-md-12 text-center">
+				<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+			</div>
+	</div>
+	<script type="text/ng-template" id="addPrice.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Додати прайс...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="priceForm">
+				<div class="form-group" ng-class="{ 'has-error' : priceForm.priceName.$invalid && !priceForm.priceName.$pristine }">
+    				<label for="priceName" class="col-sm-2 control-label">Назва</label>
+    				<div class="col-sm-10">
+      					<input ng-model="price.name" type="text" class="form-control" id="priceName" name="priceName" required>
+						<p ng-show="priceForm.priceName.$invalid && !priceForm.priceName.$pristine" class="help-block">Введіть назву.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : priceForm.priceUnits.$invalid && !priceForm.priceUnits.$pristine }">
+    				<label for="priceUnits" class="col-sm-2 control-label">Одиниці виміру</label>
+    				<div class="col-sm-10">
+      					<input ng-model="price.units" type="text" class="form-control" id="priceUnits" name="priceUnits" required>
+						<p ng-show="priceForm.priceUnits.$invalid && !priceForm.priceUnits.$pristine" class="help-block">Введіть одиниці виміру.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : priceForm.priceValue.$invalid && !priceForm.priceValue.$pristine }">
+    				<label for="priceValue" class="col-sm-2 control-label">Значення</label>
+    				<div class="col-sm-10">
+      					<input ng-model="price.value" type="number" min="0.01" step="0.01" class="form-control" id="priceValue" name="priceValue" required>
+						<p ng-show="priceForm.priceValue.$invalid && !priceForm.priceValue.$pristine" class="help-block">Введіть значення.</p>
+    				</div>
+  				</div>
+			</form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="priceForm.$invalid">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="editPrice.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Редагувати прайс...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="priceForm">
+				<div class="form-group" ng-class="{ 'has-error' : priceForm.priceName.$invalid && !priceForm.priceName.$pristine }">
+    				<label for="priceName" class="col-sm-2 control-label">Назва</label>
+    				<div class="col-sm-10">
+      					<input ng-model="price.name" type="text" class="form-control" id="priceName" name="priceName" required>
+						<p ng-show="priceForm.priceName.$invalid && !priceForm.priceName.$pristine" class="help-block">Введіть назву.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : priceForm.priceUnits.$invalid && !priceForm.priceUnits.$pristine }">
+    				<label for="priceUnits" class="col-sm-2 control-label">Одиниці виміру</label>
+    				<div class="col-sm-10">
+      					<input ng-model="price.units" type="text" class="form-control" id="priceUnits" name="priceUnits" required>
+						<p ng-show="priceForm.priceUnits.$invalid && !priceForm.priceUnits.$pristine" class="help-block">Введіть одиниці виміру.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : priceForm.priceValue.$invalid && !priceForm.priceValue.$pristine }">
+    				<label for="priceValue" class="col-sm-2 control-label">Значення</label>
+    				<div class="col-sm-10">
+      					<input ng-model="price.value" type="number" min="0.01" step="0.01" class="form-control" id="priceValue" name="priceValue" required>
+						<p ng-show="priceForm.priceValue.$invalid && !priceForm.priceValue.$pristine" class="help-block">Введіть значення.</p>
+    				</div>
+  				</div>
+			</form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="priceForm.$invalid">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+</div>
+{% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/angularPricesController.js') }}"></script>
+{% endblock %}
