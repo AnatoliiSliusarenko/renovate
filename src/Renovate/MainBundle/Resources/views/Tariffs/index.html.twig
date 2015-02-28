@@ -245,7 +245,4 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/angularTariffsController.js') }}"></script>
-<script>
-var USER = '{{ app.user ? app.user.getInArray() | json_encode() | raw : "undefined" }}';
-</script>
 {% endblock %}

@@ -60,6 +60,7 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_partners' %}class="active"{% endif %}><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_services' %}class="active"{% endif %}><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_page_descriptions' %}class="active"{% endif %}><a href="{{ path('renovate_page_descriptions') }}">Описи сторінок</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_tasks' %}class="active"{% endif %}><a href="{{ path('renovate_tasks') }}">Завдання</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_documents' %}class="active"{% endif %}><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
@@ -71,6 +72,42 @@
 	                <li class="divider"></li>
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
 	              </ul>
+	            </li>
+	            <li ng-controller="UserTasksController" ng-cloak>
+	            	<button ng-click="showTasks()" ng-show="tasksCount>0" type="button" class="btn btn-success settings"><i class="fa fa-bell"></i><span class="badge">[[tasksCount]]</span></button>
+	            	<script type="text/ng-template" id="tasksList.html">
+        				<div class="modal-header">
+            				<h3 class="modal-title">Список Ваших завдань...</h3>
+        				</div>
+        				<div class="modal-body">
+            				<table class="table table-hover table-mobile">
+      							<thead>
+			        				<tr>
+			          					<th>#</th>
+			          					<th>Опис</th>
+			          					<th>Створено</th>
+			          					<th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+			        				</tr>
+      							</thead>
+      							<tbody>
+      								<tr class="splash" ng-cloak>
+	      								<td colspan="8">
+											<div class="image center-block"></div>
+										</td>
+      								</tr>
+			        				<tr ng-repeat="task in tasks" class="green" ng-cloak>
+			          					<th scope="row">[[$index+1]]</th>
+			          					<td>[[task.description]]</td>
+			          					<td>[[task.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
+			          					<td><button ng-click="finishTask(task)" type="button" class="close"><span class="glyphicon glyphicon-ok"></span></button></td>
+			        				</tr>
+      							</tbody>
+    						</table>
+        				</div>
+        				<div class="modal-footer">
+            				<button class="btn btn-primary" ng-click="ok()">Гаразд</button>
+        				</div>
+    				</script>
 	            </li>
         	</ul>
         </div>
@@ -199,6 +236,7 @@
 	<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
 	<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
     <script src="{{ asset('web/bundles/renovate/js/angularPartnersController.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/angularTasksController.js') }}"></script>
     
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('web/bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
@@ -291,9 +329,18 @@
   			pricesAddNg: "{{ path('renovate_ng_prices_add') }}",
   			pricesRemoveNg: "{{ path('renovate_ng_prices_remove', {price_id: 0}) }}",
   			pricesEditNg: "{{ path('renovate_ng_prices_edit', {price_id: 0}) }}",
+  			tasksGetNg: "{{ path('renovate_ng_tasks') }}",
+  			tasksCountNg: "{{ path('renovate_ng_tasks_count') }}",
+  			tasksAddNg: "{{ path('renovate_ng_tasks_add') }}",
+  			tasksRemoveNg: "{{ path('renovate_ng_tasks_remove', {task_id: 0}) }}",
+  			tasksEditNg: "{{ path('renovate_ng_tasks_edit', {task_id: 0}) }}",
+  			tasksFinishNg: "{{ path('renovate_ng_tasks_finish', {task_id: 0}) }}",
   			
   	}
   	</script>
+  	<script>
+	var USER = '{{ app.user ? app.user.getInArray() | json_encode() | raw : "undefined" }}';
+	</script>
   	{% block javascripts %}{% endblock %}
   </body>
 </html>

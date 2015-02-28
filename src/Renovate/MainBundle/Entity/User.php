@@ -153,6 +153,12 @@ class User implements UserInterface,\Serializable
 	 * @var array
 	 */
 	private $repairsDone;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
+	 * @var array
+	 */
+	private $tasks;
     
 	public function __construct()
 	{
@@ -759,6 +765,39 @@ class User implements UserInterface,\Serializable
     	return $this->repairsDone;
     }
     
+    /**
+     * Add tasks
+     *
+     * @param \Renovate\MainBundle\Entity\Task $tasks
+     * @return User
+     */
+    public function addTask(\Renovate\MainBundle\Entity\Task $tasks)
+    {
+    	$this->tasks[] = $tasks;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove tasks
+     *
+     * @param \Renovate\MainBundle\Entity\Task $tasks
+     */
+    public function removeTask(\Renovate\MainBundle\Entity\Task $tasks)
+    {
+    	$this->tasks->removeElement($tasks);
+    }
+    
+    /**
+     * Get tasks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTasks()
+    {
+    	return $this->tasks;
+    }
+    
     public function getInArray()
     {
     	return array(
@@ -996,6 +1035,10 @@ class User implements UserInterface,\Serializable
     	
     	foreach($user->getRepairsDone() as $repair){
     		$em->remove($repair);
+    	}
+    	
+    	foreach($user->getTasks() as $task){
+    		$em->remove($task);
     	}
     	
     	$em->persist($user);

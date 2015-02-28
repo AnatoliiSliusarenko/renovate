@@ -220,7 +220,4 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/angularRepairsController.js') }}"></script>
-<script>
-var USER = '{{app.user.getInArray() | json_encode() | raw}}';
-</script>
 {% endblock %}

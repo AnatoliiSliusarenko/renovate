@@ -423,3 +423,31 @@ renovate_ng_prices_remove:
 renovate_ng_prices_edit:
     path: /ng/prices/edit/{price_id}
     defaults: { _controller: RenovateMainBundle:Prices:editPriceNg}
+    
+renovate_tasks:
+    path: /tasks
+    defaults: { _controller: RenovateMainBundle:Tasks:index}
+    
+renovate_ng_tasks:
+    path: /ng/tasks
+    defaults: { _controller: RenovateMainBundle:Tasks:getTasksNg}
+    
+renovate_ng_tasks_count:
+    path: /ng/tasks/count
+    defaults: { _controller: RenovateMainBundle:Tasks:getTasksCountNg}
+    
+renovate_ng_tasks_add:
+    path: /ng/tasks/add
+    defaults: { _controller: RenovateMainBundle:Tasks:addTaskNg}
+    
+renovate_ng_tasks_remove:
+    path: /ng/tasks/remove/{task_id}
+    defaults: { _controller: RenovateMainBundle:Tasks:removeTaskNg}
+    
+renovate_ng_tasks_edit:
+    path: /ng/tasks/edit/{task_id}
+    defaults: { _controller: RenovateMainBundle:Tasks:editTaskNg}
+    
+renovate_ng_tasks_finish:
+    path: /ng/tasks/finish/{task_id}
+    defaults: { _controller: RenovateMainBundle:Tasks:finishTaskNg}
