@@ -459,3 +459,19 @@ renovate_ng_tasks_approve:
 renovate_ng_tasks_decline:
     path: /ng/tasks/decline/{task_id}
     defaults: { _controller: RenovateMainBundle:Tasks:declineTaskNg}
+    
+renovate_ng_price_categories_all:
+    path: /ng/price-categories/all
+    defaults: { _controller: RenovateMainBundle:PriceCategories:getPriceCategoriesAllNg}
+    
+renovate_ng_price_categories_add:
+    path: /ng/price-categories/add
+    defaults: { _controller: RenovateMainBundle:PriceCategories:addPriceCategoryNg}
+    
+renovate_ng_price_categories_edit:
+    path: /ng/price-categories/edit/{priceCategory_id}
+    defaults: { _controller: RenovateMainBundle:PriceCategories:editPriceCategoryNg}
+    
+renovate_ng_price_categories_remove:
+    path: /ng/price-categories/remove/{priceCategory_id}
+    defaults: { _controller: RenovateMainBundle:PriceCategories:removePriceCategoryNg}

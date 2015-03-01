@@ -29,6 +29,13 @@ class Price
     private $userid;
     
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="categoryid", type="integer")
+     */
+    private $categoryid;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -62,6 +69,13 @@ class Price
      * @var User
      */
     private $user;
+ 
+    /**
+     * @ORM\ManyToOne(targetEntity="PriceCategory", inversedBy="prices")
+     * @ORM\JoinColumn(name="categoryid")
+     * @var PriceCategory
+     */
+    private $category;
     
     /**
      * Get id
@@ -94,6 +108,29 @@ class Price
     public function getUserid()
     {
     	return $this->userid;
+    }
+    
+    /**
+     * Set categoryid
+     *
+     * @param integer $categoryid
+     * @return Price
+     */
+    public function setCategoryid($categoryid)
+    {
+    	$this->categoryid = $categoryid;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get categoryid
+     *
+     * @return integer
+     */
+    public function getCategoryid()
+    {
+    	return $this->categoryid;
     }
     
     /**
@@ -211,11 +248,35 @@ class Price
     	return $this->user;
     }
     
+    /**
+     * Set category
+     *
+     * @param \Renovate\MainBundle\Entity\PriceCategory $category
+     * @return Price
+     */
+    public function setCategory(\Renovate\MainBundle\Entity\PriceCategory $category = null)
+    {
+    	$this->category = $category;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get category
+     *
+     * @return \Renovate\MainBundle\Entity\PriceCategory
+     */
+    public function getCategory()
+    {
+    	return $this->category;
+    }
+    
     public function getInArray()
     {
     	return array(
     			'id' => $this->getId(),
     			'userid' => $this->getUserid(),
+    			'categoryid' => $this->getCategoryid(),
     			'name' => $this->getName(),
     			'units' => $this->getUnits(),
     			'value' => $this->getValue(),
@@ -280,12 +341,16 @@ class Price
     
     public static function addPrice($em, \Renovate\MainBundle\Entity\User $user, $parameters)
     {
+    	$priceCategory = $em->getRepository("RenovateMainBundle:PriceCategory")->find($parameters->categoryid);
+    	
     	$price = new Price();
     	$price->setName($parameters->name);
     	$price->setUnits($parameters->units);
     	$price->setValue($parameters->value);
     	$price->setUserid($user->getId());
     	$price->setUser($user);
+    	$price->setCategoryid($priceCategory->getId());
+    	$price->setCategory($priceCategory);
     	$price->setCreated(new \DateTime());
     	
     	$em->persist($price);
@@ -308,10 +373,13 @@ class Price
     public static function editPriceById($em, $id, $parameters)
     {
     	$price = $em->getRepository("RenovateMainBundle:Price")->find($id);
+    	$priceCategory = $em->getRepository("RenovateMainBundle:PriceCategory")->find($parameters->categoryid);
     	
     	$price->setName($parameters->name);
     	$price->setUnits($parameters->units);
     	$price->setValue($parameters->value);
+    	$price->setCategoryid($priceCategory->getId());
+    	$price->setCategory($priceCategory);
     	
     	$em->persist($price);
     	$em->flush();

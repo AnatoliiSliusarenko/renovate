@@ -1,69 +1,50 @@
 Renovate.controller('PricesController', function($scope,$http,$modal){
 	console.log('PricesController loaded!');
 	
-	$scope.prices = [];
-	$scope.totalItems = 0;
-	$scope.currentPage = 1;
-	$scope.itemsPerPage = 10;
-	
-	$scope.urlsPricesGetNg = URLS.pricesGetNg;
-	$scope.urlsPricesCountNg = URLS.pricesCountNg;
 	$scope.urlsPricesRemoveNg = URLS.pricesRemoveNg;
 	
-	$scope.$watch('itemsPerPage', function(){
-		console.log("itemsPerPage => ", $scope.itemsPerPage);
-		getPricesCount();
-	});
+	$scope.priceCategories = [];
+	$scope.urlsPriceCategoriesGetAllNg = URLS.priceCategoriesGetAllNg;
 	
-	$scope.$watch('currentPage', function(){
-		console.log("currentPage => ", $scope.currentPage);
-		getPrices();
-	});
-	
-	function getPrices()
-	{
-		var offset = $scope.itemsPerPage*($scope.currentPage - 1);
-		var limit = $scope.itemsPerPage;
-		$http({
-			method: "GET", 
-			url: $scope.urlsPricesGetNg,
-			params: {offset: offset, limit: limit}
-			  })
-		.success(function(response){
-			console.log("prices => ",response);
-			if (response.result)
-			{
-				$scope.prices = response.result;
-			}
-		})
+	function generatePriceIndex(){
+		var index = 1;
+		_.map($scope.priceCategories, function(pc){
+			_.map(pc.prices, function(p){
+				p.index = index;
+				index++;
+			});
+		});
 	}
 	
-	function getPricesCount()
+	function getPriceCategories()
 	{
 		$http({
 			method: "GET", 
-			url: $scope.urlsPricesCountNg
+			url: $scope.urlsPriceCategoriesGetAllNg
 			  })
 		.success(function(response){
-			console.log(response);
+			console.log("price categories => ",response);
 			if (response.result)
 			{
-				$scope.totalItems = parseInt(response.result);
-				getPrices();
+				$scope.priceCategories = response.result;
+				generatePriceIndex();
 			}
 		})
 	}
-	getPricesCount();
+	getPriceCategories();
 	
 	$scope.addPrice = function(){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addPrice.html',
 		      controller: 'AddPriceController',
-		      backdrop: "static"
+		      backdrop: "static",
+		      resolve:{
+		    	  priceCategories: function(){return $scope.priceCategories;}
+		      }
 		});
 		
 		modalInstance.result.then(function (added) {
-		      if (added) getPricesCount();
+		      if (added) getPriceCategories();
 		    }, function () {
 		      //bad
 		});
@@ -75,12 +56,13 @@ Renovate.controller('PricesController', function($scope,$http,$modal){
 		      controller: 'EditPriceController',
 		      backdrop: "static",
 		      resolve: {
-		    	  price: function(){return price;}
+		    	  price: function(){return price;},
+		    	  priceCategories: function(){return $scope.priceCategories;}
 		      }
 		});
 		
 		modalInstance.result.then(function (edited) {
-		      if (edited) getPricesCount();
+		      if (edited) getPriceCategories();
 		    }, function () {
 		      //bad
 		});
@@ -100,14 +82,15 @@ Renovate.controller('PricesController', function($scope,$http,$modal){
 			console.log(response);
 			if (response.result)
 			{
-				getPricesCount();
+				getPriceCategories();
 			}
 		});
 	}
 })
-.controller('AddPriceController', function($scope,$http,$modalInstance){
+.controller('AddPriceController', function($scope,$http,$modalInstance,priceCategories){
 	console.log('AddPriceController loaded!');
 	$scope.urlsPricesAddNg = URLS.pricesAddNg;
+	$scope.priceCategories = priceCategories;
 	
 	function addPrice(){
 		$http({
@@ -133,10 +116,11 @@ Renovate.controller('PricesController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditPriceController', function($scope,$http,$modalInstance,price){
+.controller('EditPriceController', function($scope,$http,$modalInstance,price,priceCategories){
 	console.log('EditPriceController loaded!');
 	$scope.urlsPricesEditNg = URLS.pricesEditNg;
 	$scope.price = price;
+	$scope.priceCategories = priceCategories;
 	
 	function editPrice(){
 		var url = $scope.urlsPricesEditNg.replace('0', $scope.price.id);

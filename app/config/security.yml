@@ -67,9 +67,9 @@ security:
         - { path: ^/ng/vacancies/add, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/vacancies/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/vacancies/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
-        - { path: ^/ng/prices/add, roles: [ROLE_ADMIN, ROLE_EDITOR] }
-        - { path: ^/ng/prices/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
-        - { path: ^/ng/prices/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/prices/add, roles: ROLE_ADMIN }
+        - { path: ^/ng/prices/remove*, roles: ROLE_ADMIN }
+        - { path: ^/ng/prices/edit*, roles: ROLE_ADMIN }
         - { path: ^/tasks*, roles: ROLE_ADMIN }
         - { path: ^/ng/tasks/add*, roles: ROLE_ADMIN }
         - { path: ^/ng/tasks/edit*, roles: ROLE_ADMIN }
