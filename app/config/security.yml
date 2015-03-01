@@ -74,6 +74,7 @@ security:
         - { path: ^/ng/tasks/add*, roles: ROLE_ADMIN }
         - { path: ^/ng/tasks/edit*, roles: ROLE_ADMIN }
         - { path: ^/ng/tasks/remove*, roles: ROLE_ADMIN }
-        
+        - { path: ^/ng/tasks/approve*, roles: ROLE_ADMIN }
+        - { path: ^/ng/tasks/decline*, roles: ROLE_ADMIN }
         
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
