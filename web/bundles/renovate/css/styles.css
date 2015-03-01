@@ -257,6 +257,14 @@ tr.green  {
 tr.green:hover {
 	background-color: #8EC23D !important;
 }
+
+tr.blue  {
+	background-color: #4f5dd7 !important;
+}
+tr.blue:hover {
+	background-color: #4754C2 !important;
+}
+
 .btn-green{
 	outline: none !important;
 	background-color: #9ed744 !important;

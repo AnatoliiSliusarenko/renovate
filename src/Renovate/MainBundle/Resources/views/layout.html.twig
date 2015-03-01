@@ -86,6 +86,7 @@
 			          					<th>#</th>
 			          					<th>Опис</th>
 			          					<th>Створено</th>
+										<th>Виконано</th>
 			          					<th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
 			        				</tr>
       							</thead>
@@ -95,11 +96,12 @@
 											<div class="image center-block"></div>
 										</td>
       								</tr>
-			        				<tr ng-repeat="task in tasks" class="green" ng-cloak>
+			        				<tr ng-repeat="task in tasks" ng-class="{green: task.status == 'finished', blue: task.status == 'ready'}" ng-cloak>
 			          					<th scope="row">[[$index+1]]</th>
 			          					<td>[[task.description]]</td>
 			          					<td>[[task.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
-			          					<td><button ng-click="finishTask(task)" type="button" class="close"><span class="glyphicon glyphicon-ok"></span></button></td>
+										<td>[[task.finished | date:"dd.MM.yyyy HH:mm:ss"]]</td>
+			          					<td><button ng-show="task.status == 'ready'" ng-click="finishTask(task)" type="button" class="close"><span class="glyphicon glyphicon-ok"></span></button></td>
 			        				</tr>
       							</tbody>
     						</table>
@@ -335,6 +337,8 @@
   			tasksRemoveNg: "{{ path('renovate_ng_tasks_remove', {task_id: 0}) }}",
   			tasksEditNg: "{{ path('renovate_ng_tasks_edit', {task_id: 0}) }}",
   			tasksFinishNg: "{{ path('renovate_ng_tasks_finish', {task_id: 0}) }}",
+  			tasksApproveNg: "{{ path('renovate_ng_tasks_approve', {task_id: 0}) }}",
+  			tasksDeclineNg: "{{ path('renovate_ng_tasks_decline', {task_id: 0}) }}",
   			
   	}
   	</script>

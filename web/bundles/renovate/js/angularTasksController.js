@@ -10,18 +10,36 @@ Renovate.controller('TasksController', function($scope,$http,$modal){
 	$scope.urlsTasksGetNg = URLS.tasksGetNg;
 	$scope.urlsTasksCountNg = URLS.tasksCountNg;
 	$scope.urlsTasksRemoveNg = URLS.tasksRemoveNg;
+	$scope.urlsTasksApproveNg = URLS.tasksApproveNg;
+	$scope.urlsTasksDeclineNg = URLS.tasksDeclineNg;
 	$scope.urlsUsersGetNg = URLS.usersGetNg;
 	
 	$scope.filter = {
 			from: null,
 			to:null,
 			userid: null,
-			done: null
+			'status[]': []
+	}
+	
+	$scope.statuses = {
+			ready: true,
+			finished: true,
+			approved: true
 	}
 	
 	$scope.$watch('filter', function(){
 		console.log("filter => ", $scope.filter);
 		getTasksCount();
+	}, true);
+	
+	$scope.$watch('statuses', function(){
+		console.log("statuses => ", $scope.statuses);
+		var status = [];
+		_.map($scope.statuses, function(value, key){
+			if (value) status.push(key);
+		});
+		
+		$scope.filter['status[]'] = status;
 	}, true);
 	
 	$scope.$watch('itemsPerPage', function(){
@@ -152,6 +170,44 @@ Renovate.controller('TasksController', function($scope,$http,$modal){
 			}
 		});
 	}
+	
+	$scope.approveTask = function(task){
+		var approved = confirm("Дійсно бажаєте підтвердити виконання: " + task.description + " ?");
+		if (!approved) return;
+		
+		var url = $scope.urlsTasksApproveNg.replace('0', task.id);
+		
+		$http({
+			method: "GET", 
+			url: url
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				getTasksCount();
+			}
+		});
+	}
+	
+	$scope.declineTask = function(task){
+		var declined = confirm("Дійсно бажаєте спростувати виконання: " + task.description + " ?");
+		if (!declined) return;
+		
+		var url = $scope.urlsTasksDeclineNg.replace('0', task.id);
+		
+		$http({
+			method: "GET", 
+			url: url
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				getTasksCount();
+			}
+		});
+	}
 })
 .controller('AddTaskController', function($scope,$http,$modalInstance,users){
 	console.log('AddTaskController loaded!');
@@ -214,47 +270,6 @@ Renovate.controller('TasksController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('BlockJobsController', function($scope,$http){
-	console.log('BlockJobsController loaded!');
-	
-	$scope.urlsJobsGetNg = URLS.jobsGetNg;
-	$scope.urlsJobsShowJob = URLS.jobsShowJob;
-	$scope.jobs = [];
-	
-	function getJobs()
-	{
-		$http({
-			method: "GET", 
-			url: $scope.urlsJobsGetNg,
-			params: {onhomepage: 1}
-			  })
-		.success(function(response){
-			console.log("block jobs => ",response);
-			if (response.result)
-			{
-				$scope.jobs = response.result;
-				setTimeout(function(){
-					$('.jobs-slider').slick({
-						slidesToShow: 2,
-						slidesToScroll: 1,
-						centerMode: true,
-						dots: false,
-						focusOnSelect: true,
-						variableWidth: true,
-						autoplay: true,
-						autoPlaySpeed: 2000
-						});
-				},100);
-			}
-		})
-	}
-	getJobs();
-	
-	$scope.setItemDirectHref = function(job){
-		var href = $scope.urlsJobsShowJob.replace('0', job.nameTranslit);
-		job.href = href;
-	}	
-})
 .controller('UserTasksController', function($scope,$http,$modal){
 	console.log('UserTasksController loaded!');
 	
@@ -265,9 +280,7 @@ Renovate.controller('TasksController', function($scope,$http,$modal){
 	(function Initialization(){
 		$scope.user = (USER == 'undefined') ? null : JSON.parse(USER);
 		if ($scope.user == null) return;
-		if(typeof(Storage) !== "undefined") {
-			//ok
-		}else{
+		if(typeof(Storage) === "undefined") {
 			$scope.canUseStorage = false;
 		    console.log('Sorry! No Web Storage support...');
 		}
@@ -285,7 +298,7 @@ Renovate.controller('TasksController', function($scope,$http,$modal){
 		$http({
 			method: "GET", 
 			url: $scope.urlsTasksCountNg,
-			params: {userid: $scope.user.id, done: '0'}
+			params: {userid: $scope.user.id, 'status[]': ['ready']}
 			  })
 		.success(function(response){
 			console.log(response);
@@ -329,7 +342,7 @@ Renovate.controller('TasksController', function($scope,$http,$modal){
 		$http({
 			method: "GET", 
 			url: $scope.urlsTasksGetNg,
-			params: {userid: $scope.user.id, done: '0'}
+			params: {userid: $scope.user.id, 'status[]': ['ready','finished']}
 			  })
 		.success(function(response){
 			console.log("tasks => ",response);

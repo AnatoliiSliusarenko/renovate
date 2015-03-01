@@ -29,10 +29,10 @@ class Task
     private $userid;
     
     /**
-     * @var boolean
-     * @ORM\Column(name="done", type="boolean")
+     * @var string
+     * @ORM\Column(name="status", type="string", length=255)
      */
-    private $done;
+    private $status;
     
     /**
      * @var text
@@ -96,26 +96,26 @@ class Task
     }
     
     /**
-     * Set done
+     * Set status
      *
-     * @param boolean $done
+     * @param string $status
      * @return Task
      */
-    public function setDone($done)
+    public function setStatus($status)
     {
-    	$this->done = $done;
+    	$this->status = $status;
     
     	return $this;
     }
     
     /**
-     * Get done
+     * Get status
      *
-     * @return boolean
+     * @return string
      */
-    public function getDone()
+    public function getStatus()
     {
-    	return $this->done;
+    	return $this->status;
     }
     
     /**
@@ -215,7 +215,7 @@ class Task
     	return array(
     			'id' => $this->getId(),
     			'userid' => $this->getUserid(),
-    			'done' => $this->getDone(),
+    			'status' => $this->getStatus(),
     			'description' => $this->getDescription(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'finished' => ($this->getFinished() != null) ? $this->getFinished()->getTimestamp()*1000 : null,
@@ -255,10 +255,9 @@ class Task
     		->setParameter('userid', $parameters['userid']);
     	}
     	
-    	if (isset($parameters['done']))
+    	if (isset($parameters['status']))
     	{
-    		$qb->andWhere('t.done = :done')
-    		   ->setParameter('done', $parameters['done']);
+    		$qb->andWhere($qb->expr()->in('t.status', $parameters['status']));
     	}
     	 
     	$result = $qb->getQuery()->getResult();
@@ -296,10 +295,9 @@ class Task
     		->setParameter('userid', $parameters['userid']);
     	}
     	 
-    	if (isset($parameters['done']))
+    	if (isset($parameters['status']))
     	{
-    		$qb->andWhere('t.done = :done')
-    		->setParameter('done', $parameters['done']);
+    		$qb->andWhere($qb->expr()->in('t.status', $parameters['status']));
     	}
     	
     	$total = $qb->getQuery()->getSingleScalarResult();
@@ -315,7 +313,7 @@ class Task
     	$task->setDescription($parameters->description);
     	$task->setUserid($user->getId());
     	$task->setUser($user);
-    	$task->setDone(false);
+    	$task->setStatus('ready');
     	$task->setCreated(new \DateTime());
     	
     	$em->persist($task);
@@ -341,6 +339,9 @@ class Task
     	$user = $em->getRepository("RenovateMainBundle:User")->find($parameters->userid);
     	
     	$task->setDescription($parameters->description);
+    	
+    	if ($task->getUserid() != $user->getId()) $task->setCreated(new \DateTime());
+    	
     	$task->setUserid($user->getId());
     	$task->setUser($user);
     	
@@ -354,12 +355,37 @@ class Task
     {
     	$task = $em->getRepository("RenovateMainBundle:Task")->find($id);
     	 
-    	$task->setDone(true);
+    	$task->setStatus('finished');
     	$task->setFinished(new \DateTime());
     	 
     	$em->persist($task);
     	$em->flush();
     	 
+    	return $task;
+    }
+    
+    public static function approveTaskById($em, $id)
+    {
+    	$task = $em->getRepository("RenovateMainBundle:Task")->find($id);
+    
+    	$task->setStatus('approved');
+    
+    	$em->persist($task);
+    	$em->flush();
+    
+    	return $task;
+    }
+    
+    public static function declineTaskById($em, $id)
+    {
+    	$task = $em->getRepository("RenovateMainBundle:Task")->find($id);
+    
+    	$task->setStatus('ready');
+    	$task->setFinished(NULL);
+    
+    	$em->persist($task);
+    	$em->flush();
+    
     	return $task;
     }
 }

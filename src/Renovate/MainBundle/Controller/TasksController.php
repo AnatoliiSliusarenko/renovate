@@ -27,7 +27,7 @@ class TasksController extends Controller
     public function getTasksCountNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
-
+    	
     	$response = new Response(json_encode(array("result" => Task::getTasksCount($em, $request->query->all()))));
     	$response->headers->set('Content-Type', 'application/json');
     	
@@ -80,6 +80,30 @@ class TasksController extends Controller
     	
     	$task = Task::finishTaskById($em, $task_id);
     	 
+    	$response = new Response(json_encode(array("result" => $task->getInArray())));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
+    public function approveTaskNgAction($task_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	 
+    	$task = Task::approveTaskById($em, $task_id);
+    
+    	$response = new Response(json_encode(array("result" => $task->getInArray())));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
+    public function declineTaskNgAction($task_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$task = Task::declineTaskById($em, $task_id);
+    
     	$response = new Response(json_encode(array("result" => $task->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     

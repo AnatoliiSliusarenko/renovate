@@ -52,15 +52,15 @@
 				  	</div>
 				</div>
 				<div class="form-group">
-				  	<label class="radio-inline">
-					  <input ng-model="filter.done" type="radio" name="inlineRadioOptions" id="inlineRadio1"> усі
-					</label>
-					<label class="radio-inline">
-					  <input ng-model="filter.done" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1"> виконані
-					</label>
-					<label class="radio-inline">
-					  <input ng-model="filter.done" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="0"> не виконані
-					</label>
+					<label>
+				      <input ng-model="statuses.ready" type="checkbox"> До виконання
+				    </label>
+				    <label>
+				      <input ng-model="statuses.finished" type="checkbox"> Виконані
+				    </label>
+				    <label>
+				      <input ng-model="statuses.approved" type="checkbox"> Підтверджені
+				    </label>
 				</div>
 			</form>
 		</div>
@@ -92,13 +92,13 @@
 							<div class="image center-block"></div>
 						</td>
       				</tr>
-			        <tr ng-repeat="task in tasks" ng-class="{green: !task.done, gray: task.done}" ng-cloak>
+			        <tr ng-repeat="task in tasks" ng-class="{blue: task.status == 'ready', green: task.status == 'finished', gray: task.status == 'approved'}" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td><cite title="[[task.user.name + ' ' + task.user.surname]]">[[task.user.username]]</cite></td>
 			          <td>[[task.description]]</td>
 			          <td>[[task.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 			          <td>[[task.finished | date:"dd.MM.yyyy HH:mm:ss"]]</td>
-			          <td><button ng-click="removeTask(task)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTask(task)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			          <td><button ng-click="removeTask(task)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-show="task.status == 'ready'" ng-click="editTask(task)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-show="task.status == 'finished'" ng-click="declineTask(task)" type="button" class="close"><span class="glyphicon glyphicon-share"></span></button><button ng-show="task.status == 'finished'" ng-click="approveTask(task)" type="button" class="close"><span class="glyphicon glyphicon-check"></span></button></td>
 			        </tr>
       			</tbody>
     		</table>

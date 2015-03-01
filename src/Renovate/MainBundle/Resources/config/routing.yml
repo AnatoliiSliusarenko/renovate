@@ -451,3 +451,11 @@ renovate_ng_tasks_edit:
 renovate_ng_tasks_finish:
     path: /ng/tasks/finish/{task_id}
     defaults: { _controller: RenovateMainBundle:Tasks:finishTaskNg}
+    
+renovate_ng_tasks_approve:
+    path: /ng/tasks/approve/{task_id}
+    defaults: { _controller: RenovateMainBundle:Tasks:approveTaskNg}
+    
+renovate_ng_tasks_decline:
+    path: /ng/tasks/decline/{task_id}
+    defaults: { _controller: RenovateMainBundle:Tasks:declineTaskNg}
