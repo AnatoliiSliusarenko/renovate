@@ -32,7 +32,7 @@ class IndexController extends Controller
     			'last_username' => $lastUsername,
         		'error' => $error);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
         return $this->render('RenovateMainBundle:Index:index.html.twig', $parameters);
     }

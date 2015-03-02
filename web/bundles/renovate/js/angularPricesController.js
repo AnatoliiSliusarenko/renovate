@@ -6,16 +6,6 @@ Renovate.controller('PricesController', function($scope,$http,$modal){
 	$scope.priceCategories = [];
 	$scope.urlsPriceCategoriesGetAllNg = URLS.priceCategoriesGetAllNg;
 	
-	function generatePriceIndex(){
-		var index = 1;
-		_.map($scope.priceCategories, function(pc){
-			_.map(pc.prices, function(p){
-				p.index = index;
-				index++;
-			});
-		});
-	}
-	
 	function getPriceCategories()
 	{
 		$http({
@@ -27,7 +17,6 @@ Renovate.controller('PricesController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.priceCategories = response.result;
-				generatePriceIndex();
 			}
 		})
 	}

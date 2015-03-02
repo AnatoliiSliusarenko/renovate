@@ -157,7 +157,7 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	        }
 	    });
 	    
-	    CKEDITOR.replace('jobDescription',{language: 'uk'});
+	    CKEDITOR.replace('jobDescription');
 	    CKEDITOR.instances.jobDescription.on('change', function(e){
 	    	$scope.job.description = e.editor.getData();
 	    	$scope.$apply();
@@ -231,7 +231,7 @@ Renovate.controller('JobsController', function($scope,$http,$modal){
 	        }
 	    });
 	    
-	    CKEDITOR.replace('jobDescription',{language: 'uk'});
+	    CKEDITOR.replace('jobDescription');
 	    CKEDITOR.instances.jobDescription.on('change', function(e){
 	    	$scope.job.description = e.editor.getData();
 	    	$scope.$apply();

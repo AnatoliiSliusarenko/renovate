@@ -20,7 +20,7 @@ class NewsController extends Controller
     			'token' => $token
     	);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:News:index.html.twig', $parameters);
     }
@@ -28,11 +28,11 @@ class NewsController extends Controller
     public function showNewsAction($news_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$news = $em->getRepository("RenovateMainBundle:News")->findByNameTranslit($news_name_translit);
+    	$news = $em->getRepository("RenovateMainBundle:News")->findOneByNameTranslit($news_name_translit);
     	
-    	$parameters = array("news" => $news[0]);
+    	$parameters = array("news" => $news);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:News:showNews.html.twig', $parameters);
     }

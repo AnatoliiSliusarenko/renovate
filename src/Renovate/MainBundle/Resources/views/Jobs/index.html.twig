@@ -1,10 +1,18 @@
 {% extends "RenovateMainBundle::layout.html.twig" %}
 
-{% block title %}Види робіт{% endblock %}
+{% block title %}
+{% if page and page.title != '' %}{{page.title}}{% else %}Види робіт{% endif %}
+{% endblock %}
+
+{% block keywords %}
+	{% if page and page.keywords != '' %}
+		<meta name="keywords" content="{{page.keywords}}">
+	{% endif %}
+{% endblock %}
 
 {% block description %}
-	{% if pageDescription is not null %}
-		<meta name="description" content="{{pageDescription}}">
+	{% if page and page.description != '' %}
+		<meta name="description" content="{{page.description}}">
 	{% endif %}
 {% endblock %}
 
@@ -44,7 +52,7 @@
 			  </div>
 			</form>
 		</div>
-		{% if is_granted('ROLE_ADMIN') %}
+		{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 		<div class="col-md-4">
 			<button ng-click="addJob()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
 		</div>
@@ -75,7 +83,7 @@
 							<!-- FB -->
 							<fb:share-button href="{{ app.request.getSchemeAndHttpHost() }}[[job.href]]" layout="button_count"></fb:share-button>
 						</div>
-						{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeJob(job)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editJob(job)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}
+						{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}<button ng-click="removeJob(job)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editJob(job)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}
 					</div>
 				</div>
 				<div class="data-content">
@@ -84,7 +92,7 @@
 					</div>
 					<p class="text-justify" ng-bind-html="job.description | ellipsis:1100"></p></div>
 				<div class="data-footer">
-					{% if is_granted('ROLE_ADMIN') %}<span ng-show="job.onhomepage" class="label label-success">На головній <span class="glyphicon glyphicon-home"></span></span>{% endif %}
+					{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}<span ng-show="job.onhomepage" class="label label-success">На головній <span class="glyphicon glyphicon-home"></span></span>{% endif %}
 					<a class="btn btn-primary btn-xs" href="[[job.href]]" ng-init="setItemDirectHref(job)">Читати детальніше...</a>
 				</div>
 			</div>

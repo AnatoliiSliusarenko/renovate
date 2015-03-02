@@ -20,7 +20,7 @@ class VacanciesController extends Controller
     			'token' => $token
     	);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:Vacancies:index.html.twig', $parameters);
     }
@@ -28,12 +28,12 @@ class VacanciesController extends Controller
     public function showVacancyAction($vacancy_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$vacancy = $em->getRepository("RenovateMainBundle:Vacancy")->findByNameTranslit($vacancy_name_translit);
+    	$vacancy = $em->getRepository("RenovateMainBundle:Vacancy")->findOneByNameTranslit($vacancy_name_translit);
     	 
-    	$parameters = array("vacancy" => $vacancy[0]);
+    	$parameters = array("vacancy" => $vacancy);
     	 
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
-    	 
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
+    	
     	return $this->render('RenovateMainBundle:Vacancies:showVacancy.html.twig', $parameters);
     }
     

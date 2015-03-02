@@ -1,10 +1,18 @@
 {% extends "RenovateMainBundle::layout.html.twig" %}
 
-{% block title %}Калькулятор тарифів{% endblock %}
+{% block title %}
+{% if page and page.title != '' %}{{page.title}}{% else %}Калькулятор тарифів{% endif %}
+{% endblock %}
+
+{% block keywords %}
+	{% if page and page.keywords != '' %}
+		<meta name="keywords" content="{{page.keywords}}">
+	{% endif %}
+{% endblock %}
 
 {% block description %}
-	{% if pageDescription is not null %}
-		<meta name="description" content="{{pageDescription}}">
+	{% if page and page.description != '' %}
+		<meta name="description" content="{{page.description}}">
 	{% endif %}
 {% endblock %}
 
@@ -21,18 +29,9 @@
 {% block content %}
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-default">
-  			<div class="panel-body">
-				<h2 class="text-center"><strong>Шановні клієнти!</strong></h2>
-				<p class="text-justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ми компанія <strong>“RENEVATE”</strong> намагаємось з найменшими затратами збільшити якість обслуговування Ваших будинків та Ваших прибудинкових територій, прохання обирати тариф який не буде для Вас обтяжливим, та доступним для щомісячного внеску. Ми з своєї сторони обіцяємо покращити Ваші умови проживання в будинках та йти на зустріч всіма доступними способами, а також зробити поповнення Вашого балансу за сплату наших послуг максимально доступними для всіх вікових категорій та національностей. Сподіваємось на розуміння та співпрацю.</p>
-				<h4 class="text-center"><strong>Нижче представлена таблиця тарифних планів для різних типів контрактів</strong></h4>
-				<p><strong>- Для ОСББ</strong> - це категорія контрактів для (Об'єднання співвласників багатоквартирних будинків).</p>
-				<p><strong>- Для багатоквартирних будинків</strong> - це категорія контрактів для будинків, які мають більше 2 окремих квартирних помешкань.</p>
-				<p><strong>- Для приватних будинків</strong> - це категорія контрактів, які не мають окремих квартир, та я вдяються приватною власністю одного або декількох осіб.</p>
-				<p><strong>- Для приватних установ</strong> - це категорія контрактів з підприємствами, закладами харчування, кафе, кавярнями, магазинами та іншими.</p>
-				<p><strong>- Для державних установ</strong> - це категорія контрактів для будь яких державних замовлень.</p>
-			</div>
-		</div>
+		{% if page %}
+		{{ page.content | raw }}
+		{% endif %}
 	</div>
 </div>
 <div class="row">

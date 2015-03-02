@@ -5,71 +5,71 @@ namespace Renovate\MainBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Renovate\MainBundle\Entity\PageDescription;
+use Renovate\MainBundle\Entity\Page;
 
-class PageDescriptionsController extends Controller
+class PagesController extends Controller
 {
     public function indexAction()
     {
-    	return $this->render('RenovateMainBundle:PageDescriptions:index.html.twig');
+    	return $this->render('RenovateMainBundle:Pages:index.html.twig');
     }
     
-    public function getPageDescriptionsNgAction(Request $request)
+    public function getPagesNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
     	 
-    	$response = new Response(json_encode(array("result" => PageDescription::getPageDescriptions($em, $request->query->all(), true))));
+    	$response = new Response(json_encode(array("result" => Page::getPages($em, $request->query->all(), true))));
     	$response->headers->set('Content-Type', 'application/json');
     
     	return $response;
     }
     
-    public function getPageDescriptionsCountNgAction()
+    public function getPagesCountNgAction()
     {
     	$em = $this->getDoctrine()->getManager();
     
-    	$response = new Response(json_encode(array("result" => PageDescription::getPageDescriptionsCount($em))));
+    	$response = new Response(json_encode(array("result" => Page::getPagesCount($em))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
     }
     
     
-    public function addPageDescriptionNgAction()
+    public function addPageNgAction()
     {
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	 
-    	$pageDescription = PageDescription::addPageDescription($em, $parameters);
+    	$page = Page::addPage($em, $parameters);
     	 
-    	$response = new Response(json_encode(array("result" => $pageDescription->getInArray())));
+    	$response = new Response(json_encode(array("result" => $page->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     
     	return $response;
     }
     
     
-    public function removePageDescriptionNgAction($page_description_id)
+    public function removePageNgAction($page_id)
     {
     	$em = $this->getDoctrine()->getManager();
     	 
-    	$response = new Response(json_encode(array("result" => PageDescription::removePageDescriptionById($em, $page_description_id))));
+    	$response = new Response(json_encode(array("result" => Page::removePageById($em, $page_id))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
     }
     
     
-    public function editPageDescriptionNgAction($page_description_id)
+    public function editPageNgAction($page_id)
     {
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	 
-    	$page_description = PageDescription::editPageDescriptionById($em, $page_description_id, $parameters);
+    	$page = Page::editPageById($em, $page_id, $parameters);
     	 
-    	$response = new Response(json_encode(array("result" => $page_description->getInArray())));
+    	$response = new Response(json_encode(array("result" => $page->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     
     	return $response;

@@ -2,9 +2,9 @@
 namespace Renovate\MainBundle\Services;
 
 use Doctrine\ORM\Mapping as ORM;
-use Renovate\MainBundle\Entity\PageDescription;
+use Renovate\MainBundle\Entity\Page;
 
-class SEO
+class Pages
 {
 	private $em = null;
 	
@@ -13,8 +13,8 @@ class SEO
 		$this->em = $em;
 	}
 	
-    public function getDescriptionForUrl($url)
+    public function getPageForUrl($url)
     {
-    	return PageDescription::findPageDescriptionByUrl($this->em, $url);
+    	return Page::findPageByUrl($this->em, $url);
     }
 }

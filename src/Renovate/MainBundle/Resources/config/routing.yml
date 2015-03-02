@@ -348,29 +348,29 @@ renovate_search:
     path: /search
     defaults: { _controller: RenovateMainBundle:Search:index}
     
-renovate_page_descriptions:
-    path: /page-descriptions
-    defaults: { _controller: RenovateMainBundle:PageDescriptions:index}
+renovate_pages:
+    path: /pages
+    defaults: { _controller: RenovateMainBundle:Pages:index}
     
-renovate_ng_page_descriptions:
-    path: /ng/page-descriptions
-    defaults: { _controller: RenovateMainBundle:PageDescriptions:getPageDescriptionsNg}
+renovate_ng_pages:
+    path: /ng/pages
+    defaults: { _controller: RenovateMainBundle:Pages:getPagesNg}
     
-renovate_ng_page_descriptions_count:
-    path: /ng/page-descriptions/count
-    defaults: { _controller: RenovateMainBundle:PageDescriptions:getPageDescriptionsCountNg}
+renovate_ng_pages_count:
+    path: /ng/pages/count
+    defaults: { _controller: RenovateMainBundle:Pages:getPagesCountNg}
     
-renovate_ng_page_descriptions_add:
-    path: /ng/page-descriptions/add
-    defaults: { _controller: RenovateMainBundle:PageDescriptions:addPageDescriptionNg}
+renovate_ng_pages_add:
+    path: /ng/pages/add
+    defaults: { _controller: RenovateMainBundle:Pages:addPageNg}
     
-renovate_ng_page_descriptions_edit:
-    path: /ng/page-descriptions/edit/{page_description_id}
-    defaults: { _controller: RenovateMainBundle:PageDescriptions:editPageDescriptionNg}
+renovate_ng_pages_edit:
+    path: /ng/pages/edit/{page_id}
+    defaults: { _controller: RenovateMainBundle:Pages:editPageNg}
     
-renovate_ng_page_descriptions_remove:
-    path: /ng/page-descriptions/remove/{page_description_id}
-    defaults: { _controller: RenovateMainBundle:PageDescriptions:removePageDescriptionNg}
+renovate_ng_pages_remove:
+    path: /ng/pages/remove/{page_id}
+    defaults: { _controller: RenovateMainBundle:Pages:removePageNg}
     
 renovate_vacancies:
     path: /vacancies

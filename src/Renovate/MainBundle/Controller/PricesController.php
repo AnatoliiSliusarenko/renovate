@@ -13,7 +13,7 @@ class PricesController extends Controller
     {
     	$parameters = array();
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:Prices:index.html.twig', $parameters);
     }

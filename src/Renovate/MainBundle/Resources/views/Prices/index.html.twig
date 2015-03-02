@@ -1,10 +1,18 @@
 {% extends "RenovateMainBundle::layout.html.twig" %}
 
-{% block title %}Прайслист робіт{% endblock %}
+{% block title %}
+{% if page and page.title != '' %}{{page.title}}{% else %}Прайслист робіт{% endif %}
+{% endblock %}
+
+{% block keywords %}
+	{% if page and page.keywords != '' %}
+		<meta name="keywords" content="{{page.keywords}}">
+	{% endif %}
+{% endblock %}
 
 {% block description %}
-	{% if pageDescription is not null %}
-		<meta name="description" content="{{pageDescription}}">
+	{% if page and page.description != '' %}
+		<meta name="description" content="{{page.description}}">
 	{% endif %}
 {% endblock %}
 
@@ -129,7 +137,6 @@
 			<table class="table table-hover table-mobile prices">
       			<thead>
 			        <tr class="active">
-			          <th>#</th>
 			          <th>Назва</th>
 			          <th>Одиниці виміру</th>
 			          <th>Вартість (грн)</th>
@@ -140,20 +147,19 @@
       			</thead>
       			<tbody class="splash" ng-cloak>
       				<tr>
-	      				<td colspan="6">
+	      				<td colspan="5">
 							<div class="image center-block"></div>
 						</td>
       				</tr>
       			</tbody>
       			<tbody ng-repeat="priceCategory in priceCategories" ng-cloak>
       				<tr class="info">
-	      				<th colspan="6" class="text-center">[[priceCategory.name]]</th>
+	      				<th colspan="5" class="text-center">[[priceCategory.name]]</th>
 	      			</tr>
 			        <tr ng-repeat="price in priceCategory.prices">
-			          <th scope="row">[[price.index]]</th>
 			          <td>[[price.name]]</td>
-			          <td>[[price.units]]</td>
-			          <td>[[price.value]]</td>
+			          <td class="text-center">[[price.units]]</td>
+			          <td class="text-center">[[price.value]]</td>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <td><button ng-click="removePrice(price)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editPrice(price)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			          {% endif %}

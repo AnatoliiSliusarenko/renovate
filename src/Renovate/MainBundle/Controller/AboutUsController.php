@@ -9,7 +9,7 @@ class AboutUsController extends Controller
     public function indexAction()
     {
     	$parameters = array();
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:AboutUs:index.html.twig', $parameters);
     }

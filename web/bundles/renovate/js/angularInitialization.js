@@ -6,6 +6,7 @@ var Renovate = angular.module('Renovate',['ui.bootstrap','ngSanitize'])
 }])
 .filter('ellipsis', function () {
     return function (text, length) {
+    	if (text == null) return '';
         if (text.length > length) {
             return text.substr(0, length) + "...";
         }

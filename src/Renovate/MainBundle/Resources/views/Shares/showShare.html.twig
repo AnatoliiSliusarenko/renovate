@@ -1,10 +1,18 @@
 {% extends "RenovateMainBundle::layout.html.twig" %}
 
-{% block title %}{{share.name}}{% endblock %}
+{% block title %}
+{% if page and page.title != '' %}{{page.title}}{% else %}{{share.name}}{% endif %}
+{% endblock %}
+
+{% block keywords %}
+	{% if page and page.keywords != '' %}
+		<meta name="keywords" content="{{page.keywords}}">
+	{% endif %}
+{% endblock %}
 
 {% block description %}
-	{% if pageDescription is not null %}
-		<meta name="description" content="{{pageDescription}}">
+	{% if page and page.description != '' %}
+		<meta name="description" content="{{page.description}}">
 	{% else %}
 		<meta name="description" content="{{share.description | escape | slice(0, 300)}}">
 	{% endif %}

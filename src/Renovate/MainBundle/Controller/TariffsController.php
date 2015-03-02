@@ -12,7 +12,7 @@ class TariffsController extends Controller
     public function indexAction()
     {
     	$parameters = array();
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	 
     	return $this->render('RenovateMainBundle:Tariffs:index.html.twig',$parameters);
     }

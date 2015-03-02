@@ -20,7 +20,7 @@ class ArticlesController extends Controller
     			'token' => $token
     	);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:Articles:index.html.twig', $parameters);
     }
@@ -28,11 +28,11 @@ class ArticlesController extends Controller
     public function showArticleAction($article_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$article = $em->getRepository("RenovateMainBundle:Article")->findByNameTranslit($article_name_translit);
+    	$article = $em->getRepository("RenovateMainBundle:Article")->findOneByNameTranslit($article_name_translit);
     	
-    	$parameters = array("article" => $article[0]);
+    	$parameters = array("article" => $article);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:Articles:showArticle.html.twig', $parameters);
     }

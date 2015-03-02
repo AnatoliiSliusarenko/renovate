@@ -20,7 +20,7 @@ class SharesController extends Controller
     			'token' => $token
     	);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:Shares:index.html.twig', $parameters);
     }
@@ -28,11 +28,11 @@ class SharesController extends Controller
     public function showShareAction($share_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$share = $em->getRepository("RenovateMainBundle:Share")->findByNameTranslit($share_name_translit);
+    	$share = $em->getRepository("RenovateMainBundle:Share")->findOneByNameTranslit($share_name_translit);
     	
-    	$parameters = array("share" => $share[0]);
+    	$parameters = array("share" => $share);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	 
     	return $this->render('RenovateMainBundle:Shares:showShare.html.twig', $parameters);
     }

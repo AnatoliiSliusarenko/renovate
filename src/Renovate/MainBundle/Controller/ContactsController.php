@@ -11,7 +11,7 @@ class ContactsController extends Controller
     public function indexAction(Request $request)
     {
     	$parameters = array();
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
         return $this->render('RenovateMainBundle:Contacts:index.html.twig', $parameters);
     }

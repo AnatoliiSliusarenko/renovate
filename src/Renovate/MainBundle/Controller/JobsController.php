@@ -20,7 +20,7 @@ class JobsController extends Controller
     			'token' => $token
     	);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:Jobs:index.html.twig', $parameters);
     }
@@ -28,11 +28,11 @@ class JobsController extends Controller
     public function showJobAction($job_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$job = $em->getRepository("RenovateMainBundle:Job")->findByNameTranslit($job_name_translit);
+    	$job = $em->getRepository("RenovateMainBundle:Job")->findOneByNameTranslit($job_name_translit);
     	
-    	$parameters = array("job" => $job[0]);
+    	$parameters = array("job" => $job);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	 
     	return $this->render('RenovateMainBundle:Jobs:showJob.html.twig', $parameters);
     }

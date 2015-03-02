@@ -20,7 +20,7 @@ class ResultsController extends Controller
     			'token' => $token
     	);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	 
     	return $this->render('RenovateMainBundle:Results:index.html.twig', $parameters);
     }
@@ -28,11 +28,11 @@ class ResultsController extends Controller
     public function showResultAction($result_name_translit)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$result = $em->getRepository("RenovateMainBundle:Result")->findByNameTranslit($result_name_translit);
+    	$result = $em->getRepository("RenovateMainBundle:Result")->findOneByNameTranslit($result_name_translit);
     	
-    	$parameters = array("result" => $result[0]);
+    	$parameters = array("result" => $result);
     	
-    	$parameters['pageDescription'] = $this->get('renovate.seo')->getDescriptionForUrl($this->getRequest()->getUri());
+    	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	return $this->render('RenovateMainBundle:Results:showResult.html.twig', $parameters);
     }

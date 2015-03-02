@@ -135,8 +135,13 @@ table.prices td, table.prices th {
 }
 
 /* Main Video */
+#main_video iframe {
+	width: 100% !important;
+	height: 448px !important;
+}
+	
 @media (max-width: 768px) {
-	#main_video {
+	#main_video iframe {
 		height: 250px !important;
 	}
 }

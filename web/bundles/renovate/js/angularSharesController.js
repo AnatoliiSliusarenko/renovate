@@ -157,7 +157,7 @@ Renovate.controller('SharesController', function($scope,$http,$modal){
 	        }
 	    });
 	    
-	    CKEDITOR.replace('shareDescription',{language: 'uk'});
+	    CKEDITOR.replace('shareDescription');
 	    CKEDITOR.instances.shareDescription.on('change', function(e){
 	    	$scope.share.description = e.editor.getData();
 	    	$scope.$apply();
@@ -231,7 +231,7 @@ Renovate.controller('SharesController', function($scope,$http,$modal){
 	        }
 	    });
 	    
-	    CKEDITOR.replace('shareDescription',{language: 'uk'});
+	    CKEDITOR.replace('shareDescription');
 	    CKEDITOR.instances.shareDescription.on('change', function(e){
 	    	$scope.share.description = e.editor.getData();
 	    	$scope.$apply();

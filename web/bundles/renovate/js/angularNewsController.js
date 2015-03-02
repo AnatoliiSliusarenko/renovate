@@ -157,7 +157,7 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	        }
 	    });
 	    
-	    CKEDITOR.replace('newsDescription',{language: 'uk'});
+	    CKEDITOR.replace('newsDescription');
 	    CKEDITOR.instances.newsDescription.on('change', function(e){
 	    	$scope.news.description = e.editor.getData();
 	    	$scope.$apply();
@@ -231,7 +231,7 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	        }
 	    });
 	    
-	    CKEDITOR.replace('newsDescription',{language: 'uk'});
+	    CKEDITOR.replace('newsDescription');
 	    CKEDITOR.instances.newsDescription.on('change', function(e){
 	    	$scope.news.description = e.editor.getData();
 	    	$scope.$apply();

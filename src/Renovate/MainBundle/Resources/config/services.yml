@@ -5,7 +5,7 @@ services:
     renovate.transliterater:
         class: Renovate\MainBundle\Services\Transliterater
         
-    renovate.seo:
-        class: Renovate\MainBundle\Services\SEO
+    renovate.pages:
+        class: Renovate\MainBundle\Services\Pages
         arguments: 
             - @doctrine.orm.entity_manager
