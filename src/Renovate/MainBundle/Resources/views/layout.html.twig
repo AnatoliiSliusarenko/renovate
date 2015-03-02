@@ -60,10 +60,10 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_partners' %}class="active"{% endif %}><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_services' %}class="active"{% endif %}><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
-	                <li {% if app.request.attributes.get('_route') == 'renovate_pages' %}class="active"{% endif %}><a href="{{ path('renovate_pages') }}">Сторінки</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tasks' %}class="active"{% endif %}><a href="{{ path('renovate_tasks') }}">Завдання</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+	                <li {% if app.request.attributes.get('_route') == 'renovate_pages' %}class="active"{% endif %}><a href="{{ path('renovate_pages') }}">Сторінки</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_documents' %}class="active"{% endif %}><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tariffs_panel' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs_panel') }}">Тарифи компанії</a></li>
 	                {% endif %}
