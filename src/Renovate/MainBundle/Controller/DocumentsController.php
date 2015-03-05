@@ -29,7 +29,7 @@ class DocumentsController extends Controller
 
 			$uploadedFile = $request->files->get('Filedata');
 
-			$document = new Document($this->getUser());
+			$document = new Document();
 
 			$timestamp = $request->request->get('timestamp');
 			$token = $request->request->get('token');
@@ -52,9 +52,7 @@ class DocumentsController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		 
-		$userid = $request->query->get('userid');
-		 
-		$documents = Document::getAllDocuments($em, $userid, true);
+		$documents = Document::getAllDocuments($em, true);
 		$response = new Response(json_encode(array("result" => $documents)));
 		$response->headers->set('Content-Type', 'application/json');
 

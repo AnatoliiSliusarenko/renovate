@@ -71,6 +71,7 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_repairs' %}class="active"{% endif %}><a href="{{ path('renovate_repairs') }}">Ремонтні роботи</a></li>
 	                {% endif %}
 	                <li class="divider"></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_aboutme' %}class="active"{% endif %}><a href="{{ path('renovate_aboutme') }}">Про мене</a></li>
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
 	              </ul>
 	            </li>
@@ -190,14 +191,9 @@
 		{% block breadcrumb %}{% endblock %}
 	
 	  	{% block content %}{% endblock %}
-	  	<div class="row" style="margin-top:10px;" ng-controller="BlockPartnersController">
+	  	<div class="row">
 			<div class="col-md-12">
-				<div class="splash" ng-cloak>
-					<div class="image center-block"></div>
-				</div>
-				<div class="partners center-block">
-				  <div ng-repeat="partner in partners" ng-cloak><a href="[[partner.url]]"><img src="{{ asset('[[partner.document.url]]') }}"/></a></div>
-				</div>
+				{{ render(controller('RenovateMainBundle:Partners:showPartnersBlock')) }}
 			</div>
 		</div>
     </div><!-- /.container -->
@@ -240,6 +236,7 @@
 	<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
     <script src="{{ asset('web/bundles/renovate/js/angularPartnersController.js') }}"></script>
     <script src="{{ asset('web/bundles/renovate/js/angularTasksController.js') }}"></script>
+    <script src="{{ asset('web/bundles/renovate/js/sliderPartnersInitialization.js') }}"></script>
     
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{ asset('web/bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
@@ -262,6 +259,7 @@
   			usersCheckTariffNg: "{{ path('renovate_ng_users_check_tariff') }}",
   			usersCheckUsernameNg: "{{ path('renovate_ng_users_check_username') }}",
   			usersCheckEmailNg: "{{ path('renovate_ng_users_check_email') }}",
+  			usersShowUser: "{{ path('renovate_users_show_user', {user_id: 0}) }}",
   			rolesGetNg: "{{ path('renovate_ng_roles') }}",
   			rolesGetClientRolesNg: "{{ path('renovate_ng_roles_client') }}",
   			documentsGetNg: "{{ path('renovate_ng_documents') }}",

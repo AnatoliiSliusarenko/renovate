@@ -12,7 +12,7 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	$scope.filter = {
 			from: null,
 			to:null,
-			workerid: null,
+			userid: null,
 			paid: null
 	}
 	$scope.totalPrice = 0;
@@ -38,7 +38,7 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 			getWorkers();
 		}else
 		{
-			$scope.filter.worker = user.id;
+			$scope.filter.userid = user.id;
 		}
 		
 		$scope.$watch('itemsPerPage', function(){

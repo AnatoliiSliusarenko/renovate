@@ -18,13 +18,6 @@ var Renovate = angular.module('Renovate',['ui.bootstrap','ngSanitize'])
 	$scope.search = '';
 	$scope.canSearch = false;
 	
-	$scope.isCollapsedArticles = false;
-	$scope.isCollapsedJobs = false;
-	$scope.isCollapsedNews = false;
-	$scope.isCollapsedResults = false;
-	$scope.isCollapsedShares = false;
-	$scope.isCollapsedVacancies = false;
-	
 	String.prototype.isEmpty = function() {
 	    return (this.length === 0 || !this.trim());
 	};

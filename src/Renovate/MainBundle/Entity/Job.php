@@ -24,13 +24,6 @@ class Job
     /**
      * @var integer
      *
-     * @ORM\Column(name="userid", type="integer")
-     */
-    private $userid;
-    
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="documentid", type="integer")
      */
     private $documentid;
@@ -77,13 +70,6 @@ class Job
     private $onhomepage;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
-     * @ORM\JoinColumn(name="userid")
-     * @var User
-     */
-    private $user;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="Document", inversedBy="jobs")
      * @ORM\JoinColumn(name="documentid")
      * @var Document
@@ -105,29 +91,6 @@ class Job
     public function getId()
     {
         return $this->id;
-    }
-    
-    /**
-     * Set userid
-     *
-     * @param integer $userid
-     * @return Job
-     */
-    public function setUserid($userid)
-    {
-    	$this->userid = $userid;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get userid
-     *
-     * @return integer
-     */
-    public function getUserid()
-    {
-    	return $this->userid;
     }
     
     /**
@@ -292,29 +255,6 @@ class Job
     }
     
     /**
-     * Set user
-     *
-     * @param \Renovate\MainBundle\Entity\User $user
-     * @return Job
-     */
-    public function setUser(\Renovate\MainBundle\Entity\User $user = null)
-    {
-    	$this->user = $user;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get user
-     *
-     * @return \Renovate\MainBundle\Entity\User
-     */
-    public function getUser()
-    {
-    	return $this->user;
-    }
-    
-    /**
      * Set document
      *
      * @param \Renovate\MainBundle\Entity\Document $document
@@ -364,7 +304,6 @@ class Job
     {
     	return array(
     			'id' => $this->getId(),
-    			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
     			'labelid' => $this->getLabelid(),
     			'name' => $this->getName(),
@@ -373,8 +312,7 @@ class Job
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'onhomepage' => $this->getOnhomepage(),
     			'document' => $this->getDocument()->getInArray(),
-    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null,
-    			'user' => $this->getUser()->getInArray()
+    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null
     	);
     }
     
@@ -438,15 +376,13 @@ class Job
     	return $total;
     }
     
-    public static function addJob($em, $transliterater, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addJob($em, $transliterater, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$job = new Job();
     	$job->setName($parameters->name);
     	$job->setNameTranslit($transliterater->transliterate($parameters->name));
-    	$job->setUserid($user->getId());
-    	$job->setUser($user);
     	$job->setDocumentid($parameters->documentid);
     	$job->setDocument($document);
     	if (isset($parameters->labelid) && $parameters->labelid != NULL)

@@ -79,5 +79,6 @@ security:
         - { path: ^/ng/price-categories/add, roles: ROLE_ADMIN }
         - { path: ^/ng/price-categories/remove*, roles: ROLE_ADMIN }
         - { path: ^/ng/price-categories/edit*, roles: ROLE_ADMIN }
+        - { path: ^/aboutme, roles: IS_AUTHENTICATED_FULLY }
         
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

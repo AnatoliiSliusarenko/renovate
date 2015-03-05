@@ -24,13 +24,6 @@ class Price
     /**
      * @var integer
      *
-     * @ORM\Column(name="userid", type="integer")
-     */
-    private $userid;
-    
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="categoryid", type="integer")
      */
     private $categoryid;
@@ -64,13 +57,6 @@ class Price
     private $created;
     
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="jobs")
-     * @ORM\JoinColumn(name="userid")
-     * @var User
-     */
-    private $user;
- 
-    /**
      * @ORM\ManyToOne(targetEntity="PriceCategory", inversedBy="prices")
      * @ORM\JoinColumn(name="categoryid")
      * @var PriceCategory
@@ -85,29 +71,6 @@ class Price
     public function getId()
     {
     	return $this->id;
-    }
-    
-    /**
-     * Set userid
-     *
-     * @param integer $userid
-     * @return Price
-     */
-    public function setUserid($userid)
-    {
-    	$this->userid = $userid;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get userid
-     *
-     * @return integer
-     */
-    public function getUserid()
-    {
-    	return $this->userid;
     }
     
     /**
@@ -226,29 +189,6 @@ class Price
     }
     
     /**
-     * Set user
-     *
-     * @param \Renovate\MainBundle\Entity\User $user
-     * @return Price
-     */
-    public function setUser(\Renovate\MainBundle\Entity\User $user = null)
-    {
-    	$this->user = $user;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get user
-     *
-     * @return \Renovate\MainBundle\Entity\User
-     */
-    public function getUser()
-    {
-    	return $this->user;
-    }
-    
-    /**
      * Set category
      *
      * @param \Renovate\MainBundle\Entity\PriceCategory $category
@@ -275,13 +215,11 @@ class Price
     {
     	return array(
     			'id' => $this->getId(),
-    			'userid' => $this->getUserid(),
     			'categoryid' => $this->getCategoryid(),
     			'name' => $this->getName(),
     			'units' => $this->getUnits(),
     			'value' => $this->getValue(),
-    			'created' => $this->getCreated()->getTimestamp()*1000,
-    			'user' => $this->getUser()->getInArray()
+    			'created' => $this->getCreated()->getTimestamp()*1000
     	);
     }
     
@@ -339,7 +277,7 @@ class Price
     	return $total;
     }
     
-    public static function addPrice($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addPrice($em, $parameters)
     {
     	$priceCategory = $em->getRepository("RenovateMainBundle:PriceCategory")->find($parameters->categoryid);
     	
@@ -347,8 +285,6 @@ class Price
     	$price->setName($parameters->name);
     	$price->setUnits($parameters->units);
     	$price->setValue($parameters->value);
-    	$price->setUserid($user->getId());
-    	$price->setUser($user);
     	$price->setCategoryid($priceCategory->getId());
     	$price->setCategory($priceCategory);
     	$price->setCreated(new \DateTime());

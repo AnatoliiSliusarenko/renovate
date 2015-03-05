@@ -65,7 +65,7 @@ class VacanciesController extends Controller
     	$parameters = (object) $data;
     	 
     	$transliterater = $this->get('renovate.transliterater');
-    	$vacancy = Vacancy::addVacancy($em, $transliterater, $this->getUser(), $parameters);
+    	$vacancy = Vacancy::addVacancy($em, $transliterater, $parameters);
     	 
     	$response = new Response(json_encode(array("result" => $vacancy->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

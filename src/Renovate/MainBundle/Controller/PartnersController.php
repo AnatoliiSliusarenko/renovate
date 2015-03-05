@@ -47,7 +47,7 @@ class PartnersController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$partner = Partner::addPartner($em, $this->getUser(), $parameters);
+    	$partner = Partner::addPartner($em, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $partner->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
@@ -79,5 +79,13 @@ class PartnersController extends Controller
     	$response->headers->set('Content-Type', 'application/json');
     	 
     	return $response;
+    }
+    
+    public function showPartnersBlockAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$parameters = array();
+    	$parameters['partners'] = Partner::getPartners($em, array('onhomepage' => 1));
+    	return $this->render('RenovateMainBundle:Partners:showPartnersBlock.html.twig', $parameters);
     }
 }

@@ -52,7 +52,7 @@ class RepairsController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$repair = Repair::addRepair($em, $this->getUser(), $parameters);
+    	$repair = Repair::addRepair($em, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $repair->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

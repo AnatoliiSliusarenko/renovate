@@ -22,12 +22,6 @@ class Document
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="userid", type="integer")
-     */
-    private $userid;
     
     /**
      * @var string
@@ -56,13 +50,6 @@ class Document
      * @Assert\File(maxSize="6000000")
      */
     private $file = null;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="documents")
-     * @ORM\JoinColumn(name="userid")
-     * @var User
-     */
-    private $user;
     
     /**
      * @ORM\OneToMany(targetEntity="Job", mappedBy="document")
@@ -130,10 +117,8 @@ class Document
     
     
     
-    function __construct($user)
-    {
-    	$this->setUserid($user->getId());
-    	$this->setUser($user);
+    function __construct()
+    {	
     	$this->setUploaded(new \DateTime());
     }
     
@@ -145,28 +130,6 @@ class Document
     public function getId()
     {
         return $this->id;
-    }
-    
-    /**
-     * Set userid
-     *
-     * @param integer $userid
-     * @return Document
-     */
-    public function setUserid($userid)
-    {
-    	$this->userid = $userid;
-    	return $this;
-    }
-    
-    /**
-     * Get userid
-     *
-     * @return integer
-     */
-    public function getUserid()
-    {
-    	return $this->userid;
     }
     
     /**
@@ -259,28 +222,6 @@ class Document
     public function getFile()
     {
     	return $this->file;
-    }
-    
-    /**
-     * Set user
-     *
-     * @param \Intranet\MainBundle\Entity\User $user
-     * @return Document
-     */
-    public function setUser(\Renovate\MainBundle\Entity\User $user = null)
-    {
-    	$this->user = $user;
-    	return $this;
-    }
-    
-    /**
-     * Get user
-     *
-     * @return \Intranet\MainBundle\Entity\User
-     */
-    public function getUser()
-    {
-    	return $this->user;
     }
     
     /**
@@ -657,8 +598,6 @@ class Document
     {
     	return array(
     			'id' => $this->getId(),
-    			'userid' => $this->getUserid(),
-    			'user' => $this->getUser()->getInArray(),
     			'name' => $this->getName(),
     			'uploaded' => $this->getUploaded()->getTimestamp()*1000,
     			'url' => $this->getPath()
@@ -681,20 +620,14 @@ class Document
     	return $result;
     }
     
-    public static function getAllDocuments($em, $userid = null, $inArray = false)
+    public static function getAllDocuments($em, $inArray = false)
     {
     	$qb = $em->createQueryBuilder();
     	
     	$qb->select('d')
     	   ->from('RenovateMainBundle:Document', 'd')
 		   ->orderBy('d.uploaded', 'DESC');
-		   
-    	if ($userid != null)
-    	{
-    		$qb->andWhere('d.userid = :userid')
-    		->setParameter('userid', $userid);
-    	}
-    	 
+		 
     	$result = $qb->getQuery()->getResult();
     	if ($inArray)
     	{

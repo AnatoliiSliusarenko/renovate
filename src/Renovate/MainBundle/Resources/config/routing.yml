@@ -16,6 +16,10 @@ renovate_aboutus:
     path: /aboutus
     defaults: { _controller: RenovateMainBundle:AboutUs:index}
     
+renovate_aboutme:
+    path: /aboutme
+    defaults: { _controller: RenovateMainBundle:Users:showMe}
+    
 renovate_ng_contacts_contactus:
     path: /ng/contacts/contact-us
     defaults: { _controller: RenovateMainBundle:Contacts:contactUsNg}
@@ -51,6 +55,10 @@ renovate_ng_jobs_edit:
 renovate_users:
     path: /users
     defaults: { _controller: RenovateMainBundle:Users:index}
+    
+renovate_users_show_user:
+    path: /users/{user_id}
+    defaults: { _controller: RenovateMainBundle:Users:showUser}
     
 renovate_ng_users:
     path: /ng/users

@@ -50,7 +50,7 @@ class TariffsController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	 
-    	$tariff = Tariff::addTariffPublic($em, $this->getUser(), $parameters);
+    	$tariff = Tariff::addTariffPublic($em, $parameters);
     	 
     	$response = new Response(json_encode(array("result" => $tariff->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

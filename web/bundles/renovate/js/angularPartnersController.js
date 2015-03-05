@@ -233,44 +233,4 @@ Renovate.controller('PartnersController', function($scope,$http,$modal){
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
-})
-.controller('BlockPartnersController', function($scope,$http){
-	console.log('BlockPartnersController loaded!');
-	
-	$scope.urlsPartnersGetNg = URLS.partnersGetNg;
-	$scope.partners = [];
-	
-	function getPartners()
-	{
-		$http({
-			method: "GET", 
-			url: $scope.urlsPartnersGetNg,
-			params: {onhomepage: 1}
-			  })
-		.success(function(response){
-			console.log("block partners => ",response);
-			if (response.result)
-			{
-				$scope.partners = response.result;
-				
-				setTimeout(function(){
-					var maxWidth = 0;
-					_.each($('.partners > div > a > img'), function(img){
-						maxWidth+=img.clientWidth;
-					});
-					$('.partners').css('max-width',maxWidth+'px');
-					
-					$('.partners').slick({
-						slidesToShow: 1,
-						slidesToScroll: 1,
-						variableWidth: true,
-						centerMode: (response.result.length == 1) ? false : true,
-						autoplay: true,
-						autoPlaySpeed: 2000
-					});
-				},1000);
-			}
-		})
-	}
-	getPartners();
 });

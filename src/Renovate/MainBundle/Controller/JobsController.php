@@ -65,7 +65,7 @@ class JobsController extends Controller
     	$parameters = (object) $data;
     	
     	$transliterater = $this->get('renovate.transliterater');
-    	$job = Job::addJob($em, $transliterater, $this->getUser(), $parameters);
+    	$job = Job::addJob($em, $transliterater, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $job->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

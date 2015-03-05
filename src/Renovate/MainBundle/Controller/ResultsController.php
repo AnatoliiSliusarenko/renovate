@@ -65,7 +65,7 @@ class ResultsController extends Controller
     	$parameters = (object) $data;
     	
     	$transliterater = $this->get('renovate.transliterater');
-    	$result = Result::addResult($em, $transliterater, $this->getUser(), $parameters);
+    	$result = Result::addResult($em, $transliterater, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $result->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

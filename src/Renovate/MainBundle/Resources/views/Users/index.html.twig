@@ -60,9 +60,6 @@
 			          <th>Прізвище</th>
 			          <th>По батькові</th>
 			          <th>Email</th>
-			          <th>Моб.тел.</th>
-			          <th>№ договору</th>
-			          <th>Адреса</th>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
 			          {% endif %}
@@ -76,14 +73,11 @@
       				</tr>
 			        <tr ng-repeat="user in users" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
-			          <td>[[user.username]]</td>
+			          <td><a href="[[user.href]]" ng-init="setItemDirectHref(user)">[[user.contract || user.username]]</a></td>
 			          <td>[[user.name]]</td>
 			          <td>[[user.surname]]</td>
 			          <td>[[user.patronymic]]</td>
 			          <td>[[user.email]]</td>
-			          <td>[[user.mobilephone]]</td>
-			          <td>[[user.contract]]<span ng-show="!user.contract" class="glyphicon glyphicon-minus-sign"></span></td>
-			          <td>[[user.address]]</td>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <td><button ng-click="removeUser(user)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editUser(user)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			          {% endif %}

@@ -24,13 +24,6 @@ class Partner
     /**
      * @var integer
      *
-     * @ORM\Column(name="userid", type="integer")
-     */
-    private $userid;
-    
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="documentid", type="integer")
      */
     private $documentid;
@@ -63,13 +56,6 @@ class Partner
     private $onhomepage;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="partners")
-     * @ORM\JoinColumn(name="userid")
-     * @var User
-     */
-    private $user;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="Document", inversedBy="partners")
      * @ORM\JoinColumn(name="documentid")
      * @var Document
@@ -84,29 +70,6 @@ class Partner
     public function getId()
     {
         return $this->id;
-    }
-    
-    /**
-     * Set userid
-     *
-     * @param integer $userid
-     * @return Partner
-     */
-    public function setUserid($userid)
-    {
-    	$this->userid = $userid;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get userid
-     *
-     * @return integer
-     */
-    public function getUserid()
-    {
-    	return $this->userid;
     }
     
     /**
@@ -225,29 +188,6 @@ class Partner
     }
     
     /**
-     * Set user
-     *
-     * @param \Renovate\MainBundle\Entity\User $user
-     * @return Partner
-     */
-    public function setUser(\Renovate\MainBundle\Entity\User $user = null)
-    {
-    	$this->user = $user;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get user
-     *
-     * @return \Renovate\MainBundle\Entity\User
-     */
-    public function getUser()
-    {
-    	return $this->user;
-    }
-    
-    /**
      * Set document
      *
      * @param \Renovate\MainBundle\Entity\Document $document
@@ -274,14 +214,12 @@ class Partner
     {
     	return array(
     			'id' => $this->getId(),
-    			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
     			'name' => $this->getName(),
     			'url' => $this->getUrl(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'onhomepage' => $this->getOnhomepage(),
-    			'document' => $this->getDocument()->getInArray(),
-    			'user' => $this->getUser()->getInArray()
+    			'document' => $this->getDocument()->getInArray()
     	);
     }
     
@@ -345,15 +283,13 @@ class Partner
     	return $total;
     }
     
-    public static function addPartner($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addPartner($em, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$partner = new Partner();
     	$partner->setName($parameters->name);
     	$partner->setUrl($parameters->url);
-    	$partner->setUserid($user->getId());
-    	$partner->setUser($user);
     	$partner->setDocumentid($parameters->documentid);
     	$partner->setDocument($document);
     	$partner->setCreated(new \DateTime());

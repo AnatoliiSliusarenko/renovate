@@ -24,13 +24,6 @@ class Article
     /**
      * @var integer
      *
-     * @ORM\Column(name="userid", type="integer")
-     */
-    private $userid;
-    
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="documentid", type="integer")
      */
     private $documentid;
@@ -77,13 +70,6 @@ class Article
     private $onhomepage;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
-     * @ORM\JoinColumn(name="userid")
-     * @var User
-     */
-    private $user;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="Document", inversedBy="articles")
      * @ORM\JoinColumn(name="documentid")
      * @var Document
@@ -105,29 +91,6 @@ class Article
     public function getId()
     {
         return $this->id;
-    }
-    
-    /**
-     * Set userid
-     *
-     * @param integer $userid
-     * @return Article
-     */
-    public function setUserid($userid)
-    {
-    	$this->userid = $userid;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get userid
-     *
-     * @return integer
-     */
-    public function getUserid()
-    {
-    	return $this->userid;
     }
     
     /**
@@ -292,29 +255,6 @@ class Article
     }
     
     /**
-     * Set user
-     *
-     * @param \Renovate\MainBundle\Entity\User $user
-     * @return Article
-     */
-    public function setUser(\Renovate\MainBundle\Entity\User $user = null)
-    {
-    	$this->user = $user;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get user
-     *
-     * @return \Renovate\MainBundle\Entity\User
-     */
-    public function getUser()
-    {
-    	return $this->user;
-    }
-    
-    /**
      * Set document
      *
      * @param \Renovate\MainBundle\Entity\Document $document
@@ -364,7 +304,6 @@ class Article
     {
     	return array(
     			'id' => $this->getId(),
-    			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
     			'labelid' => $this->getLabelid(),
     			'name' => $this->getName(),
@@ -373,8 +312,7 @@ class Article
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'onhomepage' => $this->getOnhomepage(),
     			'document' => $this->getDocument()->getInArray(),
-    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null,
-    			'user' => $this->getUser()->getInArray()
+    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null
     	);
     }
     
@@ -438,15 +376,13 @@ class Article
     	return $total;
     }
     
-    public static function addArticle($em, $transliterater, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addArticle($em, $transliterater, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$article = new Article();
     	$article->setName($parameters->name);
     	$article->setNameTranslit($transliterater->transliterate($parameters->name));
-    	$article->setUserid($user->getId());
-    	$article->setUser($user);
     	$article->setDocumentid($parameters->documentid);
     	$article->setDocument($document);
     	if (isset($parameters->labelid) && $parameters->labelid != NULL)

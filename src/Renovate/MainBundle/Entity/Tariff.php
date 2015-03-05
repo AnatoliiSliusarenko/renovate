@@ -535,7 +535,7 @@ class Tariff
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'activated' => ($this->getActivated() == null ) ? null : $this->getActivated()->getTimestamp()*1000,
     			'page' => $this->getPage(),
-    			'user' => $this->getUser()->getInArray(),
+    			'user' => ($this->getUser() != null ) ? $this->getUser()->getInArray() : null,
     			'tariffServices' => ($this->getTariffServices() == null ) ? array() : array_map(function($tariffService){return $tariffService->getInArray();}, $this->getTariffServices()->toArray()),
     			'tariffPrices' => ($this->getTariffPrices() == null ) ? array() : array_map(function($tariffPrice){return $tariffPrice->getInArray();}, $this->getTariffPrices()->toArray())
     	);
@@ -633,13 +633,11 @@ class Tariff
     	return $total;
     }
     
-    public static function addTariffPublic($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addTariffPublic($em, $parameters)
     {
     	$em->getConnection()->beginTransaction();
     	try {
     		$tariff = new Tariff();
-    		$tariff->setUserid($user->getId());
-    		$tariff->setUser($user);
     		$tariff->setName($parameters->name);
     		$tariff->setActive(TRUE);
     		$tariff->setDiscount($parameters->discount);

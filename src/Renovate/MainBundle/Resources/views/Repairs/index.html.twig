@@ -36,7 +36,7 @@
 				  {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 				  <div class="form-group">
 				    <label for="workers">Робітники</label>
-				    <select id="workers" ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" ng-model="filter.workerid">
+				    <select id="workers" ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" ng-model="filter.userid">
 						<option value="">усі</option>
 					</select>
 				  </div>
@@ -115,7 +115,7 @@
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td>[[repair.description]]</td>
 			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
-			          <td><cite title="[[repair.worker.name + ' ' + repair.worker.surname]]">[[repair.worker.username]]</cite></td>
+			          <td><cite title="[[repair.user.name + ' ' + repair.user.surname]]">[[repair.user.username]]</cite></td>
 			          {% endif %}
 			          <td>[[repair.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 			          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
@@ -167,7 +167,7 @@
 				<div class="form-group" ng-class="{'has-error': repairForm.repairWorker.$invalid && !repairForm.repairWorker.$pristine}">
     				<label for="repairWorker" class="col-sm-2 control-label">Робітник</label>
     				<div class="col-sm-10">
-      					<select ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" id="repairWorker" ng-model="repair.workerid" name="repairWorker" required>
+      					<select ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" id="repairWorker" ng-model="repair.userid" name="repairWorker" required>
   						</select>
 						<p ng-show="repairForm.repairWorker.$invalid && !repairForm.repairWorker.$pristine" class="help-block">Оберіть робітника.</p>
 					</div>
@@ -202,7 +202,7 @@
 				<div class="form-group" ng-class="{'has-error': repairForm.repairWorker.$invalid && !repairForm.repairWorker.$pristine}">
     				<label for="repairWorker" class="col-sm-2 control-label">Робітник</label>
     				<div class="col-sm-10">
-      					<select ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" id="repairWorker" ng-model="repair.workerid" name="repairWorker" required>
+      					<select ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" id="repairWorker" ng-model="repair.userid" name="repairWorker" required>
   						</select>
 						<p ng-show="repairForm.repairWorker.$invalid && !repairForm.repairWorker.$pristine" class="help-block">Оберіть робітника.</p>
 					</div>

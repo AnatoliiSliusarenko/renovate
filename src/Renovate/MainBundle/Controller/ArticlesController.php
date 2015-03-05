@@ -65,7 +65,7 @@ class ArticlesController extends Controller
     	$parameters = (object) $data;
     	
     	$transliterater = $this->get('renovate.transliterater');
-    	$article = Article::addArticle($em, $transliterater, $this->getUser(), $parameters);
+    	$article = Article::addArticle($em, $transliterater, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $article->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

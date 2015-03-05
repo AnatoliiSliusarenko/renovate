@@ -14,6 +14,24 @@ class UsersController extends Controller
     	return $this->render('RenovateMainBundle:Users:index.html.twig');
     }
     
+    public function showUserAction($user_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$user = $em->getRepository("RenovateMainBundle:User")->find($user_id);
+    	 
+    	$parameters = array("user" => $user);
+    	 
+    	return $this->render('RenovateMainBundle:Users:showUser.html.twig', $parameters);
+    }
+    
+    public function showMeAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$parameters = array("user" => $this->getUser());
+    
+    	return $this->render('RenovateMainBundle:Users:showUser.html.twig', $parameters);
+    }
+    
     public function getUsersNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();

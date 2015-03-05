@@ -24,13 +24,6 @@ class Vacancy
     /**
      * @var integer
      *
-     * @ORM\Column(name="userid", type="integer")
-     */
-    private $userid;
-    
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="documentid", type="integer")
      */
     private $documentid;
@@ -77,13 +70,6 @@ class Vacancy
     private $onhomepage;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="vacancies")
-     * @ORM\JoinColumn(name="userid")
-     * @var User
-     */
-    private $user;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="Document", inversedBy="vacancies")
      * @ORM\JoinColumn(name="documentid")
      * @var Document
@@ -105,29 +91,6 @@ class Vacancy
     public function getId()
     {
         return $this->id;
-    }
-    
-    /**
-     * Set userid
-     *
-     * @param integer $userid
-     * @return Vacancy
-     */
-    public function setUserid($userid)
-    {
-    	$this->userid = $userid;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get userid
-     *
-     * @return integer
-     */
-    public function getUserid()
-    {
-    	return $this->userid;
     }
     
     /**
@@ -292,29 +255,6 @@ class Vacancy
     }
     
     /**
-     * Set user
-     *
-     * @param \Renovate\MainBundle\Entity\User $user
-     * @return Vacancy
-     */
-    public function setUser(\Renovate\MainBundle\Entity\User $user = null)
-    {
-    	$this->user = $user;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get user
-     *
-     * @return \Renovate\MainBundle\Entity\User
-     */
-    public function getUser()
-    {
-    	return $this->user;
-    }
-    
-    /**
      * Set document
      *
      * @param \Renovate\MainBundle\Entity\Document $document
@@ -364,7 +304,6 @@ class Vacancy
     {
     	return array(
     			'id' => $this->getId(),
-    			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
     			'labelid' => $this->getLabelid(),
     			'name' => $this->getName(),
@@ -373,8 +312,7 @@ class Vacancy
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'onhomepage' => $this->getOnhomepage(),
     			'document' => $this->getDocument()->getInArray(),
-    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null,
-    			'user' => $this->getUser()->getInArray()
+    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null
     	);
     }
     
@@ -438,15 +376,13 @@ class Vacancy
     	return $total;
     }
     
-    public static function addVacancy($em, $transliterater, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addVacancy($em, $transliterater, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$vacancy = new Vacancy();
     	$vacancy->setName($parameters->name);
     	$vacancy->setNameTranslit($transliterater->transliterate($parameters->name));
-    	$vacancy->setUserid($user->getId());
-    	$vacancy->setUser($user);
     	$vacancy->setDocumentid($parameters->documentid);
     	$vacancy->setDocument($document);
     	if (isset($parameters->labelid) && $parameters->labelid != NULL)

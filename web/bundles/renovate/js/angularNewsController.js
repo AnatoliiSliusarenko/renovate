@@ -263,34 +263,4 @@ Renovate.controller('NewsController', function($scope,$http,$modal){
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
-})
-.controller('BlockLastNewsController', function($scope,$http){
-	console.log('BlockLastNewsController loaded!');
-	$scope.urlsNewsGetNg = URLS.newsGetNg;
-	$scope.urlsNewsShowNews = URLS.newsShowNews;
-	$scope.news = [];
-	
-	function getNews()
-	{
-		var offset = 0;
-		var limit = 6;
-		$http({
-			method: "GET", 
-			url: $scope.urlsNewsGetNg,
-			params: {offset: offset, limit: limit}
-			  })
-		.success(function(response){
-			console.log("last news => ",response);
-			if (response.result)
-			{
-				$scope.news = response.result;
-			}
-		})
-	}
-	getNews();
-	
-	$scope.setItemDirectHref = function(newsp){
-		var href = $scope.urlsNewsShowNews.replace('0', newsp.nameTranslit);
-		newsp.href = href;
-	}	
 });

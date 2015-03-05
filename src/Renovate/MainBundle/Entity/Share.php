@@ -24,13 +24,6 @@ class Share
     /**
      * @var integer
      *
-     * @ORM\Column(name="userid", type="integer")
-     */
-    private $userid;
-    
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="documentid", type="integer")
      */
     private $documentid;
@@ -77,13 +70,6 @@ class Share
     private $onhomepage;
     
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="shares")
-     * @ORM\JoinColumn(name="userid")
-     * @var User
-     */
-    private $user;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="Document", inversedBy="shares")
      * @ORM\JoinColumn(name="documentid")
      * @var Document
@@ -105,29 +91,6 @@ class Share
     public function getId()
     {
         return $this->id;
-    }
-    
-    /**
-     * Set userid
-     *
-     * @param integer $userid
-     * @return Share
-     */
-    public function setUserid($userid)
-    {
-    	$this->userid = $userid;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get userid
-     *
-     * @return integer
-     */
-    public function getUserid()
-    {
-    	return $this->userid;
     }
     
     /**
@@ -292,29 +255,6 @@ class Share
     }
     
     /**
-     * Set user
-     *
-     * @param \Renovate\MainBundle\Entity\User $user
-     * @return Share
-     */
-    public function setUser(\Renovate\MainBundle\Entity\User $user = null)
-    {
-    	$this->user = $user;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get user
-     *
-     * @return \Renovate\MainBundle\Entity\User
-     */
-    public function getUser()
-    {
-    	return $this->user;
-    }
-    
-    /**
      * Set document
      *
      * @param \Renovate\MainBundle\Entity\Document $document
@@ -364,7 +304,6 @@ class Share
     {
     	return array(
     			'id' => $this->getId(),
-    			'userid' => $this->getUserid(),
     			'documentid' => $this->getDocumentid(),
     			'labelid' => $this->getLabelid(),
     			'name' => $this->getName(),
@@ -373,8 +312,7 @@ class Share
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'onhomepage' => $this->getOnhomepage(),
     			'document' => $this->getDocument()->getInArray(),
-    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null,
-    			'user' => $this->getUser()->getInArray()
+    			'label' => ($this->getLabel() != null) ? $this->getLabel()->getInArray() : null
     	);
     }
     
@@ -438,15 +376,13 @@ class Share
     	return $total;
     }
     
-    public static function addShare($em, $transliterater, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addShare($em, $transliterater, $parameters)
     {
     	$document = $em->getRepository("RenovateMainBundle:Document")->find($parameters->documentid);
     	
     	$share = new Share();
     	$share->setName($parameters->name);
     	$share->setNameTranslit($transliterater->transliterate($parameters->name));
-    	$share->setUserid($user->getId());
-    	$share->setUser($user);
     	$share->setDocumentid($parameters->documentid);
     	$share->setDocument($document);
     	if (isset($parameters->labelid) && $parameters->labelid != NULL)

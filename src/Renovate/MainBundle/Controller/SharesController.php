@@ -65,7 +65,7 @@ class SharesController extends Controller
     	$parameters = (object) $data;
     	
     	$transliterater = $this->get('renovate.transliterater');
-    	$share = Share::addShare($em, $transliterater, $this->getUser(), $parameters);
+    	$share = Share::addShare($em, $transliterater, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $share->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

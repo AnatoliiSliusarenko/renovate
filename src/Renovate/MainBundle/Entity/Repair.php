@@ -29,13 +29,6 @@ class Repair
     private $userid;
     
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="workerid", type="integer")
-     */
-    private $workerid;
-    
-    /**
      * @var text
      *
      * @ORM\Column(name="description", type="text")
@@ -70,13 +63,6 @@ class Repair
     private $user;
     
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="repairsDone")
-     * @ORM\JoinColumn(name="workerid")
-     * @var User
-     */
-    private $worker;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -109,28 +95,9 @@ class Repair
     	return $this->userid;
     }
     
-    /**
-     * Set workerid
-     *
-     * @param integer $workerid
-     * @return Repair
-     */
-    public function setWorkerid($workerid)
-    {
-    	$this->workerid = $workerid;
     
-    	return $this;
-    }
     
-    /**
-     * Get workerid
-     *
-     * @return integer
-     */
-    public function getWorkerid()
-    {
-    	return $this->workerid;
-    }
+    
     
     /**
      * Set description
@@ -247,41 +214,16 @@ class Repair
     	return $this->user;
     }
     
-    /**
-     * Set worker
-     *
-     * @param \Renovate\MainBundle\Entity\User $worker
-     * @return Repair
-     */
-    public function setWorker(\Renovate\MainBundle\Entity\User $worker = null)
-    {
-    	$this->worker = $worker;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get worker
-     *
-     * @return \Renovate\MainBundle\Entity\User
-     */
-    public function getWorker()
-    {
-    	return $this->worker;
-    }
-    
     public function getInArray()
     {
     	return array(
     			'id' => $this->getId(),
     			'userid' => $this->getUserid(),
-    			'workerid' => $this->getWorkerid(),
     			'description' => $this->getDescription(),
     			'price' => $this->getPrice(),
     			'created' => $this->getCreated()->getTimestamp()*1000,
     			'paid' => $this->getPaid(),
-    			'user' => $this->getUser()->getInArray(),
-    			'worker' => $this->getWorker()->getInArray()
+    			'user' => $this->getUser()->getInArray()
     	);
     }
     
@@ -329,10 +271,10 @@ class Repair
     		->setParameter('to', $parameters['to']);
     	}
     	 
-    	if (isset($parameters['workerid']))
+    	if (isset($parameters['userid']))
     	{
-    		$qb->andWhere("r.workerid = :id")
-    		->setParameter("id", $parameters['workerid']);
+    		$qb->andWhere("r.userid = :id")
+    		->setParameter("id", $parameters['userid']);
     	}
     	
     	if (isset($parameters['paid']))
@@ -370,10 +312,10 @@ class Repair
     		   ->setParameter('to', $parameters['to']);
     	}
     	
-    	if (isset($parameters['workerid']))
+    	if (isset($parameters['userid']))
     	{
-    		$qb->andWhere("r.workerid = :id")
-    		   ->setParameter("id", $parameters['workerid']);
+    		$qb->andWhere("r.userid = :id")
+    		   ->setParameter("id", $parameters['userid']);
     	}
     	
     	if (isset($parameters['paid']))
@@ -400,16 +342,14 @@ class Repair
     	return true;
     }
     
-    public static function addRepair($em, \Renovate\MainBundle\Entity\User $user, $parameters)
+    public static function addRepair($em, $parameters)
     {
-    	$worker = $em->getRepository("RenovateMainBundle:User")->find($parameters->workerid);
+    	$user = $em->getRepository("RenovateMainBundle:User")->find($parameters->userid);
     	
     	$repair = new Repair();
     	$repair->setDescription($parameters->description);
     	$repair->setUserid($user->getId());
     	$repair->setUser($user);
-    	$repair->setWorkerid($worker->getId());
-    	$repair->setWorker($worker);
     	$repair->setCreated(new \DateTime());
     	$repair->setPaid(false);
     	$repair->setPrice($parameters->price);
@@ -434,10 +374,10 @@ class Repair
     public static function editRepairById($em, $id, $parameters)
     {
     	$repair = $em->getRepository("RenovateMainBundle:Repair")->find($id);
-    	$worker = $em->getRepository("RenovateMainBundle:User")->find($parameters->workerid);
+    	$user = $em->getRepository("RenovateMainBundle:User")->find($parameters->userid);
     	
-    	$repair->setWorkerid($worker->getId());
-    	$repair->setWorker($worker);
+    	$repair->setUserid($user->getId());
+    	$repair->setUser($user);
     	$repair->setDescription($parameters->description);
     	$repair->setPrice($parameters->price);
     	

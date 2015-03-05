@@ -9,6 +9,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	$scope.urlsUsersGetNg = URLS.usersGetNg;
 	$scope.urlsUsersCountNg = URLS.usersCountNg;
 	$scope.urlsUsersRemoveNg = URLS.usersRemoveNg;
+	$scope.urlsUsersShowUser = URLS.usersShowUser;
 	$scope.urlsRolesGetNg = URLS.rolesGetNg;
 	$scope.urlsRolesGetClientRolesNg = URLS.rolesGetClientRolesNg;
 	$scope.searchHandler = null;
@@ -150,6 +151,11 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 				getUsersCount();
 			}
 		});
+	}
+	
+	$scope.setItemDirectHref = function(user){
+		var href = $scope.urlsUsersShowUser.replace('0', user.id);
+		user.href = href;
 	}
 })
 .controller('AddUserController', function($scope,$http,$modalInstance, roles, clientRoles){

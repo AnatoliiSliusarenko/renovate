@@ -65,7 +65,7 @@ class NewsController extends Controller
     	$parameters = (object) $data;
     	
     	$transliterater = $this->get('renovate.transliterater');
-    	$news = News::addNews($em, $transliterater, $this->getUser(), $parameters);
+    	$news = News::addNews($em, $transliterater, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $news->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');

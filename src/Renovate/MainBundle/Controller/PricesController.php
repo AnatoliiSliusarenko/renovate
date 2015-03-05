@@ -45,7 +45,7 @@ class PricesController extends Controller
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
     	
-    	$price = Price::addPrice($em, $this->getUser(), $parameters);
+    	$price = Price::addPrice($em, $parameters);
     	
     	$response = new Response(json_encode(array("result" => $price->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
