@@ -2,16 +2,19 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	console.log('UsersController loaded!');
 	
 	$scope.users = [];
+	$scope.roles = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
 	$scope.itemsPerPage = 5;
+	$scope.isAdmin = false;
 	
 	$scope.urlsUsersGetNg = URLS.usersGetNg;
 	$scope.urlsUsersCountNg = URLS.usersCountNg;
 	$scope.urlsUsersRemoveNg = URLS.usersRemoveNg;
 	$scope.urlsUsersShowUser = URLS.usersShowUser;
-	$scope.urlsRolesGetNg = URLS.rolesGetNg;
 	$scope.urlsRolesGetClientRolesNg = URLS.rolesGetClientRolesNg;
+	$scope.urlsRolesGetSimpleRolesNg = URLS.rolesGetSimpleRolesNg;
+	$scope.urlsRolesGetPrivilegesRolesNg = URLS.rolesGetPrivilegesRolesNg;
 	$scope.searchHandler = null;
 	
 	$scope.$watch('itemsPerPage', function(){
@@ -32,7 +35,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		}, 500);
 	});
 	
-	(function getClientRoles()
+	function getClientRoles()
 	{
 		$http({
 			method: "GET", 
@@ -43,22 +46,56 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				$scope.clientRoles = response.result;
+				$scope.roles = $scope.roles.concat(response.result);
 			}
 		})
-	})();
+	};
 	
-	(function getRoles(){
+	function getSimpleRoles()
+	{
 		$http({
 			method: "GET", 
-			url: $scope.urlsRolesGetNg
+			url: $scope.urlsRolesGetSimpleRolesNg
 			  })
 		.success(function(response){
-			console.log("roles => ",response);
+			console.log(" simple roles => ",response);
 			if (response.result)
 			{
-				$scope.roles = response.result;
+				$scope.roles = $scope.roles.concat(response.result);
 			}
 		})
+	};
+	
+	function getPrivilegesRoles()
+	{
+		$http({
+			method: "GET", 
+			url: $scope.urlsRolesGetPrivilegesRolesNg
+			  })
+		.success(function(response){
+			console.log(" privileges roles => ",response);
+			if (response.result)
+			{
+				$scope.roles = $scope.roles.concat(response.result);
+			}
+		})
+	};
+	
+	(function getRoles(){
+		var user = JSON.parse(USER);
+		
+		_.each(user.roles, function(role){
+			if (role.role == "ROLE_ADMIN")
+			{
+				$scope.isAdmin = true;
+			}
+		});
+		
+		if ($scope.isAdmin)
+			getPrivilegesRoles();
+		
+		getSimpleRoles();
+		getClientRoles();
 	})();
 	
 	function getUsers()
@@ -174,8 +211,8 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		if ($scope.user){
 			$scope.hasClientRole = false;
 			_.map($scope.clientRoles, function(clientRole){
-				var role = _.find($scope.user.roles, function(role){
-					return role == clientRole.id;
+				var role = _.find($scope.user.rolesIds, function(roleId){
+					return roleId == clientRole.id;
 				});
 				
 				if (role != undefined) $scope.hasClientRole = true;
@@ -184,7 +221,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		}
 	}
 	
-	$scope.$watch('user.roles', function(){
+	$scope.$watch('user.rolesIds', function(){
 		checkHasClientRole();
 	});
 	
@@ -257,7 +294,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	$scope.urlsUsersCheckEmailNg = URLS.usersCheckEmailNg;
 	
 	$scope.user = user;
-	$scope.user.roles = _.map(user.roles, function(role){return role.id;});
+	$scope.user.rolesIds = _.map(user.roles, function(role){return role.id;});
 	$scope.roles = roles;
 	$scope.clientRoles = clientRoles;
 	$scope.hasClientRole = false;
@@ -269,8 +306,8 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		if ($scope.user){
 			$scope.hasClientRole = false;
 			_.map($scope.clientRoles, function(clientRole){
-				var role = _.find($scope.user.roles, function(role){
-					return role == clientRole.id;
+				var role = _.find($scope.user.rolesIds, function(roleId){
+					return roleId == clientRole.id;
 				});
 				
 				if (role != undefined) $scope.hasClientRole = true;
@@ -279,7 +316,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		}
 	}
 	
-	$scope.$watch('user.roles', function(){
+	$scope.$watch('user.rolesIds', function(){
 		checkHasClientRole();
 	});
 	
@@ -363,7 +400,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	};
 	
 	$scope.hasRole = function(id){
-		var hasRole = _.find($scope.user.roles, function(role_id){
+		var hasRole = _.find($scope.user.rolesIds, function(role_id){
 			return role_id == id;
 		});
 		

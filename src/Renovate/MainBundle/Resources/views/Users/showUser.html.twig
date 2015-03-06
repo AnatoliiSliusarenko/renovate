@@ -10,7 +10,7 @@
 {% block breadcrumb %}
 <ol class="breadcrumb">
  	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
- 	{% if is_granted('ROLE_ADMIN') %}
+ 	{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR'))  %}
  	<li><a href="{{path('renovate_users')}}">Менеджмент користувачів</a></li>
  	{% endif %}
  	<li class="active">{{user.name ~ ' ' ~ user.surname}}</li>
@@ -28,6 +28,7 @@
 		  <li><strong>E-Mail:</strong> {{user.email}}</li>
 		  <li><strong>Адреса:</strong> {{user.address}}</li>
 		  <li><strong>Баланс:</strong> 0 грн.</li>
+		  <li><strong>Ролі:</strong> {% for role in user.getRoles() %}{{role.getName()}}{{(loop.last) ? '' : ', '}}{% endfor %}</li>
 		</ul>	
 	</div>
 </div>

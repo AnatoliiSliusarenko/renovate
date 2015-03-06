@@ -307,7 +307,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 			
 			$scope.tariff.price = suma.toFixed(2); 
 			$scope.tariff.payment = ($scope.tariff.price*$scope.tariff.squaring).toFixed(2);
-			$scope.tariff.saving = ((($scope.tariff.price*$scope.tariff.squaring)*12)*$scope.tariff.discount).toFixed(2);
+			$scope.tariff.saving = (($scope.tariff.price*$scope.tariff.squaring)*$scope.tariff.discount).toFixed(2);
 	}
 	
 	(function initialization(){
@@ -351,6 +351,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	$scope.urlsRolesGetClientRolesNg = URLS.rolesGetClientRolesNg;
 	$scope.urlsTariffsPanelGetPublicNg = URLS.tariffsPanelGetPublicNg;
 	$scope.urlsTariffsPanelActivatePrivateNg = URLS.tariffsPanelActivatePrivateNg;
+	
 	$scope.urlsTariffsNg = URLS.tariffsNg;
 	$scope.urlsTariffsCountNg = URLS.tariffsCountNg;
 	$scope.urlsTariffsRemoveNg = URLS.tariffsRemoveNg;
@@ -516,6 +517,24 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		
 		modalInstance.result.then(function (edited) {
 		      if (edited) getTariffsPublic();
+		    }, function () {
+		      //bad
+		});
+	}
+	
+	$scope.editTariffPrivate = function(tariff){
+		var modalInstance = $modal.open({
+		      templateUrl: 'editTariffPrivate.html',
+		      controller: 'EditTariffPrivatePanelController',
+		      backdrop: "static",
+		      size: 'lg',
+		      resolve: {
+		    	  tariff: function(){return tariff;}
+		      }
+		});
+		
+		modalInstance.result.then(function (edited) {
+		      if (edited) getTariffsPrivate();
 		    }, function () {
 		      //bad
 		});
@@ -737,6 +756,42 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		console.log($scope.tariff);
 		
 		var url = $scope.urlsTariffsPanelEditPublicNg.replace('0', $scope.tariff.id);
+		
+		$http({
+			method: "POST", 
+			url: url,
+			data: $scope.tariff
+			  })
+		.success(function(response){
+			console.log("edited tariff => ", response);
+			if (response.result)
+			{
+				$modalInstance.close(response.result);
+			}
+		})
+	}
+	
+	$scope.ok = function () {
+		if (!$scope.tariffForm.$valid) return;
+		
+		editTariff();
+	};
+
+	$scope.cancel = function () {
+	    $modalInstance.dismiss('cancel');
+	};
+})
+.controller('EditTariffPrivatePanelController', function($scope,$http,$modalInstance,tariff){
+	console.log('EditTariffPrivatePanelController loaded!');
+	
+	$scope.tariff = tariff;
+	
+	$scope.urlsTariffsPrivateEditNg = URLS.tariffsPrivateEditNg;
+	
+	function editTariff(){
+		console.log($scope.tariff);
+		
+		var url = $scope.urlsTariffsPrivateEditNg.replace('0', $scope.tariff.id);
 		
 		$http({
 			method: "POST", 

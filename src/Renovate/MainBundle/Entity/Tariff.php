@@ -741,6 +741,18 @@ class Tariff
     	}
     }
     
+    public static function editTariffPrivateById($em, $id, $parameters)
+    {
+    	$tariff = $em->getRepository("RenovateMainBundle:Tariff")->find($id);
+    
+    	$tariff->setDiscount($parameters->discount);
+    		
+    	$em->persist($tariff);
+    	$em->flush();
+    
+    	return $tariff;
+    }
+    
     public static function removeTariffPublicById($em, $id)
     {
     	$em->getConnection()->beginTransaction();

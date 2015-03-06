@@ -108,6 +108,14 @@ renovate_ng_roles_client:
     path: /ng/roles/client
     defaults: { _controller: RenovateMainBundle:Roles:getClientRolesNg}
     
+renovate_ng_roles_simple:
+    path: /ng/roles/simple
+    defaults: { _controller: RenovateMainBundle:Roles:getSimpleRolesNg}
+    
+renovate_ng_roles_privileges:
+    path: /ng/roles/privileges
+    defaults: { _controller: RenovateMainBundle:Roles:getPrivilegesRolesNg}
+    
 renovate_tariffs:
     path: /tariffs
     defaults: { _controller: RenovateMainBundle:Tariffs:index}
@@ -139,6 +147,10 @@ renovate_ng_tariffs_panel_edit:
 renovate_ng_tariffs_remove:
     path: /ng/tariffs/remove/{tariff_id}
     defaults: { _controller: RenovateMainBundle:Tariffs:removeTariffPublicNg}
+    
+renovate_ng_tariffs_private_edit:
+    path: /ng/tariffs/private/edit/{tariff_id}
+    defaults: { _controller: RenovateMainBundle:Tariffs:editTariffPrivateNg}
     
 renovate_ng_tariffs_panel_activate:
     path: /ng/tariffs/panel/activate/{tariff_id}

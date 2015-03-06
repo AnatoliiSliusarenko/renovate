@@ -28,4 +28,24 @@ class RolesController extends Controller
     	
     	return $response;
     }
+    
+    public function getSimpleRolesNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$response = new Response(json_encode(array("result" => Role::getSimpleRoles($em, true))));
+    	$response->headers->set('Content-Type', 'application/json');
+    	 
+    	return $response;
+    }
+    
+    public function getPrivilegesRolesNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$response = new Response(json_encode(array("result" => Role::getPrivilegesRoles($em, true))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
 }

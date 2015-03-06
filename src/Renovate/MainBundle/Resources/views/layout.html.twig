@@ -57,12 +57,12 @@
 	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.name ~ ' ' ~ app.user.surname }} <span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
 	                {% if is_granted('ROLE_ADMIN') %}
-	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_partners' %}class="active"{% endif %}><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_services' %}class="active"{% endif %}><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tasks' %}class="active"{% endif %}><a href="{{ path('renovate_tasks') }}">Завдання</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_pages' %}class="active"{% endif %}><a href="{{ path('renovate_pages') }}">Сторінки</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_documents' %}class="active"{% endif %}><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tariffs_panel' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs_panel') }}">Тарифи компанії</a></li>
@@ -148,7 +148,7 @@
             <li {% if app.request.attributes.get('_route') == 'renovate_main_homepage' %}class="active"{% endif %}><a href="{{ path('renovate_main_homepage') }}">Головна</a></li>
             
             <li class="dropdown">
-	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Робота <span class="caret"></span></a>
+	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Робота</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
@@ -157,7 +157,7 @@
 	        </li>
 	        
 	        <li class="dropdown">
-	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Тарифи <span class="caret"></span></a>
+	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Тарифи</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_prices' %}class="active"{% endif %}><a href="{{ path('renovate_prices') }}">Прайслист робіт</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_tariffs' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs') }}">Калькулятор тарифів</a></li>
@@ -167,7 +167,7 @@
             <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}">Новини</a></li>
             
             <li class="dropdown">
-	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Цікаво <span class="caret"></span></a>
+	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Цікаво</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_articles' %}class="active"{% endif %}><a href="{{ path('renovate_articles') }}">Статті</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_shares' %}class="active"{% endif %}><a href="{{ path('renovate_shares') }}">Акції</a></li>
@@ -262,6 +262,8 @@
   			usersShowUser: "{{ path('renovate_users_show_user', {user_id: 0}) }}",
   			rolesGetNg: "{{ path('renovate_ng_roles') }}",
   			rolesGetClientRolesNg: "{{ path('renovate_ng_roles_client') }}",
+  			rolesGetSimpleRolesNg: "{{ path('renovate_ng_roles_simple') }}",
+  			rolesGetPrivilegesRolesNg: "{{ path('renovate_ng_roles_privileges') }}",
   			documentsGetNg: "{{ path('renovate_ng_documents') }}",
   			documentsUpload: "{{ path('renovate_documents_upload') }}",
   			uploadifySWF: "{{ asset('web/bundles/renovate/swf/uploadify.swf') }}",
@@ -312,6 +314,9 @@
   			tariffsPanelAddPublicNg: "{{ path('renovate_ng_tariffs_panel_add') }}",
   			tariffsPanelActivatePrivateNg: "{{ path('renovate_ng_tariffs_panel_activate', {tariff_id: 0}) }}",
   			tariffsPanelEditPublicNg: "{{ path('renovate_ng_tariffs_panel_edit', {tariff_id: 0}) }}",
+  			
+  			tariffsPrivateEditNg: "{{ path('renovate_ng_tariffs_private_edit', {tariff_id: 0}) }}",
+  			
   			tariffsRemoveNg: "{{ path('renovate_ng_tariffs_remove', {tariff_id: 0}) }}",
   			tariffsAddPrivateNg: "{{ path('renovate_ng_tariffs_add') }}",
   			pagesGetNg: "{{ path('renovate_ng_pages') }}",

@@ -735,7 +735,7 @@ class User implements UserInterface,\Serializable
     	$user->setAddress($parameters->address);
     	$user->setRegistered(new \DateTime());
     	 
-    	foreach($parameters->roles as $role_id){
+    	foreach($parameters->rolesIds as $role_id){
     		$role = $em->getRepository("RenovateMainBundle:Role")->find($role_id);
     		$role->addUser($user);
     		$user->addRole($role);
@@ -812,7 +812,7 @@ class User implements UserInterface,\Serializable
     	$em->persist($user);
     	$em->flush();
     	
-    	foreach($parameters->roles as $role_id){
+    	foreach($parameters->rolesIds as $role_id){
     		$role = $em->getRepository("RenovateMainBundle:Role")->find($role_id);
     		$role->addUser($user);
     		$user->addRole($role);

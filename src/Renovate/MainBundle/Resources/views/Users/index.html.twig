@@ -38,11 +38,9 @@
 				  </div>
 				</form>
 		</div>
-		{% if is_granted('ROLE_ADMIN') %}
 		<div class="col-md-4">
 			<button ng-click="addUser()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
 		</div>
-		{% endif %}
 	</div>
 	<div class="row">
 			<div class="col-md-12 text-center">
@@ -173,7 +171,7 @@
 				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
     				<label for="roles" class="col-sm-2 control-label">Ролі</label>
     				<div class="col-sm-10">
-      					<select class="form-control" id="roles" ng-model="user.roles" name="roles" multiple required>
+      					<select class="form-control" id="roles" ng-model="user.rolesIds" name="roles" multiple required>
   							<option ng-repeat="role in roles" value="[[role.id]]">[[role.name]]</option>				
 						</select>
 						<p ng-show="userForm.roles.$invalid && !userForm.roles.$pristine" class="help-block">Виберіть хоч одну роль.</p>
@@ -268,7 +266,7 @@
 				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
     				<label for="roles" class="col-sm-2 control-label">Ролі</label>
     				<div class="col-sm-10">
-      					<select class="form-control" id="roles" ng-model="user.roles" name="roles" multiple required>
+      					<select class="form-control" id="roles" ng-model="user.rolesIds" name="roles" multiple required>
   							<option ng-repeat="role in roles" value="[[role.id]]" ng-selected="hasRole(role.id)">[[role.name]]</option>				
 						</select>
 						<p ng-show="userForm.roles.$invalid && !userForm.roles.$pristine" class="help-block">Виберіть хоч одну роль.</p>

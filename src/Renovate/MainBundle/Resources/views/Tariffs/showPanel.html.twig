@@ -46,7 +46,7 @@
 						        <tr ng-repeat="tariff in tariffs" ng-cloak>
 						          <th scope="row">[[$index+1]]</th>
 						          <td>[[tariff.name]]</td>
-						          <td>[[tariff.discount]] %</td>
+						          <td>[[tariff.discount*100]] %</td>
 						          <td>[[tariff.page]]</td>
 						          <td>[[tariff.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 						          <td><button ng-click="removeTariffPublic(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariff(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
@@ -145,12 +145,12 @@
 						          <th scope="row">[[$index+1]]</th>
 						          <td><cite title="[[tariff.user.name + ' ' + tariff.user.surname]]">[[tariff.user.username]]</cite></td>
 						          <td>[[tariff.name]]</td>
-						          <td>[[tariff.tariffPrices[0].value]] грн</td>
-						          <td>[[tariff.discount]] %</td>
+						          <td>[[(tariff.tariffPrices[0].value*(100-tariff.discount)).toFixed(2)]] грн</td>
+						          <td>[[tariff.discount*100]] %</td>
 						          <td><span ng-show="tariff.active" class="label label-success"><span class="glyphicon glyphicon-ok-sign"></span></span><span ng-show="!tariff.active" class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span></span></td>
 						          <td>[[tariff.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 						          <td><button ng-show="!tariff.active" ng-click="activateTariffPrivate(tariff)" type="button" class="close pull-left"><span class="glyphicon glyphicon-ok-sign"></span></button>[[tariff.activated | date:"dd.MM.yyyy HH:mm:ss"]]</td>
-						          <td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button></td>
+						          <td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 						        </tr>
 			      			</tbody>
     					</table>
@@ -360,6 +360,27 @@
 				<ul class="list-unstyled text-right">
   					<li ng-repeat="price in prices"><h4>[[price.name]] - <span class="label label-success">[[price.price]] грн</span></h4></li>
 				</ul>
+			</form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="tariffForm.$invalid">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="editTariffPrivate.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Редагувати тариф...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="tariffForm">
+  				
+				<div class="form-group" ng-class="{'has-error': tariffForm.tariffDiscount.$invalid && !tariffForm.tariffDiscount.$pristine}">
+    				<label for="tariffDiscount" class="col-sm-2 control-label">Знижка (%)</label>
+    				<div class="col-sm-10">
+      					<input ng-model="tariff.discount" type="number" min="0.01" step="0.01" class="form-control" id="tariffDiscount" name="tariffDiscount" required>
+    					<p ng-show="tariffForm.tariffDiscount.$invalid && !tariffForm.tariffDiscount.$pristine" class="help-block">Введіть знижку.</p>
+					</div>
+  				</div>
 			</form>
         </div>
         <div class="modal-footer">

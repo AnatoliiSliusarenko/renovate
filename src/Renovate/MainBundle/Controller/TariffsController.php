@@ -105,4 +105,18 @@ class TariffsController extends Controller
     
     	return $response;
     }
+    
+    public function editTariffPrivateNgAction($tariff_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = json_decode(file_get_contents("php://input"));
+    	$parameters = (object) $data;
+    
+    	$tariff = Tariff::editTariffPrivateById($em, $tariff_id, $parameters);
+    
+    	$response = new Response(json_encode(array("result" => $tariff->getInArray())));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
 }
