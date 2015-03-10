@@ -5,7 +5,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	$scope.roles = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
-	$scope.itemsPerPage = 5;
+	$scope.itemsPerPage = 10;
 	$scope.isAdmin = false;
 	
 	$scope.urlsUsersGetNg = URLS.usersGetNg;

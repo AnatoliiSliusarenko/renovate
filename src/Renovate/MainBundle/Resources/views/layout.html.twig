@@ -60,14 +60,14 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_partners' %}class="active"{% endif %}><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_services' %}class="active"{% endif %}><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tasks' %}class="active"{% endif %}><a href="{{ path('renovate_tasks') }}">Завдання</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_pages' %}class="active"{% endif %}><a href="{{ path('renovate_pages') }}">Сторінки</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
-	                <li {% if app.request.attributes.get('_route') == 'renovate_pages' %}class="active"{% endif %}><a href="{{ path('renovate_pages') }}">Сторінки</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_documents' %}class="active"{% endif %}><a href="{{ path('renovate_documents') }}">Менеджмент файлів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tariffs_panel' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs_panel') }}">Тарифи компанії</a></li>
 	                {% endif %}
-	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') or is_granted('ROLE_WORKER')) %}
+	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_WORKER')) %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_repairs' %}class="active"{% endif %}><a href="{{ path('renovate_repairs') }}">Ремонтні роботи</a></li>
 	                {% endif %}
 	                <li class="divider"></li>
@@ -145,10 +145,10 @@
         </div>
         <div id="navbar2" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li {% if app.request.attributes.get('_route') == 'renovate_main_homepage' %}class="active"{% endif %}><a href="{{ path('renovate_main_homepage') }}">Головна</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_main_homepage' %}class="active"{% endif %}><a href="{{ path('renovate_main_homepage') }}"><img src="{{ asset('web/bundles/renovate/images/homepage.png') }}"> Головна</a></li>
             
             <li class="dropdown">
-	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Робота</a>
+	            <a href=""><img src="{{ asset('web/bundles/renovate/images/work.png') }}"> Робота</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
@@ -157,25 +157,25 @@
 	        </li>
 	        
 	        <li class="dropdown">
-	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Тарифи</a>
+	            <a href=""><img src="{{ asset('web/bundles/renovate/images/tariffs.png') }}"> Тарифи</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_prices' %}class="active"{% endif %}><a href="{{ path('renovate_prices') }}">Прайслист робіт</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_tariffs' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs') }}">Калькулятор тарифів</a></li>
 	            </ul>
 	        </li>
 	        
-            <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}">Новини</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}"><img src="{{ asset('web/bundles/renovate/images/news.png') }}"> Новини</a></li>
             
             <li class="dropdown">
-	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Цікаво</a>
+	            <a href=""><img src="{{ asset('web/bundles/renovate/images/interesting.png') }}"> Цікаво</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_articles' %}class="active"{% endif %}><a href="{{ path('renovate_articles') }}">Статті</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_shares' %}class="active"{% endif %}><a href="{{ path('renovate_shares') }}">Акції</a></li>
 	            </ul>
 	        </li>
             
-            <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}">Про нас</a></li>
-            <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}">Контакти</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}"><img src="{{ asset('web/bundles/renovate/images/aboutus.png') }}"> Про нас</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}"><img src="{{ asset('web/bundles/renovate/images/contacts.png') }}"> Контакти</a></li>
           </ul>
           <form class="navbar-form navbar-right" method="post" action="{{ path('renovate_search') }}" ng-controller="SearchController">
             <div class="form-group">
@@ -265,6 +265,8 @@
   			rolesGetSimpleRolesNg: "{{ path('renovate_ng_roles_simple') }}",
   			rolesGetPrivilegesRolesNg: "{{ path('renovate_ng_roles_privileges') }}",
   			documentsGetNg: "{{ path('renovate_ng_documents') }}",
+  			documentsCountNg: "{{ path('renovate_ng_documents_count') }}",
+  			documentsRemoveNg: "{{ path('renovate_ng_documents_remove', {document_id: 0}) }}",
   			documentsUpload: "{{ path('renovate_documents_upload') }}",
   			uploadifySWF: "{{ asset('web/bundles/renovate/swf/uploadify.swf') }}",
   			newsShowNews: "{{ path('renovate_news_show_news', {news_name_translit: 0}) }}",

@@ -4,7 +4,7 @@ Renovate.controller('PagesController', function($scope,$http,$modal){
 	$scope.pages = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
-	$scope.itemsPerPage = 5;
+	$scope.itemsPerPage = 10;
 	
 	$scope.urlsPagesGetNg = URLS.pagesGetNg;
 	$scope.urlsPagesCountNg = URLS.pagesCountNg;

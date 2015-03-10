@@ -164,6 +164,14 @@ renovate_ng_documents:
     path: /ng/documents
     defaults: { _controller: RenovateMainBundle:Documents:getDocumentsNg}
     
+renovate_ng_documents_count:
+    path: /ng/documents/count
+    defaults: { _controller: RenovateMainBundle:Documents:getDocumentsCountNg}
+    
+renovate_ng_documents_remove:
+    path: /ng/documents/remove/{document_id}
+    defaults: { _controller: RenovateMainBundle:Documents:removeDocumentNg}
+    
 renovate_documents_upload:
     path: /documents/upload
     defaults: { _controller: RenovateMainBundle:Documents:upload}

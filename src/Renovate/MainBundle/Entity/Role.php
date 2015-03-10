@@ -314,7 +314,7 @@ class Role implements RoleInterface
     
     public static function getPrivilegesRoles($em, $inArray = false)
     {
-    	$privilegesRoles = array('ROLE_ADMIN','ROLE_EDITOR','ROLE_WORKER');
+    	$privilegesRoles = array('ROLE_ADMIN','ROLE_EDITOR','ROLE_WORKER','ROLE_BOOKKEEPER');
     
     	$qb = $em->getRepository("RenovateMainBundle:Role")
     	->createQueryBuilder('r');

@@ -21,6 +21,33 @@
 			<input type="file" name="file_upload" id="file_upload" />
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<form class="form-horizontal">
+			  <div class="form-group">
+			    <label for="itemsPerPage" class="col-sm-8 control-label">Показувати на сторінці</label>
+			    <div class="col-sm-3">
+			      	<select id="itemsPerPage" class="form-control" ng-model="itemsPerPage">
+					  <option>1</option>
+					  <option>2</option>
+					  <option>3</option>
+					  <option>4</option>
+					  <option>5</option>
+					  <option>10</option>
+					  <option>25</option>
+					  <option>50</option>
+					  <option>100</option>
+					</select>
+			    </div>
+			  </div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+		</div>
+	</div>
 	<div id="documents" class="row">
 		<div class="splash" ng-cloak>
 			<div class="image center-block"></div>
@@ -30,9 +57,14 @@
       			<a href="{{ asset('[[document.url]]') }}" download><img src="{{ asset('[[document.url]]') }}" alt="[[document.name]]"></a>
       			<div class="caption">
         			<p><strong>[[document.name]]</strong></p>
-        			<p><strong>Завантажено: </strong>[[document.uploaded | date:"dd.MM.yyyy HH:mm:ss"]]</p>
+        			<p><strong>Завантажено: </strong>[[document.uploaded | date:"dd.MM.yyyy HH:mm:ss"]]<button ng-click="removeDocument(document)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button></p>
         		</div>
     		</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
 		</div>
 	</div>
 </div>

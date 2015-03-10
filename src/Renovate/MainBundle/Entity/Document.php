@@ -554,6 +554,11 @@ class Document
     	return $this->sharesLabels;
     }
     
+    private function unlink()
+    {
+    	return unlink($this->getPath());
+    }
+    
     protected function getUploadRootDir()
     {
     	return __DIR__.'/../../../../'.$this->getUploadDir();
@@ -594,13 +599,43 @@ class Document
     	}
     }
     
+    public function getLinksCount()
+    {
+    	return count($this->getJobs())
+    		  +count($this->getJobsLabels())
+    		  +count($this->getNews())
+    		  +count($this->getNewsLabels())
+    		  +count($this->getResults())
+    		  +count($this->getResultsLabels())
+    		  +count($this->getArticles())
+    		  +count($this->getArticlesLabels())
+    	      +count($this->getShares())
+    		  +count($this->getSharesLabels());
+    }
+    
     public function getInArray()
     {
     	return array(
     			'id' => $this->getId(),
     			'name' => $this->getName(),
     			'uploaded' => $this->getUploaded()->getTimestamp()*1000,
-    			'url' => $this->getPath()
+    			'url' => $this->getPath(),
+    			
+    			'links' => array(
+    				'count' => $this->getLinksCount(),
+    				'items' => array(
+    						'jobs' => count($this->getJobs()),
+    						'jobsLabels' => count($this->getJobsLabels()),
+    						'news' => count($this->getNews()),
+    						'newsLabels' => count($this->getNewsLabels()),
+    						'results' => count($this->getResults()),
+    						'resultsLabels' => count($this->getResultsLabels()),
+    						'articles' => count($this->getArticles()),
+    						'articlesLabels' => count($this->getArticlesLabels()),
+    						'shares' => count($this->getShares()),
+    						'sharesLabels' => count($this->getSharesLabels())
+    				)
+    			)
     	);
     }
     
@@ -635,5 +670,53 @@ class Document
     			return $document->getInArray();
     		}, $result);
     	}else return $result;
+    }
+    
+    public static function getDocuments($em, $parameters, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Document")
+    	->createQueryBuilder('d');
+    
+    	$qb->select('d')
+    	->orderBy('d.uploaded', 'DESC');
+    	 
+    	if (isset($parameters['offset']) && isset($parameters['limit']))
+    	{
+    		$qb->setFirstResult($parameters['offset'])
+    		->setMaxResults($parameters['limit']);
+    	}
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($document){
+    			return $document->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
+    
+    public static function getDocumentsCount($em)
+    {
+    	$query = $em->getRepository("RenovateMainBundle:Document")
+    	->createQueryBuilder('d')
+    	->select('COUNT(d.id)')
+    	->getQuery();
+    	 
+    	$total = $query->getSingleScalarResult();
+    	 
+    	return $total;
+    }
+    
+    public static function removeDocumentById($em, $id)
+    {
+    	$document = $em->getRepository("RenovateMainBundle:Document")->find($id);
+    	
+    	$document->unlink();
+    	
+    	$em->remove($document);
+    	$em->flush();
+    
+    	return true;
     }
 }

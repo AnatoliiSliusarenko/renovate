@@ -7,7 +7,7 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 	$scope.workers = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
-	$scope.itemsPerPage = 5;
+	$scope.itemsPerPage = 10;
 	
 	$scope.filter = {
 			from: null,
@@ -28,7 +28,7 @@ Renovate.controller('RepairsController', function($scope,$http,$modal){
 		var user = JSON.parse(USER);
 		
 		_.each(user.roles, function(role){
-			if (role.role == "ROLE_ADMIN" || role.role == "ROLE_EDITOR")
+			if (role.role == "ROLE_ADMIN")
 			{
 				$scope.isAdmin = true;
 			}

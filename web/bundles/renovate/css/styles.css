@@ -399,6 +399,11 @@ tfoot td.price {
 	margin-bottom: 10px;
 }
 
+#main-navbar img{
+	height: 20px;
+	width: auto;
+}
+
 #main-navbar.navbar-inverse {
 	border-color: #010950;
 	background : #010b64;
@@ -853,7 +858,7 @@ div.description h3{
 	float:right;
 	width:80%;
 	height:100%;
-	background-color: #0D0151;
+	background-color: #010b64;
 	color:white;
 	font-size: 21px;
 	text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
@@ -883,7 +888,7 @@ div.description h3{
 	position:relative;
 	width:100%;
 	height: 100%;
-	background-color: #0D0151;
+	background-color: #010b64;
 	-webkit-box-shadow: 5px 4px 5px 0px rgba(0,0,0,0.75);
 	-moz-box-shadow: 5px 4px 5px 0px rgba(0,0,0,0.75);
 	box-shadow: 5px 4px 5px 0px rgba(0,0,0,0.75);
@@ -894,7 +899,7 @@ div.description h3{
    	position: absolute;
    	width: 42px;
    	height: 42px;
-   	background: #0D0151;
+   	background: #010b64;
    	transform: rotate(45deg);
    	top: -21px;
    	left: -21px;

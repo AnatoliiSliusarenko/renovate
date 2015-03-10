@@ -338,7 +338,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
-	$scope.itemsPerPage = 5;
+	$scope.itemsPerPage = 10;
 	$scope.filter = {
 			parentid: true,
 			from: null,

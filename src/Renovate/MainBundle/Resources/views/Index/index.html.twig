@@ -166,7 +166,7 @@
 				  </a>
 				  <div class="media-body">
 				    <p class="title"><a href="{{ path('renovate_news_show_news', {news_name_translit:news.getNameTranslit()}) }}">{{news.getName() | slice(0, 30)}}</a></p>
-				    <p class="description">{{news.getDescription() | slice(0, 100) | raw}}</p>
+				    <p class="description">{{news.getDescription() | striptags | slice(0, 100) | raw}}</p>
 				  </div>
 				</div>
 				{% endfor %}

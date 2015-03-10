@@ -6,7 +6,7 @@ Renovate.controller('ServicesController', function($scope,$http,$modal){
 	$scope.serviceCategories = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
-	$scope.itemsPerPage = 5;
+	$scope.itemsPerPage = 10;
 	
 	$scope.filter = {
 			category: null,

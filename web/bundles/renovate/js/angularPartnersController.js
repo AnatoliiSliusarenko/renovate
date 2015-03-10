@@ -4,7 +4,7 @@ Renovate.controller('PartnersController', function($scope,$http,$modal){
 	$scope.partners = [];
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
-	$scope.itemsPerPage = 5;
+	$scope.itemsPerPage = 10;
 	
 	$scope.urlsPartnersGetNg = URLS.partnersGetNg;
 	$scope.urlsPartnersCountNg = URLS.partnersCountNg;

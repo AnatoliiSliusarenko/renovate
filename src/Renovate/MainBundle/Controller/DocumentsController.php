@@ -52,10 +52,29 @@ class DocumentsController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		 
-		$documents = Document::getAllDocuments($em, true);
-		$response = new Response(json_encode(array("result" => $documents)));
+		$response = new Response(json_encode(array("result" => Document::getDocuments($em, $request->query->all(), true))));
 		$response->headers->set('Content-Type', 'application/json');
-
+	
+		return $response;
+	}
+	
+	public function getDocumentsCountNgAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+	
+		$response = new Response(json_encode(array("result" => Document::getDocumentsCount($em))));
+		$response->headers->set('Content-Type', 'application/json');
+		 
+		return $response;
+	}
+	
+	public function removeDocumentNgAction($document_id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		 
+		$response = new Response(json_encode(array("result" => Document::removeDocumentById($em, $document_id))));
+		$response->headers->set('Content-Type', 'application/json');
+		 
 		return $response;
 	}
 }
