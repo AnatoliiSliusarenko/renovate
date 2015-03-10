@@ -95,7 +95,7 @@
 			        <tr ng-repeat="task in tasks" ng-class="{blue: task.status == 'ready', green: task.status == 'finished', gray: task.status == 'approved'}" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td><cite title="[[task.user.name + ' ' + task.user.surname]]">[[task.user.username]]</cite></td>
-			          <td>[[task.description]]</td>
+			          <td style="white-space: pre-wrap;">[[task.description]]</td>
 			          <td>[[task.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 			          <td>[[task.finished | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 			          <td><button ng-click="removeTask(task)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-show="task.status == 'ready'" ng-click="editTask(task)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-show="task.status == 'finished'" ng-click="declineTask(task)" type="button" class="close"><span class="glyphicon glyphicon-share"></span></button><button ng-show="task.status == 'finished'" ng-click="approveTask(task)" type="button" class="close"><span class="glyphicon glyphicon-check"></span></button></td>
