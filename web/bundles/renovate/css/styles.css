@@ -770,6 +770,8 @@ div.description h3{
 }
 
 .results-nav .slick-dots {
+	margin: 0;
+	height: 40px;
 	top: -50px !important;
 	text-align: left;
 	width: 70%;

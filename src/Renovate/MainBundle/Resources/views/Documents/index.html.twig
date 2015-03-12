@@ -52,10 +52,10 @@
 		<div class="splash" ng-cloak>
 			<div class="image center-block"></div>
 		</div>
-		<div class="col-sm-6 col-md-4" ng-repeat="document in documents" ng-cloak>
+		<div class="col-sm-6 col-md-4" ng-repeat="document in documents"  ng-cloak>
 			<div class="thumbnail">
       			<a href="{{ asset('[[document.url]]') }}" download><img src="{{ asset('[[document.url]]') }}" alt="[[document.name]]"></a>
-      			<div class="caption">
+      			<div ng-class="{'bg-success': !document.links.count, 'bg-danger': document.links.count}" class="caption">
         			<p><strong>[[document.name]]</strong></p>
         			<p><strong>Завантажено: </strong>[[document.uploaded | date:"dd.MM.yyyy HH:mm:ss"]]<button ng-click="removeDocument(document)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button></p>
         		</div>

@@ -76,17 +76,24 @@ class User implements UserInterface,\Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="contract", type="string", length=255)
-     */
-    private $contract;
-    
-    /**
-     * @var string
-     *
      * @ORM\Column(name="address", type="string", length=255)
      */
     private $address;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="admin_unit", type="string", length=255)
+     */
+    private $adminUnit;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="owner", type="string", length=255)
+     */
+    private $owner;
+    
     /**
      * @var \DateTime
      *
@@ -295,29 +302,6 @@ class User implements UserInterface,\Serializable
     }
     
     /**
-     * Set contract
-     *
-     * @param string $contract
-     * @return User
-     */
-    public function setContract($contract)
-    {
-    	$this->contract = $contract;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get contract
-     *
-     * @return string
-     */
-    public function getContract()
-    {
-    	return $this->contract;
-    }
-    
-    /**
      * Set address
      *
      * @param string $address
@@ -340,6 +324,52 @@ class User implements UserInterface,\Serializable
     	return $this->address;
     }
 
+    /**
+     * Set adminUnit
+     *
+     * @param string $adminUnit
+     * @return User
+     */
+    public function setAdminUnit($adminUnit)
+    {
+    	$this->adminUnit = $adminUnit;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get adminUnit
+     *
+     * @return string
+     */
+    public function getAdminUnit()
+    {
+    	return $this->adminUnit;
+    }
+    
+    /**
+     * Set owner
+     *
+     * @param string $owner
+     * @return User
+     */
+    public function setOwner($owner)
+    {
+    	$this->owner = $owner;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get owner
+     *
+     * @return string
+     */
+    public function getOwner()
+    {
+    	return $this->owner;
+    }
+    
     /**
      * Set registered
      *
@@ -477,7 +507,7 @@ class User implements UserInterface,\Serializable
      *
      * @param \Renovate\MainBundle\Entity\Repair $repair
      */
-    public function removeRepairsCreated(\Renovate\MainBundle\Entity\Repair $repair)
+    public function removeRepair(\Renovate\MainBundle\Entity\Repair $repair)
     {
     	$this->repairs->removeElement($repair);
     }
@@ -535,8 +565,9 @@ class User implements UserInterface,\Serializable
     			'patronymic' => $this->getPatronymic(),
     			'email' => $this->getEmail(),
     			'mobilephone' => $this->getMobilephone(),
-    			'contract' => $this->getContract(),
     			'address' => $this->getAddress(),
+    			'adminUnit' => $this->getAdminUnit(),
+    			'owner' => $this->getOwner(),
     			'registered' => $this->getRegistered()->getTimestamp()*1000,
     			'roles' => array_map(function($role){return $role->getInArray();}, $this->getRoles())
     	);
@@ -631,8 +662,9 @@ class User implements UserInterface,\Serializable
     				$qb->expr()->like('u.patronymic', $qb->expr()->literal('%'.$parameters['search'].'%')),
     				$qb->expr()->like('u.email', $qb->expr()->literal('%'.$parameters['search'].'%')),
     				$qb->expr()->like('u.mobilephone', $qb->expr()->literal('%'.$parameters['search'].'%')),
-    				$qb->expr()->like('u.contract', $qb->expr()->literal('%'.$parameters['search'].'%')),
-    				$qb->expr()->like('u.address', $qb->expr()->literal('%'.$parameters['search'].'%'))
+    				$qb->expr()->like('u.address', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.adminUnit', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.owner', $qb->expr()->literal('%'.$parameters['search'].'%'))
     		));
     	}
     	
@@ -705,8 +737,9 @@ class User implements UserInterface,\Serializable
     				$qb->expr()->like('u.patronymic', $qb->expr()->literal('%'.$parameters['search'].'%')),
     				$qb->expr()->like('u.email', $qb->expr()->literal('%'.$parameters['search'].'%')),
     				$qb->expr()->like('u.mobilephone', $qb->expr()->literal('%'.$parameters['search'].'%')),
-    				$qb->expr()->like('u.contract', $qb->expr()->literal('%'.$parameters['search'].'%')),
-    				$qb->expr()->like('u.address', $qb->expr()->literal('%'.$parameters['search'].'%'))
+    				$qb->expr()->like('u.address', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.adminUnit', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('u.owner', $qb->expr()->literal('%'.$parameters['search'].'%'))
     		));
     	}
     	
@@ -729,11 +762,16 @@ class User implements UserInterface,\Serializable
     	$user->setPatronymic($parameters->patronymic);
     	$user->setEmail($parameters->email);
     	$user->setMobilephone($parameters->mobilephone);
-    	if (isset($parameters->contract)){
-    		$user->setContract($parameters->contract);
-    	}
     	$user->setAddress($parameters->address);
     	$user->setRegistered(new \DateTime());
+    	
+    	if (isset($parameters->adminUnit)){
+    		$user->setAdminUnit($parameters->adminUnit);
+    	}
+    	
+    	if (isset($parameters->owner)){
+    		$user->setOwner($parameters->owner);
+    	}
     	 
     	foreach($parameters->rolesIds as $role_id){
     		$role = $em->getRepository("RenovateMainBundle:Role")->find($role_id);
@@ -794,14 +832,20 @@ class User implements UserInterface,\Serializable
     	$user->setEmail($parameters->email);
     	$user->setMobilephone($parameters->mobilephone);
     	
-    	if (isset($parameters->contract)){
-    		$user->setContract($parameters->contract);
-    	}else{
-    		$user->setContract(NULL);
-    	}
-    	
     	$user->setAddress($parameters->address);
     	 
+    	if (isset($parameters->adminUnit)){
+    		$user->setAdminUnit($parameters->adminUnit);
+    	}else{
+    		$user->setAdminUnit(NULL);
+    	}
+    	 
+    	if (isset($parameters->owner)){
+    		$user->setOwner($parameters->owner);
+    	}else{
+    		$user->setOwner(NULL);
+    	}
+    	
     	$em->persist($user);
     	$em->flush();
     	 

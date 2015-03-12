@@ -166,7 +166,7 @@
 				  </a>
 				  <div class="media-body">
 				    <p class="title"><a href="{{ path('renovate_news_show_news', {news_name_translit:news.getNameTranslit()}) }}">{{news.getName() | slice(0, 30)}}</a></p>
-				    <p class="description">{{news.getDescription() | striptags | slice(0, 100) | raw}}</p>
+				    <p class="description">{{news.getDescription() | striptags | slice(0, 100) | raw }}</p>
 				  </div>
 				</div>
 				{% endfor %}
@@ -181,16 +181,8 @@
 			{% endif %}
 		</div>
 		<div class="col-md-4">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="fb-like-box" data-href="https://www.facebook.com/renovate.in.ua" data-width="400" data-height="219" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="true"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<div id="vk_groups"></div>
-				</div>
-			</div>
+			<div class="fb-like-box" data-href="https://www.facebook.com/renovate.in.ua" data-width="400" data-height="219" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="true"></div>
+			<div id="vk_groups"></div>
 		</div>
 	</div>
 	<div class="row">

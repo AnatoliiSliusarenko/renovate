@@ -111,6 +111,24 @@ class Document
      */
     private $sharesLabels;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Vacancy", mappedBy="document")
+     * @var array
+     */
+    private $vacancies;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Vacancy", mappedBy="label")
+     * @var array
+     */
+    private $vacanciesLabels;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Partner", mappedBy="document")
+     * @var array
+     */
+    private $partners;
+    
     private static $fileTypes = array('doc','docx','xls','xlsx','jpg','jpeg','gif','png','avi','pdf','mp3', 'zip','txt','xml','xps','rtf','odt','htm','html','ods');
     
     private static $SALT = '767usghbe7h8#@4b32n32)_$)&N_*$)*$^@$JHN_$_$*N$@($)@*NH';
@@ -554,6 +572,105 @@ class Document
     	return $this->sharesLabels;
     }
     
+    /**
+     * Add vacancies
+     *
+     * @param \Renovate\MainBundle\Entity\Vacancy $vacancies
+     * @return Document
+     */
+    public function addVacancy(\Renovate\MainBundle\Entity\Vacancy $vacancies)
+    {
+    	$this->vacancies[] = $vacancies;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove vacancies
+     *
+     * @param \Renovate\MainBundle\Entity\Vacancy $vacancies
+     */
+    public function removeVacancy(\Renovate\MainBundle\Entity\Vacancy $vacancies)
+    {
+    	$this->vacancies->removeElement($vacancies);
+    }
+    
+    /**
+     * Get vacancies
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVacancies()
+    {
+    	return $this->vacancies;
+    }
+    
+    /**
+     * Add vacanciesLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Vacancy $vacanciesLabels
+     * @return Document
+     */
+    public function addVacanciesLabel(\Renovate\MainBundle\Entity\Vacancy $vacanciesLabels)
+    {
+    	$this->vacanciesLabels[] = $vacanciesLabels;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove vacanciesLabels
+     *
+     * @param \Renovate\MainBundle\Entity\Vacancy $vacanciesLabels
+     */
+    public function removeVacanciesLabel(\Renovate\MainBundle\Entity\Vacancy $vacanciesLabels)
+    {
+    	$this->vacanciesLabels->removeElement($vacanciesLabels);
+    }
+    
+    /**
+     * Get vacanciesLabels
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVacanciesLabels()
+    {
+    	return $this->vacanciesLabels;
+    }
+    
+    /**
+     * Add partners
+     *
+     * @param \Renovate\MainBundle\Entity\Partner $partners
+     * @return Document
+     */
+    public function addPartner(\Renovate\MainBundle\Entity\Partner $partners)
+    {
+    	$this->partners[] = $partners;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove partners
+     *
+     * @param \Renovate\MainBundle\Entity\Partner $partners
+     */
+    public function removePartner(\Renovate\MainBundle\Entity\Partner $partners)
+    {
+    	$this->partners->removeElement($partners);
+    }
+    
+    /**
+     * Get partners
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPartners()
+    {
+    	return $this->partners;
+    }
+    
     private function unlink()
     {
     	return unlink($this->getPath());
@@ -610,7 +727,10 @@ class Document
     		  +count($this->getArticles())
     		  +count($this->getArticlesLabels())
     	      +count($this->getShares())
-    		  +count($this->getSharesLabels());
+    		  +count($this->getSharesLabels())
+    		  +count($this->getVacancies())
+    		  +count($this->getVacanciesLabels())
+    		  +count($this->getPartners());
     }
     
     public function getInArray()
@@ -633,7 +753,10 @@ class Document
     						'articles' => count($this->getArticles()),
     						'articlesLabels' => count($this->getArticlesLabels()),
     						'shares' => count($this->getShares()),
-    						'sharesLabels' => count($this->getSharesLabels())
+    						'sharesLabels' => count($this->getSharesLabels()),
+    						'vacancies' => count($this->getVacancies()),
+    						'vacanciesLabels' => count($this->getVacanciesLabels()),
+    						'partners' => count($this->getPartners())
     				)
     			)
     	);

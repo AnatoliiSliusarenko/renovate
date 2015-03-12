@@ -140,8 +140,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		      controller: 'AddUserController',
 		      backdrop: "static",
 		      resolve: {
-		    	  roles: function(){return $scope.roles;},
-		    	  clientRoles: function(){return $scope.clientRoles;}
+		    	  roles: function(){return $scope.roles;}
 		      }
 		});
 		
@@ -159,8 +158,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		      backdrop: "static",
 		      resolve: {
 		    	  user: function(){return user;},
-		    	  roles: function(){return $scope.roles;},
-		    	  clientRoles: function(){return $scope.clientRoles;}
+		    	  roles: function(){return $scope.roles;}
 		      }
 		});
 		
@@ -195,35 +193,15 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 		user.href = href;
 	}
 })
-.controller('AddUserController', function($scope,$http,$modalInstance, roles, clientRoles){
+.controller('AddUserController', function($scope,$http,$modalInstance, roles){
 	console.log('AddUserController loaded!');
 	$scope.urlsUsersAddNg = URLS.usersAddNg;
 	$scope.urlsUsersCheckUsernameNg = URLS.usersCheckUsernameNg;
 	$scope.urlsUsersCheckEmailNg = URLS.usersCheckEmailNg;
 	$scope.roles = roles;
-	$scope.clientRoles = clientRoles;
-	$scope.hasClientRole = false;
 	
 	$scope.checkUsernameHandler = null;
 	$scope.checkEmailHandler = null;
-	
-	function checkHasClientRole(){
-		if ($scope.user){
-			$scope.hasClientRole = false;
-			_.map($scope.clientRoles, function(clientRole){
-				var role = _.find($scope.user.rolesIds, function(roleId){
-					return roleId == clientRole.id;
-				});
-				
-				if (role != undefined) $scope.hasClientRole = true;
-			});
-			if (!$scope.hasClientRole) delete $scope.user.contract;
-		}
-	}
-	
-	$scope.$watch('user.rolesIds', function(){
-		checkHasClientRole();
-	});
 	
 	$scope.checkUserUsername = function(){
 		clearTimeout($scope.checkUsernameHandler);
@@ -287,7 +265,7 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditUserController', function($scope,$http,$modalInstance, user, roles, clientRoles){
+.controller('EditUserController', function($scope,$http,$modalInstance, user, roles){
 	console.log('EditUserController loaded!');
 	$scope.urlsUsersEditNg = URLS.usersEditNg;
 	$scope.urlsUsersCheckUsernameNg = URLS.usersCheckUsernameNg;
@@ -296,29 +274,9 @@ Renovate.controller('UsersController', function($scope,$http,$modal){
 	$scope.user = user;
 	$scope.user.rolesIds = _.map(user.roles, function(role){return role.id;});
 	$scope.roles = roles;
-	$scope.clientRoles = clientRoles;
-	$scope.hasClientRole = false;
 	
 	$scope.checkUsernameHandler = null;
 	$scope.checkEmailHandler = null;
-	
-	function checkHasClientRole(){
-		if ($scope.user){
-			$scope.hasClientRole = false;
-			_.map($scope.clientRoles, function(clientRole){
-				var role = _.find($scope.user.rolesIds, function(roleId){
-					return roleId == clientRole.id;
-				});
-				
-				if (role != undefined) $scope.hasClientRole = true;
-			});
-			if (!$scope.hasClientRole) delete $scope.user.contract;
-		}
-	}
-	
-	$scope.$watch('user.rolesIds', function(){
-		checkHasClientRole();
-	});
 	
 	$scope.checkUserUsername = function(){
 		clearTimeout($scope.checkUsernameHandler);

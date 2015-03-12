@@ -80,7 +80,9 @@ Renovate.controller('DocumentsController', function($scope, $http){
 					+'Новини (обкладинка/ярлик): '+document.links.items.news+'/'+document.links.items.newsLabels+'\n'
 					+'Результати роботи (обкладинка/ярлик): '+document.links.items.results+'/'+document.links.items.resultsLabels+'\n'
 					+'Статті (обкладинка/ярлик): '+document.links.items.articles+'/'+document.links.items.articlesLabels+'\n'
-					+'Акції (обкладинка/ярлик): '+document.links.items.shares+'/'+document.links.items.sharesLabels+'\n');
+					+'Акції (обкладинка/ярлик): '+document.links.items.shares+'/'+document.links.items.sharesLabels+'\n'
+					+'Вакансії (обкладинка/ярлик): '+document.links.items.vacancies+'/'+document.links.items.vacanciesLabels+'\n'
+					+'Партнери: '+document.links.items.partners+'\n');
 		}else{
 			var remove = confirm("Дійсно бажаєте видалити: " + document.name + " ?");
 			if (!remove) return;

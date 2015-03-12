@@ -57,7 +57,8 @@
 			          <th>Ім’я</th>
 			          <th>Прізвище</th>
 			          <th>По батькові</th>
-			          <th>Email</th>
+			          <th>Адміністративна одиниця</th>
+			          <th>Керівний орган</th>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
 			          {% endif %}
@@ -71,11 +72,12 @@
       				</tr>
 			        <tr ng-repeat="user in users" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
-			          <td><a href="[[user.href]]" ng-init="setItemDirectHref(user)">[[user.contract || user.username]]</a></td>
+			          <td><a href="[[user.href]]" ng-init="setItemDirectHref(user)">[[user.username]]</a></td>
 			          <td>[[user.name]]</td>
 			          <td>[[user.surname]]</td>
 			          <td>[[user.patronymic]]</td>
-			          <td>[[user.email]]</td>
+			          <td>[[user.adminUnit]]</td>
+			          <td>[[user.owner]]</td>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <td><button ng-click="removeUser(user)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editUser(user)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			          {% endif %}
@@ -96,81 +98,88 @@
         <div class="modal-body">
             <form class="form-horizontal" name="userForm">
   				<div class="form-group" ng-class="{ 'has-error' : (userForm.username.$invalid && !userForm.username.$pristine) || userForm.username.$error.existed }">
-    				<label for="username" class="col-sm-2 control-label">Логін</label>
-    				<div class="col-sm-10">
+    				<label for="username" class="col-sm-3 control-label">Логін/№ договору*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.username" type="text" class="form-control has-error" id="username" name="username" ng-change="checkUserUsername()" required>
-    					<p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">Введіть логін.</p>
-						<p ng-show="userForm.username.$error.existed" class="help-block">Введене ім’я користувача вже існує.</p>
+    					<p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">Введіть логін/№ договору.</p>
+						<p ng-show="userForm.username.$error.existed" class="help-block">Введене ім’я користувача/№ договору вже існує.</p>
 					</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
-    				<label for="password" class="col-sm-2 control-label">Пароль</label>
-    				<div class="col-sm-10">
+    				<label for="password" class="col-sm-3 control-label">Пароль*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.password" type="password" class="form-control" id="password" name="password" required ng-change="checkPassword()">
     					<p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Введіть пароль.</p>
 					</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : (userForm.password2.$invalid && !userForm.password2.$pristine) || userForm.password2.$error.dontMatch }">
-    				<label for="password2" class="col-sm-2 control-label">Повторіть пароль</label>
-    				<div class="col-sm-10">
+    				<label for="password2" class="col-sm-3 control-label">Повторіть пароль*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.password2" type="password" class="form-control" id="password2" name="password2" required ng-change="checkPassword()">
 						<p ng-show="userForm.password2.$invalid && !userForm.password2.$pristine" class="help-block">Пароль ще раз.</p>
     					<p ng-show="userForm.password2.$error.dontMatch" class="help-block">Неправильний пароль.</p>
 					</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
-    				<label for="name" class="col-sm-2 control-label">Ім’я</label>
-    				<div class="col-sm-10">
+    				<label for="name" class="col-sm-3 control-label">Ім’я*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.name" type="text" class="form-control" id="name" name="name" required>
 						<p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">Введіть ім’я.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.surname.$invalid && !userForm.surname.$pristine }">
-    				<label for="surname" class="col-sm-2 control-label">Прізвище</label>
-    				<div class="col-sm-10">
+    				<label for="surname" class="col-sm-3 control-label">Прізвище*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.surname" type="text" class="form-control" id="surname" name="surname" required>
 						<p ng-show="userForm.surname.$invalid && !userForm.surname.$pristine" class="help-block">Введіть прізвище.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.patronymic.$invalid && !userForm.patronymic.$pristine }">
-    				<label for="patronymic" class="col-sm-2 control-label">По батькові</label>
-    				<div class="col-sm-10">
+    				<label for="patronymic" class="col-sm-3 control-label">По батькові*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.patronymic" type="text" class="form-control" id="patronymic" name="patronymic" required>
 						<p ng-show="userForm.patronymic.$invalid && !userForm.patronymic.$pristine" class="help-block">Введіть по батькові.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : (userForm.email.$invalid && !userForm.email.$pristine) || userForm.email.$error.existed }">
-    				<label for="email" class="col-sm-2 control-label">Email</label>
-    				<div class="col-sm-10">
+    				<label for="email" class="col-sm-3 control-label">Email*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.email" type="email" class="form-control" id="email" name="email" ng-change="checkUserEmail()" required>
 						<p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Введіть правильний email.</p>
     					<p ng-show="userForm.email.$error.existed" class="help-block">Введений email вже існує.</p>
 					</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.mobilephone.$invalid && !userForm.mobilephone.$pristine }">
-    				<label for="mobilephone" class="col-sm-2 control-label">Моб.тел.</label>
-    				<div class="col-sm-10">
+    				<label for="mobilephone" class="col-sm-3 control-label">Моб.тел.*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.mobilephone" type="tel" class="form-control" id="mobilephone" name="mobilephone" required>
 						<p ng-show="userForm.mobilephone.$invalid && !userForm.mobilephone.$pristine" class="help-block">Введіть мобільний телефон.</p>
     				</div>
   				</div>
-				<div ng-show="hasClientRole" class="form-group" ng-class="{ 'has-error' : userForm.contract.$invalid && !userForm.contract.$pristine }">
-    				<label for="contract" class="col-sm-2 control-label">№ договору</label>
-    				<div class="col-sm-10">
-      					<input ng-model="user.contract" type="text" class="form-control" id="contract" name="contract" ng-required="hasClientRole">
-						<p ng-show="userForm.contract.$invalid && !userForm.contract.$pristine" class="help-block">Введіть № договору.</p>
-    				</div>
-  				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.address.$invalid && !userForm.address.$pristine }">
-    				<label for="address" class="col-sm-2 control-label">Адреса</label>
-    				<div class="col-sm-10">
+    				<label for="address" class="col-sm-3 control-label">Адреса*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.address" type="text" class="form-control" id="address" name="address" required>
 						<p ng-show="userForm.address.$invalid && !userForm.address.$pristine" class="help-block">Введіть адресу.</p>
     				</div>
   				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.adminUnit.$invalid && !userForm.adminUnit.$pristine }">
+    				<label for="adminUnit" class="col-sm-3 control-label">Адміністративна одиниця</label>
+    				<div class="col-sm-9">
+      					<input ng-model="user.adminUnit" type="text" class="form-control" id="adminUnit" name="adminUnit">
+						<p ng-show="userForm.adminUnit.$invalid && !userForm.adminUnit.$pristine" class="help-block">Введіть адміністративну одиницю.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.owner.$invalid && !userForm.owner.$pristine }">
+    				<label for="owner" class="col-sm-3 control-label">Керівний орган</label>
+    				<div class="col-sm-9">
+      					<input ng-model="user.owner" type="text" class="form-control" id="owner" name="owner">
+						<p ng-show="userForm.owner.$invalid && !userForm.owner.$pristine" class="help-block">Введіть керівний орган.</p>
+    				</div>
+  				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
-    				<label for="roles" class="col-sm-2 control-label">Ролі</label>
-    				<div class="col-sm-10">
+    				<label for="roles" class="col-sm-3 control-label">Ролі*</label>
+    				<div class="col-sm-9">
       					<select class="form-control" id="roles" ng-model="user.rolesIds" name="roles" multiple required>
   							<option ng-repeat="role in roles" value="[[role.id]]">[[role.name]]</option>				
 						</select>
@@ -191,81 +200,88 @@
         <div class="modal-body">
             <form class="form-horizontal" name="userForm">
   				<div class="form-group" ng-class="{ 'has-error' : (userForm.username.$invalid && !userForm.username.$pristine) || userForm.username.$error.existed }">
-    				<label for="username" class="col-sm-2 control-label">Логін</label>
-    				<div class="col-sm-10">
+    				<label for="username" class="col-sm-3 control-label">Логін/№ договору*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.username" type="text" class="form-control has-error" id="username" name="username" ng-change="checkUserUsername()" required>
-    					<p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">Введіть логін.</p>
-						<p ng-show="userForm.username.$error.existed" class="help-block">Введене ім’я користувача вже існує.</p>
+    					<p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">Введіть логін/№ договору.</p>
+						<p ng-show="userForm.username.$error.existed" class="help-block">Введене ім’я користувача/№ договору вже існує.</p>
 					</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
-    				<label for="password" class="col-sm-2 control-label">Пароль</label>
-    				<div class="col-sm-10">
+    				<label for="password" class="col-sm-3 control-label">Пароль</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.password" type="password" class="form-control" id="password" name="password" ng-change="checkPassword()">
     					<p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Введіть пароль.</p>
 					</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : (userForm.password2.$invalid && !userForm.password2.$pristine) || userForm.password2.$error.dontMatch }">
-    				<label for="password2" class="col-sm-2 control-label">Повторіть пароль</label>
-    				<div class="col-sm-10">
+    				<label for="password2" class="col-sm-3 control-label">Повторіть пароль</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.password2" type="password" class="form-control" id="password2" name="password2" ng-change="checkPassword()">
 						<p ng-show="userForm.password2.$invalid && !userForm.password2.$pristine" class="help-block">Пароль ще раз.</p>
 						<p ng-show="userForm.password2.$error.dontMatch" class="help-block">Неправильний пароль.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
-    				<label for="name" class="col-sm-2 control-label">Ім’я</label>
-    				<div class="col-sm-10">
+    				<label for="name" class="col-sm-3 control-label">Ім’я*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.name" type="text" class="form-control" id="name" name="name" required>
 						<p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">Введіть ім’я.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.surname.$invalid && !userForm.surname.$pristine }">
-    				<label for="surname" class="col-sm-2 control-label">Прізвище</label>
-    				<div class="col-sm-10">
+    				<label for="surname" class="col-sm-3 control-label">Прізвище*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.surname" type="text" class="form-control" id="surname" name="surname" required>
 						<p ng-show="userForm.surname.$invalid && !userForm.surname.$pristine" class="help-block">Введіть прізвище.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.patronymic.$invalid && !userForm.patronymic.$pristine }">
-    				<label for="patronymic" class="col-sm-2 control-label">По батькові</label>
-    				<div class="col-sm-10">
+    				<label for="patronymic" class="col-sm-3 control-label">По батькові*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.patronymic" type="text" class="form-control" id="patronymic" name="patronymic" required>
 						<p ng-show="userForm.patronymic.$invalid && !userForm.patronymic.$pristine" class="help-block">Введіть по батькові.</p>
     				</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : (userForm.email.$invalid && !userForm.email.$pristine) || userForm.email.$error.existed }">
-    				<label for="email" class="col-sm-2 control-label">Email</label>
-    				<div class="col-sm-10">
+    				<label for="email" class="col-sm-3 control-label">Email*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.email" type="email" class="form-control" id="email" name="email" ng-change="checkUserEmail()" required>
 						<p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Введіть правильний email.</p>
     					<p ng-show="userForm.email.$error.existed" class="help-block">Введений email вже існує.</p>
 					</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.mobilephone.$invalid && !userForm.mobilephone.$pristine }">
-    				<label for="mobilephone" class="col-sm-2 control-label">Моб.тел.</label>
-    				<div class="col-sm-10">
+    				<label for="mobilephone" class="col-sm-3 control-label">Моб.тел.*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.mobilephone" type="tel" class="form-control" id="mobilephone" name="mobilephone" required>
 						<p ng-show="userForm.mobilephone.$invalid && !userForm.mobilephone.$pristine" class="help-block">Введіть мобільний телефон.</p>
     				</div>
   				</div>
-				<div ng-show="hasClientRole" class="form-group" ng-class="{ 'has-error' : userForm.contract.$invalid && !userForm.contract.$pristine }">
-    				<label for="contract" class="col-sm-2 control-label">№ договору</label>
-    				<div class="col-sm-10">
-      					<input ng-model="user.contract" type="text" class="form-control" id="contract" name="contract" ng-required="hasClientRole">
-						<p ng-show="userForm.contract.$invalid && !userForm.contract.$pristine" class="help-block">Введіть № договору.</p>
-    				</div>
-  				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.address.$invalid && !userForm.address.$pristine }">
-    				<label for="address" class="col-sm-2 control-label">Адреса</label>
-    				<div class="col-sm-10">
+    				<label for="address" class="col-sm-3 control-label">Адреса*</label>
+    				<div class="col-sm-9">
       					<input ng-model="user.address" type="text" class="form-control" id="address" name="address" required>
 						<p ng-show="userForm.address.$invalid && !userForm.address.$pristine" class="help-block">Введіть адресу.</p>
     				</div>
   				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.adminUnit.$invalid && !userForm.adminUnit.$pristine }">
+    				<label for="adminUnit" class="col-sm-3 control-label">Адміністративна одиниця</label>
+    				<div class="col-sm-9">
+      					<input ng-model="user.adminUnit" type="text" class="form-control" id="adminUnit" name="adminUnit">
+						<p ng-show="userForm.adminUnit.$invalid && !userForm.adminUnit.$pristine" class="help-block">Введіть адміністративну одиницю.</p>
+    				</div>
+  				</div>
+				<div class="form-group" ng-class="{ 'has-error' : userForm.owner.$invalid && !userForm.owner.$pristine }">
+    				<label for="owner" class="col-sm-3 control-label">Керівний орган</label>
+    				<div class="col-sm-9">
+      					<input ng-model="user.owner" type="text" class="form-control" id="owner" name="owner">
+						<p ng-show="userForm.owner.$invalid && !userForm.owner.$pristine" class="help-block">Введіть керівний орган.</p>
+    				</div>
+  				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
-    				<label for="roles" class="col-sm-2 control-label">Ролі</label>
-    				<div class="col-sm-10">
+    				<label for="roles" class="col-sm-3 control-label">Ролі*</label>
+    				<div class="col-sm-9">
       					<select class="form-control" id="roles" ng-model="user.rolesIds" name="roles" multiple required>
   							<option ng-repeat="role in roles" value="[[role.id]]" ng-selected="hasRole(role.id)">[[role.name]]</option>				
 						</select>
