@@ -34,7 +34,77 @@
 		</ul>	
 	</div>
 </div>
+<hr>
+<div ng-controller="PaymentsController">
+	<div class="row">
+		<div class="col-md-12">
+				<form class="form-inline">
+				  <div class="form-group">
+				    <label for="itemsPerPage">Показувати на сторінці</label>
+			      	<select id="itemsPerPage" class="form-control" ng-model="itemsPerPage">
+					  <option>1</option>
+					  <option>2</option>
+					  <option>3</option>
+					  <option>4</option>
+					  <option>5</option>
+					  <option>10</option>
+					  <option>25</option>
+					  <option>50</option>
+					  <option>100</option>
+					  <option>500</option>
+					  <option>1000</option>
+					</select>
+				  </div>
+				</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-hover table-mobile">
+	      		<thead>
+			        <tr>
+			          <th>#</th>
+			          <th>Дата операції</th>
+			          <th>Назва операції</th>
+			          <th>Сума операції</th>
+			          <th>Особистий баланс</th>
+			          <th>Баланс будинку</th>
+			        </tr>
+	      		</thead>
+	      		<tbody>
+	     			<tr class="splash" ng-cloak>
+	      				<td colspan="8">
+							<div class="image center-block"></div>
+						</td>
+	     			</tr>
+			        <tr ng-repeat="payment in payments" ng-cloak>
+			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
+			          <td>[[payment.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
+			          <td>[[payment.name]]</td>
+			          <td>[[payment.amount]]</td>
+			          <td>[[payment.personalBalance]]</td>
+			          <td>[[payment.buildingBalance]]</td>
+			        </tr>
+	      		</tbody>
+	    	</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
+		</div>
+	</div>
+</div>
 {% endblock %} 
 
 {% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/angularPaymentsController.js') }}"></script>
+<script>
+var USERID = "{{ app.request.get('user_id') }}";
+</script>
 {% endblock %}

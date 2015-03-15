@@ -560,7 +560,21 @@ tfoot td.price {
 	width: 28px;
 }
 
+#user-navbar .btn.balance {  
+	margin-left: 15px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 40px;
+	height: 24px;
+	padding: 0 7px;
+	width: 63px;
+}
+
 #user-navbar .btn.settings .badge {
+	top: -7px;
+}
+
+#user-navbar .btn.balance .badge {
 	top: -7px;
 }
 

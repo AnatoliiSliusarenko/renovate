@@ -82,5 +82,6 @@ security:
         - { path: ^/ng/price-categories/remove*, roles: ROLE_ADMIN }
         - { path: ^/ng/price-categories/edit*, roles: ROLE_ADMIN }
         - { path: ^/aboutme, roles: IS_AUTHENTICATED_FULLY }
-        
+        - { path: ^/ng/payments/my*, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/ng/payments*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

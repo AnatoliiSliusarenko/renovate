@@ -503,3 +503,19 @@ renovate_ng_price_categories_edit:
 renovate_ng_price_categories_remove:
     path: /ng/price-categories/remove/{priceCategory_id}
     defaults: { _controller: RenovateMainBundle:PriceCategories:removePriceCategoryNg}
+    
+renovate_ng_payments_my:
+    path: /ng/payments/my
+    defaults: { _controller: RenovateMainBundle:Payments:getMyPaymentsNg}
+    
+renovate_ng_payments_my_count:
+    path: /ng/payments/my/count
+    defaults: { _controller: RenovateMainBundle:Payments:getMyPaymentsCountNg}   
+
+renovate_ng_payments_user:
+    path: /ng/payments/{user_id}
+    defaults: { _controller: RenovateMainBundle:Payments:getUserPaymentsNg}
+    
+renovate_ng_payments_user_count:
+    path: /ng/payments/{user_id}/count
+    defaults: { _controller: RenovateMainBundle:Payments:getUserPaymentsCountNg}

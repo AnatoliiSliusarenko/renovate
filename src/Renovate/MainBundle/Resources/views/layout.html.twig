@@ -54,7 +54,7 @@
         	<p id="date" class="navbar-text navbar-left"></p>
         	<ul class="nav navbar-nav navbar-right">
         		<li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.name ~ ' ' ~ app.user.surname }} <span class="caret"></span></a>
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.name ~ ' ' ~ app.user.surname }}<span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
 	                {% if is_granted('ROLE_ADMIN') %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_partners' %}class="active"{% endif %}><a href="{{ path('renovate_partners') }}">Менеджмент партнерів</a></li>
@@ -75,6 +75,7 @@
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
 	              </ul>
 	            </li>
+	            <li>{% if app.user.getBalance() > 0 %}<button type="button" class="btn btn-success balance">Баланс<span class="badge">{{app.user.getBalance()}} грн</span></button>{% else %}<button type="button" class="btn btn-danger balance">Баланс<span class="badge">{{app.user.getBalance()}} грн</span></button>{% endif %}</li>
 	            <li ng-controller="UserTasksController" ng-cloak>
 	            	<button ng-click="showTasks()" ng-show="tasksCount>0" type="button" class="btn btn-success settings"><i class="fa fa-bell"></i><span class="badge">[[tasksCount]]</span></button>
 	            	<script type="text/ng-template" id="tasksList.html">
@@ -359,6 +360,10 @@
   			priceCategoriesAddNg: "{{ path('renovate_ng_price_categories_add') }}",
   			priceCategoriesEditNg: "{{ path('renovate_ng_price_categories_edit', {priceCategory_id: 0}) }}",
   			priceCategoriesRemoveNg: "{{ path('renovate_ng_price_categories_remove', {priceCategory_id: 0}) }}",
+  			paymentsUserGetNg: "{{ path('renovate_ng_payments_user', {user_id: 0}) }}",
+  			paymentsUserGetCountNg: "{{ path('renovate_ng_payments_user_count', {user_id: 0}) }}",
+  			paymentsMyGetNg: "{{ path('renovate_ng_payments_my') }}",
+  			paymentsMyGetCountNg: "{{ path('renovate_ng_payments_my_count') }}",
   	}
   	</script>
   	<script>

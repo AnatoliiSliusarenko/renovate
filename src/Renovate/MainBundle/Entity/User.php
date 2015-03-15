@@ -124,6 +124,13 @@ class User implements UserInterface,\Serializable
 	 * @var array
 	 */
 	private $tasks;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Payment", mappedBy="user")
+	 * @ORM\OrderBy({"created" = "DESC"})
+	 * @var array
+	 */
+	private $payments;
     
 	public function __construct()
 	{
@@ -555,6 +562,44 @@ class User implements UserInterface,\Serializable
     	return $this->tasks;
     }
     
+    /**
+     * Add payments
+     *
+     * @param \Renovate\MainBundle\Entity\Payment $payments
+     * @return User
+     */
+    public function addPayment(\Renovate\MainBundle\Entity\Payment $payments)
+    {
+    	$this->payments[] = $payments;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove payments
+     *
+     * @param \Renovate\MainBundle\Entity\Payment $payments
+     */
+    public function removePayment(\Renovate\MainBundle\Entity\Payment $payments)
+    {
+    	$this->payments->removeElement($payments);
+    }
+    
+    /**
+     * Get payments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPayments()
+    {
+    	return $this->payments;
+    }
+    
+    public function getBalance()
+    {
+    	return (count($this->getPayments()) > 0) ? $this->getPayments()->first()->getPersonalBalance() : 0;	
+    }
+    
     public function getInArray()
     {
     	return array(
@@ -804,6 +849,10 @@ class User implements UserInterface,\Serializable
     	
     	foreach($user->getTasks() as $task){
     		$em->remove($task);
+    	}
+    	
+    	foreach($user->getPayments() as $payment){
+    		$em->remove($payment);
     	}
     	
     	$em->persist($user);
