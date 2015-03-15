@@ -31,7 +31,6 @@ security:
         - { path: ^/ng/users/check/tariff, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/users*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/users*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
-        
         - { path: ^/documents*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/ng/documents*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/partners*, roles: ROLE_ADMIN }
@@ -60,9 +59,11 @@ security:
         - { path: ^/ng/services/calculator, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/ng/services*, roles: ROLE_ADMIN }
         - { path: ^/tariffs/panel*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
-        - { path: ^/ng/tariffs/panel/add*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
-        - { path: ^/ng/tariffs/panel/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
-        - { path: ^/ng/tariffs/panel/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/tariffs/private/edit*, roles: ROLE_ADMIN }
+        - { path: ^/ng/tariffs/private/activate*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/tariffs/public/add*, roles: ROLE_ADMIN }
+        - { path: ^/ng/tariffs/public/edit*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+        - { path: ^/ng/tariffs/remove*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/pages*, roles: ROLE_ADMIN }
         - { path: ^/ng/pages*, roles: ROLE_ADMIN }
         - { path: ^/ng/vacancies/add, roles: [ROLE_ADMIN, ROLE_EDITOR] }

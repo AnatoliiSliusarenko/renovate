@@ -753,20 +753,16 @@ class Tariff
     	return $tariff;
     }
     
-    public static function removeTariffPublicById($em, $id)
+    public static function removeTariffById($em, $id)
     {
     	$em->getConnection()->beginTransaction();
     	try {
     		$tariff = $em->getRepository("RenovateMainBundle:Tariff")->find($id);
     		$tariff->cleanTariff($em);
-    
-    		$qb = $em->createQueryBuilder();
-    	  
-    		$qb->delete('RenovateMainBundle:Tariff', 't')
-    		->where('t.id = :id')
-    		->setParameter('id', $id)
-    		->getQuery()->getResult();
-    	  
+    		
+    		$em->remove($tariff);
+    		$em->flush();
+    		
     		$em->getConnection()->commit();
     		return true;
     	}catch(Exception $e) {

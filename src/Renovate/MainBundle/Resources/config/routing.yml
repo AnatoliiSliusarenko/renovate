@@ -120,6 +120,10 @@ renovate_tariffs:
     path: /tariffs
     defaults: { _controller: RenovateMainBundle:Tariffs:index}
     
+renovate_tariffs_panel:
+    path: /tariffs/panel
+    defaults: { _controller: RenovateMainBundle:Tariffs:showPanel}
+    
 renovate_ng_tariffs:
     path: /ng/tariffs
     defaults: { _controller: RenovateMainBundle:Tariffs:getTariffsNg}
@@ -128,33 +132,29 @@ renovate_ng_tariffs_count:
     path: /ng/tariffs/count
     defaults: { _controller: RenovateMainBundle:Tariffs:getTariffsCountNg}
     
-renovate_ng_tariffs_add:
-    path: /ng/tariffs/add
+renovate_ng_tariffs_private_add:
+    path: /ng/tariffs/private/add
     defaults: { _controller: RenovateMainBundle:Tariffs:addTariffPrivateNg}
-    
-renovate_tariffs_panel:
-    path: /tariffs/panel
-    defaults: { _controller: RenovateMainBundle:Tariffs:showPanel}
-    
-renovate_ng_tariffs_panel_add:
-    path: /ng/tariffs/panel/add
-    defaults: { _controller: RenovateMainBundle:Tariffs:addTariffPublicNg}
-    
-renovate_ng_tariffs_panel_edit:
-    path: /ng/tariffs/panel/edit/{tariff_id}
-    defaults: { _controller: RenovateMainBundle:Tariffs:editTariffPublicNg}
-    
-renovate_ng_tariffs_remove:
-    path: /ng/tariffs/remove/{tariff_id}
-    defaults: { _controller: RenovateMainBundle:Tariffs:removeTariffPublicNg}
     
 renovate_ng_tariffs_private_edit:
     path: /ng/tariffs/private/edit/{tariff_id}
     defaults: { _controller: RenovateMainBundle:Tariffs:editTariffPrivateNg}
     
-renovate_ng_tariffs_panel_activate:
-    path: /ng/tariffs/panel/activate/{tariff_id}
+renovate_ng_tariffs_private_activate:
+    path: /ng/tariffs/private/activate/{tariff_id}
     defaults: { _controller: RenovateMainBundle:Tariffs:activateTariffPrivateNg}
+    
+renovate_ng_tariffs_public_add:
+    path: /ng/tariffs/public/add
+    defaults: { _controller: RenovateMainBundle:Tariffs:addTariffPublicNg}
+    
+renovate_ng_tariffs_public_edit:
+    path: /ng/tariffs/public/edit/{tariff_id}
+    defaults: { _controller: RenovateMainBundle:Tariffs:editTariffPublicNg}
+    
+renovate_ng_tariffs_remove:
+    path: /ng/tariffs/remove/{tariff_id}
+    defaults: { _controller: RenovateMainBundle:Tariffs:removeTariffNg}
     
 renovate_documents:
     path: /documents

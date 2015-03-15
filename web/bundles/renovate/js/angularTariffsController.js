@@ -93,7 +93,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 			params: {parentid: false}
 			  })
 		.success(function(response){
-			console.log("tariffs => ",response);
+			console.log("tariffs public => ",response);
 			if (response.result)
 			{
 				$scope.tariffs = response.result;
@@ -153,8 +153,8 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	
 	$scope.editTariff = function(tariff){
 		var modalInstance = $modal.open({
-		      templateUrl: 'editTariff.html',
-		      controller: 'EditTariffPrivateController',
+		      templateUrl: 'TariffsEditTariff.html',
+		      controller: 'TariffsEditTariffController',
 		      backdrop: "static",
 		      size: 'lg',
 		      resolve: {
@@ -172,8 +172,8 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	
 	$scope.activateTariff = function(tariff){
 		var modalInstance = $modal.open({
-		      templateUrl: 'activateTariff.html',
-		      controller: 'ActivateTariffPrivateController',
+		      templateUrl: 'TariffsActivateTariff.html',
+		      controller: 'TariffsActivateTariffController',
 		      backdrop: "static",
 		      resolve: {
 		    	  tariff: function(){return tariff;},
@@ -189,14 +189,14 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		});
 	}
 })
-.controller('ActivateTariffPrivateController', function($scope,$http,$modalInstance,tariff,user,currentClientRole){
-	console.log('ActivateTariffPrivateController loaded!');
+.controller('TariffsActivateTariffController', function($scope,$http,$modalInstance,tariff,user,currentClientRole){
+	console.log('TariffsActivateTariffController loaded!');
 	$scope.tariff = tariff;
 	$scope.user = user;
 	$scope.currentClientRole = currentClientRole;
 	$scope.infoMessage = null;   
 	
-	$scope.urlsTariffsAddPrivateNg = URLS.tariffsAddPrivateNg;
+	$scope.urlsTariffsPrivateAddNg = URLS.tariffsPrivateAddNg;
 	
 	(function initialize(){
 		if ($scope.user == null)
@@ -213,7 +213,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		$scope.tariff.clientRole = $scope.currentClientRole;
 		$http({
 			method: "POST", 
-			url: $scope.urlsTariffsAddPrivateNg,
+			url: $scope.urlsTariffsPrivateAddNg,
 			data: $scope.tariff
 			  })
 		.success(function(response){
@@ -233,8 +233,8 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditTariffPrivateController', function($scope,$http,$modalInstance,currentClientRole,tariff,services){
-	console.log('EditTariffPrivateController loaded!');
+.controller('TariffsEditTariffController', function($scope,$http,$modalInstance,currentClientRole,tariff,services){
+	console.log('TariffsEditTariffController loaded!');
 	$scope.tariff = tariff;
 	$scope.services = services;
 	$scope.tariff.edited = false;
@@ -328,6 +328,12 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
+
+
+
+
+
+
 .controller('TariffsPanelController', function($scope,$http,$modal){
 	console.log('TariffsPanelController loaded!');
 	
@@ -349,16 +355,12 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	
 	$scope.urlsServicesCalculatorGetNg = URLS.servicesCalculatorGetNg;
 	$scope.urlsRolesGetClientRolesNg = URLS.rolesGetClientRolesNg;
-	$scope.urlsTariffsPanelGetPublicNg = URLS.tariffsPanelGetPublicNg;
-	$scope.urlsTariffsPanelActivatePrivateNg = URLS.tariffsPanelActivatePrivateNg;
+	$scope.urlsTariffsPrivateActivateNg = URLS.tariffsPrivateActivateNg;
 	
 	$scope.urlsTariffsNg = URLS.tariffsNg;
 	$scope.urlsTariffsCountNg = URLS.tariffsCountNg;
 	$scope.urlsTariffsRemoveNg = URLS.tariffsRemoveNg;
 	$scope.urlsUsersGetClientsNg = URLS.usersGetClientsNg;
-	
-	$scope.publicTariffsColapsed = true;
-	$scope.activatingTariffsColapsed = true;
 	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
@@ -483,10 +485,10 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	    $scope.openedTo = true;
 	};
 	
-	$scope.addTariff = function(){
+	$scope.addTariffPublic = function(){
 		var modalInstance = $modal.open({
-		      templateUrl: 'addTariff.html',
-		      controller: 'AddTariffPublicController',
+		      templateUrl: 'TariffsPanelAddTariffPublic.html',
+		      controller: 'TariffsPanelAddTariffPublicController',
 		      backdrop: "static",
 		      size: 'lg',
 		      resolve: {
@@ -502,10 +504,10 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		});
 	}
 	
-	$scope.editTariff = function(tariff){
+	$scope.editTariffPublic = function(tariff){
 		var modalInstance = $modal.open({
-		      templateUrl: 'editTariff.html',
-		      controller: 'EditTariffPublicController',
+		      templateUrl: 'TariffsPanelEditTariffPublic.html',
+		      controller: 'TariffsPanelEditTariffPublicController',
 		      backdrop: "static",
 		      size: 'lg',
 		      resolve: {
@@ -524,8 +526,8 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	
 	$scope.editTariffPrivate = function(tariff){
 		var modalInstance = $modal.open({
-		      templateUrl: 'editTariffPrivate.html',
-		      controller: 'EditTariffPrivatePanelController',
+		      templateUrl: 'TariffsPanelEditTariffPrivate.html',
+		      controller: 'TariffsPanelEditTariffPrivateController',
 		      backdrop: "static",
 		      size: 'lg',
 		      resolve: {
@@ -582,7 +584,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		var activate = confirm("Дійсно бажаєте активувати: " + tariff.name + " ?");
 		if (!activate) return;
 		
-		var url = $scope.urlsTariffsPanelActivatePrivateNg.replace('0', tariff.id);
+		var url = $scope.urlsTariffsPrivateActivateNg.replace('0', tariff.id);
 		
 		$http({
 			method: "GET", 
@@ -597,10 +599,10 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		});
 	}
 })
-.controller('AddTariffPublicController', function($scope,$http,$modalInstance,services,clientRoles){
-	console.log('AddTariffPublicController loaded!');
+.controller('TariffsPanelAddTariffPublicController', function($scope,$http,$modalInstance,services,clientRoles){
+	console.log('TariffsPanelAddTariffPublicController loaded!');
 	
-	$scope.urlsTariffsPanelAddPublicNg = URLS.tariffsPanelAddPublicNg;
+	$scope.urlsTariffsPublicAddNg = URLS.tariffsPublicAddNg;
 	
 	$scope.services = services;
 	$scope.clientRoles = clientRoles;
@@ -662,7 +664,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 		
 		$http({
 			method: "POST", 
-			url: $scope.urlsTariffsPanelAddPublicNg,
+			url: $scope.urlsTariffsPublicAddNg,
 			data: $scope.tariff
 			  })
 		.success(function(response){
@@ -684,10 +686,10 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditTariffPublicController', function($scope,$http,$modalInstance,tariff,services,clientRoles){
-	console.log('EditTariffPublicController loaded!');
+.controller('TariffsPanelEditTariffPublicController', function($scope,$http,$modalInstance,tariff,services,clientRoles){
+	console.log('TariffsPanelEditTariffPublicController loaded!');
 	
-	$scope.urlsTariffsPanelEditPublicNg = URLS.tariffsPanelEditPublicNg;
+	$scope.urlsTariffsPublicEditNg = URLS.tariffsPublicEditNg;
 	
 	$scope.services = services;
 	$scope.clientRoles = clientRoles;
@@ -755,7 +757,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	function editTariff(){
 		console.log($scope.tariff);
 		
-		var url = $scope.urlsTariffsPanelEditPublicNg.replace('0', $scope.tariff.id);
+		var url = $scope.urlsTariffsPublicEditNg.replace('0', $scope.tariff.id);
 		
 		$http({
 			method: "POST", 
@@ -781,8 +783,8 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('EditTariffPrivatePanelController', function($scope,$http,$modalInstance,tariff){
-	console.log('EditTariffPrivatePanelController loaded!');
+.controller('TariffsPanelEditTariffPrivateController', function($scope,$http,$modalInstance,tariff){
+	console.log('TariffsPanelEditTariffPrivateController loaded!');
 	
 	$scope.tariff = tariff;
 	

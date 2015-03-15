@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ua" xmlns:fb="http://ogp.me/ns/fb#">
   <head>
-  	<title>RENOVATE | {% block title %}Layout{% endblock %}</title>
+    <title>RENOVATE | {% block title %}Layout{% endblock %}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block keywords %}{% endblock %}
     {% block description %}{% endblock %}
     <meta name="author" content="">
-    <link rel="icon" href="{{ asset('web/bundles/renovate/images/logo_renovate.png') }}">
+    <link rel="icon" href="{{ asset('web/bundles/renovate/images/logo.ico') }}">
 
     
 
@@ -325,14 +325,12 @@
   			serviceCategoriesGetAllNg: "{{ path('renovate_ng_service_categories_all') }}",
   			tariffsNg: "{{ path('renovate_ng_tariffs') }}",
   			tariffsCountNg: "{{ path('renovate_ng_tariffs_count') }}",
-  			tariffsPanelAddPublicNg: "{{ path('renovate_ng_tariffs_panel_add') }}",
-  			tariffsPanelActivatePrivateNg: "{{ path('renovate_ng_tariffs_panel_activate', {tariff_id: 0}) }}",
-  			tariffsPanelEditPublicNg: "{{ path('renovate_ng_tariffs_panel_edit', {tariff_id: 0}) }}",
-  			
-  			tariffsPrivateEditNg: "{{ path('renovate_ng_tariffs_private_edit', {tariff_id: 0}) }}",
-  			
   			tariffsRemoveNg: "{{ path('renovate_ng_tariffs_remove', {tariff_id: 0}) }}",
-  			tariffsAddPrivateNg: "{{ path('renovate_ng_tariffs_add') }}",
+  			tariffsPrivateAddNg: "{{ path('renovate_ng_tariffs_private_add') }}",
+  			tariffsPrivateActivateNg: "{{ path('renovate_ng_tariffs_private_activate', {tariff_id: 0}) }}",
+  			tariffsPrivateEditNg: "{{ path('renovate_ng_tariffs_private_edit', {tariff_id: 0}) }}",
+  			tariffsPublicAddNg: "{{ path('renovate_ng_tariffs_public_add') }}",
+  			tariffsPublicEditNg: "{{ path('renovate_ng_tariffs_public_edit', {tariff_id: 0}) }}",
   			pagesGetNg: "{{ path('renovate_ng_pages') }}",
   			pagesCountNg: "{{ path('renovate_ng_pages_count') }}",
   			pagesAddNg: "{{ path('renovate_ng_pages_add') }}",

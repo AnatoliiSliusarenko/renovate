@@ -25,8 +25,6 @@ class TariffsController extends Controller
     public function getTariffsNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
-    	 
-    	//return new Response(var_dump($request->query->all()));
     	
     	$response = new Response(json_encode(array("result" => Tariff::getTariffs($em, $request->query->all(), true))));
     	$response->headers->set('Content-Type', 'application/json');
@@ -44,6 +42,16 @@ class TariffsController extends Controller
     	return $response;
     }
     
+    public function removeTariffNgAction($tariff_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$response = new Response(json_encode(array("result" => Tariff::removeTariffById($em, $tariff_id))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
     public function addTariffPublicNgAction()
     {
     	$em = $this->getDoctrine()->getManager();
@@ -55,6 +63,20 @@ class TariffsController extends Controller
     	$response = new Response(json_encode(array("result" => $tariff->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     	
+    	return $response;
+    }
+    
+    public function editTariffPublicNgAction($tariff_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = json_decode(file_get_contents("php://input"));
+    	$parameters = (object) $data;
+    
+    	$tariff = Tariff::editTariffPublicById($em, $tariff_id, $parameters);
+    
+    	$response = new Response(json_encode(array("result" => $tariff->getInArray())));
+    	$response->headers->set('Content-Type', 'application/json');
+    
     	return $response;
     }
     
@@ -72,24 +94,14 @@ class TariffsController extends Controller
     	return $response;
     }
     
-    public function removeTariffPublicNgAction($tariff_id)
-    {
-    	$em = $this->getDoctrine()->getManager();
-    	 
-    	$response = new Response(json_encode(array("result" => Tariff::removeTariffPublicById($em, $tariff_id))));
-    	$response->headers->set('Content-Type', 'application/json');
-    	 
-    	return $response;
-    }
-    
-    public function editTariffPublicNgAction($tariff_id)
+    public function editTariffPrivateNgAction($tariff_id)
     {
     	$em = $this->getDoctrine()->getManager();
     	$data = json_decode(file_get_contents("php://input"));
     	$parameters = (object) $data;
-    	 
-    	$tariff = Tariff::editTariffPublicById($em, $tariff_id, $parameters);
-    	 
+    
+    	$tariff = Tariff::editTariffPrivateById($em, $tariff_id, $parameters);
+    
     	$response = new Response(json_encode(array("result" => $tariff->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     
@@ -101,20 +113,6 @@ class TariffsController extends Controller
     	$em = $this->getDoctrine()->getManager();
     
     	$response = new Response(json_encode(array("result" => Tariff::activateTariffPrivateById($em, $tariff_id))));
-    	$response->headers->set('Content-Type', 'application/json');
-    
-    	return $response;
-    }
-    
-    public function editTariffPrivateNgAction($tariff_id)
-    {
-    	$em = $this->getDoctrine()->getManager();
-    	$data = json_decode(file_get_contents("php://input"));
-    	$parameters = (object) $data;
-    
-    	$tariff = Tariff::editTariffPrivateById($em, $tariff_id, $parameters);
-    
-    	$response = new Response(json_encode(array("result" => $tariff->getInArray())));
     	$response->headers->set('Content-Type', 'application/json');
     
     	return $response;

@@ -17,13 +17,15 @@
 	<div class="col-md-12">
 		<button class="btn btn-default" ng-class="{active: publicTariffsColapsed}" ng-click="publicTariffsColapsed = !publicTariffsColapsed">Види тарифів</button>
 		<hr>
-		<div collapse="!publicTariffsColapsed">
+		<div collapse="publicTariffsColapsed">
 			<div class="well well-lg">
+				{% if is_granted('ROLE_ADMIN') %}
 				<div class="row">
 					<div class="col-md-12">
-						<button ng-click="addTariff()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+						<button ng-click="addTariffPublic()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
 					</div>
 				</div>
+				{% endif %}
 				<div class="row">
 					<div class="col-md-12">
 						<table class="table table-hover table-mobile">
@@ -49,7 +51,7 @@
 						          <td>[[tariff.discount*100]] %</td>
 						          <td>[[tariff.page]]</td>
 						          <td>[[tariff.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
-						          <td><button ng-click="removeTariffPublic(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariff(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+						          <td>{% if is_granted('ROLE_ADMIN') %}<button ng-click="removeTariffPublic(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button>{% endif %}<button ng-click="editTariffPublic(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 						        </tr>
 			      			</tbody>
     					</table>
@@ -61,7 +63,7 @@
 	<div class="col-md-12">
 		<button class="btn btn-default" ng-class="{active: activatingTariffsColapsed}" ng-click="activatingTariffsColapsed = !activatingTariffsColapsed">Тарифи клієнтів</button>
 		<hr>
-		<div collapse="!activatingTariffsColapsed">
+		<div collapse="activatingTariffsColapsed">
 			<div class="well well-lg">
 				<div class="row">
 					<div class="col-md-12">
@@ -150,7 +152,7 @@
 						          <td><span ng-show="tariff.active" class="label label-success"><span class="glyphicon glyphicon-ok-sign"></span></span><span ng-show="!tariff.active" class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span></span></td>
 						          <td>[[tariff.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 						          <td><button ng-show="!tariff.active" ng-click="activateTariffPrivate(tariff)" type="button" class="close pull-left"><span class="glyphicon glyphicon-ok-sign"></span></button>[[tariff.activated | date:"dd.MM.yyyy HH:mm:ss"]]</td>
-						          <td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+						          <td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button>{% if is_granted('ROLE_ADMIN') %}<button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button>{% endif %}</td>
 						        </tr>
 			      			</tbody>
     					</table>
@@ -165,7 +167,7 @@
 		</div>
 	</div>
 </div>
-<script type="text/ng-template" id="addTariff.html">
+<script type="text/ng-template" id="TariffsPanelAddTariffPublic.html">
         <div class="modal-header">
             <h3 class="modal-title">Додати тариф...</h3>
         </div>
@@ -266,7 +268,7 @@
             <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
         </div>
     </script>
-    <script type="text/ng-template" id="editTariff.html">
+    <script type="text/ng-template" id="TariffsPanelEditTariffPublic.html">
         <div class="modal-header">
             <h3 class="modal-title">Редагувати тариф...</h3>
         </div>
@@ -367,7 +369,7 @@
             <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
         </div>
     </script>
-    <script type="text/ng-template" id="editTariffPrivate.html">
+    <script type="text/ng-template" id="TariffsPanelEditTariffPrivate.html">
         <div class="modal-header">
             <h3 class="modal-title">Редагувати тариф...</h3>
         </div>
