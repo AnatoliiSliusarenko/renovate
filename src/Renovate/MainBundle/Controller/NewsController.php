@@ -30,6 +30,8 @@ class NewsController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$news = $em->getRepository("RenovateMainBundle:News")->findOneByNameTranslit($news_name_translit);
     	
+    	if ($news == NULL) return $this->redirect($this->generateUrl('renovate_main_homepage'));
+    	
     	$parameters = array("news" => $news);
     	
     	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());

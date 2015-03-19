@@ -504,6 +504,14 @@ renovate_ng_price_categories_remove:
     path: /ng/price-categories/remove/{priceCategory_id}
     defaults: { _controller: RenovateMainBundle:PriceCategories:removePriceCategoryNg}
     
+renovate_payments:
+    path: /payments
+    defaults: { _controller: RenovateMainBundle:Payments:index}
+    
+renovate_payments_import:
+    path: /payments/import
+    defaults: { _controller: RenovateMainBundle:Payments:import}
+    
 renovate_ng_payments_my:
     path: /ng/payments/my
     defaults: { _controller: RenovateMainBundle:Payments:getMyPaymentsNg}

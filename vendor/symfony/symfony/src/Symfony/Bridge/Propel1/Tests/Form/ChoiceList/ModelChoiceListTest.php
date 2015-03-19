@@ -22,19 +22,6 @@ class ModelChoiceListTest extends Propel1TestCase
 {
     const ITEM_CLASS = '\Symfony\Bridge\Propel1\Tests\Fixtures\Item';
 
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-
-        if (!class_exists('Symfony\Component\Form\Form')) {
-            self::markTestSkipped('The "Form" component is not available');
-        }
-
-        if (!class_exists('Symfony\Component\PropertyAccess\PropertyAccessor')) {
-            self::markTestSkipped('The "PropertyAccessor" component is not available');
-        }
-    }
-
     protected function setUp()
     {
         ItemQuery::$result = array();
@@ -249,7 +236,7 @@ class ModelChoiceListTest extends Propel1TestCase
      */
     public function testEmptyClass()
     {
-        $choiceList = new ModelChoiceList('');
+        new ModelChoiceList('');
     }
 
     /**
@@ -257,6 +244,6 @@ class ModelChoiceListTest extends Propel1TestCase
      */
     public function testInvalidClass()
     {
-        $choiceList = new ModelChoiceList('Foo\Bar\DoesNotExistClass');
+        new ModelChoiceList('Foo\Bar\DoesNotExistClass');
     }
 }

@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * A console command for retrieving information about services
+ * A console command for retrieving information about services.
  *
  * @author Ryan Weaver <ryan@thatsquality.com>
  */
@@ -59,7 +59,7 @@ To get specific information about a service, specify its name:
   <info>php %command.full_name% validator</info>
 
 By default, private services are hidden. You can display all services by
-using the --show-private flag:
+using the <info>--show-private</info> flag:
 
   <info>php %command.full_name% --show-private</info>
 
@@ -67,15 +67,15 @@ Use the --tags option to display tagged <comment>public</comment> services group
 
   <info>php %command.full_name% --tags</info>
 
-Find all services with a specific tag by specifying the tag name with the --tag option:
+Find all services with a specific tag by specifying the tag name with the <info>--tag</info> option:
 
   <info>php %command.full_name% --tag=form.type</info>
 
-Use the --parameters option to display all parameters:
+Use the <info>--parameters</info> option to display all parameters:
 
   <info>php %command.full_name% --parameters</info>
 
-Display a specific parameter by specifying his name with the --parameter option:
+Display a specific parameter by specifying his name with the <info>--parameter</info> option:
 
   <info>php %command.full_name% --parameter=kernel.debug</info>
 EOF
@@ -269,7 +269,7 @@ EOF
     }
 
     /**
-     * Renders detailed service information about one service
+     * Renders detailed service information about one service.
      */
     protected function outputService(OutputInterface $output, $serviceId)
     {
@@ -305,7 +305,7 @@ EOF
             $synthetic = $definition->isSynthetic() ? 'yes' : 'no';
             $output->writeln(sprintf('<comment>Synthetic</comment>        %s', $synthetic));
 
-            $file = $definition->getFile() ? $definition->getFile() : '-';
+            $file = $definition->getFile() ?: '-';
             $output->writeln(sprintf('<comment>Required File</comment>    %s', $file));
         } elseif ($definition instanceof Alias) {
             $alias = $definition;
@@ -409,7 +409,7 @@ EOF
     }
 
     /**
-     * Renders list of tagged services grouped by tag
+     * Renders list of tagged services grouped by tag.
      *
      * @param OutputInterface $output
      * @param bool            $showPrivate

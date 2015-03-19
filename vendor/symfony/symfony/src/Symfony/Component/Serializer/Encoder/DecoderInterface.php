@@ -12,7 +12,7 @@
 namespace Symfony\Component\Serializer\Encoder;
 
 /**
- * Defines the interface of decoders
+ * Defines the interface of decoders.
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -21,7 +21,7 @@ interface DecoderInterface
     /**
      * Decodes a string into PHP data.
      *
-     * @param scalar $data    Data to decode
+     * @param string $data    Data to decode
      * @param string $format  Format name
      * @param array  $context options that decoders have access to.
      *

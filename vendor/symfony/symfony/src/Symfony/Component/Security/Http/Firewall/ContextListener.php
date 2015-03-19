@@ -114,6 +114,9 @@ class ContextListener implements ListenerInterface
             return;
         }
 
+        $this->dispatcher->removeListener(KernelEvents::RESPONSE, array($this, 'onKernelResponse'));
+        $this->registered = false;
+
         if (null !== $this->logger) {
             $this->logger->debug('Write SecurityContext in the session');
         }
@@ -135,7 +138,7 @@ class ContextListener implements ListenerInterface
     }
 
     /**
-     * Refreshes the user by reloading it from the user provider
+     * Refreshes the user by reloading it from the user provider.
      *
      * @param TokenInterface $token
      *

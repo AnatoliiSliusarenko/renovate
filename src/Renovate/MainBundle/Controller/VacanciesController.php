@@ -30,6 +30,8 @@ class VacanciesController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$vacancy = $em->getRepository("RenovateMainBundle:Vacancy")->findOneByNameTranslit($vacancy_name_translit);
     	 
+    	if ($vacancy == NULL) return $this->redirect($this->generateUrl('renovate_main_homepage'));
+
     	$parameters = array("vacancy" => $vacancy);
     	 
     	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());

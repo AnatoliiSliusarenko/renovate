@@ -12,7 +12,6 @@
 namespace Symfony\Component\Security\Tests\Acl\Domain;
 
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -510,12 +509,5 @@ class AclTest extends \PHPUnit_Framework_TestCase
     protected function getAcl()
     {
         return new Acl(1, new ObjectIdentity(1, 'foo'), new PermissionGrantingStrategy(), array(), true);
-    }
-
-    protected function setUp()
-    {
-        if (!class_exists('Doctrine\DBAL\DriverManager')) {
-            $this->markTestSkipped('The Doctrine2 DBAL is required for this test');
-        }
     }
 }

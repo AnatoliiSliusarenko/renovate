@@ -12,7 +12,6 @@
 namespace Symfony\Component\Console\Helper;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use InvalidArgumentException;
 
 /**
  * Provides helpers to display table output.
@@ -79,7 +78,7 @@ class TableHelper extends Helper
      *
      * @return TableHelper
      *
-     * @throws InvalidArgumentException when the table layout is not known
+     * @throws \InvalidArgumentException when the table layout is not known
      */
     public function setLayout($layout)
     {
@@ -111,8 +110,7 @@ class TableHelper extends Helper
                 break;
 
             default:
-                throw new InvalidArgumentException(sprintf('Invalid table layout "%s".', $layout));
-                break;
+                throw new \InvalidArgumentException(sprintf('Invalid table layout "%s".', $layout));
         };
 
         return $this;
@@ -145,8 +143,9 @@ class TableHelper extends Helper
     {
         $this->rows[] = array_values($row);
 
-        $keys = array_keys($this->rows);
-        $rowKey = array_pop($keys);
+        end($this->rows);
+        $rowKey = key($this->rows);
+        reset($this->rows);
 
         foreach ($row as $key => $cellValue) {
             if (!strstr($cellValue, "\n")) {
@@ -387,8 +386,8 @@ class TableHelper extends Helper
         $width = $this->getColumnWidth($column);
 
         // str_pad won't work properly with multi-byte strings, we need to fix the padding
-        if (function_exists('mb_strlen') && false !== $encoding = mb_detect_encoding($cell)) {
-            $width += strlen($cell) - mb_strlen($cell, $encoding);
+        if (function_exists('mb_strwidth') && false !== $encoding = mb_detect_encoding($cell)) {
+            $width += strlen($cell) - mb_strwidth($cell, $encoding);
         }
 
         $width += $this->strlen($cell) - $this->computeLengthWithoutDecoration($cell);

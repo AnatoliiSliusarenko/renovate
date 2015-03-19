@@ -293,4 +293,42 @@ class Payment
     	 
     	return $total;
     }
+    
+    public static function import($em, $phpexcel, $document)
+    {
+    	$result = false;
+    	if ($document->isExcel()){
+	    	$url = $document->getPath();
+	    	
+	    	$phpExcelObject = $phpexcel->createPHPExcelObject($url);
+	    	$objWorksheet = $phpExcelObject->getActiveSheet();
+	    	$highestRow = $objWorksheet->getHighestRow();
+	    	
+	    	for ($row = 1; $row <= $highestRow; ++$row) {
+	    		$user = $em->getRepository("RenovateMainBundle:User")->findOneByUsername($objWorksheet->getCellByColumnAndRow(5, $row)->getValue());
+	    		if ($user != NULL){
+	    			$payment = new Payment();
+	    			$payment->setUserid($user->getId());
+	    			$payment->setUser($user);
+	    			$payment->setName($objWorksheet->getCellByColumnAndRow(1, $row)->getValue());
+	    			$payment->setAmount($objWorksheet->getCellByColumnAndRow(2, $row)->getValue());
+	    			$payment->setPersonalBalance($objWorksheet->getCellByColumnAndRow(3, $row)->getValue());
+	    			$payment->setBuildingBalance($objWorksheet->getCellByColumnAndRow(4, $row)->getValue());
+	    			
+	    			$date = new \DateTime();
+	    			$date->setTimestamp(\PHPExcel_Shared_Date::ExcelToPHP($objWorksheet->getCellByColumnAndRow(0, $row)->getValue()));
+	    			$payment->setCreated($date);
+	    			
+	    			$em->persist($payment);
+	    			$em->flush();
+	    		}
+	    	}
+	    	
+	    	$result = true;
+    	}
+    	
+    	$document->unlink();
+    	
+    	return $result;
+    }
 }

@@ -30,6 +30,8 @@ class ResultsController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$result = $em->getRepository("RenovateMainBundle:Result")->findOneByNameTranslit($result_name_translit);
     	
+    	if ($result == NULL) return $this->redirect($this->generateUrl('renovate_main_homepage'));
+    	
     	$parameters = array("result" => $result);
     	
     	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());

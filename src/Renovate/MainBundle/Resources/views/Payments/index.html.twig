@@ -1,0 +1,35 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}Імпорт платежів{% endblock %}
+
+{% block head %}
+<link href="{{ asset('web/bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li class="active">Імпорт платежів</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div ng-controller="ImportPaymentsController">
+	<div class="row">
+		<div class="col-md-12">
+			<h3><strong>Дозволені формати:</strong> Microsoft Excel 97/2000/XP/2003 (*.xls)</h3>
+			<input type="file" name="file_upload" id="file_upload" />
+			<alert ng-repeat="alert in alerts" type="[[alert.type]]" close="closeAlert($index)">[[alert.msg]]</alert>
+		</div>
+	</div>
+</div>
+{% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/angularPaymentsController.js') }}"></script>
+<script>
+var TIMESTAMP = '{{ timestamp }}';
+var TOKEN = '{{ token }}';
+</script>
+{% endblock %}

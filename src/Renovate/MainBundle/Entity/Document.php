@@ -671,7 +671,7 @@ class Document
     	return $this->partners;
     }
     
-    private function unlink()
+    public function unlink()
     {
     	return unlink($this->getPath());
     }
@@ -684,6 +684,18 @@ class Document
     protected function getUploadDir()
     {
     	return 'web/bundles/renovate/documents';
+    }
+    
+    public function isExcel()
+    {
+    	return $this->getExtension() === 'xls';
+    }
+    
+    public function getExtension()
+    {
+    	$pathinfo = pathinfo($this->getName());
+    	
+    	return $pathinfo['extension'];
     }
     
     public function getAbsolutePath()

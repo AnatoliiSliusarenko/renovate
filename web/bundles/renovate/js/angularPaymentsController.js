@@ -62,4 +62,30 @@ Renovate.controller('PaymentsController', function($scope,$http,$modal){
 			}
 		})
 	}
+})
+.controller('ImportPaymentsController', function($scope,$http,$modal){
+	console.log('ImportPaymentsController loaded!');
+	$scope.alerts = [];
+	
+	$scope.closeAlert = function(index) {
+	    $scope.alerts.splice(index, 1);
+	};
+	
+    $('#file_upload').uploadify({
+    	'fileSizeLimit': 0,
+    	'fileType'	: '*.xls',
+    	'progressData' : 'speed',
+    	'formData'     : {
+			'timestamp' : TIMESTAMP,
+			'token'     : TOKEN
+		},
+    	'buttonText' : 'Завантажити...',
+        'swf'      : URLS.uploadifySWF,
+        'uploader' : URLS.paymentsImport,
+        'onUploadSuccess' : function(file, data, response) {
+            console.log('The file ' + file.name + ' was successfully uploaded with a response: ' + response + ' : ' + data);
+            if (data == 'true') $scope.alerts.push({msg: 'Файл '+file.name+' успішно імпортовано.', type: 'success'});
+            if (data == 'false') $scope.alerts.push({msg: 'Файл '+file.name+' не імпортовано.', type: 'danger'});
+        }
+    });
 });

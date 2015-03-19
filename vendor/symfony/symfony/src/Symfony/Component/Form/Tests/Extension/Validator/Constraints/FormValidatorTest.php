@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Validator\Constraints\Form;
 use Symfony\Component\Form\Extension\Validator\Constraints\FormValidator;
 use Symfony\Component\Form\SubmitButtonBuilder;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest;
@@ -361,7 +360,7 @@ class FormValidatorTest extends AbstractConstraintValidatorTest
         $object = $this->getMock('\stdClass');
         $options = array('validation_groups' => function (FormInterface $form) {
             return array('group1', 'group2');
-        },);
+        });
         $form = $this->getBuilder('name', '\stdClass', $options)
             ->setData($object)
             ->getForm();
@@ -552,7 +551,7 @@ class FormValidatorTest extends AbstractConstraintValidatorTest
     /**
      * Access has to be public, as this method is called via callback array
      * in {@link testValidateFormDataCanHandleCallbackValidationGroups()}
-     * and {@link testValidateFormDataUsesInheritedCallbackValidationGroup()}
+     * and {@link testValidateFormDataUsesInheritedCallbackValidationGroup()}.
      */
     public function getValidationGroups(FormInterface $form)
     {

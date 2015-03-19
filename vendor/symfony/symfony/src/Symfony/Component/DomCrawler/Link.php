@@ -141,7 +141,7 @@ class Link
     }
 
     /**
-     * Returns the canonicalized URI path (see RFC 3986, section 5.2.4)
+     * Returns the canonicalized URI path (see RFC 3986, section 5.2.4).
      *
      * @param string $path URI path
      *
@@ -154,7 +154,7 @@ class Link
         }
 
         if ('.' === substr($path, -1)) {
-            $path = $path.'/';
+            $path .= '/';
         }
 
         $output = array();

@@ -50,7 +50,7 @@ the subdirectories bin/ and lib/.
 For running this script, the intl extension must be loaded and all vendors
 must have been installed through composer:
 
-composer install --dev
+composer install
 
 MESSAGE
     );
@@ -75,7 +75,6 @@ foreach ($urls as $urlVersion => $url) {
     $maxVersion = IcuVersion::compare($maxVersion, $urlVersion, '<')
         ? $urlVersion
         : $maxVersion;
-
 
     echo "  $urlVersion\n";
 }

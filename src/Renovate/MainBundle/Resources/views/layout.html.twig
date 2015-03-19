@@ -70,6 +70,9 @@
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_WORKER')) %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_repairs' %}class="active"{% endif %}><a href="{{ path('renovate_repairs') }}">Ремонтні роботи</a></li>
 	                {% endif %}
+	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_BOOKKEEPER')) %}
+	                <li {% if app.request.attributes.get('_route') == 'renovate_payments' %}class="active"{% endif %}><a href="{{ path('renovate_payments') }}">Імпорт платежів</a></li>
+	                {% endif %}
 	                <li class="divider"></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_aboutme' %}class="active"{% endif %}><a href="{{ path('renovate_aboutme') }}">Про мене</a></li>
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
@@ -199,26 +202,6 @@
 		</div>
     </div><!-- /.container -->
 	<div class="footer-background"><img src="{{ asset('web/bundles/renovate/images/footer_renovate.png') }}"/></div>
-
-	<!-- Start SiteHeart code -->
-	<script>
-	(function(){
-	var widget_id = 758617;
-	_shcp =[{widget_id : widget_id}];
-	var lang =(navigator.language || navigator.systemLanguage 
-	|| navigator.userLanguage ||"en")
-	.substr(0,2).toLowerCase();
-	var url ="widget.siteheart.com/widget/sh/"+ widget_id +"/"+ lang +"/widget.js";
-	var hcc = document.createElement("script");
-	hcc.type ="text/javascript";
-	hcc.async =true;
-	hcc.src =("https:"== document.location.protocol ?"https":"http")
-	+"://"+ url;
-	var s = document.getElementsByTagName("script")[0];
-	s.parentNode.insertBefore(hcc, s.nextSibling);
-	})();
-	</script>
-	<!-- End SiteHeart code -->
 
 	<!-- Google Analitics -->
 	<script>
@@ -364,6 +347,7 @@
   			paymentsUserGetCountNg: "{{ path('renovate_ng_payments_user_count', {user_id: 0}) }}",
   			paymentsMyGetNg: "{{ path('renovate_ng_payments_my') }}",
   			paymentsMyGetCountNg: "{{ path('renovate_ng_payments_my_count') }}",
+  			paymentsImport: "{{ path('renovate_payments_import') }}",
   	}
   	</script>
   	<script>

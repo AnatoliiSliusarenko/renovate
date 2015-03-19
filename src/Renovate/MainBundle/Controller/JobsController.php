@@ -30,6 +30,8 @@ class JobsController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$job = $em->getRepository("RenovateMainBundle:Job")->findOneByNameTranslit($job_name_translit);
     	
+    	if ($job == NULL) return $this->redirect($this->generateUrl('renovate_main_homepage'));
+    	
     	$parameters = array("job" => $job);
     	
     	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());

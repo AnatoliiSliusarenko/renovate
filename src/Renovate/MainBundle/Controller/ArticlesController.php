@@ -30,6 +30,8 @@ class ArticlesController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$article = $em->getRepository("RenovateMainBundle:Article")->findOneByNameTranslit($article_name_translit);
     	
+    	if ($article == NULL) return $this->redirect($this->generateUrl('renovate_main_homepage'));
+    	
     	$parameters = array("article" => $article);
     	
     	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());

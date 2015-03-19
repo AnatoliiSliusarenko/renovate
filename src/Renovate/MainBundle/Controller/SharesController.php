@@ -30,6 +30,8 @@ class SharesController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$share = $em->getRepository("RenovateMainBundle:Share")->findOneByNameTranslit($share_name_translit);
     	
+    	if ($share == NULL) return $this->redirect($this->generateUrl('renovate_main_homepage'));
+    	
     	$parameters = array("share" => $share);
     	
     	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());

@@ -32,10 +32,6 @@ class AclProviderBenchmarkTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        if (!class_exists('Doctrine\DBAL\DriverManager')) {
-            $this->markTestSkipped('The "Doctrine DBAL" library is not available');
-        }
-
         try {
             $this->con = DriverManager::getConnection(array(
                 'driver' => 'pdo_mysql',
@@ -126,7 +122,7 @@ class AclProviderBenchmarkTest extends \PHPUnit_Framework_TestCase
 
         if ($id === 1000 || ($id < 1500 && rand(0, 1))) {
             $this->insertClassStmt->execute(array($id, $this->getRandomString(rand(20, 100), 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\\_')));
-            $id += 1;
+            ++$id;
 
             return $id-1;
         } else {
@@ -152,7 +148,7 @@ class AclProviderBenchmarkTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->generateAces($classId, $id);
-        $id += 1;
+        ++$id;
 
         return $id-1;
     }
@@ -167,7 +163,7 @@ class AclProviderBenchmarkTest extends \PHPUnit_Framework_TestCase
                 $this->getRandomString(rand(5, 30)),
                 rand(0, 1),
             ));
-            $id += 1;
+            ++$id;
 
             return $id-1;
         } else {
@@ -219,7 +215,7 @@ class AclProviderBenchmarkTest extends \PHPUnit_Framework_TestCase
                 rand(0, 1),
             ));
 
-            $id += 1;
+            ++$id;
         }
     }
 
