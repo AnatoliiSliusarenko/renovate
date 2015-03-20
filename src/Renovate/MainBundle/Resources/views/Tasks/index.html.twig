@@ -35,7 +35,7 @@
 				</div>
 			  	<div class="form-group">
 				    <label for="workers">Виконавці</label>
-				    <select id="workers" ng-options="user.id as (user.name+' '+user.surname+'('+user.username+')') for user in users" class="form-control" ng-model="filter.userid">
+				    <select id="workers" ng-options="user.id as (user.surname+' '+user.name+'('+user.username+')') for user in users" class="form-control" ng-model="filter.userid">
 						<option value="">усі</option>
 					</select>
 			  	</div>

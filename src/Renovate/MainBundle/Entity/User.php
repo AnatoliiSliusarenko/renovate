@@ -595,9 +595,14 @@ class User implements UserInterface,\Serializable
     	return $this->payments;
     }
     
-    public function getBalance()
+    public function getPersonalBalance()
     {
     	return (count($this->getPayments()) > 0) ? $this->getPayments()->first()->getPersonalBalance() : 0;	
+    }
+    
+    public function getBuildingBalance()
+    {
+    	return (count($this->getPayments()) > 0) ? $this->getPayments()->first()->getBuildingBalance() : 0;
     }
     
     public function getInArray()
@@ -754,7 +759,30 @@ class User implements UserInterface,\Serializable
     	$qb->select('u')
     	->join("u.roles", "r")
     	->where($qb->expr()->in('r.id', $clientRolesIds))
-    	->orderBy('u.registered', 'DESC');
+    	->orderBy('u.surname');
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($user){
+    			return $user->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
+    
+    public static function getWorkforce($em, $inArray = false)
+    {
+    	$workforceRoles = Role::getWorkforceRoles($em);
+    	$workforceRolesIds = array_map(function($role){return $role->getId();}, $workforceRoles);
+    	 
+    	$qb = $em->getRepository("RenovateMainBundle:User")
+    	->createQueryBuilder('u');
+    
+    	$qb->select('u')
+    	->join("u.roles", "r")
+    	->where($qb->expr()->in('r.id', $workforceRolesIds))
+    	->orderBy('u.surname');
     
     	$result = $qb->getQuery()->getResult();
     

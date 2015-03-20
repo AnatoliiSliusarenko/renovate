@@ -80,6 +80,10 @@ renovate_ng_users_get_clients:
     path: /ng/users/clients
     defaults: { _controller: RenovateMainBundle:Users:getClientsNg}
     
+renovate_ng_users_get_workforce:
+    path: /ng/users/workforce
+    defaults: { _controller: RenovateMainBundle:Users:getWorkforceNg}
+    
 renovate_ng_users_get_workers:
     path: /ng/users/workers
     defaults: { _controller: RenovateMainBundle:Users:getWorkersNg}

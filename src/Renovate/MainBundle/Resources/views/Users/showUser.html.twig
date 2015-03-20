@@ -13,25 +13,37 @@
  	{% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR'))  %}
  	<li><a href="{{path('renovate_users')}}">Менеджмент користувачів</a></li>
  	{% endif %}
- 	<li class="active">{{user.name ~ ' ' ~ user.surname}}</li>
+ 	<li class="active">{{user.surname~' '~user.name~' '~user.patronymic}}</li>
 </ol>
 {% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="col-md-12">
-		<ul>
-		  <li><strong>П.І.П.:</strong> {{user.surname~' '~user.name~' '~user.patronymic}}</li>
-		  <li><strong>Логін/№ договору:</strong> {{user.username}}</li>
-		  <li><strong>Дата реєстрації:</strong> {{user.registered|date("d.m.Y")}}</li>
-		  <li><strong>Номер телефону:</strong> {{user.mobilephone}}</li>
-		  <li><strong>E-Mail:</strong> {{user.email}}</li>
-		  <li><strong>Адреса:</strong> {{user.address}}</li>
-		  <li><strong>Адміністративна одиниця:</strong> {{user.adminUnit}}</li>
-		  <li><strong>Керівний орган:</strong> {{user.owner}}</li>
-		  <li><strong>Баланс:</strong> 0 грн.</li>
-		  <li><strong>Ролі:</strong> {% for role in user.getRoles() %}{{role.getName()}}{{(loop.last) ? '' : ', '}}{% endfor %}</li>
-		</ul>	
+		<table class="table table-mobile user-info">
+      		<tbody>
+		        <tr>
+		          <td>
+				  	<ul>
+					  <li><strong>Ваш особистий баланс</strong><br><h1>{% if user.getPersonalBalance()>0 %}<span class="label label-success">{{user.getPersonalBalance()}} грн.</span>{%else%}<span class="label label-danger">{{user.getPersonalBalance()}} грн.</span>{%endif%}</h1></li>
+					  <li><strong>Баланс Вашого будинку</strong><br><h1>{% if user.getBuildingBalance()>0 %}<span class="label label-success">{{user.getBuildingBalance()}} грн.</span>{%else%}<span class="label label-danger">{{user.getBuildingBalance()}} грн.</span>{%endif%}</h1></li>
+					</ul>
+				  </td>
+		          <td>
+				  	<ul>
+					  <li><strong>П.І.П.:</strong> {{user.surname~' '~user.name~' '~user.patronymic}}</li>
+					  <li><strong>Логін/№ договору:</strong> {{user.username}}</li>
+					  <li><strong>Дата реєстрації:</strong> {{user.registered|date("d.m.Y")}}</li>
+					  <li><strong>Номер телефону:</strong> {{user.mobilephone}}</li>
+					  <li><strong>E-Mail:</strong> {{user.email}}</li>
+					  <li><strong>Адреса:</strong> {{user.address}}</li>
+					  <li><strong>Адміністративна одиниця:</strong> {{user.adminUnit}}</li>
+					  <li><strong>Керівний орган:</strong> {{user.owner}}</li>
+					</ul>
+				  </td>
+		        </tr>
+      		</tbody>
+    	</table>
 	</div>
 </div>
 <hr>
@@ -71,9 +83,9 @@
 			          <th>#</th>
 			          <th>Дата операції</th>
 			          <th>Назва операції</th>
-			          <th>Сума операції</th>
-			          <th>Особистий баланс</th>
-			          <th>Баланс будинку</th>
+			          <th>Сума операції, грн.</th>
+			          <th>Особистий баланс, грн.</th>
+			          <th>Баланс будинку, грн.</th>
 			        </tr>
 	      		</thead>
 	      		<tbody>
@@ -82,7 +94,7 @@
 							<div class="image center-block"></div>
 						</td>
 	     			</tr>
-			        <tr ng-repeat="payment in payments" ng-cloak>
+			        <tr ng-repeat="payment in payments" ng-class="{green: payment.amount>0, red: payment.amount<0}" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td>[[payment.created | date:"dd.MM.yyyy HH:mm:ss"]]</td>
 			          <td>[[payment.name]]</td>

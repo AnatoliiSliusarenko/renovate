@@ -129,7 +129,7 @@ class Document
      */
     private $partners;
     
-    private static $fileTypes = array('doc','docx','xls','xlsx','jpg','jpeg','gif','png','avi','pdf','mp3', 'zip','txt','xml','xps','rtf','odt','htm','html','ods');
+    private static $fileTypes = array('CSV','JPG','JPEG','GIF','PNG');
     
     private static $SALT = '767usghbe7h8#@4b32n32)_$)&N_*$)*$^@$JHN_$_$*N$@($)@*NH';
     
@@ -686,9 +686,9 @@ class Document
     	return 'web/bundles/renovate/documents';
     }
     
-    public function isExcel()
+    public function isCSV()
     {
-    	return $this->getExtension() === 'xls';
+    	return $this->getExtension() === 'csv';
     }
     
     public function getExtension()
@@ -718,7 +718,7 @@ class Document
     	 
     	$pathinfo = pathinfo($this->getName());
     	 
-    	if (in_array($pathinfo['extension'],self::$fileTypes)) {
+    	if (in_array(strtoupper($pathinfo['extension']),self::$fileTypes)) {
     		$this->getFile()->move($this->getUploadRootDir(), $this->getFile()->getClientOriginalName());
     		$this->path = $this->getWebPath();
     		$this->file = null;

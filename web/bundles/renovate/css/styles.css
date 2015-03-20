@@ -1,11 +1,22 @@
-/* Prices */
-table.prices {
+/* Prices and User Info*/
+table.prices, table.user-info {
 	border: 1px solid #ddd;
 }
 
-table.prices td, table.prices th {
+table.prices td, table.prices th, table.user-info td, table.user-info th {
 	border-right: 1px solid #ddd;
 }
+
+table.user-info ul {
+	list-style-type: none !important;
+}
+
+table.user-info h1 {
+	font-size: 32px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
 /* Seacrh */
 .media.search img {
 	width: 100%;
@@ -184,6 +195,10 @@ table {
 
 .datepicker {
 	width: 150px;
+}
+
+.datepicker .input-group .form-control{
+	z-index: 0;
 }
 /* Block Jobs */
 .jobs-slider .thumbnail a{
@@ -564,7 +579,7 @@ tfoot td.price {
 	margin-left: 15px;
 	margin-top: 3px;
 	margin-bottom: 3px;
-	margin-right: 40px;
+	margin-right: 50px;
 	height: 24px;
 	padding: 0 7px;
 	width: 63px;

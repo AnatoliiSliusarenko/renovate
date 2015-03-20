@@ -62,6 +62,16 @@ class UsersController extends Controller
     	return $response;
     }
     
+    public function getWorkforceNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$response = new Response(json_encode(array("result" => User::getWorkforce($em, true))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
     public function getUsersCountNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();

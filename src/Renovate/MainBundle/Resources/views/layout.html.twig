@@ -78,7 +78,7 @@
 	                <li><a href="{{ path('renovate_logout') }}">Вийти</a></li>
 	              </ul>
 	            </li>
-	            <li>{% if app.user.getBalance() > 0 %}<button type="button" class="btn btn-success balance">Баланс<span class="badge">{{app.user.getBalance()}} грн</span></button>{% else %}<button type="button" class="btn btn-danger balance">Баланс<span class="badge">{{app.user.getBalance()}} грн</span></button>{% endif %}</li>
+	            <li>{% if app.user.getPersonalBalance() > 0 %}<button type="button" class="btn btn-success balance">Баланс<span class="badge">{{app.user.getPersonalBalance()}} грн</span></button>{% else %}<button type="button" class="btn btn-danger balance">Баланс<span class="badge">{{app.user.getPersonalBalance()}} грн</span></button>{% endif %}</li>
 	            <li ng-controller="UserTasksController" ng-cloak>
 	            	<button ng-click="showTasks()" ng-show="tasksCount>0" type="button" class="btn btn-success settings"><i class="fa fa-bell"></i><span class="badge">[[tasksCount]]</span></button>
 	            	<script type="text/ng-template" id="tasksList.html">
@@ -247,6 +247,7 @@
   			jobsEditNg: "{{ path('renovate_ng_jobs_edit', {job_id: 0}) }}",
   			usersGetNg: "{{ path('renovate_ng_users') }}",
   			usersGetClientsNg: "{{ path('renovate_ng_users_get_clients') }}",
+  			usersGetWorkforceNg: "{{ path('renovate_ng_users_get_workforce') }}",
   			usersGetWorkersNg: "{{ path('renovate_ng_users_get_workers') }}",
   			usersCountNg: "{{ path('renovate_ng_users_count') }}",
   			usersAddNg: "{{ path('renovate_ng_users_add') }}",

@@ -292,6 +292,26 @@ class Role implements RoleInterface
     	}else return $result;
     }
     
+    public static function getWorkforceRoles($em, $inArray = false)
+    {
+    	$workforceRoles = array('ROLE_ADMIN','ROLE_USER','ROLE_EDITOR','ROLE_WORKER','ROLE_BOOKKEEPER');
+    	 
+    	$qb = $em->getRepository("RenovateMainBundle:Role")
+    	->createQueryBuilder('r');
+    
+    	$qb->select('r')
+    	->where($qb->expr()->in('r.role', $workforceRoles));
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($role){
+    			return $role->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
+    
     public static function getSimpleRoles($em, $inArray = false)
     {
     	$simpleRoles = array('ROLE_USER');

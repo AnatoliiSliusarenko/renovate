@@ -38,9 +38,8 @@ class PaymentsController extends Controller
 			
 			if ($document->upload())
 			{
-				$phpexcel = $this->get('phpexcel');
 				$em = $this->getDoctrine()->getManager();
-				return new Response(json_encode(Payment::import($em, $phpexcel, $document)));
+				return new Response(json_encode(Payment::import($em, $document)));
 			}
 			
 		}

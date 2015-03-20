@@ -12,7 +12,8 @@ Renovate.controller('TasksController', function($scope,$http,$modal){
 	$scope.urlsTasksRemoveNg = URLS.tasksRemoveNg;
 	$scope.urlsTasksApproveNg = URLS.tasksApproveNg;
 	$scope.urlsTasksDeclineNg = URLS.tasksDeclineNg;
-	$scope.urlsUsersGetNg = URLS.usersGetNg;
+	$scope.urlsUsersGetClientsNg = URLS.usersGetClientsNg;
+	$scope.urlsUsersGetWorkforceNg = URLS.usersGetWorkforceNg;
 	
 	$scope.filter = {
 			from: null,
@@ -70,17 +71,33 @@ Renovate.controller('TasksController', function($scope,$http,$modal){
 		})
 	}
 	
-	(function getUsers()
+	function getClients()
 	{	
 		$http({
 			method: "GET", 
-			url: $scope.urlsUsersGetNg
+			url: $scope.urlsUsersGetClientsNg
 			  })
 		.success(function(response){
-			console.log("users => ",response);
+			console.log("clients => ",response);
+			if (response.result)
+			{
+				$scope.users = $scope.users.concat(response.result);
+			}
+		})
+	};
+	
+	(function getWorkforce()
+	{	
+		$http({
+			method: "GET", 
+			url: $scope.urlsUsersGetWorkforceNg
+			  })
+		.success(function(response){
+			console.log("workforce => ",response);
 			if (response.result)
 			{
 				$scope.users = response.result;
+				getClients();
 			}
 		})
 	})();

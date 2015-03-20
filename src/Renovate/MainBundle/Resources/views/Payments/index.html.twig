@@ -17,7 +17,7 @@
 <div ng-controller="ImportPaymentsController">
 	<div class="row">
 		<div class="col-md-12">
-			<h3><strong>Дозволені формати:</strong> Microsoft Excel 97/2000/XP/2003 (*.xls)</h3>
+			<h3><strong>Дозволені формати:</strong> Comma Separated Values (*.csv)</h3>
 			<input type="file" name="file_upload" id="file_upload" />
 			<alert ng-repeat="alert in alerts" type="[[alert.type]]" close="closeAlert($index)">[[alert.msg]]</alert>
 		</div>
