@@ -172,7 +172,7 @@ Renovate.controller('ServicesController', function($scope,$http,$modal){
 	function getRolePrices(){
 		var prices = [];
 		_.map($scope.clientRoles, function(role){
-			prices.push({roleid: role.id, value: 0.01});
+			prices.push({roleid: role.id, value: 0.000001});
 		});
 		return prices;
 	}
@@ -339,7 +339,7 @@ Renovate.controller('ServicesController', function($scope,$http,$modal){
 	function getRolePrices(){
 		var prices = [];
 		_.map($scope.clientRoles, function(role){
-			prices.push({roleid: role.id, value: 0.01});
+			prices.push({roleid: role.id, value: 0.000001});
 		});
 		return prices;
 	};

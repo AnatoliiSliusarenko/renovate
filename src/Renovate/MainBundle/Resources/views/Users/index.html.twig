@@ -54,8 +54,8 @@
 			        <tr>
 			          <th>#</th>
 			          <th>Логін</th>
-			          <th>Ім’я</th>
 			          <th>Прізвище</th>
+			          <th>Ім’я</th>
 			          <th>По батькові</th>
 			          <th>Адміністративна одиниця</th>
 			          <th>Керівний орган</th>
@@ -73,8 +73,8 @@
 			        <tr ng-repeat="user in users" ng-cloak>
 			          <th scope="row">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
 			          <td><a href="[[user.href]]" ng-init="setItemDirectHref(user)">[[user.username]]</a></td>
-			          <td>[[user.name]]</td>
 			          <td>[[user.surname]]</td>
+			          <td>[[user.name]]</td>
 			          <td>[[user.patronymic]]</td>
 			          <td class="text-center">[[user.adminUnit]]</td>
 			          <td class="text-center">[[user.owner]]</td>

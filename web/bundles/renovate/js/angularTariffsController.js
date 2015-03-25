@@ -305,9 +305,9 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 				}
 			});
 			
-			$scope.tariff.price = suma.toFixed(2); 
+			$scope.tariff.price = suma.toFixed(6); 
 			$scope.tariff.payment = ($scope.tariff.price*$scope.tariff.squaring).toFixed(2);
-			$scope.tariff.saving = (($scope.tariff.price*$scope.tariff.squaring)*$scope.tariff.discount).toFixed(2);
+			$scope.tariff.saving = (($scope.tariff.price*$scope.tariff.squaring)*($scope.tariff.discount/100)).toFixed(2);
 	}
 	
 	(function initialization(){
@@ -634,7 +634,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 				}
 			});
 			
-			$scope.prices[i].price = suma.toFixed(2); 
+			$scope.prices[i].price = suma.toFixed(6); 
 		});
 	}
 	
@@ -719,7 +719,7 @@ Renovate.controller('TariffsController', function($scope,$http,$modal){
 				}
 			});
 			
-			$scope.prices[i].price = suma.toFixed(2); 
+			$scope.prices[i].price = suma.toFixed(6); 
 		});
 	}
 	

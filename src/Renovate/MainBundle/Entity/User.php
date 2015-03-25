@@ -677,7 +677,9 @@ class User implements UserInterface,\Serializable
     	->createQueryBuilder('u');
     	 
     	$qb->select('u')
-    	->orderBy('u.registered', 'DESC');
+    	->addOrderBy('u.surname')
+    	->addOrderBy('u.name')
+    	->addOrderBy('u.patronymic');
     	 
     	$result = $qb->getQuery()->getResult();
     	 
@@ -695,7 +697,9 @@ class User implements UserInterface,\Serializable
     	->createQueryBuilder('u');
     
     	$qb->select('u')
-    	->orderBy('u.registered', 'DESC');
+    	->addOrderBy('u.surname')
+    	->addOrderBy('u.name')
+    	->addOrderBy('u.patronymic');
     	
     	if (isset($parameters['offset']) && isset($parameters['limit']))
     	{
@@ -736,7 +740,9 @@ class User implements UserInterface,\Serializable
     	$qb->select('u')
 		   ->join("u.roles", "r")
 		   ->where("r.role = 'ROLE_WORKER'")
-    	   ->orderBy('u.registered', 'DESC');
+		   ->addOrderBy('u.surname')
+		   ->addOrderBy('u.name')
+		   ->addOrderBy('u.patronymic');
     
     	$result = $qb->getQuery()->getResult();
     
@@ -759,7 +765,9 @@ class User implements UserInterface,\Serializable
     	$qb->select('u')
     	->join("u.roles", "r")
     	->where($qb->expr()->in('r.id', $clientRolesIds))
-    	->orderBy('u.surname');
+    	->addOrderBy('u.surname')
+    	->addOrderBy('u.name')
+    	->addOrderBy('u.patronymic');
     
     	$result = $qb->getQuery()->getResult();
     
@@ -782,7 +790,9 @@ class User implements UserInterface,\Serializable
     	$qb->select('u')
     	->join("u.roles", "r")
     	->where($qb->expr()->in('r.id', $workforceRolesIds))
-    	->orderBy('u.surname');
+    	->addOrderBy('u.surname')
+    	->addOrderBy('u.name')
+    	->addOrderBy('u.patronymic');
     
     	$result = $qb->getQuery()->getResult();
     

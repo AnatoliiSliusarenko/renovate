@@ -151,7 +151,7 @@
 						<div class="form-group" ng-repeat="role in clientRoles" ng-class="{'has-error': prices[$index].error }" style="margin-top: 10px;">
     						<label class="col-sm-6 control-label">[[role.name]]</label>
     						<div class="col-sm-6">
-      							<input ng-model="prices[$index].value" type="number" min="0.01" step="0.01" class="form-control" ng-change="checkFormInvalid()">
+      							<input ng-model="prices[$index].value" type="number" min="0.000001" step="0.000001" class="form-control" ng-change="checkFormInvalid()">
 							</div>
   						</div>
 					</tab>
@@ -161,7 +161,7 @@
 						<div class="form-group" ng-repeat="role in clientRoles" ng-class="{'has-error': optionsPrices[optionIndex][$index].error }" style="margin-top: 10px;">
     						<label class="col-sm-6 control-label">[[role.name]]</label>
     						<div class="col-sm-6">
-      							<input ng-model="optionsPrices[optionIndex][$index].value" type="number" min="0.01" step="0.01" class="form-control" ng-change="checkFormInvalid()">
+      							<input ng-model="optionsPrices[optionIndex][$index].value" type="number" min="0.000001" step="0.000001" class="form-control" ng-change="checkFormInvalid()">
 							</div>
   						</div>
 					</tab>
@@ -226,7 +226,7 @@
 						<div class="form-group" ng-repeat="role in clientRoles" ng-class="{'has-error': prices[$index].error }" style="margin-top: 10px;">
     						<label class="col-sm-6 control-label">[[role.name]]</label>
     						<div class="col-sm-6">
-      							<input ng-model="prices[$index].value" type="number" min="0.01" step="0.01" class="form-control" ng-change="checkFormInvalid()">
+      							<input ng-model="prices[$index].value" type="number" min="0.000001" step="0.000001" class="form-control" ng-change="checkFormInvalid()">
 							</div>
   						</div>
 					</tab>
@@ -236,7 +236,7 @@
 						<div class="form-group" ng-repeat="role in clientRoles" ng-class="{'has-error': optionsPrices[optionIndex][$index].error }" style="margin-top: 10px;">
     						<label class="col-sm-6 control-label">[[role.name]]</label>
     						<div class="col-sm-6">
-      							<input ng-model="optionsPrices[optionIndex][$index].value" type="number" min="0.01" step="0.01" class="form-control" ng-change="checkFormInvalid()">
+      							<input ng-model="optionsPrices[optionIndex][$index].value" type="number" min="0.000001" step="0.000001" class="form-control" ng-change="checkFormInvalid()">
 							</div>
   						</div>
 					</tab>
