@@ -35,7 +35,7 @@
 				</div>
 			  	<div class="form-group">
 				    <label for="workers">Виконавці</label>
-				    <select id="workers" ng-options="user.id as (user.surname+' '+user.name+'('+user.username+')') for user in users" class="form-control" ng-model="filter.userid">
+				    <select id="workers" ng-options="user.id as (user.surname+' '+user.name+' '+user.patronymic+'('+user.username+')') for user in users" class="form-control" ng-model="filter.userid">
 						<option value="">усі</option>
 					</select>
 			  	</div>
@@ -125,7 +125,7 @@
 				<div class="form-group" ng-class="{'has-error': taskForm.taskUser.$invalid && !taskForm.taskUser.$pristine}">
     				<label for="taskUser" class="col-sm-2 control-label">Виконавець</label>
     				<div class="col-sm-10">
-      					<select ng-options="user.id as (user.name+' '+user.surname+'('+user.username+')') for user in users" class="form-control" id="taskUser" ng-model="task.userid" name="taskUser" required>
+      					<select ng-options="user.id as (user.surname+' '+user.name+' '+user.patronymic+'('+user.username+')') for user in users" class="form-control" id="taskUser" ng-model="task.userid" name="taskUser" required>
   						</select>
 						<p ng-show="taskForm.taskUser.$invalid && !taskForm.taskUser.$pristine" class="help-block">Оберіть виконавця.</p>
 					</div>
@@ -153,7 +153,7 @@
 				<div class="form-group" ng-class="{'has-error': taskForm.taskUser.$invalid && !taskForm.taskUser.$pristine}">
     				<label for="taskUser" class="col-sm-2 control-label">Виконавець</label>
     				<div class="col-sm-10">
-      					<select ng-options="user.id as (user.name+' '+user.surname+'('+user.username+')') for user in users" class="form-control" id="taskUser" ng-model="task.userid" name="taskUser" required>
+      					<select ng-options="user.id as (user.surname+' '+user.name+' '+user.patronymic+'('+user.username+')') for user in users" class="form-control" id="taskUser" ng-model="task.userid" name="taskUser" required>
   						</select>
 						<p ng-show="taskForm.taskUser.$invalid && !taskForm.taskUser.$pristine" class="help-block">Оберіть виконавця.</p>
 					</div>
