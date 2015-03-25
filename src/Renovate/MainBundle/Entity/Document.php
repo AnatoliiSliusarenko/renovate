@@ -226,9 +226,9 @@ class Document
     	 
     	$this->file = $file;
     	 
-    	$this->path = $this->getFile()->getClientOriginalName();
+    	$this->path = str_replace(' ', '', $this->getFile()->getClientOriginalName());
     	 
-    	$this->name = $this->getFile()->getClientOriginalName();
+    	$this->name = str_replace(' ', '', $this->getFile()->getClientOriginalName());
     	return true;
     }
     
@@ -719,7 +719,7 @@ class Document
     	$pathinfo = pathinfo($this->getName());
     	 
     	if (in_array(strtoupper($pathinfo['extension']),self::$fileTypes)) {
-    		$this->getFile()->move($this->getUploadRootDir(), $this->getFile()->getClientOriginalName());
+    		$this->getFile()->move($this->getUploadRootDir(), $this->path);
     		$this->path = $this->getWebPath();
     		$this->file = null;
     		return true;
