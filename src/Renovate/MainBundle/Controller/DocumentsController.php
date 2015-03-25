@@ -11,7 +11,7 @@ class DocumentsController extends Controller
 	public function indexAction()
 	{
 		$em = $this->getDoctrine()->getManager();
-		 
+		
 		$timestamp = time();
 		$token = Document::getToken($timestamp);
 		 
@@ -26,7 +26,7 @@ class DocumentsController extends Controller
 	public function uploadAction(Request $request)
 	{
 		if ($request->getMethod() == 'POST') {
-
+			
 			$uploadedFile = $request->files->get('Filedata');
 
 			$document = new Document();
