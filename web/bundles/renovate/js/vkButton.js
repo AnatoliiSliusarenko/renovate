@@ -7,14 +7,22 @@ function initVK(){
 			var options = {
 					type: "button"
 			}
-			var href = $(v).attr('href');
-			
-			if (href != 'undefined') {
+						
+			var href = $(v).attr('content-href');
+			if (href != undefined) {
 				options.pageUrl = href;
+			}
+			
+			var title = $(v).attr('content-title');
+			if (title != undefined) {
+				options.pageTitle = title;
 			}
 			
 			VK.Widgets.Like($(v).attr('id'), options);
 		});
 	}, 1000);
 }
-initVK();
+
+$(document).ready(function() {
+	initVK();
+});
