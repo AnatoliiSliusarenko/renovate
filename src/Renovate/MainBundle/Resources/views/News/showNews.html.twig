@@ -14,13 +14,15 @@
 	{% if page and page.description != '' %}
 		<meta name="description" content="{{page.description}}">
 	{% else %}
-		<meta name="description" content="{{news.description | escape | slice(0, 300)}}">
+		<meta name="description" content="{{news.description | striptags | slice(0, 300)}}">
 	{% endif %}
 {% endblock %}
 
 {% block head %}
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>
 {% endblock %}
+
+{% block social %}<meta name="og:image" content="{{asset(news.document.path)}}"/>{% endblock %}
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
