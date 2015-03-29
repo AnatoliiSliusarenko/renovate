@@ -41,6 +41,9 @@
 					  <li><strong>Керівний орган:</strong> {{user.owner}}</li>
 					</ul>
 				  </td>
+				  {% if (user.getComments()) and (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+				  <td>{{user.getComments()}}</td>
+				  {% endif %}
 		        </tr>
       		</tbody>
     	</table>

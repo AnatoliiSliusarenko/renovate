@@ -17,6 +17,10 @@ table.user-info h1 {
 	margin-bottom: 20px;
 }
 
+table.user-info td {
+	max-width: 300px;
+}
+
 /* Seacrh */
 .media.search img {
 	width: 100%;

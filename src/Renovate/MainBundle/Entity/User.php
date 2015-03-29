@@ -95,6 +95,13 @@ class User implements UserInterface,\Serializable
     private $owner;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="comments", type="text")
+     */
+    private $comments;
+    
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registered", type="datetime")
@@ -378,6 +385,29 @@ class User implements UserInterface,\Serializable
     }
     
     /**
+     * Set comments
+     *
+     * @param string $comments
+     * @return User
+     */
+    public function setComments($comments)
+    {
+    	$this->comments = $comments;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get comments
+     *
+     * @return string
+     */
+    public function getComments()
+    {
+    	return $this->comments;
+    }
+    
+    /**
      * Set registered
      *
      * @param \DateTime $registered
@@ -618,6 +648,7 @@ class User implements UserInterface,\Serializable
     			'address' => $this->getAddress(),
     			'adminUnit' => $this->getAdminUnit(),
     			'owner' => $this->getOwner(),
+    			'comments' => $this->getComments(),
     			'registered' => $this->getRegistered()->getTimestamp()*1000,
     			'roles' => array_map(function($role){return $role->getInArray();}, $this->getRoles())
     	);
@@ -855,6 +886,10 @@ class User implements UserInterface,\Serializable
     	if (isset($parameters->owner)){
     		$user->setOwner($parameters->owner);
     	}
+    	
+    	if (isset($parameters->comments)){
+    		$user->setComments($parameters->comments);
+    	}
     	 
     	foreach($parameters->rolesIds as $role_id){
     		$role = $em->getRepository("RenovateMainBundle:Role")->find($role_id);
@@ -931,6 +966,12 @@ class User implements UserInterface,\Serializable
     		$user->setOwner($parameters->owner);
     	}else{
     		$user->setOwner(NULL);
+    	}
+    	
+    	if (isset($parameters->comments)){
+    		$user->setComments($parameters->comments);
+    	}else{
+    		$user->setComments(NULL);
     	}
     	
     	$em->persist($user);

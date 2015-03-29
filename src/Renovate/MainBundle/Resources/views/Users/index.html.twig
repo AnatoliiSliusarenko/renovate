@@ -177,6 +177,13 @@
 						<p ng-show="userForm.owner.$invalid && !userForm.owner.$pristine" class="help-block">Введіть керівний орган.</p>
     				</div>
   				</div>
+				<div class="form-group" ng-class="{'has-error': userForm.comments.$invalid && !userForm.comments.$pristine}">
+    				<label for="comments" class="col-sm-3 control-label">Коментарі</label>
+    				<div class="col-sm-9">
+						<textarea ng-model="user.comments" id="comments" class="form-control" rows="5" name="comments"></textarea>
+    					<p ng-show="userForm.comments.$invalid && !userForm.comments.$pristine" class="help-block">Введіть коментарі.</p>
+					</div>
+  				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
     				<label for="roles" class="col-sm-3 control-label">Ролі*</label>
     				<div class="col-sm-9">
@@ -278,6 +285,13 @@
       					<input ng-model="user.owner" type="text" class="form-control" id="owner" name="owner">
 						<p ng-show="userForm.owner.$invalid && !userForm.owner.$pristine" class="help-block">Введіть керівний орган.</p>
     				</div>
+  				</div>
+				<div class="form-group" ng-class="{'has-error': userForm.comments.$invalid && !userForm.comments.$pristine}">
+    				<label for="comments" class="col-sm-3 control-label">Коментарі</label>
+    				<div class="col-sm-9">
+						<textarea ng-model="user.comments" id="comments" class="form-control" rows="5" name="comments"></textarea>
+    					<p ng-show="userForm.comments.$invalid && !userForm.comments.$pristine" class="help-block">Введіть коментарі.</p>
+					</div>
   				</div>
 				<div class="form-group" ng-class="{ 'has-error' : userForm.roles.$invalid && !userForm.roles.$pristine }">
     				<label for="roles" class="col-sm-3 control-label">Ролі*</label>
