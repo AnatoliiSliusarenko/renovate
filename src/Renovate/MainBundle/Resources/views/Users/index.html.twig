@@ -76,8 +76,8 @@
 			          <td>[[user.surname]]</td>
 			          <td>[[user.name]]</td>
 			          <td>[[user.patronymic]]</td>
-			          <td class="text-center">[[user.adminUnit]]</td>
-			          <td class="text-center">[[user.owner]]</td>
+			          <td>[[user.adminUnit]]</td>
+			          <td>[[user.owner]]</td>
 			          {% if is_granted('ROLE_ADMIN') %}
 			          <td><button ng-click="removeUser(user)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editUser(user)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			          {% endif %}

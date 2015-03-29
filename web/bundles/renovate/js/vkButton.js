@@ -1,4 +1,4 @@
-VK.init({apiId: 4845644, onlyWidgets: true});
+VK.init({apiId: 4845004, onlyWidgets: true});
 vkHandler = null;
 function initVK(){
 	clearTimeout(vkHandler);

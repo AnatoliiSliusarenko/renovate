@@ -568,6 +568,10 @@ tfoot td.price {
 	padding: 0 7px;
 }
 
+#user-navbar a {
+	color: #fff;
+}
+
 #user-navbar .btn.settings {  
 	margin: 3px 15px;
 	height: 24px;
@@ -583,6 +587,16 @@ tfoot td.price {
 	height: 24px;
 	padding: 0 7px;
 	width: 63px;
+}
+
+#user-navbar a.btn-success:hover {  
+	background-color: #449d44;
+	border-color: #398439;
+}
+
+#user-navbar a.btn-danger:hover {  
+	background-color: #c9302c;
+	border-color: #ac2925;
 }
 
 #user-navbar .btn.settings .badge {
