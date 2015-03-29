@@ -64,6 +64,7 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_services' %}class="active"{% endif %}><a href="{{ path('renovate_services') }}">Послуги компанії</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tasks' %}class="active"{% endif %}><a href="{{ path('renovate_tasks') }}">Завдання</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_pages' %}class="active"{% endif %}><a href="{{ path('renovate_pages') }}">Сторінки</a></li>
+	                <li {% if app.request.attributes.get('_route') == 'renovate_estimations' %}class="active"{% endif %}><a href="{{ path('renovate_estimations') }}">Менеджмент кошторисів</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>

@@ -531,3 +531,7 @@ renovate_ng_payments_user:
 renovate_ng_payments_user_count:
     path: /ng/payments/{user_id}/count
     defaults: { _controller: RenovateMainBundle:Payments:getUserPaymentsCountNg}
+    
+renovate_estimations:
+    path: /estimations
+    defaults: { _controller: RenovateMainBundle:Estimations:index}

@@ -85,4 +85,7 @@ security:
         - { path: ^/ng/payments/my*, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/ng/payments*, roles: [ROLE_ADMIN, ROLE_EDITOR] }
         - { path: ^/payments*, roles: [ROLE_ADMIN, ROLE_BOOKKEEPER] }
+        
+        - { path: ^/estimations*, roles: ROLE_ADMIN }
+        
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

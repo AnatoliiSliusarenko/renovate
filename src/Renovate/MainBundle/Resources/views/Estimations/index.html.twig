@@ -1,0 +1,23 @@
+{% extends "RenovateMainBundle::layout.html.twig" %}
+
+{% block title %}Менеджмент кошторисів{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+ 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
+ 	<li class="active">Менеджмент кошторисів</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div ng-controller="EstimationsController">
+	
+	<h1>Тут буде менеджмент кошторисів...</h1>
+	
+	
+</div>
+{% endblock %} 
+
+{% block javascripts %}
+<script src="{{ asset('web/bundles/renovate/js/angularEstimationsController.js') }}"></script>
+{% endblock %}
