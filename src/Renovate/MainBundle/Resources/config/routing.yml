@@ -535,3 +535,11 @@ renovate_ng_payments_user_count:
 renovate_estimations:
     path: /estimations
     defaults: { _controller: RenovateMainBundle:Estimations:index}
+    
+renovate_ng_estimations:
+    path: /ng/estimations
+    defaults: { _controller: RenovateMainBundle:Estimations:getEstimationsNg}
+    
+renovate_ng_estimations_count:
+    path: /ng/estimations/count
+    defaults: { _controller: RenovateMainBundle:Estimations:getEstimationsCountNg}

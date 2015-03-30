@@ -211,4 +211,95 @@ class Estimation
     {
         return $this->updated;
     }
+    
+    public function getInArray()
+    {
+    	return array(
+    			'id' => $this->getId(),
+    			'customer' => $this->getCustomer(),
+    			'performer' => $this->getPerformer(),
+    			'materialsAmount' => $this->getMaterialsAmount(),
+    			'worksAmount' => $this->getWorksAmount(),
+    			'totalAmount' => $this->getTotalAmount(),
+    			'updated' => $this->getUpdated()->getTimestamp()*1000
+    	);
+    }
+    
+    public static function getEstimations($em, $parameters, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Estimation")
+    	->createQueryBuilder('e');
+    
+    	$qb->select('e')
+    	->addOrderBy('e.updated');
+    	 
+    	if (isset($parameters['offset']) && isset($parameters['limit']))
+    	{
+    		$qb->setFirstResult($parameters['offset'])
+    		->setMaxResults($parameters['limit']);
+    	}
+    	
+    	if (isset($parameters['from']))
+    	{
+    		$qb->andWhere('e.updated > :from')
+    		->setParameter('from', $parameters['from']);
+    	}
+    	 
+    	if (isset($parameters['to']))
+    	{
+    		$qb->andWhere('e.updated < :to')
+    		->setParameter('to', $parameters['to']);
+    	}
+    	 
+    	if (isset($parameters['search']))
+    	{
+    		$qb->andWhere($qb->expr()->orX(
+    				$qb->expr()->like('e.id', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('e.customer', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('e.performer', $qb->expr()->literal('%'.$parameters['search'].'%'))
+    		));
+    	}
+    	 
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($estimation){
+    			return $estimation->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
+    
+    public static function getEstimationsCount($em, $parameters)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Estimation")
+    	->createQueryBuilder('e');
+    	 
+    	$qb->select('COUNT(e.id)');
+    	 
+    	if (isset($parameters['from']))
+    	{
+    		$qb->andWhere('e.updated > :from')
+    		->setParameter('from', $parameters['from']);
+    	}
+    	 
+    	if (isset($parameters['to']))
+    	{
+    		$qb->andWhere('e.updated < :to')
+    		->setParameter('to', $parameters['to']);
+    	}
+    	 
+    	if (isset($parameters['search']))
+    	{
+    		$qb->andWhere($qb->expr()->orX(
+    				$qb->expr()->like('e.id', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('e.customer', $qb->expr()->literal('%'.$parameters['search'].'%')),
+    				$qb->expr()->like('e.performer', $qb->expr()->literal('%'.$parameters['search'].'%'))
+    		));
+    	}
+    	 
+    	$total = $qb->getQuery()->getSingleScalarResult();
+    
+    	return $total;
+    }
 }
