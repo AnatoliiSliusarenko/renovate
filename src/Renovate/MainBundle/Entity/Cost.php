@@ -49,6 +49,12 @@ class Cost
      */
     private $price;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="CostCategory", inversedBy="costs")
+     * @ORM\JoinColumn(name="categoryid")
+     * @var CostCategory
+     */
+    private $category;
 
     /**
      * Get id
@@ -150,5 +156,39 @@ class Cost
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \Renovate\MainBundle\Entity\CostCategory $category
+     * @return Cost
+     */
+    public function setCategory(\Renovate\MainBundle\Entity\CostCategory $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Renovate\MainBundle\Entity\CostCategory 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+    
+    public function getInArray()
+    {
+    	return array(
+    			'id' => $this->getId(),
+    			'categoryid' => $this->getCategoryid(),
+    			'name' => $this->getName(),
+    			'units' => $this->getUnits(),
+    			'price' => $this->getPrice()
+    	);
     }
 }

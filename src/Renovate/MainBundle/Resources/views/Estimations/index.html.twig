@@ -89,8 +89,64 @@
 			<hr>
 		</div>
 	</div>
-	
-	
+	<div class="row">
+		<div class="col-md-6 costs">
+			<table class="table table-hover table-mobile">
+    			<thead>
+			        <tr class="active">
+			          <th>Назва статті витрат</th>
+			          <th>Од. виміру</th>
+			          <th>Ціна, грн.</th>
+			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+			        </tr>
+    			</thead>
+    			<thead>
+			        <tr class="info">
+			          <th colspan="4">РОБОТИ <button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			        </tr>
+    			</thead>
+    			<tbody ng-repeat="item in costCategoriesWorks">
+			        <tr>
+			        	<th colspan="4" class="warning"><button ng-click="item.collapsed = !item.collapsed" type="button" class="close"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button> [[item.name]] <button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			        </tr>
+			        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
+			        	<td>[[cost.name]]</td>
+			        	<td>[[cost.units]]</td>
+			        	<td>[[cost.price]]</td>
+			        	<td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			        </tr>
+    			</tbody>
+			</table>
+		</div>
+		<div class="col-md-6 costs">
+			<table class="table table-hover table-mobile">
+    			<thead>
+			        <tr class="active">
+			          <th>Назва статті витрат</th>
+			          <th>Од. виміру</th>
+			          <th>Ціна, грн.</th>
+			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+			        </tr>
+    			</thead>
+    			<thead>
+			        <tr class="info">
+			          <th colspan="4">МАТЕРІАЛИ <button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			        </tr>
+    			</thead>
+    			<tbody ng-repeat="item in costCategoriesMaterials">
+			        <tr>
+			        	<th colspan="4" class="warning"><button ng-click="item.collapsed = !item.collapsed" type="button" class="close"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button> [[item.name]] <button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			        </tr>
+			        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
+			        	<td>[[cost.name]]</td>
+			        	<td>[[cost.units]]</td>
+			        	<td>[[cost.price]]</td>
+			        	<td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			        </tr>
+    			</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 {% endblock %} 
 

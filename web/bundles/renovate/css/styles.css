@@ -1,3 +1,17 @@
+/* Cost Categories */
+.costs {
+	height: 300px;
+	overflow: scroll;
+	padding: 0;
+}
+
+.costs table {
+	border: 1px solid #ddd;
+}
+
+.costs table td, .costs table th {
+	border-right: 1px solid #ddd;
+}
 /* Prices and User Info*/
 table.prices, table.user-info {
 	border: 1px solid #ddd;

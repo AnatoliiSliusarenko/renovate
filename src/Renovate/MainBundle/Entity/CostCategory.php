@@ -35,6 +35,11 @@ class CostCategory
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Cost", mappedBy="category")
+     * @var array
+     */
+    private $costs;
 
     /**
      * Get id
@@ -90,5 +95,79 @@ class CostCategory
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->costs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add costs
+     *
+     * @param \Renovate\MainBundle\Entity\Cost $costs
+     * @return CostCategory
+     */
+    public function addCost(\Renovate\MainBundle\Entity\Cost $costs)
+    {
+        $this->costs[] = $costs;
+
+        return $this;
+    }
+
+    /**
+     * Remove costs
+     *
+     * @param \Renovate\MainBundle\Entity\Cost $costs
+     */
+    public function removeCost(\Renovate\MainBundle\Entity\Cost $costs)
+    {
+        $this->costs->removeElement($costs);
+    }
+
+    /**
+     * Get costs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCosts()
+    {
+        return $this->costs;
+    }
+    
+    public function getInArray()
+    {
+    	return array(
+    			'id' => $this->getId(),
+    			'type' => $this->getType(),
+    			'name' => $this->getName(),
+    			'costs' => array_map(function($cost){return $cost->getInArray();}, $this->getCosts()->toArray())
+    	);
+    }
+    
+    public static function getCostCategories($em, $parameters, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:CostCategory")
+    	->createQueryBuilder('c');
+    
+    	$qb->select('c')
+    	->orderBy('c.name');
+    	
+    	if (isset($parameters['type']))
+    	{
+    		$qb->where('c.type = :type')
+    		->setParameter('type', $parameters['type']);
+    	}
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($costCategory){
+    			return $costCategory->getInArray();
+    		}, $result);
+    	}else return $result;
     }
 }

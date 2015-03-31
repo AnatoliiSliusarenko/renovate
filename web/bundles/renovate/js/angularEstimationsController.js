@@ -16,6 +16,8 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	$scope.urlsEstimationsGetNg = URLS.estimationsGetNg;
 	$scope.urlsEstimationsCountNg = URLS.estimationsCountNg;
 	
+	
+	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
 		getEstimationsCount();
@@ -83,4 +85,43 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		})
 	}
 	getEstimationsCount();
+	
+	
+	///-----------------Cost Categories-------------------------
+	$scope.urlsCostCategoriesGetNg = URLS.costCategoriesGetNg;
+	$scope.costCategoriesWorks = [];
+	$scope.costCategoriesMaterials = [];
+	
+	function getCostCategoriesWorks(){
+		$http({
+			method: "GET", 
+			url: $scope.urlsCostCategoriesGetNg,
+			params: {type: 'works'}
+			  })
+		.success(function(response){
+			console.log('costCategoriesWorks => ', response.result);
+			if (response.result)
+			{
+				$scope.costCategoriesWorks = response.result;
+			}
+		})
+	};
+	getCostCategoriesWorks();
+	
+	function getCostCategoriesMaterials(){
+		$http({
+			method: "GET", 
+			url: $scope.urlsCostCategoriesGetNg,
+			params: {type: 'materials'}
+			  })
+		.success(function(response){
+			console.log('costCategoriesMaterials => ', response.result);
+			if (response.result)
+			{
+				$scope.costCategoriesMaterials = response.result;
+			}
+		})
+	};
+	getCostCategoriesMaterials();
+	///---------------------------------------------------------
 });

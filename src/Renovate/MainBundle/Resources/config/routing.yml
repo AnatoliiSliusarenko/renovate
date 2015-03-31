@@ -543,3 +543,7 @@ renovate_ng_estimations:
 renovate_ng_estimations_count:
     path: /ng/estimations/count
     defaults: { _controller: RenovateMainBundle:Estimations:getEstimationsCountNg}
+    
+renovate_ng_cost_categories:
+    path: /ng/cost-categories
+    defaults: { _controller: RenovateMainBundle:CostCategories:getCostCategoriesNg}
