@@ -18,4 +18,42 @@ class CostCategoriesController extends Controller
     	 
     	return $response;
     }
+    
+    public function addCostCategoryNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = json_decode(file_get_contents("php://input"));
+    	$parameters = (object) $data;
+    
+    	$costCategory = CostCategory::addCostCategory($em, $parameters);
+    
+    	$response = new Response(json_encode(array("result" => $costCategory->getInArray())));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
+    public function removeCostCategoryNgAction($costCategory_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$response = new Response(json_encode(array("result" => CostCategory::removeCostCategoryById($em, $costCategory_id))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
+    public function editCostCategoryNgAction($costCategory_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = json_decode(file_get_contents("php://input"));
+    	$parameters = (object) $data;
+    
+    	$costCategory = CostCategory::editCostCategoryById($em, $costCategory_id, $parameters);
+    
+    	$response = new Response(json_encode(array("result" => $costCategory->getInArray())));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
 }

@@ -102,18 +102,18 @@
     			</thead>
     			<thead>
 			        <tr class="info">
-			          <th colspan="4">РОБОТИ <button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			          <th colspan="4">РОБОТИ <button ng-click="addCostCategory('works')" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
 			        </tr>
     			</thead>
     			<tbody ng-repeat="item in costCategoriesWorks">
 			        <tr>
-			        	<th colspan="4" class="warning"><button ng-click="item.collapsed = !item.collapsed" type="button" class="close"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button> [[item.name]] <button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button> [[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
 			        </tr>
 			        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
 			        	<td>[[cost.name]]</td>
 			        	<td>[[cost.units]]</td>
 			        	<td>[[cost.price]]</td>
-			        	<td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			        </tr>
     			</tbody>
 			</table>
@@ -130,22 +130,132 @@
     			</thead>
     			<thead>
 			        <tr class="info">
-			          <th colspan="4">МАТЕРІАЛИ <button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			          <th colspan="4">МАТЕРІАЛИ <button ng-click="addCostCategory('materials')" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
 			        </tr>
     			</thead>
     			<tbody ng-repeat="item in costCategoriesMaterials">
 			        <tr>
-			        	<th colspan="4" class="warning"><button ng-click="item.collapsed = !item.collapsed" type="button" class="close"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button> [[item.name]] <button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button> [[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
 			        </tr>
 			        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
 			        	<td>[[cost.name]]</td>
 			        	<td>[[cost.units]]</td>
 			        	<td>[[cost.price]]</td>
-			        	<td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+			        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 			        </tr>
     			</tbody>
 			</table>
 		</div>
+		<script type="text/ng-template" id="addCostCategory.html">
+        	<div class="modal-header">
+            	<h3 ng-show="costCategory.type=='works'" class="modal-title">Додати категорію робіт...</h3>
+				<h3 ng-show="costCategory.type=='materials'" class="modal-title">Додати категорію матеріалів...</h3>
+        	</div>
+        	<div class="modal-body">
+            	<form class="form-horizontal" name="costCategoryForm">
+  					<div class="form-group" ng-class="{'has-error': costCategoryForm.costCategoryName.$invalid && !costCategoryForm.costCategoryName.$pristine}">
+    					<label for="costCategoryName" class="col-sm-2 control-label">Назва</label>
+    					<div class="col-sm-10">
+      						<input ng-model="costCategory.name" type="text" class="form-control" id="costCategoryName" name="costCategoryName" required>
+    						<p ng-show="costCategoryForm.costCategoryName.$invalid && !costCategoryForm.costCategoryName.$pristine" class="help-block">Введіть назву.</p>
+						</div>
+  					</div>
+				</form>
+        	</div>
+        	<div class="modal-footer">
+            	<button class="btn btn-primary" ng-click="ok()" ng-disabled="costCategoryForm.$invalid">Зберегти</button>
+            	<button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        	</div>
+    	</script>
+    	<script type="text/ng-template" id="editCostCategory.html">
+        	<div class="modal-header">
+            	<h3 ng-show="costCategory.type=='works'" class="modal-title">Реадгувати категорію робіт...</h3>
+				<h3 ng-show="costCategory.type=='materials'" class="modal-title">Редагувати категорію матеріалів...</h3>
+        	</div>
+        	<div class="modal-body">
+            	<form class="form-horizontal" name="costCategoryForm">
+  					<div class="form-group" ng-class="{'has-error': costCategoryForm.costCategoryName.$invalid && !costCategoryForm.costCategoryName.$pristine}">
+    					<label for="costCategoryName" class="col-sm-2 control-label">Назва</label>
+    					<div class="col-sm-10">
+      						<input ng-model="costCategory.name" type="text" class="form-control" id="costCategoryName" name="costCategoryName" required>
+    						<p ng-show="costCategoryForm.costCategoryName.$invalid && !costCategoryForm.costCategoryName.$pristine" class="help-block">Введіть назву.</p>
+						</div>
+  					</div>
+				</form>
+        	</div>
+        	<div class="modal-footer">
+            	<button class="btn btn-primary" ng-click="ok()" ng-disabled="costCategoryForm.$invalid">Зберегти</button>
+            	<button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        	</div>
+    	</script>
+    	<script type="text/ng-template" id="addCost.html">
+        	<div class="modal-header">
+            	<h3 class="modal-title">Додати статтю витрат...</h3>
+        	</div>
+        	<div class="modal-body">
+            	<form class="form-horizontal" name="costForm">
+  					<div class="form-group" ng-class="{'has-error': costForm.costName.$invalid && !costForm.costName.$pristine}">
+    					<label for="costName" class="col-sm-2 control-label">Назва</label>
+    					<div class="col-sm-10">
+      						<input ng-model="cost.name" type="text" class="form-control" id="costName" name="costName" required>
+    						<p ng-show="costForm.costName.$invalid && !costForm.costName.$pristine" class="help-block">Введіть назву.</p>
+						</div>
+  					</div>
+					<div class="form-group" ng-class="{'has-error': costForm.costUnits.$invalid && !costForm.costUnits.$pristine}">
+    					<label for="costUnits" class="col-sm-2 control-label">Од. виміру</label>
+    					<div class="col-sm-10">
+      						<input ng-model="cost.units" type="text" class="form-control" id="costUnits" name="costUnits" required>
+    						<p ng-show="costForm.costUnits.$invalid && !costForm.costUnits.$pristine" class="help-block">Введіть одиниці виміру.</p>
+						</div>
+  					</div>
+					<div class="form-group" ng-class="{'has-error': costForm.costPrice.$invalid && !costForm.costPrice.$pristine}">
+    					<label for="costPrice" class="col-sm-2 control-label">Ціна</label>
+    					<div class="col-sm-10">
+      						<input ng-model="cost.price" type="number" min="0.01" step="0.01" class="form-control" id="costPrice" name="costPrice" required>
+    						<p ng-show="costForm.costPrice.$invalid && !costForm.costPrice.$pristine" class="help-block">Введіть ціну.</p>
+						</div>
+  					</div>
+				</form>
+        	</div>
+        	<div class="modal-footer">
+            	<button class="btn btn-primary" ng-click="ok()" ng-disabled="costForm.$invalid">Зберегти</button>
+            	<button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        	</div>
+    	</script>
+    	<script type="text/ng-template" id="editCost.html">
+        	<div class="modal-header">
+            	<h3 class="modal-title">Редагувати статтю витрат...</h3>
+        	</div>
+        	<div class="modal-body">
+            	<form class="form-horizontal" name="costForm">
+  					<div class="form-group" ng-class="{'has-error': costForm.costName.$invalid && !costForm.costName.$pristine}">
+    					<label for="costName" class="col-sm-2 control-label">Назва</label>
+    					<div class="col-sm-10">
+      						<input ng-model="cost.name" type="text" class="form-control" id="costName" name="costName" required>
+    						<p ng-show="costForm.costName.$invalid && !costForm.costName.$pristine" class="help-block">Введіть назву.</p>
+						</div>
+  					</div>
+					<div class="form-group" ng-class="{'has-error': costForm.costUnits.$invalid && !costForm.costUnits.$pristine}">
+    					<label for="costUnits" class="col-sm-2 control-label">Од. виміру</label>
+    					<div class="col-sm-10">
+      						<input ng-model="cost.units" type="text" class="form-control" id="costUnits" name="costUnits" required>
+    						<p ng-show="costForm.costUnits.$invalid && !costForm.costUnits.$pristine" class="help-block">Введіть одиниці виміру.</p>
+						</div>
+  					</div>
+					<div class="form-group" ng-class="{'has-error': costForm.costPrice.$invalid && !costForm.costPrice.$pristine}">
+    					<label for="costPrice" class="col-sm-2 control-label">Ціна</label>
+    					<div class="col-sm-10">
+      						<input ng-model="cost.price" type="number" min="0.01" step="0.01" class="form-control" id="costPrice" name="costPrice" required>
+    						<p ng-show="costForm.costPrice.$invalid && !costForm.costPrice.$pristine" class="help-block">Введіть ціну.</p>
+						</div>
+  					</div>
+				</form>
+        	</div>
+        	<div class="modal-footer">
+            	<button class="btn btn-primary" ng-click="ok()" ng-disabled="costForm.$invalid">Зберегти</button>
+            	<button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        	</div>
+    	</script>
 	</div>
 </div>
 {% endblock %} 

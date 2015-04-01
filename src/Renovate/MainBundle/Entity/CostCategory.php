@@ -170,4 +170,43 @@ class CostCategory
     		}, $result);
     	}else return $result;
     }
+    
+    public static function addCostCategory($em, $parameters)
+    {
+    	$costCategory = new CostCategory();
+    	$costCategory->setName($parameters->name);
+    	$costCategory->setType($parameters->type);
+    
+    	$em->persist($costCategory);
+    	$em->flush();
+    
+    	return $costCategory;
+    }
+    
+    public static function removeCostCategoryById($em, $id)
+    {
+    	$costCategory = $em->getRepository("RenovateMainBundle:CostCategory")->find($id);
+    	 
+    	foreach($costCategory->getCosts() as $cost){
+    		$em->remove($cost);
+    		$em->flush();
+    	}
+    	 
+    	$em->remove($costCategory);
+    	$em->flush();
+    
+    	return true;
+    }
+    
+    public static function editCostCategoryById($em, $id, $parameters)
+    {
+    	$costCategory = $em->getRepository("RenovateMainBundle:CostCategory")->find($id);
+    
+    	$costCategory->setName($parameters->name);
+    
+    	$em->persist($costCategory);
+    	$em->flush();
+    
+    	return $costCategory;
+    }
 }

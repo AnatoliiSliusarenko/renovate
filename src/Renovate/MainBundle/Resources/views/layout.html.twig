@@ -357,6 +357,13 @@
   			estimationsGetNg: "{{ path('renovate_ng_estimations') }}",
   			estimationsCountNg: "{{ path('renovate_ng_estimations_count') }}",
   			costCategoriesGetNg: "{{ path('renovate_ng_cost_categories') }}",
+  			costCategoriesAddNg: "{{ path('renovate_ng_cost_categories_add') }}",
+  			costCategoriesRemoveNg: "{{ path('renovate_ng_cost_categories_remove', {costCategory_id: 0}) }}",
+  			costCategoriesEditNg: "{{ path('renovate_ng_cost_categories_edit', {costCategory_id: 0}) }}",
+  			
+  			costsAddNg: "{{ path('renovate_ng_costs_add') }}",
+  			costsEditNg: "{{ path('renovate_ng_costs_edit', {cost_id: 0}) }}",
+  			costsRemoveNg: "{{ path('renovate_ng_costs_remove', {cost_id: 0}) }}",
   	}
   	</script>
   	<script>

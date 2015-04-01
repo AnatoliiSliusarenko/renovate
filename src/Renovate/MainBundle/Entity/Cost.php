@@ -186,9 +186,51 @@ class Cost
     	return array(
     			'id' => $this->getId(),
     			'categoryid' => $this->getCategoryid(),
+    			'categoryType' => $this->getCategory()->getType(),
     			'name' => $this->getName(),
     			'units' => $this->getUnits(),
     			'price' => $this->getPrice()
     	);
+    }
+    
+    public static function addCost($em, $parameters)
+    {
+    	$costCategory = $em->getRepository("RenovateMainBundle:CostCategory")->find($parameters->categoryid);
+    	 
+    	$cost = new Cost();
+    	$cost->setCategoryid($costCategory->getId());
+    	$cost->setCategory($costCategory);
+    	$cost->setName($parameters->name);
+    	$cost->setUnits($parameters->units);
+    	$cost->setPrice($parameters->price);
+    
+    	$em->persist($cost);
+    	$em->flush();
+    
+    	return $cost;
+    }
+    
+    public static function editCostById($em, $id, $parameters)
+    {
+    	$cost = $em->getRepository("RenovateMainBundle:Cost")->find($id);
+    
+    	$cost->setName($parameters->name);
+    	$cost->setUnits($parameters->units);
+    	$cost->setPrice($parameters->price);
+    
+    	$em->persist($cost);
+    	$em->flush();
+    
+    	return $cost;
+    }
+    
+    public static function removeCostById($em, $id)
+    {
+    	$cost = $em->getRepository("RenovateMainBundle:Cost")->find($id);
+    
+    	$em->remove($cost);
+    	$em->flush();
+    
+    	return true;
     }
 }

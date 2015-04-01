@@ -547,3 +547,27 @@ renovate_ng_estimations_count:
 renovate_ng_cost_categories:
     path: /ng/cost-categories
     defaults: { _controller: RenovateMainBundle:CostCategories:getCostCategoriesNg}
+    
+renovate_ng_cost_categories_add:
+    path: /ng/cost-categories/add
+    defaults: { _controller: RenovateMainBundle:CostCategories:addCostCategoryNg}
+    
+renovate_ng_cost_categories_remove:
+    path: /ng/cost-categories/remove/{costCategory_id}
+    defaults: { _controller: RenovateMainBundle:CostCategories:removeCostCategoryNg}
+    
+renovate_ng_cost_categories_edit:
+    path: /ng/cost-categories/edit/{costCategory_id}
+    defaults: { _controller: RenovateMainBundle:CostCategories:editCostCategoryNg}
+    
+renovate_ng_costs_add:
+    path: /ng/costs/add
+    defaults: { _controller: RenovateMainBundle:Costs:addCostNg}
+    
+renovate_ng_costs_edit:
+    path: /ng/costs/edit/{cost_id}
+    defaults: { _controller: RenovateMainBundle:Costs:editCostNg}
+    
+renovate_ng_costs_remove:
+    path: /ng/costs/remove/{cost_id}
+    defaults: { _controller: RenovateMainBundle:Costs:removeCostNg}
