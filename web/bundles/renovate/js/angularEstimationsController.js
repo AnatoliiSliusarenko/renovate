@@ -13,7 +13,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 			to: null
 	}
 	
-	$scope.urlsEstimationsGetNg = URLS.estimationsGetNg;
+	$scope.urlsEstimationsNg = URLS.estimationsNg;
 	$scope.urlsEstimationsCountNg = URLS.estimationsCountNg;
 	
 	
@@ -56,7 +56,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		$scope.filter.limit = $scope.itemsPerPage;
 		$http({
 			method: "GET", 
-			url: $scope.urlsEstimationsGetNg,
+			url: $scope.urlsEstimationsNg,
 			params: $scope.filter
 			  })
 		.success(function(response){
@@ -85,6 +85,8 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		})
 	}
 	getEstimationsCount();
+	
+	//close tab on remove
 	
 	
 	///-----------------Cost Categories-------------------------
@@ -256,6 +258,37 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 			}
 		});
 	}
+	///-------------------Tabs----------------------------------
+	$scope.tabs = [];
+	
+	$scope.addTab = function(esimationid){
+		var data = {
+				title: 'не збережений'
+		};
+		
+		if (esimationid != undefined) {
+			var tab = _.find($scope.tabs, function(tab){return tab.estimationid == esimationid;})
+			
+			if (tab != undefined){
+				tab.active = true;
+				return;
+			}else{
+				data.estimationid = esimationid;
+			}
+		}
+		
+		$scope.tabs.push(data);
+	}
+	
+	$scope.closeTab = function(index, event){
+		event.preventDefault();
+		event.stopPropagation();
+		
+		var close = confirm("Дійсно бажаєте закрити: № " + $scope.tabs[index].title + " ?");
+		if (!close) return;
+		
+		$scope.tabs.splice(index, 1);
+	}
 	///---------------------------------------------------------
 })
 .controller('AddCostCategoryController', function($scope,$http,$modalInstance,type){
@@ -385,4 +418,73 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
 	};
+})
+.controller('TabController', function($scope, $http){
+	console.log('TabController loaded!');
+	
+	$scope.urlsEstimationsSaveNg = URLS.estimationsSaveNg;
+	$scope.urlsEstimationsGetNg = URLS.estimationsGetNg;
+	
+	$scope.changesHandler = null;
+	$scope.estimation = {};
+	$scope.tab.active = true;
+	
+	(function checkEstimation(){
+		if ($scope.tab.estimationid != undefined) getEstimation($scope.tab.estimationid);
+	})();
+	
+	function copyEstimation(resource){
+		$scope.estimation.id = resource.id;
+		$scope.estimation.customer = resource.customer;
+		$scope.estimation.performer = resource.performer;
+		
+		$scope.tab.title = $scope.estimation.id;
+		$scope.tab.estimationid = $scope.estimation.id;
+	}
+	
+	function getEstimation(id){
+		var url = $scope.urlsEstimationsGetNg.replace('0', id);
+		
+		$http({
+			method: "GET", 
+			url: url
+			  })
+		.success(function(response){
+			console.log("got estimation => ", response);
+			if (response.result)
+			{
+				copyEstimation(response.result);
+			}
+		})
+	};
+	
+	function showAlert(){
+		$("#infoAlert").fadeIn(2000, function(){$("#infoAlert").fadeOut(2000);});
+	};
+	
+	function saveEstimation(){
+		$http({
+			method: "POST", 
+			url: $scope.urlsEstimationsSaveNg,
+			data: $scope.estimation
+			  })
+		.success(function(response){
+			console.log("saved estimation => ", response);
+			if (response.result)
+			{
+				copyEstimation(response.result);
+				showAlert();
+			}
+		})
+	}
+	
+	$scope.fireChanges = function(){
+		if ((!$scope.estimation.customer) || (!$scope.estimation.performer)) return;
+		
+		clearTimeout($scope.changesHandler);
+		$scope.changesHandler = setTimeout(function(){
+			saveEstimation();
+		}, 2000);
+	}
+	
 });

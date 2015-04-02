@@ -540,9 +540,17 @@ renovate_ng_estimations:
     path: /ng/estimations
     defaults: { _controller: RenovateMainBundle:Estimations:getEstimationsNg}
     
+renovate_ng_estimations_save:
+    path: /ng/estimations/save
+    defaults: { _controller: RenovateMainBundle:Estimations:saveEstimationNg}
+    
 renovate_ng_estimations_count:
     path: /ng/estimations/count
     defaults: { _controller: RenovateMainBundle:Estimations:getEstimationsCountNg}
+    
+renovate_ng_estimations_get:
+    path: /ng/estimations/{estimation_id}
+    defaults: { _controller: RenovateMainBundle:Estimations:getEstimationNg}
     
 renovate_ng_cost_categories:
     path: /ng/cost-categories

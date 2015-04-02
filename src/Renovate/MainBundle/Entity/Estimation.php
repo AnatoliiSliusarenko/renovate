@@ -302,4 +302,29 @@ class Estimation
     
     	return $total;
     }
+    
+    public static function saveEstimation($em, $parameters)
+    {
+    	if (isset($parameters->id)){
+    		$estimation = $em->getRepository("RenovateMainBundle:Estimation")->find($parameters->id);
+    	}else{
+    		$estimation = new Estimation();
+    	}
+    	
+    	
+    	$estimation->setCustomer($parameters->customer);
+    	$estimation->setPerformer($parameters->performer);
+    	
+    	
+    	$estimation->setMaterialsAmount(0);
+    	$estimation->setWorksAmount(0);
+    	$estimation->setTotalAmount(0);
+    	
+    	$estimation->setUpdated(new \DateTime());
+    	
+    	$em->persist($estimation);
+    	$em->flush();
+    	
+    	return $estimation;
+    }
 }

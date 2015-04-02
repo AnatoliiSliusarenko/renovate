@@ -14,7 +14,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<button class="btn btn-primary" type="button" ng-click="isCollapsedEstimations = !isCollapsedEstimations" ng-init="isCollapsedEstimations=true">
-				Кошториси
+				Кошториси <span class="glyphicon glyphicon-th-list"></span>
 			</button>
 			<div collapse="isCollapsedEstimations">
 				<form class="form-inline">
@@ -73,7 +73,7 @@
 						          <td>[[estimation.customer]]</td>
 						          <td>[[estimation.performer]]</td>
 						          <td>[[estimation.updated | date:"dd.MM.yyyy HH:mm:ss"]]</td>
-						          <td><button ng-click="removeTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editTariffPrivate(tariff)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+						          <td><button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="addTab(estimation.id)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 						        </tr>
 			      			</tbody>
     					</table>
@@ -256,6 +256,85 @@
             	<button class="btn btn-warning" ng-click="cancel()">Відміна</button>
         	</div>
     	</script>
+	</div>
+	<div class="row" style="margin: 10px 0px;">
+		<div class="col-md-12">
+			<button class="btn btn-success" type="button" ng-click="addTab()">
+				Додати кошторис <span class="glyphicon glyphicon-plus"></span>
+			</button>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12">
+			<tabset>
+				<tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" ng-controller="TabController" ng-init="tab=tab">
+	      			<tab-heading>
+	      				№ [[tab.title]]&nbsp;<button ng-click="closeTab($index, $event)" type="button" class="close"><span class="glyphicon glyphicon-remove-sign"></span></button>
+	      			</tab-heading>
+	      			<hr>
+	      			<div class="row">
+						<div class="col-md-6">
+							<form class="form-horizontal" name="estimationForm">
+			  					<div class="form-group" ng-class="{'has-error': estimationForm.estimationCustomer.$invalid && !estimationForm.estimationCustomer.$pristine}">
+			    					<label for="estimationCustomer" class="col-sm-2 control-label">Замовник</label>
+			    					<div class="col-sm-10">
+			      						<input ng-model="estimation.customer" type="text" class="form-control" id="estimationCustomer" name="estimationCustomer" ng-change="fireChanges()" required>
+			    						<p ng-show="estimationForm.estimationCustomer.$invalid && !estimationForm.estimationCustomer.$pristine" class="help-block">Введіть замовника.</p>
+									</div>
+			  					</div>
+								<div class="form-group" ng-class="{'has-error': estimationForm.estimationPerformer.$invalid && !estimationForm.estimationPerformer.$pristine}">
+			    					<label for="estimationPerformer" class="col-sm-2 control-label">Виконавець</label>
+			    					<div class="col-sm-10">
+			      						<input ng-model="estimation.performer" type="text" class="form-control" id="estimationPerformer" name="estimationPerformer" ng-change="fireChanges()" required>
+			    						<p ng-show="estimationForm.estimationPerformer.$invalid && !estimationForm.estimationPerformer.$pristine" class="help-block">Введіть виконавця.</p>
+									</div>
+			  					</div>
+							</form>
+						</div>
+						<div class="col-md-3">
+							<form class="form-horizontal">
+			  					<div class="form-group">
+			    					<a class="btn btn-link" href="#" role="button">Експорт в CSV</a>
+			  					</div>
+								<div class="form-group">
+			    					<a class="btn btn-link" href="#" role="button">Посилання для перегляду</a>
+			  					</div>
+							</form>
+						</div>
+						<div class="col-md-3">
+							<div id="infoAlert" class="alert alert-info" role="alert" style="display:none;">Зміни збережено!</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-hover table-mobile">
+				      			<thead>
+							        <tr>
+							          <th>#</th>
+							          <th>Назва статті витрат</th>
+							          <th>Од. виміру</th>
+							          <th>Кількість</th>
+							          <th>Ціна, грн</th>
+							          <th>Сума, грн</th>
+							        </tr>
+				      			</thead>
+				      			<tbody>
+							        <tr ng-repeat="item in []">
+							          <th scope="row">[[$index+1]]</th>
+							          <td>[[item.name]]</td>
+							          <td>[[item.units]]</td>
+							          <td>[[item.count]]</td>
+							          <td>[[item.price]]</td>
+							          <td>[[item.amount]]</td>
+							        </tr>
+				      			</tbody>
+    					</table>
+						</div>
+					</div>
+	    		</tab>
+			</tabset>
+		</div>
 	</div>
 </div>
 {% endblock %} 

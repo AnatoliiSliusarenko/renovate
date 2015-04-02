@@ -24,6 +24,23 @@ class EstimationsController extends Controller
     	return $response;
     }
     
+    public function getEstimationNgAction($estimation_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$estimation = $em->getRepository("RenovateMainBundle:Estimation")->find($estimation_id);
+    	 
+    	if ($estimation != NULL) {
+    		$response = new Response(json_encode(array("result" => $estimation->getInArray())));
+    	}else{
+    		$response = new Response(json_encode(array("result" => false)));
+    	}
+    	
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
+    
     public function getEstimationsCountNgAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
@@ -31,6 +48,20 @@ class EstimationsController extends Controller
     	$response = new Response(json_encode(array("result" => Estimation::getEstimationsCount($em, $request->query->all()))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
+    	return $response;
+    }
+    
+    public function saveEstimationNgAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = json_decode(file_get_contents("php://input"));
+    	$parameters = (object) $data;
+    
+    	$estimation = Estimation::saveEstimation($em, $parameters);
+    
+    	$response = new Response(json_encode(array("result" => $estimation->getInArray())));
+    	$response->headers->set('Content-Type', 'application/json');
+    	
     	return $response;
     }
 }
