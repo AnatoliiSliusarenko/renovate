@@ -728,9 +728,7 @@ class User implements UserInterface,\Serializable
     	->createQueryBuilder('u');
     
     	$qb->select('u')
-    	->addOrderBy('u.surname')
-    	->addOrderBy('u.name')
-    	->addOrderBy('u.patronymic');
+    	->addOrderBy('u.registered', 'DESC');
     	
     	if (isset($parameters['offset']) && isset($parameters['limit']))
     	{
