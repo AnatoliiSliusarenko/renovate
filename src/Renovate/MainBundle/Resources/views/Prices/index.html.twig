@@ -58,7 +58,7 @@
 	      				</tr>
 				        <tr ng-repeat="priceCategory in priceCategories" ng-cloak>
 				          <th scope="row">[[$index+1]]</th>
-				          <td>[[priceCategory.name]]</td>
+				          <td><a href="#[[priceCategory.name]]">[[priceCategory.name]]</a></td>
 				          <td>[[priceCategory.level]]</td>
 				          <td><button ng-click="removePriceCategory(priceCategory)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editPriceCategory(priceCategory)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 				        </tr>
@@ -152,7 +152,7 @@
 						</td>
       				</tr>
       			</tbody>
-      			<tbody ng-repeat="priceCategory in priceCategories" ng-cloak>
+      			<tbody ng-repeat="priceCategory in priceCategories" ng-cloak  id="[[priceCategory.name]]">
       				<tr class="info">
 	      				<th colspan="5" class="text-center">[[priceCategory.name]]</th>
 	      			</tr>
