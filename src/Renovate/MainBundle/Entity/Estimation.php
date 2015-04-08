@@ -63,6 +63,11 @@ class Estimation
      */
     private $updated;
 
+    /**
+     * @ORM\OneToMany(targetEntity="EstimationCost", mappedBy="estimation")
+     * @var array
+     */
+    private $estimationCosts;
 
     /**
      * Get id
@@ -189,6 +194,24 @@ class Estimation
         return $this->totalAmount;
     }
 
+    public function calculateAmount()
+    {
+    	$worksAmount = 0;
+    	$materialsAmount = 0;
+    	
+    	foreach ($this->getEstimationCosts() as $estimationCost){
+    		switch ($estimationCost->getCost()->getCategory()->getType()){
+    			case "works": $worksAmount = $worksAmount + $estimationCost->getTotal(); break;
+    			case "materials": $materialsAmount = $materialsAmount + $estimationCost->getTotal(); break;
+    		}
+    	}
+    	
+    	$this->setWorksAmount($worksAmount);
+    	$this->setMaterialsAmount($materialsAmount);
+    	$this->setTotalAmount($worksAmount+$materialsAmount);
+    	$this->setUpdated(new \DateTime());
+    }
+    
     /**
      * Set updated
      *
@@ -212,6 +235,65 @@ class Estimation
         return $this->updated;
     }
     
+    /**
+     * Add estimationCosts
+     *
+     * @param \Renovate\MainBundle\Entity\EstimationCost $estimationCosts
+     * @return Estimation
+     */
+    public function addEstimationCost(\Renovate\MainBundle\Entity\EstimationCost $estimationCosts)
+    {
+    	$this->estimationCosts[] = $estimationCosts;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove estimationCosts
+     *
+     * @param \Renovate\MainBundle\Entity\EstimationCost $estimationCosts
+     */
+    public function removeEstimationCost(\Renovate\MainBundle\Entity\EstimationCost $estimationCosts)
+    {
+    	$this->estimationCosts->removeElement($estimationCosts);
+    }
+    
+    /**
+     * Get estimationCosts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEstimationCosts()
+    {
+    	return $this->estimationCosts;
+    }
+    
+    public function getCostCategories()
+    {
+    	$categories = array();
+    	foreach ($this->estimationCosts as $estimationCost){
+    		if (!in_array($estimationCost->getCost()->getCategory()->getType(),array_map(function($category){ return $category['name'];},$categories))){
+    			$categories[] = array('name' => $estimationCost->getCost()->getCategory()->getType(), 'items' => array());
+    		}	
+    		
+    		foreach ($categories as $key=>$category){
+    			if ($category['name'] === $estimationCost->getCost()->getCategory()->getType()){
+    				array_push($categories[$key]['items'], $estimationCost);
+    			}
+    		}
+    	}
+    	
+    	return $categories;
+    }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    	$this->estimationCosts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     public function getInArray()
     {
     	return array(
@@ -221,7 +303,8 @@ class Estimation
     			'materialsAmount' => $this->getMaterialsAmount(),
     			'worksAmount' => $this->getWorksAmount(),
     			'totalAmount' => $this->getTotalAmount(),
-    			'updated' => $this->getUpdated()->getTimestamp()*1000
+    			'updated' => $this->getUpdated()->getTimestamp()*1000,
+    			'estimationCosts' => ($this->getEstimationCosts() == null ) ? array() : array_map(function($estimationCost){return $estimationCost->getInArray();}, $this->getEstimationCosts()->toArray())
     	);
     }
     
@@ -309,16 +392,14 @@ class Estimation
     		$estimation = $em->getRepository("RenovateMainBundle:Estimation")->find($parameters->id);
     	}else{
     		$estimation = new Estimation();
+    		$estimation->setMaterialsAmount(0);
+    		$estimation->setWorksAmount(0);
+    		$estimation->setTotalAmount(0);
     	}
     	
     	
     	$estimation->setCustomer($parameters->customer);
     	$estimation->setPerformer($parameters->performer);
-    	
-    	
-    	$estimation->setMaterialsAmount(0);
-    	$estimation->setWorksAmount(0);
-    	$estimation->setTotalAmount(0);
     	
     	$estimation->setUpdated(new \DateTime());
     	
@@ -326,5 +407,20 @@ class Estimation
     	$em->flush();
     	
     	return $estimation;
+    }
+    
+    public static function removeEstimationById($em, $id)
+    {
+    	$estimation = $em->getRepository("RenovateMainBundle:Estimation")->find($id);
+    	
+    	foreach($estimation->getEstimationCosts() as $estimationCost){
+    		$em->remove($estimationCost);
+    		$em->flush();
+    	}
+    	
+    	$em->remove($estimation);
+    	$em->flush();
+    	
+    	return true;
     }
 }

@@ -11,6 +11,7 @@
 
 {% block content %}
 <div ng-controller="EstimationsController">
+	<div id="infoAlert" class="alert alert-info" role="alert">Зміни збережено!</div>
 	<div class="row">
 		<div class="col-md-12">
 			<button class="btn btn-primary" type="button" ng-click="isCollapsedEstimations = !isCollapsedEstimations" ng-init="isCollapsedEstimations=true">
@@ -73,7 +74,7 @@
 						          <td>[[estimation.customer]]</td>
 						          <td>[[estimation.performer]]</td>
 						          <td>[[estimation.updated | date:"dd.MM.yyyy HH:mm:ss"]]</td>
-						          <td><button ng-click="" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="addTab(estimation.id)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+						          <td><button ng-click="removeEstimation(estimation)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="addTab(estimation.id)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 						        </tr>
 			      			</tbody>
     					</table>
@@ -107,10 +108,10 @@
     			</thead>
     			<tbody ng-repeat="item in costCategoriesWorks">
 			        <tr>
-			        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button> [[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close pull-left"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button>&nbsp;[[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
 			        </tr>
 			        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
-			        	<td>[[cost.name]]</td>
+			        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
 			        	<td>[[cost.units]]</td>
 			        	<td>[[cost.price]]</td>
 			        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
@@ -135,10 +136,10 @@
     			</thead>
     			<tbody ng-repeat="item in costCategoriesMaterials">
 			        <tr>
-			        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button> [[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+			        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close pull-left"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button>&nbsp;[[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
 			        </tr>
 			        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
-			        	<td>[[cost.name]]</td>
+			        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
 			        	<td>[[cost.units]]</td>
 			        	<td>[[cost.price]]</td>
 			        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
@@ -258,7 +259,7 @@
     	</script>
 	</div>
 	<div class="row" style="margin: 10px 0px;">
-		<div class="col-md-12">
+		<div class="col-md-2">
 			<button class="btn btn-success" type="button" ng-click="addTab()">
 				Додати кошторис <span class="glyphicon glyphicon-plus"></span>
 			</button>
@@ -279,31 +280,32 @@
 			  					<div class="form-group" ng-class="{'has-error': estimationForm.estimationCustomer.$invalid && !estimationForm.estimationCustomer.$pristine}">
 			    					<label for="estimationCustomer" class="col-sm-2 control-label">Замовник</label>
 			    					<div class="col-sm-10">
-			      						<input ng-model="estimation.customer" type="text" class="form-control" id="estimationCustomer" name="estimationCustomer" ng-change="fireChanges()" required>
+			      						<input ng-model="estimation.customer" type="text" class="form-control" id="estimationCustomer" name="estimationCustomer" ng-change="fireEstimationChanges()" required>
 			    						<p ng-show="estimationForm.estimationCustomer.$invalid && !estimationForm.estimationCustomer.$pristine" class="help-block">Введіть замовника.</p>
 									</div>
 			  					</div>
 								<div class="form-group" ng-class="{'has-error': estimationForm.estimationPerformer.$invalid && !estimationForm.estimationPerformer.$pristine}">
 			    					<label for="estimationPerformer" class="col-sm-2 control-label">Виконавець</label>
 			    					<div class="col-sm-10">
-			      						<input ng-model="estimation.performer" type="text" class="form-control" id="estimationPerformer" name="estimationPerformer" ng-change="fireChanges()" required>
+			      						<input ng-model="estimation.performer" type="text" class="form-control" id="estimationPerformer" name="estimationPerformer" ng-change="fireEstimationChanges()" required>
 			    						<p ng-show="estimationForm.estimationPerformer.$invalid && !estimationForm.estimationPerformer.$pristine" class="help-block">Введіть виконавця.</p>
 									</div>
 			  					</div>
 							</form>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<form class="form-horizontal">
 			  					<div class="form-group">
-			    					<a class="btn btn-link" href="#" role="button">Експорт в CSV</a>
+			    					<a class="btn btn-link" href="[[estimation.csv]]" target="_blank" role="button">Експорт в CSV</a>
 			  					</div>
 								<div class="form-group">
-			    					<a class="btn btn-link" href="#" role="button">Посилання для перегляду</a>
+			    					<a href="[[estimation.href]]" target="_blank" class="btn btn-link" role="button">Посилання для перегляду</a>
 			  					</div>
 							</form>
 						</div>
-						<div class="col-md-3">
-							<div id="infoAlert" class="alert alert-info" role="alert" style="display:none;">Зміни збережено!</div>
+						<div class="col-md-4">
+	    					<h5>Роботи - <span class="label label-info">[[estimation.worksAmount]] грн.</span> Матеріали - <span class="label label-info">[[estimation.materialsAmount]] грн.</span></h5>
+	    					<h3>Разом - <span class="label label-primary">[[estimation.totalAmount]] грн.</span></h3>
 						</div>
 					</div>
 					<div class="row">
@@ -314,19 +316,24 @@
 							          <th>#</th>
 							          <th>Назва статті витрат</th>
 							          <th>Од. виміру</th>
-							          <th>Кількість</th>
 							          <th>Ціна, грн</th>
+							          <th>Кількість</th>
 							          <th>Сума, грн</th>
+							          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
 							        </tr>
 				      			</thead>
-				      			<tbody>
-							        <tr ng-repeat="item in []">
+				      			<tbody ng-repeat="costCategory in estimation.costCategories">
+				      				<tr>
+							          <th scope="row" colspan="8">[[(costCategory.name == 'materials') ? 'Матеріали' : 'Роботи']]</th>
+							        </tr>
+							        <tr ng-repeat="estimationCost in costCategory.items">
 							          <th scope="row">[[$index+1]]</th>
-							          <td>[[item.name]]</td>
-							          <td>[[item.units]]</td>
-							          <td>[[item.count]]</td>
-							          <td>[[item.price]]</td>
-							          <td>[[item.amount]]</td>
+							          <td>[[estimationCost.cost.name]]</td>
+							          <td>[[estimationCost.cost.units]]</td>
+							          <td>[[estimationCost.cost.price]]</td>
+							          <td><input style="width:100px;" ng-model="estimationCost.count" type="number" min="1" step="1" class="form-control" ng-change="fireEstimationCostChanges(estimationCost)"></td>
+							          <td>[[estimationCost.total]]</td>
+							          <td><button ng-click="removeEstimationCost(estimationCost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button></td>
 							        </tr>
 				      			</tbody>
     					</table>

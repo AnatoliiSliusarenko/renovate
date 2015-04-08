@@ -536,6 +536,14 @@ renovate_estimations:
     path: /estimations
     defaults: { _controller: RenovateMainBundle:Estimations:index}
     
+renovate_estimations_show:
+    path: /estimations/show/{estimation_id}
+    defaults: { _controller: RenovateMainBundle:Estimations:showEstimation}
+    
+renovate_estimations_csv:
+    path: /estimations/csv/{estimation_id}
+    defaults: { _controller: RenovateMainBundle:Estimations:csvEstimation}
+    
 renovate_ng_estimations:
     path: /ng/estimations
     defaults: { _controller: RenovateMainBundle:Estimations:getEstimationsNg}
@@ -551,6 +559,10 @@ renovate_ng_estimations_count:
 renovate_ng_estimations_get:
     path: /ng/estimations/{estimation_id}
     defaults: { _controller: RenovateMainBundle:Estimations:getEstimationNg}
+    
+renovate_ng_estimations_remove:
+    path: /ng/estimations/remove/{estimation_id}
+    defaults: { _controller: RenovateMainBundle:Estimations:removeEstimationNg}
     
 renovate_ng_cost_categories:
     path: /ng/cost-categories
@@ -579,3 +591,15 @@ renovate_ng_costs_edit:
 renovate_ng_costs_remove:
     path: /ng/costs/remove/{cost_id}
     defaults: { _controller: RenovateMainBundle:Costs:removeCostNg}
+    
+renovate_ng_estimation_costs_add:
+    path: /ng/estimation-costs/add
+    defaults: { _controller: RenovateMainBundle:EstimationCosts:addEstimationCostNg}
+    
+renovate_ng_estimation_costs_remove:
+    path: /ng/estimation-costs/remove/{estimationCost_id}
+    defaults: { _controller: RenovateMainBundle:EstimationCosts:removeEstimationCostNg}
+    
+renovate_ng_estimation_costs_edit:
+    path: /ng/estimation-costs/edit/{estimationCost_id}
+    defaults: { _controller: RenovateMainBundle:EstimationCosts:editEstimationCostNg}

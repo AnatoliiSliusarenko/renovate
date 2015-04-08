@@ -15,8 +15,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	
 	$scope.urlsEstimationsNg = URLS.estimationsNg;
 	$scope.urlsEstimationsCountNg = URLS.estimationsCountNg;
-	
-	
+	$scope.urlsEstimationsRemoveNg = URLS.estimationsRemoveNg;
 	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
@@ -86,8 +85,26 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	}
 	getEstimationsCount();
 	
-	//close tab on remove
-	
+	$scope.removeEstimation = function(estimation){
+		var remove = confirm("Дійсно бажаєте видалити кошторис № " + estimation.id + " ?");
+		if (!remove) return;
+		
+		var url = $scope.urlsEstimationsRemoveNg.replace('0', estimation.id);
+		
+		$http({
+			method: "GET", 
+			url: url
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				getEstimationsCount();
+				var index = _.indexOf(_.map($scope.tabs, function(tab){return tab.estimationid;}), estimation.id);
+				if (index != undefined) $scope.tabs.splice(index, 1);
+			}
+		});
+	}
 	
 	///-----------------Cost Categories-------------------------
 	$scope.urlsCostCategoriesGetNg = URLS.costCategoriesGetNg;
@@ -194,6 +211,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	}
 	///---------------------Costs-------------------------------
 	$scope.urlsCostsRemoveNg = URLS.costsRemoveNg;
+	
 	$scope.addCost = function(category){
 		var modalInstance = $modal.open({
 		      templateUrl: 'addCost.html',
@@ -257,6 +275,34 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 				}
 			}
 		});
+	}
+	///---------------Estimation Costs--------------------------
+	$scope.urlsEstimationCostsAddNg = URLS.estimationCostsAddNg;
+	
+	$scope.addEstimationCost = function(cost){
+		var tab = _.find($scope.tabs, function(tab){return tab.active;});
+		if (tab == undefined) {
+			alert('Нема активних кошторисів!');
+			return;
+		}
+		
+		if (tab.estimationid == undefined) {
+			alert('Введіть спочатку поля: Замовник, Виконавець !');
+			return;
+		}
+		
+		$http({
+			method: "POST", 
+			url: $scope.urlsEstimationCostsAddNg,
+			data: {estimationid: tab.estimationid, costid: cost.id}
+			  })
+		.success(function(response){
+			console.log("added estimation cost => ", response);
+			if (response.result)
+			{
+				tab.refreshEstimation();
+			}
+		})
 	}
 	///-------------------Tabs----------------------------------
 	$scope.tabs = [];
@@ -424,19 +470,59 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	
 	$scope.urlsEstimationsSaveNg = URLS.estimationsSaveNg;
 	$scope.urlsEstimationsGetNg = URLS.estimationsGetNg;
+	$scope.urlsEstimationsShow = URLS.estimationsShow;
+	$scope.urlsEstimationsCsv = URLS.estimationsCsv;
+	$scope.urlsEstimationCostsRemoveNg = URLS.estimationCostsRemoveNg;
+	$scope.urlsEstimationCostsEditNg = URLS.estimationCostsEditNg;
 	
-	$scope.changesHandler = null;
+	$scope.estimationChangesHandler = null;
+	$scope.estimationCostChangesHandler = {};
 	$scope.estimation = {};
 	$scope.tab.active = true;
+	
+	$scope.tab.refreshEstimation = function(){
+		getEstimation($scope.tab.estimationid);
+		showAlert();
+	};
 	
 	(function checkEstimation(){
 		if ($scope.tab.estimationid != undefined) getEstimation($scope.tab.estimationid);
 	})();
 	
+	function createEstimationUrl(id){
+		return $scope.urlsEstimationsShow.replace('0', id);
+	}
+	
+	function createEstimationCsv(id){
+		return $scope.urlsEstimationsCsv.replace('0', id);
+	}
+	
+	function createCostCategories(estimationCosts){
+		var categories = [];
+		
+		_.map(estimationCosts, function(estimationCost){
+			if (_.indexOf(_.map(categories, function(category){return category.name;}),estimationCost.cost.categoryType) == -1){
+				categories.push({name:estimationCost.cost.categoryType, items: []});
+			}
+			
+			var category = _.find(categories, function(category){return category.name == estimationCost.cost.categoryType;});
+			category.items.push(estimationCost);
+		});
+		
+		return categories;
+	}
+	
 	function copyEstimation(resource){
 		$scope.estimation.id = resource.id;
 		$scope.estimation.customer = resource.customer;
 		$scope.estimation.performer = resource.performer;
+		$scope.estimation.estimationCosts = resource.estimationCosts;
+		$scope.estimation.worksAmount = resource.worksAmount;
+		$scope.estimation.materialsAmount = resource.materialsAmount;
+		$scope.estimation.totalAmount = resource.totalAmount;
+		$scope.estimation.costCategories = createCostCategories($scope.estimation.estimationCosts);
+		$scope.estimation.href = createEstimationUrl($scope.estimation.id);
+		$scope.estimation.csv = createEstimationCsv($scope.estimation.id);
 		
 		$scope.tab.title = $scope.estimation.id;
 		$scope.tab.estimationid = $scope.estimation.id;
@@ -478,13 +564,61 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		})
 	}
 	
-	$scope.fireChanges = function(){
+	$scope.fireEstimationChanges = function(){
 		if ((!$scope.estimation.customer) || (!$scope.estimation.performer)) return;
 		
-		clearTimeout($scope.changesHandler);
-		$scope.changesHandler = setTimeout(function(){
+		clearTimeout($scope.estimationChangesHandler);
+		$scope.estimationChangesHandler = setTimeout(function(){
 			saveEstimation();
 		}, 2000);
 	}
 	
+	$scope.fireEstimationCostChanges = function(estimationCost){
+		estimationCost.total=estimationCost.cost.price*estimationCost.count;
+		
+		clearTimeout($scope.estimationCostChangesHandler[estimationCost.id]);
+		$scope.estimationCostChangesHandler[estimationCost.id] = setTimeout(function(){
+			editEstimationCost(estimationCost);
+			delete $scope.estimationCostChangesHandler[estimationCost.id];
+		}, 1000);
+	}
+	
+	
+	$scope.removeEstimationCost = function(estimationCost){
+		var remove = confirm("Дійсно бажаєте видалити статтю витрат: " + estimationCost.cost.name + " ?");
+		if (!remove) return;
+		
+		var url = $scope.urlsEstimationCostsRemoveNg.replace('0', estimationCost.id);
+		
+		$http({
+			method: "GET", 
+			url: url
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				$scope.tab.refreshEstimation();
+			}
+		});
+	}
+	
+	function editEstimationCost(estimationCost){
+		var url = $scope.urlsEstimationCostsEditNg.replace('0', estimationCost.id);
+		
+		$http({
+			method: "POST", 
+			url: url,
+			data: estimationCost
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				if ($.isEmptyObject($scope.estimationCostChangesHandler)){
+					$scope.tab.refreshEstimation();
+				}
+			}
+		});
+	}
 });

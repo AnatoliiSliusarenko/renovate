@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ua">
+  <head>
+  	<style>
+  		table {
+  			border-collapse: collapse;
+  			border-left: 1px solid black;
+  			width: 1000px;
+  			margin: 0 auto;
+  		}
+  		
+  		table.estimation {
+  			border-top: 1px solid black;
+  		}
+  		
+  		td,th {
+  			padding: 5px;
+  			border-right: 1px solid black;
+  			border-bottom: 1px solid black;
+  		}
+  	</style>
+  </head>
+  <body>
+  	<table class="estimation">
+  		<tbody>
+	        <tr>
+	          <td>Дата: <strong>{{estimation.updated|date("d.m.Y")}}</strong></td>
+	          <td>Кошторис <strong>№{{estimation.id}}</strong></td>
+	        </tr>
+   		</tbody>
+  	</table>
+  	<table>
+  		<tbody>
+	        <tr>
+	        	<td>Замовник: <strong>{{estimation.customer}}</strong></td>
+	        </tr>
+	        <tr>
+	        	<td>Виконавець: <strong>{{estimation.performer}}</strong></td>
+	        </tr>
+	    </tbody>
+	</table>
+	<table>
+  		<tbody>
+	        <tr>
+	        	<td>Вартість робіт: <strong>{{estimation.getWorksAmount()}} грн.</strong></td>
+	        	<td>Вартість матеріалів: <strong>{{estimation.getMaterialsAmount()}} грн.</strong></td>
+	        	<td>Загальна сума: <strong>{{estimation.getTotalAmount()}} грн.</strong></td>
+	        </tr>
+	    </tbody>
+	</table>
+ 	<table>
+ 		<thead>
+	        <tr>
+	          <th>№</th>
+	          <th>Назва статті витрат</th>
+	          <th>Од. виміру</th>
+	          <th>Ціна, грн</th>
+	          <th>Кількість</th>
+	          <th>Сума, грн</th>
+	        </tr>
+   		</thead>
+   		{% for category in estimation.getCostCategories() %}
+   		<tbody>
+   			<tr>
+   				<td colspan="6"><strong>{{(category.name == 'works') ? 'Роботи' : 'Матеріали'}}</strong></td>
+          	</tr>
+   			{% for item in category.items %}
+   			<tr>
+   				<th>{{loop.index}}</th>
+   				<td>{{item.getCost().getName()}}</td>
+   				<td>{{item.getCost().getUnits()}}</td>
+   				<td>{{item.getCost().getPrice()}}</td>
+   				<td>{{item.getCount()}}</td>
+   				<td>{{item.getTotal()}}</td>
+          	</tr>
+          	{% endfor %}
+   		</tbody>
+   		{% endfor %}
+ 	</table>
+  </body>
+</html>

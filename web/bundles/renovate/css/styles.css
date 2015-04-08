@@ -6,6 +6,19 @@ tab-heading button {
 	top: 2px;
 	color: red !important;
 }
+
+td.clickable:hover {
+	cursor: pointer;
+}
+
+#infoAlert {
+	display: none;
+	z-index: 10;
+	width: 150px;
+	position: fixed;
+	right: 10px;
+	bottom: 0px;
+}
 /* Cost Categories */
 .costs {
 	height: 300px;
@@ -19,6 +32,10 @@ tab-heading button {
 
 .costs table td, .costs table th {
 	border-right: 1px solid #ddd;
+}
+
+.costs button {
+	font-size: 16px;
 }
 /* Prices and User Info*/
 table.prices, table.user-info {
