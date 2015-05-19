@@ -188,8 +188,7 @@ class CostCategory
     	$costCategory = $em->getRepository("RenovateMainBundle:CostCategory")->find($id);
     	 
     	foreach($costCategory->getCosts() as $cost){
-    		$em->remove($cost);
-    		$em->flush();
+    		Cost::removeCostById($em, $cost->getId());
     	}
     	 
     	$em->remove($costCategory);

@@ -275,6 +275,11 @@ class Cost
     {
     	$cost = $em->getRepository("RenovateMainBundle:Cost")->find($id);
     
+    	foreach($cost->getEstimationCosts() as $estimationCost){
+    		$em->remove($estimationCost);
+    		$em->flush();
+    	}
+    	
     	$em->remove($cost);
     	$em->flush();
     
