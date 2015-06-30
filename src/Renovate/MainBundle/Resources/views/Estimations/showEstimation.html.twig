@@ -7,6 +7,7 @@
   			border-left: 1px solid black;
   			width: 1000px;
   			margin: 0 auto;
+  			font-size: 12px;
   		}
   		
   		table.estimation {
@@ -14,9 +15,13 @@
   		}
   		
   		td,th {
-  			padding: 5px;
+  			padding-left: 5px;
+  			padding-right: 5px;
   			border-right: 1px solid black;
   			border-bottom: 1px solid black;
+  		}
+  		th.thin {
+  			width: 50px;
   		}
   	</style>
   </head>
@@ -51,12 +56,12 @@
  	<table>
  		<thead>
 	        <tr>
-	          <th>№</th>
+	          <th class="thin">№</th>
 	          <th>Назва статті витрат</th>
-	          <th>Од. виміру</th>
-	          <th>Ціна, грн</th>
-	          <th>Кількість</th>
-	          <th>Сума, грн</th>
+	          <th class="thin">Од. виміру</th>
+	          <th class="thin">Ціна, грн</th>
+	          <th class="thin">Кількість</th>
+	          <th class="thin">Сума, грн</th>
 	        </tr>
    		</thead>
    		{% for category in estimation.getCostCategories() %}
