@@ -314,7 +314,7 @@ class Estimation
     	->createQueryBuilder('e');
     
     	$qb->select('e')
-    	->addOrderBy('e.updated');
+    	->addOrderBy('e.updated', 'DESC');
     	 
     	if (isset($parameters['offset']) && isset($parameters['limit']))
     	{

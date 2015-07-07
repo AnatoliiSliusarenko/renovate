@@ -1,4 +1,13 @@
 /* Estimations */
+.estimations table td, .estimations table th {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+} 
+
+.estimations table .form-control {
+	height: 25px;
+	padding: 0px 12px;
+}
 tab-heading button {
 	font-size: 12px !important;
 	position: absolute;
@@ -32,6 +41,8 @@ td.clickable:hover {
 
 .costs table td, .costs table th {
 	border-right: 1px solid #ddd;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
 }
 
 .costs button {

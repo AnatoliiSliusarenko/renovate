@@ -10,7 +10,10 @@
 {% endblock %}
 
 {% block content %}
-<div ng-controller="EstimationsController">
+<div class="splash" ng-cloak>
+	<div class="image center-block"></div>
+</div>
+<div ng-controller="EstimationsController" ng-cloak>
 	<div id="infoAlert" class="alert alert-info" role="alert">Зміни збережено!</div>
 	<div class="row">
 		<div class="col-md-12">
@@ -61,6 +64,7 @@
 						        <tr>
 						          <th>#</th>
 						          <th>№ кошторису</th>
+						          <th>Загальна сума, грн</th>
 						          <th>Замовник</th>
 						          <th>Виконавець</th>
 						          <th>Оновлено</th>
@@ -71,6 +75,7 @@
 						        <tr ng-repeat="estimation in estimations">
 						          <th scope="row">[[$index+1]]</th>
 						          <td>[[estimation.id]]</td>
+						          <td><a href="[[estimation.href]]" target="_blank" class="btn btn-link" role="button">[[estimation.totalAmount]]</a></td>
 						          <td>[[estimation.customer]]</td>
 						          <td>[[estimation.performer]]</td>
 						          <td>[[estimation.updated | date:"dd.MM.yyyy HH:mm:ss"]]</td>
@@ -309,7 +314,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-12 estimations">
 							<table class="table table-hover table-mobile">
 				      			<thead>
 							        <tr>

@@ -16,6 +16,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	$scope.urlsEstimationsNg = URLS.estimationsNg;
 	$scope.urlsEstimationsCountNg = URLS.estimationsCountNg;
 	$scope.urlsEstimationsRemoveNg = URLS.estimationsRemoveNg;
+	$scope.urlsEstimationsShow = URLS.estimationsShow;
 	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
@@ -49,6 +50,11 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	    $scope.openedTo = true;
 	};
 	
+	function createEstimationUrls(estimations){
+		_.map(estimations, function(estimation){estimation.href = $scope.urlsEstimationsShow.replace('0', estimation.id);});
+		return estimations;
+	}
+	
 	function getEstimations()
 	{
 		$scope.filter.offset = $scope.itemsPerPage*($scope.currentPage - 1);
@@ -62,7 +68,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 			console.log(" estimations => ",response);
 			if (response.result)
 			{
-				$scope.estimations = response.result;
+				$scope.estimations = createEstimationUrls(response.result);
 			}
 		})
 	}
@@ -477,7 +483,9 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	
 	$scope.estimationChangesHandler = null;
 	$scope.estimationCostChangesHandler = {};
-	$scope.estimation = {};
+	$scope.estimation = {
+			performer: 'ТОВ "РЕНОВЕЙТ"'
+	};
 	$scope.tab.active = true;
 	
 	$scope.tab.refreshEstimation = function(){
