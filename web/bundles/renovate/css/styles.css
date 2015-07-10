@@ -29,17 +29,40 @@ td.clickable:hover {
 	bottom: 0px;
 }
 /* Cost Categories */
-.costs {
-	height: 300px;
+
+.scrolling {
 	overflow: scroll;
-	padding: 0;
+	height: 100%;
+}
+
+.handler_horizontal {
+  width: 100%;
+  height: 10px;
+  margin-bottom: 15px;
+  padding: 0 1px;
+  cursor: row-resize;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  
+  background: url("../images/handle-h.png") 50% 3px no-repeat;
+  background-color: #e5e5e5;
+}
+
+.costs {
+	overflow:hidden;
+	height: 200px;
+	width: 580px;
+	padding: 0px;
+	margin: 1px;
+	border: 1px solid #e5e5e5;
 }
 
 .costs table {
 	border: 1px solid #ddd;
 }
 
-.costs table td, .costs table th {
+.costs .table > thead > tr > th,.costs .table > tbody > tr > th,.costs .table > tfoot > tr > th,.costs .table > thead > tr > td,.costs .table > tbody > tr > td,.costs .table > tfoot > tr > td {
 	border-right: 1px solid #ddd;
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;

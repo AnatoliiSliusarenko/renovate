@@ -97,60 +97,67 @@
 	</div>
 	<div class="row">
 		<div class="col-md-6 costs">
-			<table class="table table-hover table-mobile">
-    			<thead>
-			        <tr class="active">
-			          <th>Назва статті витрат</th>
-			          <th>Од. виміру</th>
-			          <th>Ціна, грн.</th>
-			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
-			        </tr>
-    			</thead>
-    			<thead>
-			        <tr class="info">
-			          <th colspan="4">РОБОТИ <button ng-click="addCostCategory('works')" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
-			        </tr>
-    			</thead>
-    			<tbody ng-repeat="item in costCategoriesWorks">
-			        <tr>
-			        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close pull-left"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button>&nbsp;[[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
-			        </tr>
-			        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
-			        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
-			        	<td>[[cost.units]]</td>
-			        	<td>[[cost.price]]</td>
-			        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
-			        </tr>
-    			</tbody>
-			</table>
+			<div class="scrolling">
+				<table class="table table-hover table-mobile">
+	    			<thead>
+				        <tr class="active">
+				          <th>Назва статті витрат</th>
+				          <th>Од. виміру</th>
+				          <th>Ціна, грн.</th>
+				          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+				        </tr>
+	    			</thead>
+	    			<thead>
+				        <tr class="info">
+				          <th colspan="4">РОБОТИ <button ng-click="addCostCategory('works')" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+				        </tr>
+	    			</thead>
+	    			<tbody ng-repeat="item in costCategoriesWorks">
+				        <tr>
+				        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close pull-left"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button>&nbsp;[[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+				        </tr>
+				        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
+				        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
+				        	<td>[[cost.units]]</td>
+				        	<td>[[cost.price]]</td>
+				        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+				        </tr>
+	    			</tbody>
+				</table>
+			</div>
+			<div class="handler_horizontal"></div>
 		</div>
+			
 		<div class="col-md-6 costs">
-			<table class="table table-hover table-mobile">
-    			<thead>
-			        <tr class="active">
-			          <th>Назва статті витрат</th>
-			          <th>Од. виміру</th>
-			          <th>Ціна, грн.</th>
-			          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
-			        </tr>
-    			</thead>
-    			<thead>
-			        <tr class="info">
-			          <th colspan="4">МАТЕРІАЛИ <button ng-click="addCostCategory('materials')" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
-			        </tr>
-    			</thead>
-    			<tbody ng-repeat="item in costCategoriesMaterials">
-			        <tr>
-			        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close pull-left"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button>&nbsp;[[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
-			        </tr>
-			        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
-			        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
-			        	<td>[[cost.units]]</td>
-			        	<td>[[cost.price]]</td>
-			        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
-			        </tr>
-    			</tbody>
-			</table>
+			<div class="scrolling">
+				<table class="table table-hover table-mobile">
+	    			<thead>
+				        <tr class="active">
+				          <th>Назва статті витрат</th>
+				          <th>Од. виміру</th>
+				          <th>Ціна, грн.</th>
+				          <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+				        </tr>
+	    			</thead>
+	    			<thead>
+				        <tr class="info">
+				          <th colspan="4">МАТЕРІАЛИ <button ng-click="addCostCategory('materials')" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+				        </tr>
+	    			</thead>
+	    			<tbody ng-repeat="item in costCategoriesMaterials">
+				        <tr>
+				        	<th colspan="4" class="warning"><button ng-show="item.costs.length>0" ng-click="item.collapsed = !item.collapsed" type="button" class="close pull-left"><span ng-show="!item.collapsed" class="glyphicon glyphicon-chevron-down"></span><span ng-show="item.collapsed" class="glyphicon glyphicon-chevron-up"></span></button>&nbsp;[[item.name]] <button ng-click="removeCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCostCategory(item)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button><button ng-click="addCost(item)" type="button" class="close"><span class="glyphicon glyphicon-plus"></span></button></th>
+				        </tr>
+				        <tr ng-show="item.collapsed" ng-repeat="cost in item.costs">
+				        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
+				        	<td>[[cost.units]]</td>
+				        	<td>[[cost.price]]</td>
+				        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+				        </tr>
+	    			</tbody>
+				</table>
+			</div>
+			<div class="handler_horizontal"></div>
 		</div>
 		<script type="text/ng-template" id="addCostCategory.html">
         	<div class="modal-header">
@@ -353,4 +360,11 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/angularEstimationsController.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/resizer.js') }}"></script>
+<script>
+window.onload=function(){
+    Resizer.attach(document.getElementsByClassName('costs')[0],200);
+    Resizer.attach(document.getElementsByClassName('costs')[1],200);
+}
+</script>
 {% endblock %}
