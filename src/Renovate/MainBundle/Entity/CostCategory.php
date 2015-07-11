@@ -37,6 +37,7 @@ class CostCategory
 
     /**
      * @ORM\OneToMany(targetEntity="Cost", mappedBy="category")
+     * @ORM\OrderBy({"name" = "ASC"})
      * @var array
      */
     private $costs;
