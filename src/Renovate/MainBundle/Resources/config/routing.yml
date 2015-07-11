@@ -564,6 +564,10 @@ renovate_ng_estimations_remove:
     path: /ng/estimations/remove/{estimation_id}
     defaults: { _controller: RenovateMainBundle:Estimations:removeEstimationNg}
     
+renovate_ng_estimations_copy:
+    path: /ng/estimations/copy/{estimation_id}
+    defaults: { _controller: RenovateMainBundle:Estimations:copyEstimationNg}
+    
 renovate_ng_cost_categories:
     path: /ng/cost-categories
     defaults: { _controller: RenovateMainBundle:CostCategories:getCostCategoriesNg}

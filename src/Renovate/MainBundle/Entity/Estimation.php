@@ -200,7 +200,7 @@ class Estimation
     	$materialsAmount = 0;
     	
     	foreach ($this->getEstimationCosts() as $estimationCost){
-    		switch ($estimationCost->getCost()->getCategory()->getType()){
+    		switch ($estimationCost->getCategoryType()){
     			case "works": $worksAmount = $worksAmount + $estimationCost->getTotal(); break;
     			case "materials": $materialsAmount = $materialsAmount + $estimationCost->getTotal(); break;
     		}
@@ -272,12 +272,12 @@ class Estimation
     {
     	$categories = array();
     	foreach ($this->estimationCosts as $estimationCost){
-    		if (!in_array($estimationCost->getCost()->getCategory()->getType(),array_map(function($category){ return $category['name'];},$categories))){
-    			$categories[] = array('name' => $estimationCost->getCost()->getCategory()->getType(), 'items' => array());
+    		if (!in_array($estimationCost->getCategoryType(),array_map(function($category){ return $category['name'];},$categories))){
+    			$categories[] = array('name' => $estimationCost->getCategoryType(), 'items' => array());
     		}	
     		
     		foreach ($categories as $key=>$category){
-    			if ($category['name'] === $estimationCost->getCost()->getCategory()->getType()){
+    			if ($category['name'] === $estimationCost->getCategoryType()){
     				array_push($categories[$key]['items'], $estimationCost);
     			}
     		}
@@ -422,5 +422,36 @@ class Estimation
     	$em->flush();
     	
     	return true;
+    }
+    
+    public static function copyEstimationById($em, $id)
+    {
+    	$estimation = $em->getRepository("RenovateMainBundle:Estimation")->find($id);
+
+    	$estimationCopy = new Estimation();
+    	$estimationCopy->setCustomer($estimation->getCustomer());
+    	$estimationCopy->setPerformer($estimation->getPerformer());
+    	$estimationCopy->setMaterialsAmount($estimation->getMaterialsAmount());
+    	$estimationCopy->setWorksAmount($estimation->getWorksAmount());
+    	$estimationCopy->setTotalAmount($estimation->getTotalAmount());
+    	$estimationCopy->setUpdated(new \DateTime());
+    	$em->persist($estimationCopy);
+    	$em->flush();
+    	
+    	foreach($estimation->getEstimationCosts() as $estimationCost){
+    		$estimationCostCopy = new EstimationCost();
+    		$estimationCostCopy->setEstimationid($estimationCopy->getId());
+    		$estimationCostCopy->setEstimation($estimationCopy);
+    		$estimationCostCopy->setCategoryType($estimationCost->getCategoryType());
+    		$estimationCostCopy->setName($estimationCost->getName());
+    		$estimationCostCopy->setUnits($estimationCost->getUnits());
+    		$estimationCostCopy->setPrice($estimationCost->getPrice());
+    		$estimationCostCopy->setCount($estimationCost->getCount());
+    		$estimationCostCopy->setTotal($estimationCost->getTotal());
+    		$em->persist($estimationCostCopy);
+    		$em->flush();
+    	}
+    	 
+    	return $estimationCopy->getId();
     }
 }

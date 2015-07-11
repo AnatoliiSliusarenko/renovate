@@ -35,7 +35,7 @@
 				  	</a>
 				  	<div class="description">
 				  		<h3>{{result.getName() | slice(0, 40)}}</h3>
-				  		<p>{{result.getDescription() | slice(0, 400) | raw}}</p>
+				  		<p>{{result.getDescription() | striptags | slice(0, 400) | raw}}</p>
 				  		<a class="btn btn-gray btn-xs" href="{{path('renovate_results_show_result',{result_name_translit:result.getNameTranslit()})}}">Детальніше</a>
 				  	</div>
 			  	</div>
@@ -51,7 +51,7 @@
 				  	</a>
 				  	<div class="description">
 				  		<h3>{{newsp.getName() | slice(0, 40)}}</h3>
-				  		<p>{{newsp.getDescription() | slice(0, 400) | raw}}</p>
+				  		<p>{{newsp.getDescription() | striptags | slice(0, 400) | raw}}</p>
 				  		<a class="btn btn-gray btn-xs" href="{{path('renovate_news_show_news',{news_name_translit:newsp.getNameTranslit()})}}">Детальніше</a>
 				  	</div>
 			  	</div>
@@ -67,7 +67,7 @@
 				  	</a>
 				  	<div class="description">
 				  		<h3>{{article.getName() | slice(0, 40)}}</h3>
-				  		<p>{{article.getDescription() | slice(0, 400) | raw}}</p>
+				  		<p>{{article.getDescription() | striptags | slice(0, 400) | raw}}</p>
 				  		<a class="btn btn-gray btn-xs" href="{{path('renovate_articles_show_article',{article_name_translit:article.getNameTranslit()})}}">Детальніше</a>
 				  	</div>
 			  	</div>
@@ -83,7 +83,7 @@
 				  	</a>
 				  	<div class="description">
 				  		<h3>{{share.getName() | slice(0, 40)}}</h3>
-				  		<p>{{share.getDescription() | slice(0, 400) | raw}}</p>
+				  		<p>{{share.getDescription() | striptags | slice(0, 400) | raw}}</p>
 				  		<a class="btn btn-gray btn-xs" href="{{path('renovate_shares_show_share',{share_name_translit:share.getNameTranslit()})}}">Детальніше</a>
 				  	</div>
 			  	</div>
@@ -99,7 +99,7 @@
 				  	</a>
 				  	<div class="description">
 				  		<h3>{{vacancy.getName() | slice(0, 40)}}</h3>
-				  		<p>{{vacancy.getDescription() | slice(0, 400) | raw}}</p>
+				  		<p>{{vacancy.getDescription() | striptags | slice(0, 400) | raw}}</p>
 				  		<a class="btn btn-gray btn-xs" href="{{path('renovate_vacancies_show_vacancy',{vacancy_name_translit:vacancy.getNameTranslit()})}}">Детальніше</a>
 				  	</div>
 			  	</div>

@@ -476,6 +476,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	
 	$scope.urlsEstimationsSaveNg = URLS.estimationsSaveNg;
 	$scope.urlsEstimationsGetNg = URLS.estimationsGetNg;
+	$scope.urlsEstimationsCopyNg = URLS.estimationsCopyNg;
 	$scope.urlsEstimationsShow = URLS.estimationsShow;
 	$scope.urlsEstimationsCsv = URLS.estimationsCsv;
 	$scope.urlsEstimationCostsRemoveNg = URLS.estimationCostsRemoveNg;
@@ -509,11 +510,11 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		var categories = [];
 		
 		_.map(estimationCosts, function(estimationCost){
-			if (_.indexOf(_.map(categories, function(category){return category.name;}),estimationCost.cost.categoryType) == -1){
-				categories.push({name:estimationCost.cost.categoryType, items: []});
+			if (_.indexOf(_.map(categories, function(category){return category.name;}),estimationCost.categoryType) == -1){
+				categories.push({name:estimationCost.categoryType, items: []});
 			}
 			
-			var category = _.find(categories, function(category){return category.name == estimationCost.cost.categoryType;});
+			var category = _.find(categories, function(category){return category.name == estimationCost.categoryType;});
 			category.items.push(estimationCost);
 		});
 		
@@ -582,7 +583,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	}
 	
 	$scope.fireEstimationCostChanges = function(estimationCost){
-		estimationCost.total=estimationCost.cost.price*estimationCost.count;
+		estimationCost.total=estimationCost.price*estimationCost.count;
 		
 		clearTimeout($scope.estimationCostChangesHandler[estimationCost.id]);
 		$scope.estimationCostChangesHandler[estimationCost.id] = setTimeout(function(){
@@ -593,7 +594,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	
 	
 	$scope.removeEstimationCost = function(estimationCost){
-		var remove = confirm("Дійсно бажаєте видалити статтю витрат: " + estimationCost.cost.name + " ?");
+		var remove = confirm("Дійсно бажаєте видалити статтю витрат: " + estimationCost.name + " ?");
 		if (!remove) return;
 		
 		var url = $scope.urlsEstimationCostsRemoveNg.replace('0', estimationCost.id);
@@ -626,6 +627,26 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 				if ($.isEmptyObject($scope.estimationCostChangesHandler)){
 					$scope.tab.refreshEstimation();
 				}
+			}
+		});
+	}
+	
+	$scope.copyEstimation = function(e){
+		e.preventDefault();
+		var remove = confirm("Дійсно бажаєте компіювати кошторис №" + $scope.tab.estimationid + " ?");
+		if (!remove) return;
+		
+		var url = $scope.urlsEstimationsCopyNg.replace('0', $scope.tab.estimationid);
+		
+		$http({
+			method: "GET", 
+			url: url
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				$scope.addTab(response.result);
 			}
 		});
 	}

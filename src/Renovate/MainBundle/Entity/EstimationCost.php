@@ -29,12 +29,33 @@ class EstimationCost
     private $estimationid;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="costid", type="integer")
+     * @ORM\Column(name="category_type", type="string", length=255)
      */
-    private $costid;
-
+    private $categoryType;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="units", type="string", length=255)
+     */
+    private $units;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="price", type="float")
+     */
+    private $price;
+    
     /**
      * @var integer
      *
@@ -55,13 +76,6 @@ class EstimationCost
      * @var EstimationCost
      */
     private $estimation;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Cost", inversedBy="estimationCosts")
-     * @ORM\JoinColumn(name="costid")
-     * @var Cost
-     */
-    private $cost;
     
     /**
      * Get id
@@ -97,28 +111,97 @@ class EstimationCost
     }
 
     /**
-     * Set costid
+     * Set categoryType
      *
-     * @param integer $costid
+     * @param string $categoryType
      * @return EstimationCost
      */
-    public function setCostid($costid)
+    public function setCategoryType($categoryType)
     {
-        $this->costid = $costid;
-
-        return $this;
+    	$this->categoryType = $categoryType;
+    
+    	return $this;
     }
-
+    
     /**
-     * Get costid
+     * Get categoryType
      *
-     * @return integer 
+     * @return string
      */
-    public function getCostid()
+    public function getCategoryType()
     {
-        return $this->costid;
+    	return $this->categoryType;
     }
-
+    
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return EstimationCost
+     */
+    public function setName($name)
+    {
+    	$this->name = $name;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+    	return $this->name;
+    }
+    
+    /**
+     * Set units
+     *
+     * @param string $units
+     * @return EstimationCost
+     */
+    public function setUnits($units)
+    {
+    	$this->units = $units;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get units
+     *
+     * @return string
+     */
+    public function getUnits()
+    {
+    	return $this->units;
+    }
+    
+    /**
+     * Set price
+     *
+     * @param float $price
+     * @return EstimationCost
+     */
+    public function setPrice($price)
+    {
+    	$this->price = $price;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get price
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+    	return $this->price;
+    }
+    
     /**
      * Set count
      *
@@ -167,7 +250,7 @@ class EstimationCost
     
     public function calculateTotal()
     {
-    	$this->setTotal($this->getCost()->getPrice()*$this->getCount());
+    	$this->setTotal($this->getPrice()*$this->getCount());
     }
 
     /**
@@ -193,55 +276,33 @@ class EstimationCost
         return $this->estimation;
     }
     
-    /**
-     * Set cost
-     *
-     * @param \Renovate\MainBundle\Entity\Cost $cost
-     * @return EstimationCost
-     */
-    public function setCost(\Renovate\MainBundle\Entity\Cost $cost = null)
-    {
-    	$this->cost = $cost;
-    
-    	return $this;
-    }
-    
-    /**
-     * Get cost
-     *
-     * @return \Renovate\MainBundle\Entity\Cost
-     */
-    public function getCost()
-    {
-    	return $this->cost;
-    }
-    
     public function getInArray()
     {
     	return array(
     			'id' => $this->getId(),
     			'estimationid' => $this->getEstimationid(),
-    			'costid' => $this->getCostid(),
+    			'categoryType' => $this->getCategoryType(),
+    			'name' => $this->getName(),
+    			'units' => $this->getUnits(),
+    			'price' => $this->getPrice(),
     			'count' => $this->getCount(),
-    			'total' => $this->getTotal(),
-    			'cost' => $this->getCost()->getInArray()
+    			'total' => $this->getTotal()
     	);
     }
     
     public static function addEstimationCost($em, $parameters)
     {
-    	$estimationCost = $em->getRepository("RenovateMainBundle:EstimationCost")->findOneBy(array("estimationid"=>$parameters->estimationid,"costid"=>$parameters->costid));
-    	
-    	if ($estimationCost != NULL) return false;
-    	
     	$estimation = $em->getRepository("RenovateMainBundle:Estimation")->find($parameters->estimationid);
     	$cost = $em->getRepository("RenovateMainBundle:Cost")->find($parameters->costid);
     	
     	$estimationCost = new EstimationCost();
     	$estimationCost->setEstimationid($estimation->getId());
     	$estimationCost->setEstimation($estimation);
-    	$estimationCost->setCostid($cost->getId());
-    	$estimationCost->setCost($cost);
+    	
+    	$estimationCost->setCategoryType($cost->getCategory()->getType());
+    	$estimationCost->setName($cost->getName());
+    	$estimationCost->setUnits($cost->getUnits());
+    	$estimationCost->setPrice($cost->getPrice());
     	$estimationCost->setCount(1);
     	$estimationCost->setTotal($cost->getPrice());
     	
@@ -275,6 +336,9 @@ class EstimationCost
     {
     	$estimationCost = $em->getRepository("RenovateMainBundle:EstimationCost")->find($id);
     
+    	$estimationCost->setName($parameters->name);
+    	$estimationCost->setUnits($parameters->units);
+    	$estimationCost->setPrice($parameters->price);
     	$estimationCost->setCount($parameters->count);
     	$estimationCost->calculateTotal();
     	$em->persist($estimationCost);

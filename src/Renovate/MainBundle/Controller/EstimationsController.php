@@ -63,12 +63,13 @@ class EstimationsController extends Controller
     	$response = $this->render('RenovateMainBundle:Estimations:csvEstimation.html.twig', array('estimation'=>$estimation));
     	
     	$response->setStatusCode(200);
+    	$response->setCharset('Windows-1251');
     	$response->headers->set('Content-Type', 'text/csv');
-    	$response->headers->set('Content-Description', 'Submissions Export');
+    	//$response->headers->set('Content-Description', 'Submissions Export');
     	$response->headers->set('Content-Disposition', 'attachment; filename=Кошторис_N'.$estimation_id.'_експорт_'.date("d-m-Y_H-i-s").'.csv');
-    	$response->headers->set('Content-Transfer-Encoding', 'binary');
-    	$response->headers->set('Pragma', 'no-cache');
-    	$response->headers->set('Expires', '0');
+    	//$response->headers->set('Content-Transfer-Encoding', 'binary');
+    	//$response->headers->set('Pragma', 'no-cache');
+    	//$response->headers->set('Expires', '0');
     	
     	return $response;
     }
@@ -104,6 +105,16 @@ class EstimationsController extends Controller
     	$response = new Response(json_encode(array("result" => Estimation::removeEstimationById($em, $estimation_id))));
     	$response->headers->set('Content-Type', 'application/json');
     	 
+    	return $response;
+    }
+    
+    public function copyEstimationNgAction($estimation_id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$response = new Response(json_encode(array("result" => Estimation::copyEstimationById($em, $estimation_id))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
     	return $response;
     }
 }

@@ -57,12 +57,6 @@ class Cost
     private $category;
     
     /**
-     * @ORM\OneToMany(targetEntity="EstimationCost", mappedBy="cost")
-     * @var array
-     */
-    private $estimationCosts;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -187,47 +181,6 @@ class Cost
         return $this->category;
     }
     
-    /**
-     * Add estimationCosts
-     *
-     * @param \Renovate\MainBundle\Entity\EstimationCost $estimationCosts
-     * @return Cost
-     */
-    public function addEstimationCost(\Renovate\MainBundle\Entity\EstimationCost $estimationCosts)
-    {
-    	$this->estimationCosts[] = $estimationCosts;
-    
-    	return $this;
-    }
-    
-    /**
-     * Remove estimationCosts
-     *
-     * @param \Renovate\MainBundle\Entity\EstimationCost $estimationCosts
-     */
-    public function removeEstimationCost(\Renovate\MainBundle\Entity\EstimationCost $estimationCosts)
-    {
-    	$this->estimationCosts->removeElement($estimationCosts);
-    }
-    
-    /**
-     * Get estimationCosts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEstimationCosts()
-    {
-    	return $this->estimationCosts;
-    }
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-    	$this->estimationCosts = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
     public function getInArray()
     {
     	return array(
@@ -275,11 +228,6 @@ class Cost
     {
     	$cost = $em->getRepository("RenovateMainBundle:Cost")->find($id);
     
-    	foreach($cost->getEstimationCosts() as $estimationCost){
-    		$em->remove($estimationCost);
-    		$em->flush();
-    	}
-    	
     	$em->remove($cost);
     	$em->flush();
     

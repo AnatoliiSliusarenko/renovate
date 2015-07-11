@@ -6,6 +6,6 @@
 {% for category in estimation.getCostCategories() %}
 {{(category['name'] == 'works')?'Роботи':'Матеріали'}}
 {% for es in category['items'] %}
-{{loop.index}}	{{es.getCost().getName()}}	{{es.getCost().getUnits()}}	{{es.getCost().getPrice()}}	{{es.getCount()}}	{{es.getTotal()}}
+{{loop.index}}	{{es.getName()}}	{{es.getUnits()}}	{{es.getPrice()}}	{{es.getCount()}}	{{es.getTotal()}}
 {% endfor %}
 {% endfor %}

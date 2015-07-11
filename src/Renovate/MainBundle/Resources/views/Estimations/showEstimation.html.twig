@@ -72,9 +72,9 @@
    			{% for item in category.items %}
    			<tr>
    				<th>{{loop.index}}</th>
-   				<td>{{item.getCost().getName()}}</td>
-   				<td>{{item.getCost().getUnits()}}</td>
-   				<td>{{item.getCost().getPrice()}}</td>
+   				<td>{{item.getName()}}</td>
+   				<td>{{item.getUnits()}}</td>
+   				<td>{{item.getPrice()}}</td>
    				<td>{{item.getCount()}}</td>
    				<td>{{item.getTotal()}}</td>
           	</tr>

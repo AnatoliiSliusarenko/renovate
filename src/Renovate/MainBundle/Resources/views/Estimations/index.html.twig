@@ -281,7 +281,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<tabset>
-				<tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" ng-controller="TabController" ng-init="tab=tab">
+				<tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" ng-controller="TabController" ng-init="tab=tab;addTab=addTab;">
 	      			<tab-heading>
 	      				№ [[tab.title]]&nbsp;<button ng-click="closeTab($index, $event)" type="button" class="close"><span class="glyphicon glyphicon-remove-sign"></span></button>
 	      			</tab-heading>
@@ -306,18 +306,21 @@
 							</form>
 						</div>
 						<div class="col-md-2">
-							<form class="form-horizontal">
-			  					<div class="form-group">
-			    					<a class="btn btn-link" href="[[estimation.csv]]" target="_blank" role="button">Експорт в CSV</a>
-			  					</div>
-								<div class="form-group">
-			    					<a href="[[estimation.href]]" target="_blank" class="btn btn-link" role="button">Посилання для перегляду</a>
-			  					</div>
-							</form>
+							<div class="dropdown">
+							  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							    Додаткові опції
+							    <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							    <li ng-class="{disabled: !tab.estimationid}"><a href="[[estimation.csv]]" target="_blank">Експорт в CSV <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a></li>
+							    <li ng-class="{disabled: !tab.estimationid}"><a href="[[estimation.href]]" target="_blank">Посилання для перегляду <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></a></li>
+							    <li ng-class="{disabled: !tab.estimationid}"><a href="#" ng-click="copyEstimation($event)">Копіювати у новій вкладці <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span></a></li>
+							  </ul>
+							</div>
 						</div>
 						<div class="col-md-4">
-	    					<h5>Роботи - <span class="label label-info">[[estimation.worksAmount]] грн.</span> Матеріали - <span class="label label-info">[[estimation.materialsAmount]] грн.</span></h5>
-	    					<h3>Разом - <span class="label label-primary">[[estimation.totalAmount]] грн.</span></h3>
+	    					<h5>Роботи - <span class="label label-info">[[estimation.worksAmount | number:2]] грн.</span> Матеріали - <span class="label label-info">[[estimation.materialsAmount | number:2]] грн.</span></h5>
+	    					<h3>Разом - <span class="label label-primary">[[estimation.totalAmount | number:2]] грн.</span></h3>
 						</div>
 					</div>
 					<div class="row">
@@ -340,11 +343,11 @@
 							        </tr>
 							        <tr ng-repeat="estimationCost in costCategory.items">
 							          <th scope="row">[[$index+1]]</th>
-							          <td>[[estimationCost.cost.name]]</td>
-							          <td>[[estimationCost.cost.units]]</td>
-							          <td>[[estimationCost.cost.price]]</td>
+							          <td><input style="width:400px;" ng-model="estimationCost.name" type="text" class="form-control" ng-change="fireEstimationCostChanges(estimationCost)"></td>
+							          <td><input style="width:100px;" ng-model="estimationCost.units" type="text" class="form-control" ng-change="fireEstimationCostChanges(estimationCost)"></td>
+							          <td><input style="width:100px;" ng-model="estimationCost.price" type="number" min="0.01" step="0.01" class="form-control" ng-change="fireEstimationCostChanges(estimationCost)"></td>
 							          <td><input style="width:100px;" ng-model="estimationCost.count" type="number" min="1" step="1" class="form-control" ng-change="fireEstimationCostChanges(estimationCost)"></td>
-							          <td>[[estimationCost.total]]</td>
+							          <td>[[estimationCost.total | number:2]]</td>
 							          <td><button ng-click="removeEstimationCost(estimationCost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button></td>
 							        </tr>
 				      			</tbody>
