@@ -13,6 +13,11 @@ var Renovate = angular.module('Renovate',['ui.bootstrap','ngSanitize'])
         return text;
     }
 })
+.filter('price', function ($filter) {
+	return function (price) {
+		return $filter('number')(price, 2).replace(/\,/g, ' ');
+	}
+})
 .controller('SearchController', function($scope){
 	console.log('SearchController loaded!');
 	$scope.search = '';

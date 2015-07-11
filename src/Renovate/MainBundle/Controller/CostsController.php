@@ -46,4 +46,14 @@ class CostsController extends Controller
     
     	return $response;
     }
+    
+    public function filterCostNgAction(Request $request)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$response = new Response(json_encode(array("result" => Cost::filterCosts($em, $request->query->all(), true))));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
 }

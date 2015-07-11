@@ -217,6 +217,57 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	}
 	///---------------------Costs-------------------------------
 	$scope.urlsCostsRemoveNg = URLS.costsRemoveNg;
+	$scope.urlsCostsFilterNg = URLS.costsFilterNg;
+	
+	$scope.filterWorksHandler = null;
+	$scope.filterWorks = null;
+	
+	$scope.filterMaterialsHandler = null;
+	$scope.filterMaterials = null;
+	
+	$scope.costsWorksFiltered = [];
+	$scope.costsMaterialsFiltered = [];
+	
+	$scope.$watch('filterWorks', function(){
+		clearTimeout($scope.filterWorksHandler);
+		$scope.filterWorksHandler = setTimeout(function(){
+			filterCosts('works', $scope.filterWorks);
+		}, 500);
+	});
+	
+	$scope.$watch('filterMaterials', function(){
+		clearTimeout($scope.filterMaterialsHandler);
+		$scope.filterMaterialsHandler = setTimeout(function(){
+			filterCosts('materials', $scope.filterMaterials);
+		}, 500);
+	});
+	
+	function filterCosts(type, filter){
+		if (!filter) {
+			switch (type){
+	    	  case 'works': $scope.costsWorksFiltered = []; break;
+	    	  case 'materials': $scope.costsMaterialsFiltered = []; break;
+			}
+			
+			return;
+		}
+		
+		$http({
+			method: "GET", 
+			url: $scope.urlsCostsFilterNg,
+			params: {type: type, filter: filter}
+			  })
+		.success(function(response){
+			console.log(response);
+			if (response.result)
+			{
+				switch (type){
+		    	  case 'works': $scope.costsWorksFiltered = response.result; break;
+		    	  case 'materials': $scope.costsMaterialsFiltered = response.result; break;
+	    	    }
+			}
+		});
+	}
 	
 	$scope.addCost = function(category){
 		var modalInstance = $modal.open({

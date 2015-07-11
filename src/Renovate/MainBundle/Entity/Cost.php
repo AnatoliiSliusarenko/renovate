@@ -233,4 +233,32 @@ class Cost
     
     	return true;
     }
+    
+    public static function filterCosts($em, $parameters, $inArray = false)
+    {
+    	$qb = $em->getRepository("RenovateMainBundle:Cost")
+    	->createQueryBuilder('c');
+    
+    	$qb->select('c')
+    	->join("c.category", "cc")
+    	->andWhere("cc.type = :type")
+    	->setParameter('type', $parameters['type'])
+    	->addOrderBy('c.name');
+    	
+    	if (isset($parameters['filter']))
+    	{
+    		$qb->andWhere($qb->expr()->orX(
+    				$qb->expr()->like('c.name', $qb->expr()->literal('%'.$parameters['filter'].'%'))
+    		));
+    	}
+    
+    	$result = $qb->getQuery()->getResult();
+    
+    	if ($inArray)
+    	{
+    		return array_map(function($cost){
+    			return $cost->getInArray();
+    		}, $result);
+    	}else return $result;
+    }
 }

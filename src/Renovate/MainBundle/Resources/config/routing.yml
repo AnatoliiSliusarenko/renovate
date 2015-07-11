@@ -596,6 +596,10 @@ renovate_ng_costs_remove:
     path: /ng/costs/remove/{cost_id}
     defaults: { _controller: RenovateMainBundle:Costs:removeCostNg}
     
+renovate_ng_costs_filter:
+    path: /ng/costs/filter
+    defaults: { _controller: RenovateMainBundle:Costs:filterCostNg}
+    
 renovate_ng_estimation_costs_add:
     path: /ng/estimation-costs/add
     defaults: { _controller: RenovateMainBundle:EstimationCosts:addEstimationCostNg}

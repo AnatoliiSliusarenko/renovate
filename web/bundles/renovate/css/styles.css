@@ -1,4 +1,9 @@
 /* Estimations */
+.estimation-additional {
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
 .estimations table td, .estimations table th {
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;
@@ -32,13 +37,13 @@ td.clickable:hover {
 
 .scrolling {
 	overflow: scroll;
-	height: 100%;
+	height: 200px;
 }
 
 .handler_horizontal {
   width: 100%;
   height: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
   padding: 0 1px;
   cursor: row-resize;
   position: absolute;
@@ -51,7 +56,7 @@ td.clickable:hover {
 
 .costs {
 	overflow:hidden;
-	height: 200px;
+	height: auto;
 	width: 580px;
 	padding: 0px;
 	margin: 1px;
@@ -70,6 +75,10 @@ td.clickable:hover {
 
 .costs button {
 	font-size: 16px;
+}
+
+.costs > .costs-search > input{
+	height: 20px;
 }
 /* Prices and User Info*/
 table.prices, table.user-info {
