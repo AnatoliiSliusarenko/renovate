@@ -540,15 +540,6 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	};
 	$scope.tab.active = true;
 	
-	$scope.tab.refreshEstimation = function(){
-		getEstimation($scope.tab.estimationid);
-		showAlert();
-	};
-	
-	(function checkEstimation(){
-		if ($scope.tab.estimationid != undefined) getEstimation($scope.tab.estimationid);
-	})();
-	
 	function createEstimationUrl(id){
 		return $scope.urlsEstimationsShow.replace('0', id);
 	}
@@ -572,20 +563,47 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		return categories;
 	}
 	
+	function showAlert(){
+		$("#infoAlert").fadeIn(2000, function(){$("#infoAlert").fadeOut(2000);});
+	};
+	
 	function copyEstimation(resource){
-		$scope.estimation.id = resource.id;
-		$scope.estimation.customer = resource.customer;
-		$scope.estimation.performer = resource.performer;
-		$scope.estimation.estimationCosts = resource.estimationCosts;
+		if (!$scope.estimation.id) $scope.estimation.id = resource.id;
+		if (!$scope.estimation.customer) $scope.estimation.customer = resource.customer;
+		if (!$scope.estimation.performer) $scope.estimation.performer = resource.performer;
+		if (!$scope.estimation.href) $scope.estimation.href = createEstimationUrl($scope.estimation.id);
+		if (!$scope.estimation.csv) $scope.estimation.csv = createEstimationCsv($scope.estimation.id);
+		if (!$scope.tab.estimationid) $scope.tab.estimationid = $scope.estimation.id;
 		$scope.estimation.worksAmount = resource.worksAmount;
 		$scope.estimation.materialsAmount = resource.materialsAmount;
 		$scope.estimation.totalAmount = resource.totalAmount;
-		$scope.estimation.costCategories = createCostCategories($scope.estimation.estimationCosts);
-		$scope.estimation.href = createEstimationUrl($scope.estimation.id);
-		$scope.estimation.csv = createEstimationCsv($scope.estimation.id);
-		
 		$scope.tab.title = $scope.estimation.id;
-		$scope.tab.estimationid = $scope.estimation.id;
+		
+		if (!$scope.estimation.costCategories){
+			$scope.estimation.estimationCosts = resource.estimationCosts;
+			$scope.estimation.costCategories = createCostCategories(resource.estimationCosts);
+		}else{			
+			var curEstimationCostsIds = _.map($scope.estimation.estimationCosts, function(ec){return ec.id;});
+			var newEstimationCostsIds = _.map(resource.estimationCosts, function(ec){return ec.id;});
+			var newCostCategories = createCostCategories(resource.estimationCosts);
+			$scope.estimation.estimationCosts = resource.estimationCosts;
+			
+			_.map(curEstimationCostsIds, function(curEstimationCostsId){
+				var id = _.find(newEstimationCostsIds, function(newEstimationCostsId){return newEstimationCostsId==curEstimationCostsId;});
+				if (id == undefined) {
+					$scope.estimation.costCategories = newCostCategories;
+					return true;
+				}
+			});
+			
+			_.map(newEstimationCostsIds, function(newEstimationCostsId){
+				var id = _.find(curEstimationCostsIds, function(curEstimationCostsId){return curEstimationCostsId==newEstimationCostsId;});
+				if (id == undefined) {
+					$scope.estimation.costCategories = newCostCategories;
+					return true;
+				}
+			});
+		}
 	}
 	
 	function getEstimation(id){
@@ -604,9 +622,15 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		})
 	};
 	
-	function showAlert(){
-		$("#infoAlert").fadeIn(2000, function(){$("#infoAlert").fadeOut(2000);});
+	(function checkEstimation(){
+		if ($scope.tab.estimationid != undefined) getEstimation($scope.tab.estimationid);
+	})();
+	
+	$scope.tab.refreshEstimation = function(){
+		getEstimation($scope.tab.estimationid);
+		showAlert();
 	};
+	
 	
 	function saveEstimation(){
 		$http({
@@ -682,7 +706,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		});
 	}
 	
-	$scope.copyEstimation = function(e){
+	$scope.copyEstimationToTab = function(e){
 		e.preventDefault();
 		var remove = confirm("Дійсно бажаєте компіювати кошторис №" + $scope.tab.estimationid + " ?");
 		if (!remove) return;
