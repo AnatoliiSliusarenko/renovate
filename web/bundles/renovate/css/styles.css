@@ -36,26 +36,12 @@ td.clickable:hover {
 /* Cost Categories */
 
 .scrolling {
-	overflow: scroll;
+	resize: vertical;   /* Options: horizontal, vertical, both */
+    overflow: auto; /* fix for Safari */
 	height: 200px;
 }
 
-.handler_horizontal {
-  width: 100%;
-  height: 10px;
-  margin-bottom: 0px;
-  padding: 0 1px;
-  cursor: row-resize;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  
-  background: url("../images/handle-h.png") 50% 3px no-repeat;
-  background-color: #e5e5e5;
-}
-
 .costs {
-	overflow:hidden;
 	height: auto;
 	width: 580px;
 	padding: 0px;
