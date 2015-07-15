@@ -522,7 +522,7 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	    $modalInstance.dismiss('cancel');
 	};
 })
-.controller('TabController', function($scope, $http){
+.controller('TabController', function($scope, $http, $filter){
 	console.log('TabController loaded!');
 	
 	$scope.urlsEstimationsSaveNg = URLS.estimationsSaveNg;
@@ -539,6 +539,13 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 			performer: 'ТОВ "РЕНОВЕЙТ"'
 	};
 	$scope.tab.active = true;
+	
+	$scope.openUpdated = function($event) {
+	    $event.preventDefault();
+	    $event.stopPropagation();
+
+	    $scope.openedUpdated = true;
+	};
 	
 	function createEstimationUrl(id){
 		return $scope.urlsEstimationsShow.replace('0', id);
@@ -574,10 +581,14 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		if (!$scope.estimation.href) $scope.estimation.href = createEstimationUrl($scope.estimation.id);
 		if (!$scope.estimation.csv) $scope.estimation.csv = createEstimationCsv($scope.estimation.id);
 		if (!$scope.tab.estimationid) $scope.tab.estimationid = $scope.estimation.id;
+		if (!$scope.estimation.discount) $scope.estimation.discount = resource.discount;
+		if (!$scope.estimation.estimationNumber) $scope.estimation.estimationNumber = resource.estimationNumber; 
+		if (!$scope.estimation.contractNumber) $scope.estimation.contractNumber = resource.contractNumber;
+		$scope.estimation.updated = resource.updated;
 		$scope.estimation.worksAmount = resource.worksAmount;
 		$scope.estimation.materialsAmount = resource.materialsAmount;
 		$scope.estimation.totalAmount = resource.totalAmount;
-		$scope.tab.title = $scope.estimation.id;
+		$scope.tab.title = $scope.estimation.estimationNumber;
 		
 		if (!$scope.estimation.costCategories){
 			$scope.estimation.estimationCosts = resource.estimationCosts;
@@ -633,6 +644,8 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 	
 	
 	function saveEstimation(){
+		$scope.estimation.updated = $filter('date')($scope.estimation.updated, 'yyyy-MM-dd HH:mm:ss');
+		
 		$http({
 			method: "POST", 
 			url: $scope.urlsEstimationsSaveNg,

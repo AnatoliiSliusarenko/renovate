@@ -24,6 +24,20 @@ class Estimation
     /**
      * @var string
      *
+     * @ORM\Column(name="estimation_number", type="string", length=255)
+     */
+    private $estimationNumber;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contract_number", type="string", length=255)
+     */
+    private $contractNumber;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="customer", type="string", length=255)
      */
     private $customer;
@@ -52,10 +66,24 @@ class Estimation
     /**
      * @var float
      *
+     * @ORM\Column(name="discount", type="float")
+     */
+    private $discount;
+    
+    /**
+     * @var float
+     *
      * @ORM\Column(name="total_amount", type="float")
      */
     private $totalAmount;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+    
     /**
      * @var \DateTime
      *
@@ -79,6 +107,72 @@ class Estimation
         return $this->id;
     }
 
+    /**
+     * Set estimationNumber
+     *
+     * @param string $estimationNumber
+     * @return Estimation
+     */
+    public function setEstimationNumber($estimationNumber)
+    {
+    	$this->estimationNumber = $estimationNumber;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get estimationNumber
+     *
+     * @return string
+     */
+    public function getEstimationNumber()
+    {
+    	return $this->estimationNumber;
+    }
+    
+    /**
+     * Set contractNumber
+     *
+     * @param string $contractNumber
+     * @return Estimation
+     */
+    public function setContractNumber($contractNumber)
+    {
+    	$this->contractNumber = $contractNumber;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get contractNumber
+     *
+     * @return string
+     */
+    public function getContractNumber()
+    {
+    	return $this->contractNumber;
+    }
+    
+    public function generateNumbers($em)
+    {
+    	$now = new \DateTime();
+    	$from = $now->format('Y-m-00 00:00:00');
+    	
+    	$qb = $em->getRepository("RenovateMainBundle:Estimation")
+    	->createQueryBuilder('e');
+    	
+    	$qb->select('COUNT(e.id)');
+    	
+    	$qb->andWhere('e.created > :from')
+    	->setParameter('from', $from);
+    	
+    	$total = $qb->getQuery()->getSingleScalarResult();
+    	
+    	$number = $now->format('y').$now->format('m').sprintf("%03d",$total);
+    	$this->setEstimationNumber('К'.$number);
+    	$this->setContractNumber('Д'.$number);
+    }
+    
     /**
      * Set customer
      *
@@ -172,6 +266,29 @@ class Estimation
     }
 
     /**
+     * Set discount
+     *
+     * @param float $discount
+     * @return Estimation
+     */
+    public function setDiscount($discount)
+    {
+    	$this->discount = $discount;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get discount
+     *
+     * @return float
+     */
+    public function getDiscount()
+    {
+    	return $this->discount;
+    }
+    
+    /**
      * Set totalAmount
      *
      * @param float $totalAmount
@@ -208,8 +325,31 @@ class Estimation
     	
     	$this->setWorksAmount($worksAmount);
     	$this->setMaterialsAmount($materialsAmount);
-    	$this->setTotalAmount($worksAmount+$materialsAmount);
+    	$this->setTotalAmount($worksAmount+$materialsAmount-$this->getDiscount());
     	$this->setUpdated(new \DateTime());
+    }
+    
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Estimation
+     */
+    public function setCreated($created)
+    {
+    	$this->created = $created;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+    	return $this->created;
     }
     
     /**
@@ -298,11 +438,15 @@ class Estimation
     {
     	return array(
     			'id' => $this->getId(),
+    			'estimationNumber' => $this->getEstimationNumber(),
+    			'contractNumber' => $this->getContractNumber(),
     			'customer' => $this->getCustomer(),
     			'performer' => $this->getPerformer(),
     			'materialsAmount' => $this->getMaterialsAmount(),
     			'worksAmount' => $this->getWorksAmount(),
+    			'discount' => $this->getDiscount(),
     			'totalAmount' => $this->getTotalAmount(),
+    			'created' => $this->getCreated()->getTimestamp()*1000,
     			'updated' => $this->getUpdated()->getTimestamp()*1000,
     			'estimationCosts' => ($this->getEstimationCosts() == null ) ? array() : array_map(function($estimationCost){return $estimationCost->getInArray();}, $this->getEstimationCosts()->toArray())
     	);
@@ -390,18 +534,24 @@ class Estimation
     {
     	if (isset($parameters->id)){
     		$estimation = $em->getRepository("RenovateMainBundle:Estimation")->find($parameters->id);
+    		$estimation->setEstimationNumber($parameters->estimationNumber);
+    		$estimation->setContractNumber($parameters->contractNumber);
+    		$estimation->setDiscount($parameters->discount);
+    		$estimation->calculateAmount();
+    		$estimation->setUpdated(new \DateTime($parameters->updated));
     	}else{
     		$estimation = new Estimation();
     		$estimation->setMaterialsAmount(0);
     		$estimation->setWorksAmount(0);
+    		$estimation->setDiscount(0);
     		$estimation->setTotalAmount(0);
+    		$estimation->generateNumbers($em);
+    		$estimation->setCreated(new \DateTime());
+    		$estimation->setUpdated(new \DateTime());
     	}
-    	
     	
     	$estimation->setCustomer($parameters->customer);
     	$estimation->setPerformer($parameters->performer);
-    	
-    	$estimation->setUpdated(new \DateTime());
     	
     	$em->persist($estimation);
     	$em->flush();
@@ -429,11 +579,15 @@ class Estimation
     	$estimation = $em->getRepository("RenovateMainBundle:Estimation")->find($id);
 
     	$estimationCopy = new Estimation();
+    	$estimationCopy->setEstimationNumber($estimation->getEstimationNumber());
+    	$estimationCopy->setContractNumber($estimation->getContractNumber());
     	$estimationCopy->setCustomer($estimation->getCustomer());
     	$estimationCopy->setPerformer($estimation->getPerformer());
     	$estimationCopy->setMaterialsAmount($estimation->getMaterialsAmount());
     	$estimationCopy->setWorksAmount($estimation->getWorksAmount());
+    	$estimationCopy->setDiscount($estimation->getDiscount());
     	$estimationCopy->setTotalAmount($estimation->getTotalAmount());
+    	$estimationCopy->setCreated(new \DateTime());
     	$estimationCopy->setUpdated(new \DateTime());
     	$em->persist($estimationCopy);
     	$em->flush();

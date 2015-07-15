@@ -74,7 +74,7 @@
 			      			<tbody>
 						        <tr ng-repeat="estimation in estimations">
 						          <th scope="row">[[$index+1]]</th>
-						          <td>[[estimation.id]]</td>
+						          <td>[[estimation.estimationNumber]]</td>
 						          <td><a href="[[estimation.href]]" target="_blank" class="btn btn-link" role="button">[[estimation.totalAmount | price]]</a></td>
 						          <td>[[estimation.customer]]</td>
 						          <td>[[estimation.performer]]</td>
@@ -325,6 +325,27 @@
 			    						<p ng-show="estimationForm.estimationPerformer.$invalid && !estimationForm.estimationPerformer.$pristine" class="help-block">Введіть виконавця.</p>
 									</div>
 			  					</div>
+			  					<div class="form-group" ng-class="{'has-error': estimationForm.estimationDiscount.$invalid && !estimationForm.estimationDiscount.$pristine}">
+			    					<label for="estimationDiscount" class="col-sm-2 control-label">Знижка</label>
+			    					<div class="col-sm-10">
+			      						<input ng-model="estimation.discount" type="number" min="0" step="0.01" class="form-control" id="estimationDiscount" name="estimationDiscount" ng-change="fireEstimationChanges()" required>
+			    						<p ng-show="estimationForm.estimationDiscount.$invalid && !estimationForm.estimationDiscount.$pristine" class="help-block">Введіть знижку.</p>
+									</div>
+			  					</div>
+			  					<div class="form-group" ng-class="{'has-error': estimationForm.estimationEstimationNumber.$invalid && !estimationForm.estimationEstimationNumber.$pristine}">
+			    					<label for="estimationEstimationNumber" class="col-sm-2 control-label">№ кошторису</label>
+			    					<div class="col-sm-10">
+			      						<input ng-model="estimation.estimationNumber" type="text" class="form-control" id="estimationEstimationNumber" name="estimationEstimationNumber" ng-change="fireEstimationChanges()" required>
+			    						<p ng-show="estimationForm.estimationEstimationNumber.$invalid && !estimationForm.estimationEstimationNumber.$pristine" class="help-block">Введіть № кошторису.</p>
+									</div>
+			  					</div>
+			  					<div class="form-group" ng-class="{'has-error': estimationForm.estimationContractNumber.$invalid && !estimationForm.estimationContractNumber.$pristine}">
+			    					<label for="estimationContractNumber" class="col-sm-2 control-label">№ договору</label>
+			    					<div class="col-sm-10">
+			      						<input ng-model="estimation.contractNumber" type="text" class="form-control" id="estimationContractNumber" name="estimationContractNumber" ng-change="fireEstimationChanges()" required>
+			    						<p ng-show="estimationForm.estimationContractNumber.$invalid && !estimationForm.estimationContractNumber.$pristine" class="help-block">Введіть № договору.</p>
+									</div>
+			  					</div>
 							</form>
 						</div>
 						<div class="col-md-2">
@@ -342,10 +363,19 @@
 									  </ul>
 									</div>
 								</li>
+								<li>
+									<div class="form-group datepicker">
+				  						<div class="input-group">
+				    						<input placeholder="Дата оновлення" id="estimationUpdated" name="estimationUpdated" ng-click="openUpdated($event)" type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="estimation.updated" is-open="openedUpdated" close-text="Закрити" clear-text="Очистити" current-text="Сьогодні" ng-change="fireEstimationChanges()"/>
+									  		<div class="input-group-addon" ng-click="openUpdated($event)"><i class="glyphicon glyphicon-calendar"></i></div>
+				    					</div>
+									</div>
+								</li>
 							</ul>
 						</div>
 						<div class="col-md-4">
 	    					<h5>Роботи - <span class="label label-info">[[estimation.worksAmount | price]] грн.</span> Матеріали - <span class="label label-info">[[estimation.materialsAmount | price]] грн.</span></h5>
+	    					<h5>Знижка - <span class="label label-success">[[estimation.discount | price]] грн.</span></h5>
 	    					<h3>Разом - <span class="label label-primary">[[estimation.totalAmount | price ]] грн.</span></h3>
 						</div>
 					</div>
