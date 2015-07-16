@@ -3,6 +3,7 @@
 {% block title %}Ремонтні роботи{% endblock %}
 
 {% block head %}
+<link href="{{ asset('web/bundles/renovate/css/select2.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -36,7 +37,7 @@
 				  {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 				  <div class="form-group">
 				    <label for="workers">Робітники</label>
-				    <select id="workers" ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" ng-model="filter.userid">
+				    <select style="width: 250px" id="workers" ng-options="worker.id as (worker.name+' '+worker.surname+'('+worker.username+')') for worker in workers" class="form-control" ng-model="filter.userid">
 						<option value="">усі</option>
 					</select>
 				  </div>
@@ -220,4 +221,10 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/angularRepairsController.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/select2.min.js') }}"></script>
+<script>
+$(document).ready(function() {
+	  $("#workers").select2();
+});
+</script>
 {% endblock %}

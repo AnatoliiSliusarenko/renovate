@@ -3,6 +3,7 @@
 {% block title %}Тарифи компанії{% endblock %}
 
 {% block head %}
+<link href="{{ asset('web/bundles/renovate/css/select2.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -86,7 +87,7 @@
 						  </div>
 						  <div class="form-group">
 						    <label for="clients">Клієнти</label>
-						    <select id="clients" ng-options="client.id as (client.surname+' '+client.name+'('+client.username+')') for client in clients" class="form-control" ng-model="filter.userid">
+						    <select style="width: 250px" id="clients" ng-options="client.id as (client.surname+' '+client.name+'('+client.username+')') for client in clients" class="form-control" ng-model="filter.userid">
 								<option value="">усі</option>
 							</select>
 						  </div>
@@ -402,4 +403,10 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/angularTariffsController.js') }}"></script>
+<script src="{{ asset('web/bundles/renovate/js/select2.min.js') }}"></script>
+<script>
+$(document).ready(function() {
+	  $("#clients").select2();
+});
+</script>
 {% endblock %}
