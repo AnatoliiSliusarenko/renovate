@@ -95,7 +95,7 @@
 			<hr>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" id="focus-zone">
 		<div class="col-md-6 costs">
 			<div class="costs-search">
 		    	<input placeholder="Пошук робіт..." type="text" class="form-control" ng-model="filterWorks"/>
@@ -417,4 +417,28 @@
 
 {% block javascripts %}
 <script src="{{ asset('web/bundles/renovate/js/angularEstimationsController.js') }}"></script>
+<script>
+$(document).ready(function() {
+	$("#focus-zone").children().addClass('disabled');
+		
+	var $focusZone = $("#focus-zone");
+		
+	$(window).on("click.Bst", function(event){		
+		if ($focusZone.has(event.target).length == 0 && !$focusZone.is(event.target)){
+			if ($focusZone.hasClass("focused")){
+				$focusZone.children().addClass('disabled');
+				$focusZone.removeClass("focused");
+				$('body').removeClass('stop-scrolling');
+			}
+		} else {
+			if (!$focusZone.hasClass("focused")){
+				$focusZone.children().removeClass('disabled');
+				$focusZone.addClass("focused");
+				$('body').addClass('stop-scrolling');
+			}
+		}
+	});
+	
+});
+</script>
 {% endblock %}

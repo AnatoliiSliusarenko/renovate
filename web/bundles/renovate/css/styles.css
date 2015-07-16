@@ -34,6 +34,23 @@ td.clickable:hover {
 	bottom: 0px;
 }
 /* Cost Categories */
+#focus-zone {
+	cursor: pointer;
+}
+.disabled {
+	opacity: 0.4;
+    filter: alpha(opacity=40);
+    pointer-events: none;
+}
+
+.focused {
+	
+}
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
 
 .scrolling {
 	resize: vertical;   /* Options: horizontal, vertical, both */
