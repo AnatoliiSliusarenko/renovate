@@ -62,8 +62,10 @@ class EstimationsController extends Controller
     	 
     	$response = $this->render('RenovateMainBundle:Estimations:csvEstimation.csv.twig', array('estimation'=>$estimation));
     	$response->headers->set('Content-Disposition', 'attachment; filename=Кошторис_N'.$estimation_id.'_експорт_'.date("d-m-Y_H-i-s").'.csv');
+    	$response->setCharset('Windows-1251');
     	
-    	if (strpos($request->headers->get('User-Agent'), 'Windows')) $response->setContent(iconv('utf-8', 'windows-1251', $response->getContent()));
+    	if (strpos($request->headers->get('User-Agent'), 'Windows')) 
+    		$response->setContent("sep=	\n".iconv('utf-8', 'windows-1251', $response->getContent()));
     	
     	return $response;
     }

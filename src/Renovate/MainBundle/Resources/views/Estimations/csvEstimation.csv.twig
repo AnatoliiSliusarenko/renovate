@@ -1,6 +1,6 @@
-Дата:	{{estimation.updated|date('d.m.Y')}}	Кошторис	№{{estimation.getId()}}
-Замовник:	{{estimation.getCustomer()}}	Виконавець:	{{estimation.getPerformer()}}
-Вартість робіт:	{{estimation.getWorksAmount()}}	Вартість матеріалів:	{{estimation.getMaterialsAmount()}}	Загальна сума:	{{estimation.getTotalAmount()}}
+Дата: {{estimation.updated|date('d.m.Y')}}	Кошторис: №{{estimation.getId()}}
+Замовник: {{estimation.getCustomer()}}	Виконавець: {{estimation.getPerformer()}}
+Вартість робіт: {{estimation.getWorksAmount()}}	Вартість матеріалів: {{estimation.getMaterialsAmount()}}	Загальна сума: {{estimation.getTotalAmount()}}
 
 №	Назва статті витрат	Од.виміру	Ціна	Кількість	Сума
 {% for category in estimation.getCostCategories() %}
