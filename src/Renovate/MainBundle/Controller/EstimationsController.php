@@ -52,7 +52,7 @@ class EstimationsController extends Controller
     	return $this->render('RenovateMainBundle:Estimations:showEstimation.html.twig', array('estimation'=>$estimation));
     }
     
-    public function csvEstimationAction($estimation_id)
+    public function csvEstimationAction($estimation_id, Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
     
@@ -60,16 +60,10 @@ class EstimationsController extends Controller
     
     	if ($estimation == NULL) return $this->redirect($this->generateUrl('renovate_main_homepage'));
     	 
-    	$response = $this->render('RenovateMainBundle:Estimations:csvEstimation.html.twig', array('estimation'=>$estimation));
-    	
-    	$response->setStatusCode(200);
-    	$response->setCharset('Windows-1251');
-    	$response->headers->set('Content-Type', 'text/csv');
-    	//$response->headers->set('Content-Description', 'Submissions Export');
+    	$response = $this->render('RenovateMainBundle:Estimations:csvEstimation.csv.twig', array('estimation'=>$estimation));
     	$response->headers->set('Content-Disposition', 'attachment; filename=Кошторис_N'.$estimation_id.'_експорт_'.date("d-m-Y_H-i-s").'.csv');
-    	//$response->headers->set('Content-Transfer-Encoding', 'binary');
-    	//$response->headers->set('Pragma', 'no-cache');
-    	//$response->headers->set('Expires', '0');
+    	
+    	if (strpos($request->headers->get('User-Agent'), 'Windows')) $response->setContent(iconv('utf-8', 'windows-1251', $response->getContent()));
     	
     	return $response;
     }
