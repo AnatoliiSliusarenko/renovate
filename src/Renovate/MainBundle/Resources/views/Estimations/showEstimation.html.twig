@@ -10,8 +10,18 @@
   			font-size: 12px;
   		}
   		
-  		table.estimation {
-  			border-top: 1px solid black;
+  		table.estimation{
+  			border: 0;
+  		}
+  		
+  		table.estimation td {
+  			border-right: 0;
+  		}
+  		
+  		table.estimation td.contract {
+  			width: 14%;
+  			text-align: left;
+  			padding-bottom: 20px;
   		}
   		
   		td,th {
@@ -23,14 +33,36 @@
   		th.thin {
   			width: 50px;
   		}
+  		
+  		table.footer {
+  			margin-top: 50px;
+  			border: 0;
+  		}
+  		
+  		table.footer td {
+  			border: 0;
+  		}
+  		table.footer td.signature {
+  			padding-top: 30px;
+  			text-align: center;
+  			width: 30%;
+  		}
   	</style>
   </head>
   <body>
   	<table class="estimation">
   		<tbody>
+  			<tr>
+  				<td>&nbsp;</td>
+  				<td class="contract">Додаток <div>до договору <strong>№{{estimation.contractNumber}}</strong></div></td>
+  			</tr>
+  		</tbody>
+  	</table>
+  	<table>
+  		<tbody>
 	        <tr>
 	          <td>Дата: <strong>{{estimation.updated|date("d.m.Y")}}</strong></td>
-	          <td>Кошторис <strong>№{{estimation.id}}</strong></td>
+	          <td>Кошторис <strong>№{{estimation.estimationNumber}}</strong></td>
 	        </tr>
    		</tbody>
   	</table>
@@ -47,9 +79,10 @@
 	<table>
   		<tbody>
 	        <tr>
-	        	<td>Вартість робіт: <strong>{{estimation.getWorksAmount()}} грн.</strong></td>
-	        	<td>Вартість матеріалів: <strong>{{estimation.getMaterialsAmount()}} грн.</strong></td>
-	        	<td>Загальна сума: <strong>{{estimation.getTotalAmount()}} грн.</strong></td>
+	        	<td>Вартість робіт: <strong>{{estimation.getWorksAmount()|number_format(2, '.', ' ')}} грн.</strong></td>
+	        	<td>Вартість матеріалів: <strong>{{estimation.getMaterialsAmount()|number_format(2, '.', ' ')}} грн.</strong></td>
+	        	<td>Знижка: <strong>{{estimation.getDiscount()|number_format(2, '.', ' ')}} грн.</strong></td>
+	        	<td>Загальна сума: <strong>{{estimation.getTotalAmount()|number_format(2, '.', ' ')}} грн.</strong></td>
 	        </tr>
 	    </tbody>
 	</table>
@@ -59,9 +92,9 @@
 	          <th class="thin">№</th>
 	          <th>Назва статті витрат</th>
 	          <th class="thin">Од. виміру</th>
-	          <th class="thin">Ціна, грн</th>
-	          <th class="thin">Кількість</th>
-	          <th class="thin">Сума, грн</th>
+	          <th class="thin">Ціна, <div>грн</div></th>
+	          <th class="thin">К-сть</th>
+	          <th class="thin">Сума, <div>грн</div></th>
 	        </tr>
    		</thead>
    		{% for category in estimation.getCostCategories() %}
@@ -74,13 +107,25 @@
    				<th>{{loop.index}}</th>
    				<td>{{item.getName()}}</td>
    				<td>{{item.getUnits()}}</td>
-   				<td>{{item.getPrice()}}</td>
+   				<td>{{item.getPrice()|number_format(2, '.', ' ')}}</td>
    				<td>{{item.getCount()}}</td>
-   				<td>{{item.getTotal()}}</td>
+   				<td>{{item.getTotal()|number_format(2, '.', ' ')}}</td>
           	</tr>
           	{% endfor %}
    		</tbody>
    		{% endfor %}
+ 	</table>
+ 	<table class="footer">
+ 		<tbody>
+ 			<tr>
+ 				<td>Замовник: {{estimation.customer}}</td>
+ 				<td class="signature">__________________________________<div><em>підпис</em></div></td>
+ 			</tr>
+ 			<tr>
+ 				<td>Від ТОВ "РЕНОВЕЙТ"<div>Вінце Олександр Іванович</div></td>
+ 				<td class="signature">__________________________________<div><em>підпис</em></div></td>
+ 			</tr>
+ 		</tbody>
  	</table>
   </body>
 </html>
