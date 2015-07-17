@@ -163,8 +163,14 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		modalInstance.result.then(function (added) {
 		      if (added) {
 		    	  switch (added.type){
-			    	  case 'works': getCostCategoriesWorks(); break;
-			    	  case 'materials': getCostCategoriesMaterials(); break;
+			    	  case 'works': 
+			    		  $scope.costCategoriesWorks.push(added); 
+			    		  $scope.costCategoriesWorks = _.sortBy($scope.costCategoriesWorks, function(costCategory){return costCategory.name.toLowerCase();});
+			    		  break;
+			    	  case 'materials': 
+			    		  $scope.costCategoriesMaterials.push(added); 
+			    		  $scope.costCategoriesMaterials = _.sortBy($scope.costCategoriesMaterials, function(costCategory){return costCategory.name.toLowerCase();});
+			    		  break;
 		    	  }
 		      }
 		    }, function () {
@@ -183,12 +189,16 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		});
 		
 		modalInstance.result.then(function (edited) {
-		      if (edited) {
+				if (edited) {
 		    	  switch (edited.type){
-		    	  	case 'works': getCostCategoriesWorks(); break;
-		    	  	case 'materials': getCostCategoriesMaterials(); break;
+			    	  case 'works': 
+			    		  $scope.costCategoriesWorks = _.sortBy($scope.costCategoriesWorks, function(costCategory){return costCategory.name.toLowerCase();});
+			    		  break;
+			    	  case 'materials':  
+			    		  $scope.costCategoriesMaterials = _.sortBy($scope.costCategoriesMaterials, function(costCategory){return costCategory.name.toLowerCase();});
+			    		  break;
 		    	  }
-		      }
+				}
 		    }, function () {
 		      //bad
 		});
@@ -209,8 +219,12 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				switch(costCategory.type){
-					case 'works': getCostCategoriesWorks(); break;
-					case 'materials': getCostCategoriesMaterials(); break;
+					case 'works': 
+						$scope.costCategoriesWorks = _.reject($scope.costCategoriesWorks, function(cc){return cc.id == costCategory.id;});
+						break;
+					case 'materials': 
+						$scope.costCategoriesMaterials = _.reject($scope.costCategoriesMaterials, function(cc){return cc.id == costCategory.id;});
+						break;
 				}
 			}
 		});
@@ -282,8 +296,16 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		modalInstance.result.then(function (added) {
 		      if (added) {
 		    	  switch (added.categoryType){
-			    	  case 'works': getCostCategoriesWorks(); break;
-			    	  case 'materials': getCostCategoriesMaterials(); break;
+			    	  case 'works': 
+			    		  var costCategory = _.find($scope.costCategoriesWorks, function(costCategory){return costCategory.id == added.categoryid;});
+			    		  costCategory.costs.push(added); 
+			    		  costCategory.costs = _.sortBy(costCategory.costs, function(cost){return cost.name.toLowerCase();});
+			    		  break;
+			    	  case 'materials': 
+			    		  var costCategory = _.find($scope.costCategoriesMaterials, function(costCategory){return costCategory.id == added.categoryid;});
+			    		  costCategory.costs.push(added); 
+			    		  costCategory.costs = _.sortBy(costCategory.costs, function(cost){return cost.name.toLowerCase();});
+			    		  break;
 		    	  }
 		      }
 		    }, function () {
@@ -302,10 +324,16 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 		});
 		
 		modalInstance.result.then(function (edited) {
-		      if (edited) {
+			  if (edited) {
 		    	  switch (edited.categoryType){
-		    	  	case 'works': getCostCategoriesWorks(); break;
-		    	  	case 'materials': getCostCategoriesMaterials(); break;
+			    	  case 'works': 
+			    		  var costCategory = _.find($scope.costCategoriesWorks, function(costCategory){return costCategory.id == edited.categoryid;});
+			    		  costCategory.costs = _.sortBy(costCategory.costs, function(cost){return cost.name.toLowerCase();});
+			    		  break;
+			    	  case 'materials': 
+			    		  var costCategory = _.find($scope.costCategoriesMaterials, function(costCategory){return costCategory.id == edited.categoryid;});
+			    		  costCategory.costs = _.sortBy(costCategory.costs, function(cost){return cost.name.toLowerCase();});
+			    		  break;
 		    	  }
 		      }
 		    }, function () {
@@ -327,8 +355,14 @@ Renovate.controller('EstimationsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				switch(cost.categoryType){
-					case 'works': getCostCategoriesWorks(); break;
-					case 'materials': getCostCategoriesMaterials(); break;
+					case 'works': 
+						var costCategory = _.find($scope.costCategoriesWorks, function(costCategory){return costCategory.id == cost.categoryid;});
+						costCategory.costs = _.reject(costCategory.costs, function(c){return c.id == cost.id;});  
+						break;
+					case 'materials': 
+						var costCategory = _.find($scope.costCategoriesMaterials, function(costCategory){return costCategory.id == cost.categoryid;});
+						costCategory.costs = _.reject(costCategory.costs, function(c){return c.id == cost.id;});  
+						break;
 				}
 			}
 		});
