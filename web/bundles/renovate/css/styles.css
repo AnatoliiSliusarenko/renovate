@@ -88,6 +88,10 @@ td.clickable:hover {
 .costs > .costs-search > input{
 	height: 20px;
 }
+
+.cost-options {
+	width: 50px;
+}
 /* Prices and User Info*/
 table.prices, table.user-info {
 	border: 1px solid #ddd;

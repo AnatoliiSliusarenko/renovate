@@ -123,7 +123,7 @@
 				        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
 				        	<td>[[cost.units]]</td>
 				        	<td>[[cost.price | price]]</td>
-				        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+				        	<td class="cost-options"><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 				        </tr>
 	    			</tbody>
 	    			<tbody ng-repeat="cost in costsWorksFiltered" ng-show="costsWorksFiltered.length>0">
@@ -131,7 +131,7 @@
 				        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
 				        	<td>[[cost.units]]</td>
 				        	<td>[[cost.price | price]]</td>
-				        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+				        	<td class="cost-options"><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 				        </tr>
 	    			</tbody>
 				</table>
@@ -165,7 +165,7 @@
 				        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
 				        	<td>[[cost.units]]</td>
 				        	<td>[[cost.price | price]]</td>
-				        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+				        	<td class="cost-options"><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 				        </tr>
 	    			</tbody>
 	    			<tbody ng-repeat="cost in costsMaterialsFiltered" ng-show="costsMaterialsFiltered.length>0">
@@ -173,7 +173,7 @@
 				        	<td ng-dblclick="addEstimationCost(cost)" class="clickable" onmousedown="return false" onselectstart="return false">[[cost.name]]</td>
 				        	<td>[[cost.units]]</td>
 				        	<td>[[cost.price | price]]</td>
-				        	<td><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+				        	<td class="cost-options"><button ng-click="removeCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editCost(cost)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
 				        </tr>
 	    			</tbody>
 				</table>
