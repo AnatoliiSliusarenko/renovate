@@ -30,6 +30,11 @@
   			border-right: 1px solid black;
   			border-bottom: 1px solid black;
   		}
+  		
+  		td.thick {
+  			width: 233px;
+  		}
+  		
   		th.thin {
   			width: 50px;
   		}
@@ -62,7 +67,7 @@
   		<tbody>
 	        <tr>
 	          <td>Дата: <strong>{{estimation.updated|date("d.m.Y")}}</strong></td>
-	          <td>Кошторис <strong>№{{estimation.estimationNumber}}</strong></td>
+	          <td class="thick">Кошторис <strong>№{{estimation.estimationNumber}}</strong></td>
 	        </tr>
    		</tbody>
   	</table>
@@ -81,8 +86,10 @@
 	        <tr>
 	        	<td>Вартість робіт: <strong>{{estimation.getWorksAmount()|number_format(2, '.', ' ')}} грн.</strong></td>
 	        	<td>Вартість матеріалів: <strong>{{estimation.getMaterialsAmount()|number_format(2, '.', ' ')}} грн.</strong></td>
+	        	{% if estimation.getDiscount() > 0 %}
 	        	<td>Знижка: <strong>{{estimation.getDiscount()|number_format(2, '.', ' ')}} грн.</strong></td>
-	        	<td>Загальна сума: <strong>{{estimation.getTotalAmount()|number_format(2, '.', ' ')}} грн.</strong></td>
+	        	{% endif %}
+	        	<td class="thick">Загальна сума: <strong>{{estimation.getTotalAmount()|number_format(2, '.', ' ')}} грн.</strong></td>
 	        </tr>
 	    </tbody>
 	</table>
