@@ -3,7 +3,7 @@
 {% block title %}Менеджмент партнерів{% endblock %}
 
 {% block head %}
-<link href="{{ asset('web/bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
+<link href="{{ asset('bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -181,7 +181,7 @@
 {% endblock %} 
 
 {% block javascripts %}
-<script src="{{ asset('web/bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
 <script>
 var TIMESTAMP = '{{ timestamp }}';
 var TOKEN = '{{ token }}';

@@ -17,9 +17,9 @@
 {% endblock %}
 
 {% block head %}
-<link href="{{ asset('web/bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
+<link href="{{ asset('bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>
-<script src="{{ asset('web/bundles/renovate/plugins/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('bundles/renovate/plugins/ckeditor/ckeditor.js') }}"></script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -213,12 +213,12 @@
 {% endblock %} 
 
 {% block javascripts %}
-<script src="{{ asset('web/bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/angularVacanciesController.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/angularVacanciesController.js') }}"></script>
 <script>
 var TIMESTAMP = '{{ timestamp }}';
 var TOKEN = '{{ token }}';
 </script>
-<script src="{{ asset('web/bundles/renovate/js/vkButton.js') }}"></script>
-<script src="{{ asset('web/bundles/renovate/js/fbButton.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/vkButton.js') }}"></script>
+<script src="{{ asset('bundles/renovate/js/fbButton.js') }}"></script>
 {% endblock %}

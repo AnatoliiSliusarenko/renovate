@@ -6,30 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block social %}
-    <meta name="og:image" content="{{ asset('web/bundles/renovate/images/logo_renovate.png') }}"/>
+    <meta name="og:image" content="{{ asset('bundles/renovate/images/logo_renovate.png') }}"/>
     {% endblock %}
     {% block keywords %}{% endblock %}
     {% block description %}{% endblock %}
     <meta name="author" content="">
-    <link rel="icon" href="{{ asset('web/bundles/renovate/images/logo.ico') }}">
+    <link rel="icon" href="{{ asset('bundles/renovate/images/logo.ico') }}">
 
     
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ asset('web/bundles/renovate/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/renovate/css/bootstrap.css') }}" rel="stylesheet">
 	
 	<!-- Font Awesome -->
-	<link href="{{ asset('web/bundles/renovate/css/font-awesome.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('bundles/renovate/css/font-awesome.min.css') }}" rel="stylesheet">
 	
 	<!-- Slick library -->
-	<link type="text/css" href="{{ asset('web/bundles/renovate/css/slick.css') }}" rel="stylesheet" />
+	<link type="text/css" href="{{ asset('bundles/renovate/css/slick.css') }}" rel="stylesheet" />
 	
     <!-- Custom styles for this template -->
-    <link href="{{ asset('web/bundles/renovate/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/renovate/css/styles.css') }}" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="{{ asset('web/bundles/renovate/js/ie-emulation-modes-warning.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/ie-emulation-modes-warning.js') }}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -140,7 +140,7 @@
         {% endif %}
       </div>
     </nav>
-	<div class="header-background"><a href="{{ path('renovate_main_homepage') }}"><img src="{{ asset('web/bundles/renovate/images/logo_renovate.png') }}" alt="logo_renovate"/></a></div>
+	<div class="header-background"><a href="{{ path('renovate_main_homepage') }}"><img src="{{ asset('bundles/renovate/images/logo_renovate.png') }}" alt="logo_renovate"/></a></div>
     <nav id="main-navbar" class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -153,10 +153,10 @@
         </div>
         <div id="navbar2" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li {% if app.request.attributes.get('_route') == 'renovate_main_homepage' %}class="active"{% endif %}><a href="{{ path('renovate_main_homepage') }}"><img src="{{ asset('web/bundles/renovate/images/homepage.png') }}"> Головна</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_main_homepage' %}class="active"{% endif %}><a href="{{ path('renovate_main_homepage') }}"><img src="{{ asset('bundles/renovate/images/homepage.png') }}"> Головна</a></li>
             
             <li class="dropdown">
-	            <a href=""><img src="{{ asset('web/bundles/renovate/images/work.png') }}"> Робота</a>
+	            <a href=""><img src="{{ asset('bundles/renovate/images/work.png') }}"> Робота</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_jobs' %}class="active"{% endif %}><a href="{{ path('renovate_jobs') }}">Види робіт</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_results' %}class="active"{% endif %}><a href="{{ path('renovate_results') }}">Результати роботи</a></li>
@@ -165,25 +165,25 @@
 	        </li>
 	        
 	        <li class="dropdown">
-	            <a href=""><img src="{{ asset('web/bundles/renovate/images/tariffs.png') }}"> Тарифи</a>
+	            <a href=""><img src="{{ asset('bundles/renovate/images/tariffs.png') }}"> Тарифи</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_prices' %}class="active"{% endif %}><a href="{{ path('renovate_prices') }}">Прайслист робіт</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_tariffs' %}class="active"{% endif %}><a href="{{ path('renovate_tariffs') }}">Калькулятор тарифів</a></li>
 	            </ul>
 	        </li>
 	        
-            <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}"><img src="{{ asset('web/bundles/renovate/images/news.png') }}"> Новини</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_news' %}class="active"{% endif %}><a href="{{ path('renovate_news') }}"><img src="{{ asset('bundles/renovate/images/news.png') }}"> Новини</a></li>
             
             <li class="dropdown">
-	            <a href=""><img src="{{ asset('web/bundles/renovate/images/interesting.png') }}"> Цікаво</a>
+	            <a href=""><img src="{{ asset('bundles/renovate/images/interesting.png') }}"> Цікаво</a>
 	            <ul class="dropdown-menu" role="menu">
 	            	<li {% if app.request.attributes.get('_route') == 'renovate_articles' %}class="active"{% endif %}><a href="{{ path('renovate_articles') }}">Статті</a></li>
             		<li {% if app.request.attributes.get('_route') == 'renovate_shares' %}class="active"{% endif %}><a href="{{ path('renovate_shares') }}">Акції</a></li>
 	            </ul>
 	        </li>
             
-            <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}"><img src="{{ asset('web/bundles/renovate/images/aboutus.png') }}"> Про нас</a></li>
-            <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}"><img src="{{ asset('web/bundles/renovate/images/contacts.png') }}"> Контакти</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_aboutus' %}class="active"{% endif %}><a href="{{ path('renovate_aboutus') }}"><img src="{{ asset('bundles/renovate/images/aboutus.png') }}"> Про нас</a></li>
+            <li {% if app.request.attributes.get('_route') == 'renovate_contacts' %}class="active"{% endif %}><a href="{{ path('renovate_contacts') }}"><img src="{{ asset('bundles/renovate/images/contacts.png') }}"> Контакти</a></li>
           </ul>
           <form class="navbar-form navbar-right" method="post" action="{{ path('renovate_search') }}" ng-controller="SearchController">
             <div class="form-group">
@@ -205,7 +205,7 @@
 			</div>
 		</div>
     </div><!-- /.container -->
-	<div class="footer-background"><img src="{{ asset('web/bundles/renovate/images/footer_renovate.png') }}"/></div>
+	<div class="footer-background"><img src="{{ asset('bundles/renovate/images/footer_renovate.png') }}"/></div>
 
 	<!-- Google Analitics -->
 	<script>
@@ -223,23 +223,23 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- Custom scripts for this template -->
-	<script src="{{ asset('web/bundles/renovate/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('web/bundles/renovate/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('web/bundles/renovate/js/slick.js') }}"></script>
-    <script src="{{ asset('web/bundles/renovate/js/layout.js') }}"></script>
+	<script src="{{ asset('bundles/renovate/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/slick.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/layout.js') }}"></script>
     
     <!-- Angular -->
-    <script src="{{ asset('web/bundles/renovate/js/underscore-min.js') }}"></script>
-	<script src="{{ asset('web/bundles/renovate/js/angular.min.js') }}"></script>
-	<script src="{{ asset('web/bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
-	<script src="{{ asset('web/bundles/renovate/js/angular-sanitize.min.js') }}"></script>
-	<script src="{{ asset('web/bundles/renovate/js/angularInitialization.js') }}"></script>
-    <script src="{{ asset('web/bundles/renovate/js/angularPartnersController.js') }}"></script>
-    <script src="{{ asset('web/bundles/renovate/js/angularTasksController.js') }}"></script>
-    <script src="{{ asset('web/bundles/renovate/js/sliderPartnersInitialization.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/underscore-min.js') }}"></script>
+	<script src="{{ asset('bundles/renovate/js/angular.min.js') }}"></script>
+	<script src="{{ asset('bundles/renovate/js/ui-bootstrap-tpls-0.12.0.min.js') }}"></script>
+	<script src="{{ asset('bundles/renovate/js/angular-sanitize.min.js') }}"></script>
+	<script src="{{ asset('bundles/renovate/js/angularInitialization.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/angularPartnersController.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/angularTasksController.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/sliderPartnersInitialization.js') }}"></script>
     
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="{{ asset('web/bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/ie10-viewport-bug-workaround.js') }}"></script>
   	<script>
   	var URLS = {
   			contactUsNg: "{{ path('renovate_ng_contacts_contactus') }}",
@@ -269,7 +269,7 @@
   			documentsCountNg: "{{ path('renovate_ng_documents_count') }}",
   			documentsRemoveNg: "{{ path('renovate_ng_documents_remove', {document_id: 0}) }}",
   			documentsUpload: "{{ path('renovate_documents_upload') }}",
-  			uploadifySWF: "{{ asset('web/bundles/renovate/swf/uploadify.swf') }}",
+  			uploadifySWF: "{{ asset('bundles/renovate/swf/uploadify.swf') }}",
   			newsShowNews: "{{ path('renovate_news_show_news', {news_name_translit: 0}) }}",
   			newsGetNg: "{{ path('renovate_ng_news') }}",
   			newsCountNg: "{{ path('renovate_ng_news_count') }}",
