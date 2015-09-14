@@ -1,6 +1,7 @@
 /app/cache/*
 /app/logs/*
 /.project
+/.idea
 app/config/parameters.yml
 /bin/*
 /web/bundles/renovate/documents/
