@@ -611,3 +611,27 @@ renovate_ng_estimation_costs_remove:
 renovate_ng_estimation_costs_edit:
     path: /ng/estimation-costs/edit/{estimationCost_id}
     defaults: { _controller: RenovateMainBundle:EstimationCosts:editEstimationCostNg}
+
+renovate_projects:
+    path: /projects
+    defaults: { _controller: RenovateMainBundle:Projects:index}
+
+renovate_ng_projects:
+    path: /ng/projects
+    defaults: { _controller: RenovateMainBundle:Projects:getProjectsNg}
+
+renovate_ng_projects_count:
+    path: /ng/projects/count
+    defaults: { _controller: RenovateMainBundle:Projects:getProjectsCountNg}
+
+renovate_ng_projects_add:
+    path: /ng/projects/add
+    defaults: { _controller: RenovateMainBundle:Projects:addProjectNg}
+
+renovate_ng_projects_edit:
+    path: /ng/projects/edit/{project_id}
+    defaults: { _controller: RenovateMainBundle:Projects:editProjectNg}
+
+renovate_ng_projects_remove:
+    path: /ng/projects/remove/{project_id}
+    defaults: { _controller: RenovateMainBundle:Projects:removeProjectNg}

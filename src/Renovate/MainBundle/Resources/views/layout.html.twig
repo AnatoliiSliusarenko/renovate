@@ -65,6 +65,7 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tasks' %}class="active"{% endif %}><a href="{{ path('renovate_tasks') }}">Завдання</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_pages' %}class="active"{% endif %}><a href="{{ path('renovate_pages') }}">Сторінки</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_estimations' %}class="active"{% endif %}><a href="{{ path('renovate_estimations') }}">Менеджмент кошторисів</a></li>
+					<li {% if app.request.attributes.get('_route') == 'renovate_projects' %}class="active"{% endif %}><a href="{{ path('renovate_projects') }}">Менеджмент проектів</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
@@ -372,6 +373,11 @@
   			costsEditNg: "{{ path('renovate_ng_costs_edit', {cost_id: 0}) }}",
   			costsRemoveNg: "{{ path('renovate_ng_costs_remove', {cost_id: 0}) }}",
   			costsFilterNg: "{{ path('renovate_ng_costs_filter') }}",
+			projectsNg: "{{ path('renovate_ng_projects') }}",
+			projectsCountNg: "{{ path('renovate_ng_projects_count') }}",
+            projectsAddNg: "{{ path('renovate_ng_projects_add') }}",
+            projectsRemoveNg: "{{ path('renovate_ng_projects_remove', {project_id: 0}) }}",
+            projectsEditNg: "{{ path('renovate_ng_projects_edit', {project_id: 0}) }}",
   	}
   	</script>
   	<script>
