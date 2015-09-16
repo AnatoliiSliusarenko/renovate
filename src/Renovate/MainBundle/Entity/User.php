@@ -138,6 +138,12 @@ class User implements UserInterface,\Serializable
 	 * @var array
 	 */
 	private $payments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="user")
+     * @var array
+     */
+    private $events;
     
 	public function __construct()
 	{
@@ -624,6 +630,39 @@ class User implements UserInterface,\Serializable
     {
     	return $this->payments;
     }
+
+    /**
+     * Add events
+     *
+     * @param \Renovate\MainBundle\Entity\Event $events
+     * @return User
+     */
+    public function addEvent(\Renovate\MainBundle\Entity\Event $events)
+    {
+        $this->events[] = $events;
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param \Renovate\MainBundle\Entity\Event $events
+     */
+    public function removeEvent(\Renovate\MainBundle\Entity\Event $events)
+    {
+        $this->events->removeElement($events);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
     
     public function getPersonalBalance()
     {
@@ -925,6 +964,10 @@ class User implements UserInterface,\Serializable
     	foreach($user->getPayments() as $payment){
     		$em->remove($payment);
     	}
+
+        foreach($user->getEvents() as $event){
+            $em->remove($event);
+        }
     	
     	$em->persist($user);
     	$em->flush();

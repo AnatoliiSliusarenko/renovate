@@ -5,6 +5,8 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
 	$scope.itemsPerPage = 10;
+
+	var $calendar = $('#calendar');
 	
 	$scope.filterHandler = null;
 	
@@ -16,6 +18,9 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 	$scope.urlsProjectsNg = URLS.projectsNg;
 	$scope.urlsProjectsCountNg = URLS.projectsCountNg;
 	$scope.urlsProjectsRemoveNg = URLS.projectsRemoveNg;
+	$scope.urlsEventsNg = URLS.eventsNg;
+	$scope.urlsEventsEditNg = URLS.eventsEditNg;
+	$scope.urlsEventsRemoveNg = URLS.eventsRemoveNg;
 	
 	$scope.$watch('itemsPerPage', function(){
 		console.log("itemsPerPage => ", $scope.itemsPerPage);
@@ -121,46 +126,107 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 		});
 	}
 
-
-	$('#calendar').fullCalendar({
-		events: [
+	//---Events
+	function getEvents(from, to) {
+		$http({
+			method: "GET",
+			url: $scope.urlsEventsNg,
+			params: {from: from, to: to}
+		})
+		.success(function(response){
+			console.log(" events => ",response);
+			if (response.result)
 			{
-				title: 'Event1',
-				start: '2015-09-15',
-				color: 'red'
-			},
-			{
-				title: 'Event2',
-				start: '2015-09-16'
+				$calendar.fullCalendar('removeEvents');
+				$calendar.fullCalendar('addEventSource', response.result);
 			}
-		],
+		})
+	}
+
+	function editEvent(eventFC){
+		var event = {
+			id: eventFC.id,
+			start: eventFC.start.format(),
+			end: eventFC.end.format()
+		}
+
+		var url = $scope.urlsEventsEditNg.replace('0', event.id);
+
+		$http({
+			method: "POST",
+			url: url,
+			data: event
+		})
+		.success(function(response){
+			console.log("edited event => ", response);
+			if (response.result)
+			{
+				showAlert();
+			}
+		})
+	}
+
+	function showAlert(){
+		$("#infoAlert").fadeIn(2000, function(){$("#infoAlert").fadeOut(2000);});
+	};
+
+	$calendar.fullCalendar({
 		header: {
 			left: 'prev,next today',
 			center: 'title',
 			right: 'month,agendaWeek,agendaDay'
 		},
 		editable: true,
+		allDaySlot: false,
 		dayClick: function(date, jsEvent, view) {
+			if (!confirm("Дійсно бажаєте додати подію ?")) return false;
 
-			alert('Clicked on: ' + date.format());
+			var start = date.format("YYYY-MM-DD HH:mm:ss");
+			var end = date.add(30, 'm').format("YYYY-MM-DD HH:mm:ss");
 
-			alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+			var modalInstance = $modal.open({
+				templateUrl: 'addEvent.html',
+				controller: 'AddEventController',
+				backdrop: "static",
+				size: 'lg',
+				resolve: {
+					start: function(){return start;},
+					end: function(){return end;}
+				}
+			});
 
-			alert('Current view: ' + view.name);
-
-			// change the day's background color just for fun
-			//$(this).css('background-color', 'red');
-
+			modalInstance.result.then(function (added) {
+				if (added) getEvents(view.start.format(),view.end.format());
+			}, function () {
+				//bad
+			});
 		},
 		eventClick: function(calEvent, jsEvent, view) {
+			if (!confirm("Дійсно бажаєте видалити подію: " + calEvent.title + " ?")) return false;
 
-			alert('Event: ' + calEvent.title);
-			alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-			alert('View: ' + view.name);
+			var url = $scope.urlsEventsRemoveNg.replace('0', calEvent.id);
 
-			// change the border color just for fun
-			//$(this).css('border-color', 'red');
+			$http({
+				method: "GET",
+				url: url
+			})
+			.success(function(response){
+				console.log(response);
+				if (response.result)
+				{
+					getEvents(view.start.format(),view.end.format());
+				}
+			});
 
+		},
+		eventDrop: function(event){
+			editEvent(event);
+		},
+		eventResize: function(event){
+			editEvent(event);
+		},
+		viewRender: function(view, element){
+			getEvents(view.start.format(),view.end.format());
 		}
 	});
 
@@ -218,6 +284,70 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 	$scope.ok = function () {
 		if (!$scope.projectForm.$valid) return;
 		editProject();
+	};
+
+	$scope.cancel = function () {
+		$modalInstance.dismiss('cancel');
+	};
+})
+.controller('AddEventController', function($scope,$http,$modalInstance, start, end){
+	console.log('AddEventController loaded!');
+	$scope.urlsEventsAddNg = URLS.eventsAddNg;
+	$scope.urlsProjectsNg = URLS.projectsNg;
+	$scope.urlsUsersGetWorkersNg = URLS.usersGetWorkersNg;
+
+	$scope.projects = [];
+	$scope.workers = [];
+
+	(function getProjects(){
+		$http({
+			method: "GET",
+			url: $scope.urlsProjectsNg
+		})
+		.success(function(response){
+			console.log(" projects => ",response);
+			if (response.result)
+			{
+				$scope.projects = response.result;
+			}
+		})
+	})();
+
+	(function getWorkers(){
+		$http({
+			method: "GET",
+			url: $scope.urlsUsersGetWorkersNg
+		})
+		.success(function(response){
+			console.log(" workers => ",response);
+			if (response.result)
+			{
+				$scope.workers = response.result;
+			}
+		})
+	})();
+
+	function addEvent(){
+		$scope.event.start = start;
+		$scope.event.end = end;
+
+		$http({
+			method: "POST",
+			url: $scope.urlsEventsAddNg,
+			data: $scope.event
+		})
+		.success(function(response){
+			console.log("added event => ", response);
+			if (response.result)
+			{
+				$modalInstance.close(response.result);
+			}
+		})
+	}
+
+	$scope.ok = function () {
+		if (!$scope.eventForm.$valid) return;
+		addEvent();
 	};
 
 	$scope.cancel = function () {

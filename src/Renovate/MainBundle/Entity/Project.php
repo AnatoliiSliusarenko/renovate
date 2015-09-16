@@ -71,6 +71,20 @@ class Project
     private $created;
 
     /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="project")
+     * @var array
+     */
+    private $events;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -241,6 +255,39 @@ class Project
         return $this->created;
     }
 
+    /**
+     * Add events
+     *
+     * @param \Renovate\MainBundle\Entity\Event $events
+     * @return Project
+     */
+    public function addEvent(\Renovate\MainBundle\Entity\Event $events)
+    {
+        $this->events[] = $events;
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param \Renovate\MainBundle\Entity\Event $events
+     */
+    public function removeEvent(\Renovate\MainBundle\Entity\Event $events)
+    {
+        $this->events->removeElement($events);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
     public function getInArray()
     {
         return array(
@@ -324,13 +371,17 @@ class Project
 
     public static function removeProjectById($em, $id)
     {
-        $qb = $em->createQueryBuilder();
+        $project = $em->getRepository("RenovateMainBundle:Project")->find($id);
+        foreach($project->getEvents() as $event){
+            $em->remove($event);
+        }
 
-        $qb->delete('RenovateMainBundle:Project', 'p')
-            ->where('p.id = :id')
-            ->setParameter('id', $id);
+        $em->persist($project);
+        $em->flush();
+        $em->remove($project);
+        $em->flush();
 
-        return $qb->getQuery()->getResult();
+        return true;
     }
 
     public static function editProjectById($em, $id, $parameters)

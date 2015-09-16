@@ -635,3 +635,19 @@ renovate_ng_projects_edit:
 renovate_ng_projects_remove:
     path: /ng/projects/remove/{project_id}
     defaults: { _controller: RenovateMainBundle:Projects:removeProjectNg}
+
+renovate_ng_events:
+    path: /ng/events
+    defaults: { _controller: RenovateMainBundle:Events:getEventsNg}
+
+renovate_ng_events_edit:
+    path: /ng/events/edit/{event_id}
+    defaults: { _controller: RenovateMainBundle:Events:editEventNg}
+
+renovate_ng_events_add:
+    path: /ng/events/add
+    defaults: { _controller: RenovateMainBundle:Events:addEventNg}
+
+renovate_ng_events_remove:
+    path: /ng/events/remove/{event_id}
+    defaults: { _controller: RenovateMainBundle:Events:removeEventNg}

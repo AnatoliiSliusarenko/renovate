@@ -72,7 +72,7 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="project in projects">
-                                <th style="background-color: [[project.color]]">[[$index+1]]</th>
+                                <th style="background-color: [[project.color]]">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
                                 <td>[[project.name]]</td>
                                 <td>[[project.budget | price]]</td>
                                 <td>[[project.time]]</td>
@@ -210,6 +210,34 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-click="ok()" ng-disabled="projectForm.$invalid">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="addEvent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Додати подію...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="eventForm">
+                <div class="form-group" ng-class="{ 'has-error' : eventForm.eventUser.$invalid && !eventForm.eventUser.$pristine }">
+                    <label for="eventUser" class="col-sm-2 control-label">Робітник</label>
+                    <div class="col-sm-10">
+                        <select id="eventUser" name="eventUser" ng-options="user.id as (user.surname+' '+user.name+' '+user.patronymic+' ('+user.username+')') for user in workers" class="form-control has-error" ng-model="event.userId" required></select>
+                        <p ng-show="eventForm.eventUser.$invalid && !eventForm.eventUser.$pristine" class="help-block">Виберіть робітника.</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : eventForm.eventProject.$invalid && !eventForm.eventProject.$pristine }">
+                    <label for="eventProject" class="col-sm-2 control-label">Проект</label>
+                    <div class="col-sm-10">
+                        <select id="eventProject" name="eventProject" ng-options="project.id as project.name for project in projects" class="form-control has-error" ng-model="event.projectId" required></select>
+                        <p ng-show="eventForm.eventProject.$invalid && !eventForm.eventProject.$pristine" class="help-block">Виберіть проект.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="eventForm.$invalid">Зберегти</button>
             <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
         </div>
     </script>
