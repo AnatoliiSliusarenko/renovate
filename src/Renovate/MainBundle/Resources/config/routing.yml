@@ -616,6 +616,10 @@ renovate_projects:
     path: /projects
     defaults: { _controller: RenovateMainBundle:Projects:index}
 
+renovate_projects_report:
+    path: /projects/report/{project_id}
+    defaults: { _controller: RenovateMainBundle:Projects:report}
+
 renovate_ng_projects:
     path: /ng/projects
     defaults: { _controller: RenovateMainBundle:Projects:getProjectsNg}

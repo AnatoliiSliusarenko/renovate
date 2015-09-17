@@ -249,6 +249,7 @@ class Event
             'projectId' => $this->getProjectId(),
             'title' => $this->getTitle(),
             'color' => $this->getProject()->getColor(),
+            'editable' => !$this->getProject()->getFinished(),
             'start' => $this->getStart()->format('Y-m-d H:i:s'),
             'end' => $this->getEnd()->format('Y-m-d H:i:s')
         );

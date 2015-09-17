@@ -62,6 +62,12 @@ class Project
 	 * @ORM\Column(name="color", type="string", length=255)
 	 */
 	private $color;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="finished", type="boolean")
+     */
+    private $finished;
     
     /**
      * @var datetime
@@ -72,6 +78,7 @@ class Project
 
     /**
      * @ORM\OneToMany(targetEntity="Event", mappedBy="project")
+     * @ORM\OrderBy({"start" = "ASC"})
      * @var array
      */
     private $events;
@@ -233,6 +240,29 @@ class Project
     }
 
     /**
+     * Set finished
+     *
+     * @param boolean $finished
+     * @return Project
+     */
+    public function setFinished($finished)
+    {
+        $this->finished = $finished;
+
+        return $this;
+    }
+
+    /**
+     * Get finished
+     *
+     * @return boolean
+     */
+    public function getFinished()
+    {
+        return $this->finished;
+    }
+
+    /**
      * Set created
      *
      * @param \DateTime $created
@@ -298,8 +328,146 @@ class Project
             'percentWorkers' => $this->getPercentWorkers(),
             'percentBrigadier' => $this->getPercentBrigadier(),
             'color' => $this->getColor(),
+            'finished' => $this->getFinished(),
             'created' => $this->getCreated()->getTimestamp()*1000
         );
+    }
+
+    public function generateReport(){
+        if (!$this->events->count()) return null;
+
+        $budgetWorkers = $this->budget*($this->percentWorkers/100);
+        $budgetBrigadier = $this->budget*($this->percentBrigadier/100);
+
+        $duration = array(
+            'hours' => array(
+                'working' => 0,
+                'saturdays' => 0,
+                'sundays' => 0,
+                'total' => 0,
+                'money' => 0
+            ),
+            'time' => array(
+                'working' => 0,
+                'saturdays' => 0,
+                'sundays' => 0,
+                'total' => 0
+            )
+        );
+
+        $report = array(
+            'users' => array(),
+            'budgetWorkers' => $budgetWorkers,
+            'budgetBrigadier' => $budgetBrigadier
+        );
+
+        $event = $this->events->first();
+        $prevDayOfWeek = $event->getStart()->format('N');
+        $startTime = $event->getStart();
+        $startProject = $startTime;
+        $endTime = $event->getEnd();
+
+        foreach ($this->events as $event){
+            $user = $event->getUser();
+
+            $start = $event->getStart();
+            $end = $event->getEnd();
+            $dayOfWeek = $start->format('N');
+
+            if ($dayOfWeek == $prevDayOfWeek){
+                if ($end > $endTime) $endTime=$end;
+            }else{
+                $difference = $endTime->diff($startTime);
+                $minutes = $difference->h*60+$difference->i;
+                switch ($prevDayOfWeek){
+                    case '6':
+                        $duration['time']['saturdays'] += $minutes;
+                        break;
+                    case '7':
+                        $duration['time']['sundays'] += $minutes;
+                        break;
+                    default:
+                        $duration['time']['working'] += $minutes;
+                }
+                $prevDayOfWeek = $dayOfWeek;
+                $startTime = $start;
+                $endTime = $end;
+            }
+
+            $difference = $end->diff($start);
+            $minutes = $difference->h*60+$difference->i;
+
+            if (!isset($report['users'][$user->getId()])){
+                $report['users'][$user->getId()] = array(
+                    'user' => $user,
+                    'working' => 0,
+                    'saturdays' => 0,
+                    'sundays' => 0,
+                    'total' => 0,
+                    'money' => 0
+                );
+            }
+
+            switch ($dayOfWeek){
+                case '6':
+                    $duration['hours']['saturdays'] += $minutes;
+                    $report['users'][$user->getId()]['saturdays'] += $minutes;
+                    break;
+                case '7':
+                    $duration['hours']['sundays'] += $minutes;
+                    $report['users'][$user->getId()]['sundays'] += $minutes;
+                    break;
+                default:
+                    $duration['hours']['working'] += $minutes;
+                    $report['users'][$user->getId()]['working'] += $minutes;
+            }
+        }
+
+        $difference = $endTime->diff($startTime);
+        $minutes = $difference->h*60+$difference->i;
+        switch ($prevDayOfWeek){
+            case '6':
+                $duration['time']['saturdays'] += $minutes;
+                break;
+            case '7':
+                $duration['time']['sundays'] += $minutes;
+                break;
+            default:
+                $duration['time']['working'] += $minutes;
+        }
+        $endProject = $endTime;
+
+        $duration['hours']['saturdays'] /= 60;
+        $duration['hours']['sundays'] /= 60;
+        $duration['hours']['working'] /= 60;
+        $duration['hours']['total'] = $duration['hours']['saturdays']+$duration['hours']['sundays']+$duration['hours']['working'];
+        $hourPrice = $budgetWorkers/$duration['hours']['total'];
+        $duration['hours']['money'] = $duration['hours']['saturdays']*1.5*$hourPrice+$duration['hours']['sundays']*2*$hourPrice+$duration['hours']['working']*$hourPrice;
+        $duration['time']['saturdays'] /= 60;
+        $duration['time']['sundays'] /= 60;
+        $duration['time']['working'] /= 60;
+        $duration['time']['total'] = $duration['time']['saturdays']+$duration['time']['sundays']+$duration['time']['working'];
+
+        $overTime = 0;
+        $hours = $duration['time']['total']-$this->time;
+        if ($hours>0) $overTime = $hours;
+        $report['overTime'] = $overTime;
+        $report['moneyBrigadier'] = $budgetBrigadier - $overTime*($budgetBrigadier/$this->time);
+
+        foreach ($report['users'] as $id=>$user){
+            $report['users'][$id]['saturdays'] /= 60;
+            $report['users'][$id]['sundays'] /= 60;
+            $report['users'][$id]['working'] /= 60;
+            $report['users'][$id]['total'] = $report['users'][$id]['saturdays']+$report['users'][$id]['sundays']+$report['users'][$id]['working'];
+            $report['users'][$id]['money'] = $report['users'][$id]['saturdays']*1.5*$hourPrice+$report['users'][$id]['sundays']*2*$hourPrice+$report['users'][$id]['working']*$hourPrice;
+        }
+
+        $report['hourPrice'] = $hourPrice;
+        $report['duration'] = $duration;
+        $report['startProject'] = $startProject;
+        $report['endProject'] = $endProject;
+
+        return $report;
     }
 
     public static function getProjects($em, $parameters, $inArray = false)
@@ -321,6 +489,12 @@ class Project
             $qb->andWhere($qb->expr()->orX(
                 $qb->expr()->like('p.name', $qb->expr()->literal('%'.$parameters['search'].'%'))
             ));
+        }
+
+        if (isset($parameters['finished']))
+        {
+            $qb->andWhere('p.finished = :finished')
+                ->setParameter('finished',$parameters['finished']);
         }
 
         $result = $qb->getQuery()->getResult();
@@ -347,6 +521,12 @@ class Project
             ));
         }
 
+        if (isset($parameters['finished']))
+        {
+            $qb->andWhere('p.finished = :finished')
+                ->setParameter('finished',$parameters['finished']);
+        }
+
         $total = $qb->getQuery()->getSingleScalarResult();
 
         return $total;
@@ -361,6 +541,7 @@ class Project
         $project->setPercentWorkers($parameters->percentWorkers);
         $project->setPercentBrigadier($parameters->percentBrigadier);
         $project->setColor($parameters->color);
+        $project->setFinished(false);
         $project->setCreated(new \DateTime());
 
         $em->persist($project);
@@ -394,6 +575,7 @@ class Project
         $project->setPercentWorkers($parameters->percentWorkers);
         $project->setPercentBrigadier($parameters->percentBrigadier);
         $project->setColor($parameters->color);
+        $project->setFinished($parameters->finished);
 
         $em->persist($project);
         $em->flush();

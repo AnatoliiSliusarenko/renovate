@@ -71,9 +71,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="project in projects">
+                            <tr ng-repeat="project in projects" ng-class="{green: project.finished}">
                                 <th style="background-color: [[project.color]]">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
-                                <td>[[project.name]]</td>
+                                <td><a href="[[project.href]]" target="_blank">[[project.name]]</a></td>
                                 <td>[[project.budget | price]]</td>
                                 <td>[[project.time]]</td>
                                 <td>[[project.percentWorkers]]</td>
@@ -204,6 +204,16 @@
                     <div class="col-sm-9">
                         <input ng-model="project.color" type="color" class="form-control has-error" id="projectColor" name="projectColor" required>
                         <p ng-show="projectForm.projectColor.$invalid && !projectForm.projectColor.$pristine" class="help-block">Введіть колір.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="project.finished"> Проект завершений
+                            </label>
+                        </div>
                     </div>
                 </div>
             </form>

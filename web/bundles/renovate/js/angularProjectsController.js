@@ -2,6 +2,9 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 	console.log('ProjectsController loaded!');
 	
 	$scope.projects = [];
+	$scope.projectsAvailable = [];
+	$scope.workers = [];
+
 	$scope.totalItems = 0;
 	$scope.currentPage = 1;
 	$scope.itemsPerPage = 10;
@@ -18,6 +21,8 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 	$scope.urlsProjectsNg = URLS.projectsNg;
 	$scope.urlsProjectsCountNg = URLS.projectsCountNg;
 	$scope.urlsProjectsRemoveNg = URLS.projectsRemoveNg;
+	$scope.urlsProjectsReport = URLS.projectsReport;
+	$scope.urlsUsersGetWorkersNg = URLS.usersGetWorkersNg;
 	$scope.urlsEventsNg = URLS.eventsNg;
 	$scope.urlsEventsEditNg = URLS.eventsEditNg;
 	$scope.urlsEventsRemoveNg = URLS.eventsRemoveNg;
@@ -40,6 +45,41 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 		}, 500);
 	}, true);
 
+	function generateProjectHref(id){
+		return $scope.urlsProjectsReport.replace('0', id);
+	}
+
+	function getProjectsAvailable(){
+		$http({
+			method: "GET",
+			url: $scope.urlsProjectsNg,
+			params: {finished: 0}
+		})
+		.success(function(response){
+			console.log(" projects available => ",response);
+			if (response.result)
+			{
+				$scope.projectsAvailable = response.result;
+			}
+		})
+	};
+	getProjectsAvailable();
+
+	function getWorkers(){
+		$http({
+			method: "GET",
+			url: $scope.urlsUsersGetWorkersNg
+		})
+		.success(function(response){
+			console.log(" workers => ",response);
+			if (response.result)
+			{
+				$scope.workers = response.result;
+			}
+		})
+	};
+	getWorkers();
+
 	function getProjects() {
 		$scope.filter.offset = $scope.itemsPerPage*($scope.currentPage - 1);
 		$scope.filter.limit = $scope.itemsPerPage;
@@ -52,6 +92,9 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 			console.log(" projects => ",response);
 			if (response.result)
 			{
+				_.map(response.result, function(project){
+					project.href = generateProjectHref(project.id);
+				});
 				$scope.projects = response.result;
 			}
 		})
@@ -83,7 +126,10 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 		});
 
 		modalInstance.result.then(function (added) {
-			if (added) getProjectsCount();
+			if (added) {
+				getProjectsCount();
+				getProjectsAvailable();
+			}
 		}, function () {
 			//bad
 		});
@@ -101,7 +147,12 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 		});
 
 		modalInstance.result.then(function (edited) {
-			if (edited) getProjectsCount();
+			if (edited) {
+				getProjectsCount();
+				getProjectsAvailable();
+				var view = $calendar.fullCalendar('getView');
+				getEvents(view.start.format(),view.end.format());
+			}
 		}, function () {
 			//bad
 		});
@@ -122,6 +173,9 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 			if (response.result)
 			{
 				getProjectsCount();
+				getProjectsAvailable();
+				var view = $calendar.fullCalendar('getView');
+				getEvents(view.start.format(),view.end.format());
 			}
 		});
 	}
@@ -176,7 +230,6 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 			center: 'title',
 			right: 'month,agendaWeek,agendaDay'
 		},
-		editable: true,
 		allDaySlot: false,
 		dayClick: function(date, jsEvent, view) {
 			if (!confirm("Дійсно бажаєте додати подію ?")) return false;
@@ -191,7 +244,9 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 				size: 'lg',
 				resolve: {
 					start: function(){return start;},
-					end: function(){return end;}
+					end: function(){return end;},
+					projects: function(){return $scope.projectsAvailable;},
+					workers: function(){return $scope.workers;},
 				}
 			});
 
@@ -202,6 +257,8 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 			});
 		},
 		eventClick: function(calEvent, jsEvent, view) {
+			if (!calEvent.editable) return false;
+
 			if (!confirm("Дійсно бажаєте видалити подію: " + calEvent.title + " ?")) return false;
 
 			var url = $scope.urlsEventsRemoveNg.replace('0', calEvent.id);
@@ -290,42 +347,12 @@ Renovate.controller('ProjectsController', function($scope,$http,$modal){
 		$modalInstance.dismiss('cancel');
 	};
 })
-.controller('AddEventController', function($scope,$http,$modalInstance, start, end){
+.controller('AddEventController', function($scope,$http,$modalInstance, start, end, projects, workers){
 	console.log('AddEventController loaded!');
 	$scope.urlsEventsAddNg = URLS.eventsAddNg;
-	$scope.urlsProjectsNg = URLS.projectsNg;
-	$scope.urlsUsersGetWorkersNg = URLS.usersGetWorkersNg;
 
-	$scope.projects = [];
-	$scope.workers = [];
-
-	(function getProjects(){
-		$http({
-			method: "GET",
-			url: $scope.urlsProjectsNg
-		})
-		.success(function(response){
-			console.log(" projects => ",response);
-			if (response.result)
-			{
-				$scope.projects = response.result;
-			}
-		})
-	})();
-
-	(function getWorkers(){
-		$http({
-			method: "GET",
-			url: $scope.urlsUsersGetWorkersNg
-		})
-		.success(function(response){
-			console.log(" workers => ",response);
-			if (response.result)
-			{
-				$scope.workers = response.result;
-			}
-		})
-	})();
+	$scope.projects = projects;
+	$scope.workers = workers;
 
 	function addEvent(){
 		$scope.event.start = start;

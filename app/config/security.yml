@@ -91,4 +91,7 @@ security:
         - { path: ^/ng/cost-categories*, roles: ROLE_ADMIN }
         - { path: ^/ng/estimation-costs*, roles: ROLE_ADMIN }
         - { path: ^/ng/costs*, roles: ROLE_ADMIN }
+        - { path: ^/projects*, roles: ROLE_ADMIN }
+        - { path: ^/ng/projects*, roles: ROLE_ADMIN }
+        - { path: ^/ng/events*, roles: ROLE_ADMIN }
         - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
