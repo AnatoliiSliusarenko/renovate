@@ -3,33 +3,32 @@
 {% block title %}Імпорт платежів{% endblock %}
 
 {% block head %}
-<link href="{{ asset('bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
-{% endblock %}
-
-{% block breadcrumb %}
-<ol class="breadcrumb">
- 	<li><a href="{{path('renovate_main_homepage')}}">Головна</a></li>
- 	<li class="active">Імпорт платежів</li>
-</ol>
+    <link href="{{ asset('bundles/renovate/css/uploadify.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div ng-controller="ImportPaymentsController">
-	<div class="row">
-		<div class="col-md-12">
-			<h3><strong>Дозволені формати:</strong> Comma Separated Values (*.csv)</h3>
-			<input type="file" name="file_upload" id="file_upload" />
-			<alert ng-repeat="alert in alerts" type="[[alert.type]]" close="closeAlert($index)">[[alert.msg]]</alert>
-		</div>
-	</div>
-</div>
-{% endblock %} 
+
+    <section class="news-desc">
+        <aside style="width: 80%; margin-right: 0% !important;">
+            <div ng-controller="ImportPaymentsController">
+                <div class="row">
+                    <div class="col-md-12" style="margin: 60px 0 30px;">
+                        <h3><strong>Дозволені формати:</strong> Comma Separated Values (*.csv)</h3>
+                        <input type="file" name="file_upload" id="file_upload" />
+                        <alert ng-repeat="alert in alerts" type="[[alert.type]]" close="closeAlert($index)">[[alert.msg]]</alert>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+{% endblock %}
 
 {% block javascripts %}
-<script src="{{ asset('bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
-<script src="{{ asset('bundles/renovate/js/angularPaymentsController.js') }}"></script>
-<script>
-var TIMESTAMP = '{{ timestamp }}';
-var TOKEN = '{{ token }}';
-</script>
+    <script src="{{ asset('bundles/renovate/js/jquery.uploadify.min.js') }}"></script>
+    <script src="{{ asset('bundles/renovate/js/angularPaymentsController.js') }}"></script>
+    <script>
+        var TIMESTAMP = '{{ timestamp }}';
+        var TOKEN = '{{ token }}';
+    </script>
 {% endblock %}

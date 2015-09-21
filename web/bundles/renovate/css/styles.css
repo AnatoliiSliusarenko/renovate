@@ -1,23 +1,4 @@
 /* Estimations */
-.estimation-additional {
-	margin-top: 5px;
-	margin-left: 5px;
-}
-
-.estimation-updated {
-	margin-top: 27px;
-  	margin-left: 5px;
-}
-
-.estimations table td, .estimations table th {
-	padding-top: 0px !important;
-	padding-bottom: 0px !important;
-} 
-
-.estimations table .form-control {
-	height: 25px;
-	padding: 0px 12px;
-}
 tab-heading button {
 	font-size: 12px !important;
 	position: absolute;
@@ -39,58 +20,22 @@ td.clickable:hover {
 	bottom: 0px;
 }
 /* Cost Categories */
-#focus-zone {
-	cursor: pointer;
-}
-.disabled {
-	opacity: 0.7;
-    filter: alpha(opacity=70);
-    pointer-events: none;
-}
-
-.focused {
-	
-}
-
-.stop-scrolling {
-  height: 100%;
-  overflow: hidden;
-}
-
-.scrolling {
-	resize: vertical;   /* Options: horizontal, vertical, both */
-    overflow: auto; /* fix for Safari */
-	height: 200px;
-}
-
 .costs {
-	height: auto;
-	width: 580px;
-	padding: 0px;
-	margin: 1px;
-	border: 1px solid #e5e5e5;
+	height: 300px;
+	overflow: scroll;
+	padding: 0;
 }
 
 .costs table {
 	border: 1px solid #ddd;
 }
 
-.costs .table > thead > tr > th,.costs .table > tbody > tr > th,.costs .table > tfoot > tr > th,.costs .table > thead > tr > td,.costs .table > tbody > tr > td,.costs .table > tfoot > tr > td {
+.costs table td, .costs table th {
 	border-right: 1px solid #ddd;
-	padding-top: 0px !important;
-	padding-bottom: 0px !important;
 }
 
 .costs button {
 	font-size: 16px;
-}
-
-.costs > .costs-search > input{
-	height: 20px;
-}
-
-.cost-options {
-	width: 50px;
 }
 /* Prices and User Info*/
 table.prices, table.user-info {

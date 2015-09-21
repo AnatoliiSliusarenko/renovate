@@ -659,3 +659,17 @@ renovate_ng_events_add:
 renovate_ng_events_remove:
     path: /ng/events/remove/{event_id}
     defaults: { _controller: RenovateMainBundle:Events:removeEventNg}
+
+renovate_portfolio:
+    path: /portfolio
+    defaults: { _controller: RenovateMainBundle:Portfolio:portfolio }
+
+renovate_add_new_portfolio:
+    path: /portfolio/add
+    defaults: { _controller: RenovateMainBundle:Portfolio:addNewPortfolio }
+
+renovate_change_homepage:
+    path: /portfolio/{portfolio_id}
+    defaults: { _controller: RenovateMainBundle:Portfolio:changeHomepage }
+    requirements:
+        portfolio_id: \d+

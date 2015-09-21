@@ -13,6 +13,7 @@ use Renovate\MainBundle\Entity\Result;
 use Renovate\MainBundle\Entity\Article;
 use Renovate\MainBundle\Entity\Share;
 use Renovate\MainBundle\Entity\Vacancy;
+use Renovate\MainBundle\Entity\Portfolio;
 
 class IndexController extends Controller
 {
@@ -41,14 +42,15 @@ class IndexController extends Controller
     	$parameters['page'] = $this->get('renovate.pages')->getPageForUrl($this->getRequest()->getUri());
     	
     	$em = $this->getDoctrine()->getManager();
-    	$parameters['lastNews'] = News::getNews($em, array('offset' => 0,'limit' => 6));
+    	$parameters['lastNews'] = News::getNews($em, array('offset' => 0,'limit' => 3));
+		$parameters['lastNews1'] = News::getNews($em, array('offset' => 3,'limit' => 3));
     	$parameters['jobs'] = Job::getJobs($em, array('onhomepage' => 1));
     	$parameters['results'] = Result::getResults($em, array('onhomepage' => 1));
     	$parameters['news'] = News::getNews($em, array('onhomepage' => 1));
     	$parameters['articles'] = Article::getArticles($em, array('onhomepage' => 1));
     	$parameters['shares'] = Share::getShares($em, array('onhomepage' => 1));
     	$parameters['vacancies'] = Vacancy::getVacancies($em, array('onhomepage' => 1));
-    	
+		$parameters['portfolios'] = $this->getDoctrine()->getRepository('RenovateMainBundle:Portfolio')->findBy(array('showOnHomePage' => true));
         return $this->render('RenovateMainBundle:Index:index.html.twig', $parameters);
     }
 }
