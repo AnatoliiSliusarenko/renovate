@@ -27,7 +27,7 @@ class EventsController extends Controller
 
         $event = Event::editEventById($em, $event_id, $parameters);
 
-        $response = new Response(json_encode(array("result" => $event->getInArray())));
+        $response = new Response(json_encode(array("result" => ($event)?$event->getInArray():false)));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
@@ -41,7 +41,7 @@ class EventsController extends Controller
 
         $event = Event::addEvent($em, $parameters);
 
-        $response = new Response(json_encode(array("result" => $event->getInArray())));
+        $response = new Response(json_encode(array("result" => ($event)?$event->getInArray():false)));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;

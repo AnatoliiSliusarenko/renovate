@@ -20,12 +20,12 @@
 <div ng-controller="ProjectsController" ng-cloak>
 	<div class="row">
 		<div class="col-md-12">
-			<button class="btn btn-primary" type="button" ng-click="isCollapsedProjects = !isCollapsedProjects" ng-init="isCollapsedProjects=true">
+			<button class="btn btn-primary" type="button" ng-click="isCollapsedProjects = !isCollapsedProjects" ng-init="isCollapsedProjects=false">
 				Проекти <span class="glyphicon glyphicon-th-list"></span>
 			</button>
 			<div collapse="isCollapsedProjects">
                 <div class="row">
-		            <div class="col-md-5">
+		            <div class="col-md-12">
                         <form class="form-inline">
                             <div class="form-group">
                                 <label for="itemsPerPage">Показувати на сторінці</label>
@@ -44,12 +44,39 @@
                             <div class="form-group">
                                 <input placeholder="Пошук проектів..." type="text" class="form-control" ng-model="filter.search"/>
                             </div>
+                            <div class="form-group datepicker">
+                                <div class="input-group">
+                                    <input placeholder="Від" id="from" ng-click="openFrom($event)" type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="filter.from" is-open="openedFrom" close-text="Закрити" clear-text="Очистити" current-text="Сьогодні" />
+                                    <div class="input-group-addon" ng-click="openFrom($event)"><i class="glyphicon glyphicon-calendar"></i></div>
+                                </div>
+                            </div>
+                            <div class="form-group datepicker">
+                                <div class="input-group">
+                                    <input placeholder="До" id="to" ng-click="openTo($event)" type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="filter.to" is-open="openedTo" close-text="Закрити" clear-text="Очистити" current-text="Сьогодні"/>
+                                    <div class="input-group-addon" ng-click="openTo($event)"><i class="glyphicon glyphicon-calendar"></i></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="radio-inline">
+                                    <input ng-model="filter.finished" type="radio" name="inlineRadioOptions" id="inlineRadio1"> усі
+                                </label>
+                                <label class="radio-inline">
+                                    <input ng-model="filter.finished" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1"> завершені
+                                </label>
+                                <label class="radio-inline">
+                                    <input ng-model="filter.finished" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="0"> активні
+                                </label>
+                            </div>
                         </form>
 		            </div>
-                    <div class="col-md-2">
-                        <button ng-click="addProject()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
-                    </div>
                 </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                <div class="row">
+		            <div class="col-md-12">
+                        <button ng-click="addProject()" type="button" class="btn btn-success">Додати&nbsp;<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+		            </div>
+                </div>
+                {% endif %}
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="itemsPerPage" max-size="5"></pagination>
@@ -66,20 +93,30 @@
                                 <th>Термін, год</th>
                                 <th>Бюджет робітників, %</th>
                                 <th>Бюджет бригадира, %</th>
-                                <th>Створено</th>
+                                <th>Завершено</th>
+                                <th>Звіт</th>
+                                {% if is_granted('ROLE_ADMIN') %}
                                 <th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="project in projects" ng-class="{green: project.finished}">
                                 <th style="background-color: [[project.color]]">[[(currentPage-1)*itemsPerPage+$index+1]]</th>
-                                <td><a href="[[project.href]]" target="_blank">[[project.name]]</a></td>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <td><a href="[[project.reportFull]]" target="_blank">[[project.name]]</a></td>
+                                {% else %}
+                                <td>[[project.name]]</td>
+                                {% endif %}
                                 <td>[[project.budget | price]]</td>
                                 <td>[[project.time]]</td>
                                 <td>[[project.percentWorkers]]</td>
                                 <td>[[project.percentBrigadier]]</td>
-                                <td>[[project.created | date:"dd.MM.yyyy HH:mm"]]</td>
+                                <td>[[project.finishedDate | date:"dd.MM.yyyy"]]</td>
+                                <td><a href="[[project.report]]" target="_blank"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></td>
+                                {% if is_granted('ROLE_ADMIN') %}
                                 <td><button ng-click="removeProject(project)" type="button" class="close"><span class="glyphicon glyphicon-remove"></span></button><button ng-click="editProject(project)" type="button" class="close"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                                {% endif %}
                             </tr>
                             </tbody>
                         </table>
@@ -93,6 +130,7 @@
 			</div>
 		</div>
 	</div>
+    {% if is_granted('ROLE_ADMIN') %}
     <script type="text/ng-template" id="addProject.html">
         <div class="modal-header">
             <h3 class="modal-title">Додати проект...</h3>
@@ -244,6 +282,22 @@
                         <p ng-show="eventForm.eventProject.$invalid && !eventForm.eventProject.$pristine" class="help-block">Виберіть проект.</p>
                     </div>
                 </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : eventForm.eventStart.$invalid && !eventForm.eventStart.$pristine }">
+                    <label for="eventStart" class="col-sm-2 control-label">Початок роботи</label>
+                    <div class="col-sm-10">
+                        <select id="eventStart" name="eventStart" ng-options="time for time in times" class="form-control has-error" ng-model="event.eventStart" required></select>
+                        <p ng-show="eventForm.eventStart.$invalid && !eventForm.eventStart.$pristine" class="help-block">Виберіть початок роботи.</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : eventForm.eventEnd.$invalid && !eventForm.eventEnd.$pristine }">
+                    <label for="eventEnd" class="col-sm-2 control-label">Кінець роботи</label>
+                    <div class="col-sm-10">
+                        <select id="eventEnd" name="eventEnd" ng-options="time for time in times" class="form-control has-error" ng-model="event.eventEnd" required></select>
+                        <p ng-show="eventForm.eventEnd.$invalid && !eventForm.eventEnd.$pristine" class="help-block">Виберіть кінець роботи.</p>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -251,7 +305,54 @@
             <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
         </div>
     </script>
+    <script type="text/ng-template" id="editEvent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Редагувати подію...</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="eventForm">
+                <div class="form-group" ng-class="{ 'has-error' : eventForm.eventUser.$invalid && !eventForm.eventUser.$pristine }">
+                    <label for="eventUser" class="col-sm-2 control-label">Робітник</label>
+                    <div class="col-sm-10">
+                        <select id="eventUser" name="eventUser" ng-options="user.id as (user.surname+' '+user.name+' '+user.patronymic+' ('+user.username+')') for user in workers" class="form-control has-error" ng-model="event.userId" required></select>
+                        <p ng-show="eventForm.eventUser.$invalid && !eventForm.eventUser.$pristine" class="help-block">Виберіть робітника.</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : eventForm.eventProject.$invalid && !eventForm.eventProject.$pristine }">
+                    <label for="eventProject" class="col-sm-2 control-label">Проект</label>
+                    <div class="col-sm-10">
+                        <select id="eventProject" name="eventProject" ng-options="project.id as project.name for project in projects" class="form-control has-error" ng-model="event.projectId" required></select>
+                        <p ng-show="eventForm.eventProject.$invalid && !eventForm.eventProject.$pristine" class="help-block">Виберіть проект.</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : eventForm.eventStart.$invalid && !eventForm.eventStart.$pristine }">
+                    <label for="eventStart" class="col-sm-2 control-label">Початок роботи</label>
+                    <div class="col-sm-10">
+                        <select id="eventStart" name="eventStart" ng-options="time for time in times" class="form-control has-error" ng-model="event.eventStart" required></select>
+                        <p ng-show="eventForm.eventStart.$invalid && !eventForm.eventStart.$pristine" class="help-block">Виберіть початок роботи.</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : eventForm.eventEnd.$invalid && !eventForm.eventEnd.$pristine }">
+                    <label for="eventEnd" class="col-sm-2 control-label">Кінець роботи</label>
+                    <div class="col-sm-10">
+                        <select id="eventEnd" name="eventEnd" ng-options="time for time in times" class="form-control has-error" ng-model="event.eventEnd" required></select>
+                        <p ng-show="eventForm.eventEnd.$invalid && !eventForm.eventEnd.$pristine" class="help-block">Виберіть кінець роботи.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger pull-left" ng-click="remove()">Видалити подію</button>
+            <button class="btn btn-primary" ng-click="ok()" ng-disabled="eventForm.$invalid">Зберегти</button>
+            <button class="btn btn-warning" ng-click="cancel()">Відміна</button>
+        </div>
+    </script>
+    {% endif %}
 </div>
+{% if is_granted('ROLE_ADMIN') %}
 <hr>
 <div>
     <div id="infoAlert" class="alert alert-info" role="alert">Зміни збережено!</div>
@@ -261,11 +362,14 @@
 		</div>
     </div>
 </div>
+{% endif %}
 {% endblock %} 
 
 {% block javascripts %}
+{% if is_granted('ROLE_ADMIN') %}
 <script src="{{ asset('bundles/renovate/plugins/fullcalendar/lib/moment.min.js') }}"></script>
 <script src="{{ asset('bundles/renovate/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="{{ asset('bundles/renovate/plugins/fullcalendar/lang/uk.js') }}"></script>
+{% endif %}
 <script src="{{ asset('bundles/renovate/js/angularProjectsController.js') }}"></script>
 {% endblock %}

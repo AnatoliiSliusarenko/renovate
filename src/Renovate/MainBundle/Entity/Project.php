@@ -72,9 +72,9 @@ class Project
     /**
      * @var datetime
      *
-     * @ORM\Column(name="created", type="datetime")
+     * @ORM\Column(name="finishedDate", type="datetime")
      */
-    private $created;
+    private $finishedDate;
 
     /**
      * @ORM\OneToMany(targetEntity="Event", mappedBy="project")
@@ -263,26 +263,26 @@ class Project
     }
 
     /**
-     * Set created
+     * Set finishedDate
      *
-     * @param \DateTime $created
+     * @param \DateTime $finishedDate
      * @return Project
      */
-    public function setCreated($created)
+    public function setFinishedDate($finishedDate)
     {
-        $this->created = $created;
+        $this->finishedDate = $finishedDate;
 
         return $this;
     }
 
     /**
-     * Get created
+     * Get finishedDate
      *
      * @return \DateTime 
      */
-    public function getCreated()
+    public function getFinishedDate()
     {
-        return $this->created;
+        return $this->finishedDate;
     }
 
     /**
@@ -329,7 +329,7 @@ class Project
             'percentBrigadier' => $this->getPercentBrigadier(),
             'color' => $this->getColor(),
             'finished' => $this->getFinished(),
-            'created' => $this->getCreated()->getTimestamp()*1000
+            'finishedDate' => ($this->getFinishedDate())?$this->getFinishedDate()->getTimestamp()*1000:null
         );
     }
 
@@ -452,7 +452,9 @@ class Project
         $hours = $duration['time']['total']-$this->time;
         if ($hours>0) $overTime = $hours;
         $report['overTime'] = $overTime;
-        $report['moneyBrigadier'] = $budgetBrigadier - $overTime*($budgetBrigadier/$this->time);
+        $moneyBrigadier = $budgetBrigadier - $overTime*($budgetBrigadier/$this->time);
+        if ($moneyBrigadier<0) $moneyBrigadier = 0;
+        $report['moneyBrigadier'] = $moneyBrigadier;
 
         foreach ($report['users'] as $id=>$user){
             $report['users'][$id]['saturdays'] /= 60;
@@ -461,6 +463,11 @@ class Project
             $report['users'][$id]['total'] = $report['users'][$id]['saturdays']+$report['users'][$id]['sundays']+$report['users'][$id]['working'];
             $report['users'][$id]['money'] = $report['users'][$id]['saturdays']*1.5*$hourPrice+$report['users'][$id]['sundays']*2*$hourPrice+$report['users'][$id]['working']*$hourPrice;
         }
+
+        usort($report['users'],function($a, $b){
+            if ($a['money'] == $b['money']) return 0;
+            return ($a['money'] > $b['money']) ? -1 : 1;
+        });
 
         $report['hourPrice'] = $hourPrice;
         $report['duration'] = $duration;
@@ -476,7 +483,7 @@ class Project
             ->createQueryBuilder('p');
 
         $qb->select('p')
-            ->addOrderBy('p.created', 'DESC');
+            ->addOrderBy('p.id', 'DESC');
 
         if (isset($parameters['offset']) && isset($parameters['limit']))
         {
@@ -489,6 +496,18 @@ class Project
             $qb->andWhere($qb->expr()->orX(
                 $qb->expr()->like('p.name', $qb->expr()->literal('%'.$parameters['search'].'%'))
             ));
+        }
+
+        if (isset($parameters['from']))
+        {
+            $qb->andWhere('p.finishedDate > :from')
+                ->setParameter('from', $parameters['from']);
+        }
+
+        if (isset($parameters['to']))
+        {
+            $qb->andWhere('p.finishedDate < :to')
+                ->setParameter('to', $parameters['to']);
         }
 
         if (isset($parameters['finished']))
@@ -521,6 +540,18 @@ class Project
             ));
         }
 
+        if (isset($parameters['from']))
+        {
+            $qb->andWhere('p.finishedDate > :from')
+                ->setParameter('from', $parameters['from']);
+        }
+
+        if (isset($parameters['to']))
+        {
+            $qb->andWhere('p.finishedDate < :to')
+                ->setParameter('to', $parameters['to']);
+        }
+
         if (isset($parameters['finished']))
         {
             $qb->andWhere('p.finished = :finished')
@@ -542,7 +573,6 @@ class Project
         $project->setPercentBrigadier($parameters->percentBrigadier);
         $project->setColor($parameters->color);
         $project->setFinished(false);
-        $project->setCreated(new \DateTime());
 
         $em->persist($project);
         $em->flush();
@@ -576,6 +606,18 @@ class Project
         $project->setPercentBrigadier($parameters->percentBrigadier);
         $project->setColor($parameters->color);
         $project->setFinished($parameters->finished);
+
+        if ($parameters->finished){
+            $events = $em->getRepository("RenovateMainBundle:Event")
+                ->createQueryBuilder('e')
+                ->select('e')
+                ->andWhere('e.projectId = :projectId')
+                ->setParameter('projectId',$id)
+                ->addOrderBy('e.end', 'DESC')->getQuery()->getResult();
+            if(count($events)) $project->setFinishedDate($events[0]->getEnd());
+        }else{
+            $project->setFinishedDate(null);
+        }
 
         $em->persist($project);
         $em->flush();

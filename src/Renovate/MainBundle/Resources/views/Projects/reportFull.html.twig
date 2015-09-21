@@ -53,6 +53,18 @@
                     <td colspan="8">{{ report['endProject']|date('Y-m-d H:i') }}</td>
                 </tr>
                 <tr>
+                    <td>Бюджет проекту, грн.</td>
+                    <td colspan="8">{{ project.getBudget()|number_format(2, '.', ' ') }}</td>
+                </tr>
+                <tr>
+                    <td>Бюджет робітників, грн. (%)</td>
+                    <td colspan="8">{{ report['budgetWorkers']|number_format(2, '.', ' ')~' '~'('~project.getPercentWorkers()~')' }}</td>
+                </tr>
+                <tr>
+                    <td>Бюджет бригадира, грн. (%)</td>
+                    <td colspan="8">{{ report['budgetBrigadier']|number_format(2, '.', ' ')~' '~'('~project.getPercentBrigadier()~')' }}</td>
+                </tr>
+                <tr>
                     <td>Вартісь робіт за годину, грн.</td>
                     <td colspan="8">{{ report['hourPrice']|number_format(2, '.', ' ') }}</td>
                 </tr>

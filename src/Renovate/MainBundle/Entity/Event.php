@@ -265,13 +265,13 @@ class Event
 
         if (isset($parameters['from']))
         {
-            $qb->andWhere('e.start > :from')
+            $qb->andWhere('e.start >= :from')
                 ->setParameter('from', $parameters['from']);
         }
 
         if (isset($parameters['to']))
         {
-            $qb->andWhere('e.end < :to')
+            $qb->andWhere('e.start < :to')
                 ->setParameter('to', $parameters['to']);
         }
 
@@ -288,9 +288,20 @@ class Event
     public static function editEventById($em, $id, $parameters)
     {
         $event = $em->getRepository("RenovateMainBundle:Event")->find($id);
+        $user = $em->getRepository("RenovateMainBundle:User")->find($parameters->userId);
+        $project = $em->getRepository("RenovateMainBundle:Project")->find($parameters->projectId);
 
-        $event->setStart(new \DateTime($parameters->start));
-        $event->setEnd(new \DateTime($parameters->end));
+        $event->setUserId($user->getId());
+        $event->setUser($user);
+        $event->setProjectId($project->getId());
+        $event->setProject($project);
+
+        $event->setTitle($user->getSurname().' '.mb_substr($user->getName(),0,1,'UTF-8').'. '.mb_substr($user->getPatronymic(),0,1,'UTF-8').'. | '.$project->getName());
+        $start = new \DateTime($parameters->start);
+        $end = new \DateTime($parameters->end);
+        if ($start>$end) return false;
+        $event->setStart($start);
+        $event->setEnd($end);
 
         $em->persist($event);
         $em->flush();
@@ -309,9 +320,12 @@ class Event
         $event->setProjectId($project->getId());
         $event->setProject($project);
 
-        $event->setTitle($user->getSurname().' '.$user->getName().' '.$user->getPatronymic().' | '.$project->getName());
-        $event->setStart(new \DateTime($parameters->start));
-        $event->setEnd(new \DateTime($parameters->end));
+        $event->setTitle($user->getSurname().' '.mb_substr($user->getName(),0,1,'UTF-8').'. '.mb_substr($user->getPatronymic(),0,1,'UTF-8').'. | '.$project->getName());
+        $start = new \DateTime($parameters->start);
+        $end = new \DateTime($parameters->end);
+        if ($start>$end) return false;
+        $event->setStart($start);
+        $event->setEnd($end);
 
         $em->persist($event);
         $em->flush();

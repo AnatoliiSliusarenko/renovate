@@ -75,6 +75,17 @@ class ProjectsController extends Controller
         return $response;
     }
 
+    public function reportFullAction($project_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $project = $em->getRepository("RenovateMainBundle:Project")->find($project_id);
+        $report = $project->generateReport();
+
+        if (!$report) return new Response('Неможливо згенерувати звіт по проекту.');
+
+        return $this->render('RenovateMainBundle:Projects:reportFull.html.twig', array('project' => $project, 'report' => $report));
+    }
+
     public function reportAction($project_id)
     {
         $em = $this->getDoctrine()->getManager();

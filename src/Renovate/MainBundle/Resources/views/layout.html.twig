@@ -65,7 +65,6 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_tasks' %}class="active"{% endif %}><a href="{{ path('renovate_tasks') }}">Завдання</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_pages' %}class="active"{% endif %}><a href="{{ path('renovate_pages') }}">Сторінки</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_estimations' %}class="active"{% endif %}><a href="{{ path('renovate_estimations') }}">Менеджмент кошторисів</a></li>
-					<li {% if app.request.attributes.get('_route') == 'renovate_projects' %}class="active"{% endif %}><a href="{{ path('renovate_projects') }}">Менеджмент проектів</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
 	                <li {% if app.request.attributes.get('_route') == 'renovate_users' %}class="active"{% endif %}><a href="{{ path('renovate_users') }}">Менеджмент користувачів</a></li>
@@ -76,6 +75,7 @@
 	                <li {% if app.request.attributes.get('_route') == 'renovate_repairs' %}class="active"{% endif %}><a href="{{ path('renovate_repairs') }}">Ремонтні роботи</a></li>
 	                {% endif %}
 	                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_BOOKKEEPER')) %}
+					<li {% if app.request.attributes.get('_route') == 'renovate_projects' %}class="active"{% endif %}><a href="{{ path('renovate_projects') }}">Менеджмент проектів</a></li>
 	                <li {% if app.request.attributes.get('_route') == 'renovate_payments' %}class="active"{% endif %}><a href="{{ path('renovate_payments') }}">Імпорт платежів</a></li>
 	                {% endif %}
 	                <li class="divider"></li>
@@ -374,6 +374,7 @@
   			costsRemoveNg: "{{ path('renovate_ng_costs_remove', {cost_id: 0}) }}",
   			costsFilterNg: "{{ path('renovate_ng_costs_filter') }}",
 			projectsReport: "{{ path('renovate_projects_report', {project_id: 0}) }}",
+			projectsReportFull: "{{ path('renovate_projects_report_full', {project_id: 0}) }}",
 			projectsNg: "{{ path('renovate_ng_projects') }}",
 			projectsCountNg: "{{ path('renovate_ng_projects_count') }}",
             projectsAddNg: "{{ path('renovate_ng_projects_add') }}",

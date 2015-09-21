@@ -4398,7 +4398,10 @@ Grid.mixin({
 				return this.view.formatRange(range, formatStr);
 			}
 			else {
-				return range.start.format(formatStr);
+				//---native code
+				//return range.start.format(formatStr);
+				//---custom changes
+				return range.end.diff(range.start, 'hours').toString();
 			}
 		}
 
